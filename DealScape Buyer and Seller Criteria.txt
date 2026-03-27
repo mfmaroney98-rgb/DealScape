@@ -1,0 +1,53 @@
+Point to clarify, none of these NEED to be filled out, since it’s basically just a filter.
+Information the Sell-Side Uploads:
+·       Financial Information (can the user input X number years based on their choice?)
+o   Revenue
+o   Gross Profit
+o   Gross Margin (can be calculated or entered manually by user, just Gross Profit / Revenue)
+o   EBITDA
+o   EBITDA Margin (EBITDA / Revenue)
+o   EBIT
+o   EBIT Margin (EBIT / Revenue)
+o   Net Income
+o   Net Margin (Net Income / Revenue)
+o   Could throw a CAGR or Year-over-Year Growth Calculation in too 
+·       Company Information
+o   Company Name
+o   Anonymized Company Name or Title (for instance: “Leading Material Handling Equipment Manufacturers”)
+o   Project Name (if applicable)
+o   Location (City, State, Region, Country, Continent, maybe even the address, it’s the seller’s discretion)
+o   Number of employees
+o   Keywords
+o   Industry / NAICS Codes
+o   Company type (LLC, S-Corp, etc.)
+o   Company Ownership (Private Company, Private Equity-owned, Corporate Subsidiary, Public Company, etc.)
+·       Transaction Type
+o   Transaction Type (Total Sale, Acquisition of Majority Stake, Debt Raise, Minority Equity Raise, Mezzanine Financing, Divestiture / Carve-out, etc.)
+o  For the Minority Equity, we can include funding rounds like Angel, Seed, Series A, B, C, etc.)
+·       Other
+o   Founder-owned Company (check box)
+o   Female-owned Company (check box)
+o   Minority-owned Company (check box)
+o   Family-owned Company (check box)
+ 
+Information the Buy-Side Enters for the search:
+·       Financial Information
+o   Preferred Revenue Range (Min and Max, does not need to be both)
+o   Same for all the other financial metrics. Point being these will be ranges as opposed to specific values
+o   Could throw a CAGR or Year-over-Year Growth Calculation in too
+·       Company Information
+o   Location (some buyers only buy in the Midwest, or Ohio, etc.)
+o   Number of Employees (Min and Max, does not need to be both)
+o   Keywords
+o   Industry / NAICS Codes
+o   Company type (LLC, S-Corp, etc.)
+o   Company Ownership (Private Company, Private Equity-owned, Corporate Subsidiary, Public Company, etc.)
+·       Transaction Type
+o   Transaction Type (Total Sale, Acquisition of Majority Stake, Debt Raise, Minority Equity Raise, Mezzanine Financing, Divestiture / Carve-out, etc.)
+o  For the Minority Equity, we can include funding rounds like Angel, Seed, Series A, B, C, etc.)
+·       Other
+o   Founder-owned Company (check box)
+o   Female-owned Company (check box)
+o   Minority-owned Company (check box)
+o   Family-owned Company (check box)
+
