@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link } from 'react-router-dom';
 import { supabase } from './lib/supabase';
+import { profileService } from './services/profileService';
+import { sellerService } from './services/sellerService';
+import SellerProfileForm from './components/SellerProfileForm';
 import { 
   TrendingUp, 
   Mail, 
@@ -8,7 +11,8 @@ import {
   LogOut,
   Loader2,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  PlusCircle
 } from 'lucide-react';
 
 /* --- Components --- */
@@ -187,9 +191,21 @@ const Signup = () => {
   );
 };
 
-const Dashboard = ({ onSignOut }) => (
+const Dashboard = ({ onSignOut, hasProfile, role }) => (
   <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-    <h1 className="text-6xl font-black mb-12 tracking-tight">Hello</h1>
+    <h1 className="text-6xl font-black mb-6 tracking-tight">Hello</h1>
+    
+    {!hasProfile && role === 'seller' && (
+      <div className="mb-12 glass p-8 rounded-2xl border border-indigo-500/30 max-w-sm mx-auto animate-fade-in">
+        <PlusCircle className="text-indigo-400 mx-auto mb-4" size={48} />
+        <h3 className="text-xl font-bold mb-2">Complete Your Listing</h3>
+        <p className="text-slate-400 text-sm mb-6">You haven't listed your business yet. Start finding buyers today.</p>
+        <Link to="/onboarding/seller" className="btn-primary flex items-center justify-center gap-2">
+          Create Profile <ArrowRight size={18} />
+        </Link>
+      </div>
+    )}
+
     <button onClick={onSignOut} className="btn-secondary flex items-center gap-2 px-8">
       <LogOut size={18} />
       Sign Out
@@ -201,28 +217,49 @@ const Dashboard = ({ onSignOut }) => (
 
 function App() {
   const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [hasListing, setHasListing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Safety net: don't hang on loading if everything goes wrong
     const timeout = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 5000);
 
-    supabase.auth.getSession()
-      .then(({ data: { session } }) => {
+    const initAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
+        
+        if (session) {
+          const userProfile = await profileService.getProfile(session.user.id);
+          setProfile(userProfile);
+          
+          if (userProfile?.role === 'seller') {
+            const listing = await sellerService.getListing(session.user.id);
+            setHasListing(!!listing);
+          }
+        }
+      } catch (err) {
+        console.error('Init failed:', err);
+      } finally {
         setLoading(false);
         clearTimeout(timeout);
-      })
-      .catch((err) => {
-        console.error('Session fetch failed:', err);
-        setLoading(false);
-        clearTimeout(timeout);
-      });
+      }
+    };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    initAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
+      if (session) {
+        const userProfile = await profileService.getProfile(session.user.id);
+        setProfile(userProfile);
+      } else {
+        setProfile(null);
+        setHasListing(false);
+      }
     });
 
     return () => {
@@ -245,10 +282,16 @@ function App() {
         <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
         <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
         <Route 
+          path="/onboarding/seller" 
+          element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />} 
+        />
+        <Route 
           path="/dashboard" 
           element={
             session ? (
               <Dashboard 
+                hasProfile={hasListing}
+                role={profile?.role || 'seller'}
                 onSignOut={() => supabase.auth.signOut()} 
               />
             ) : (
