@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link } f
 import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
 import { sellerService } from './services/sellerService';
+import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
+import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import { 
   TrendingUp, 
   Mail, 
@@ -195,13 +197,22 @@ const Dashboard = ({ onSignOut, hasProfile, role }) => (
   <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in">
     <h1 className="text-6xl font-black mb-6 tracking-tight">Hello</h1>
     
-    {!hasProfile && role === 'seller' && (
+    {!hasProfile && (
       <div className="mb-12 glass p-8 rounded-2xl border border-indigo-500/30 max-w-sm mx-auto animate-fade-in">
         <PlusCircle className="text-indigo-400 mx-auto mb-4" size={48} />
-        <h3 className="text-xl font-bold mb-2">Complete Your Listing</h3>
-        <p className="text-slate-400 text-sm mb-6">You haven't listed your business yet. Start finding buyers today.</p>
-        <Link to="/onboarding/seller" className="btn-primary flex items-center justify-center gap-2">
-          Create Profile <ArrowRight size={18} />
+        <h3 className="text-xl font-bold mb-2">
+          {role === 'seller' ? 'Complete Your Listing' : 'Set Your Criteria'}
+        </h3>
+        <p className="text-slate-400 text-sm mb-6">
+          {role === 'seller' 
+            ? "You haven't listed your business yet. Start finding buyers today."
+            : "Define what you're looking for to start receiving deals."}
+        </p>
+        <Link 
+          to={role === 'seller' ? "/onboarding/seller" : "/onboarding/buyer"} 
+          className="btn-primary flex items-center justify-center gap-2"
+        >
+          {role === 'seller' ? 'Create Profile' : 'Set Criteria'} <ArrowRight size={18} />
         </Link>
       </div>
     )}
@@ -239,6 +250,9 @@ function App() {
           if (userProfile?.role === 'seller') {
             const listing = await sellerService.getListing(session.user.id);
             setHasListing(!!listing);
+          } else if (userProfile?.role === 'buyer') {
+            const criteria = await buyerService.getCriteria(session.user.id);
+            setHasListing(!!criteria);
           }
         }
       } catch (err) {
@@ -284,6 +298,10 @@ function App() {
         <Route 
           path="/onboarding/seller" 
           element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />} 
+        />
+        <Route 
+          path="/onboarding/buyer" 
+          element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />} 
         />
         <Route 
           path="/dashboard" 

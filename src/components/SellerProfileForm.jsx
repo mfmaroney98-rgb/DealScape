@@ -9,20 +9,12 @@ import {
   PieChart, 
   CheckCircle2,
   ChevronRight,
-  ChevronLeft,
   DollarSign,
-  Tag
+  Tag,
+  Briefcase
 } from 'lucide-react';
 
-const STEPS = [
-  { id: 1, title: 'Identity', icon: Building2 },
-  { id: 2, title: 'Details', icon: Tag },
-  { id: 3, title: 'Financials', icon: TrendingUp },
-  { id: 4, title: 'Strategic', icon: PieChart }
-];
-
 export default function SellerProfileForm({ userId }) {
-  const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -58,9 +50,6 @@ export default function SellerProfileForm({ userId }) {
     }));
   };
 
-  const handleNext = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length));
-  const handleBack = () => setCurrentStep(prev => Math.max(prev - 1, 1));
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -75,24 +64,44 @@ export default function SellerProfileForm({ userId }) {
     }
   };
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 1:
-        return (
-          <div className="space-y-6 animate-fade-in">
+  return (
+    <div className="max-w-4xl mx-auto py-12 px-6 animate-fade-in">
+      <div className="mb-12 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4">
+          <Briefcase className="text-indigo-400" size={32} />
+        </div>
+        <h1 className="text-4xl font-black mb-4 tracking-tight">Create Your Listing</h1>
+        <p className="text-slate-400 max-w-lg mx-auto">
+          Provide the key details of your business to attract the right investors. All company names are kept private until mutual interest is confirmed.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Section 1: Identity & Location */}
+        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+              <Building2 className="text-indigo-400" size={20} />
+            </div>
+            <h2 className="text-xl font-bold">Business Identity</h2>
+          </div>
+          
+          <div className="space-y-6">
             <div>
               <label className="form-label">Listing Title (Anonymized)</label>
               <input 
                 type="text" 
                 name="title" 
                 className="form-input" 
-                placeholder="e.g. Leading Material Handling OEM"
+                placeholder="e.g. Leading Material Handling Equipment Manufacturer"
                 value={formData.title}
                 onChange={handleChange}
                 required 
               />
+              <p className="text-xs text-slate-500 mt-2">Use a descriptive title that doesn't reveal your company name.</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            
+            <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <label className="form-label">City</label>
                 <input 
@@ -113,116 +122,141 @@ export default function SellerProfileForm({ userId }) {
                   onChange={handleChange}
                 />
               </div>
-            </div>
-            <div>
-              <label className="form-label">Number of Employees</label>
-              <div className="relative">
-                <input 
-                  type="number" 
-                  name="employees_count" 
-                  className="form-input pl-11" 
-                  value={formData.employees_count}
-                  onChange={handleChange}
-                />
-                <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+              <div>
+                <label className="form-label">Employees</label>
+                <div className="relative">
+                  <input 
+                    type="number" 
+                    name="employees_count" 
+                    className="form-input pl-11" 
+                    value={formData.employees_count}
+                    onChange={handleChange}
+                  />
+                  <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                </div>
               </div>
             </div>
           </div>
-        );
-      case 2:
-        return (
-          <div className="space-y-6 animate-fade-in">
+        </div>
+
+        {/* Section 2: Business Details */}
+        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+              <Tag className="text-amber-400" size={20} />
+            </div>
+            <h2 className="text-xl font-bold">Classification & Ownership</h2>
+          </div>
+
+          <div className="space-y-6">
             <div>
               <label className="form-label">Industries / Keywords</label>
-              <input 
-                type="text" 
-                name="industry_codes" 
-                className="form-input" 
+              <textarea 
+                className="form-input min-h-[80px] resize-none" 
                 placeholder="Software, HealthTech, AI (comma separated)"
                 value={formData.industry_codes.join(', ')}
                 onChange={(e) => setFormData(prev => ({ ...prev, industry_codes: e.target.value.split(',').map(s => s.trim()) }))}
               />
             </div>
-            <div>
-              <label className="form-label">Company Type</label>
-              <select name="company_type" className="form-input" value={formData.company_type} onChange={handleChange}>
-                <option value="">Select Type</option>
-                <option value="LLC">LLC</option>
-                <option value="S-Corp">S-Corp</option>
-                <option value="C-Corp">C-Corp</option>
-                <option value="Partnership">Partnership</option>
-              </select>
-            </div>
-            <div>
-              <label className="form-label">Ownership Structure</label>
-              <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
-                <option value="">Select Ownership</option>
-                <option value="Private Individual">Private Individual</option>
-                <option value="Private Equity">Private Equity Owned</option>
-                <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-                <option value="Family Office">Family Office</option>
-              </select>
-            </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="space-y-6 animate-fade-in">
-            <div className="grid grid-cols-2 gap-4">
+            
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="form-label">Revenue (Latest Year)</label>
-                <div className="relative">
-                  <input 
-                    type="number" 
-                    name="revenue" 
-                    className="form-input pl-11" 
-                    value={formData.revenue}
-                    onChange={handleChange}
-                  />
-                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                </div>
+                <label className="form-label">Company Type</label>
+                <select name="company_type" className="form-input" value={formData.company_type} onChange={handleChange}>
+                  <option value="">Select Type</option>
+                  <option value="LLC">LLC</option>
+                  <option value="S-Corp">S-Corp</option>
+                  <option value="C-Corp">C-Corp</option>
+                  <option value="Partnership">Partnership</option>
+                </select>
               </div>
               <div>
-                <label className="form-label">EBITDA</label>
-                <div className="relative">
-                  <input 
-                    type="number" 
-                    name="ebitda" 
-                    className="form-input pl-11" 
-                    value={formData.ebitda}
-                    onChange={handleChange}
-                  />
-                  <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="form-label">Gross Profit</label>
-                <input 
-                  type="number" 
-                  name="gross_profit" 
-                  className="form-input" 
-                  value={formData.gross_profit}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label className="form-label">YoY Growth %</label>
-                <input 
-                  type="number" 
-                  name="growth_rate_pct" 
-                  className="form-input" 
-                  value={formData.growth_rate_pct}
-                  onChange={handleChange}
-                />
+                <label className="form-label">Ownership Structure</label>
+                <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
+                  <option value="">Select Ownership</option>
+                  <option value="Private Individual">Private Individual</option>
+                  <option value="Private Equity">Private Equity Owned</option>
+                  <option value="Corporate Subsidiary">Corporate Subsidiary</option>
+                  <option value="Family Office">Family Office</option>
+                </select>
               </div>
             </div>
           </div>
-        );
-      case 4:
-        return (
-          <div className="space-y-8 animate-fade-in">
+        </div>
+
+        {/* Section 3: Financials */}
+        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-10">
+            <TrendingUp size={80} />
+          </div>
+          
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+              <TrendingUp className="text-emerald-400" size={20} />
+            </div>
+            <h2 className="text-xl font-bold">Financial Performance</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <label className="form-label">Latest Revenue</label>
+              <div className="relative">
+                <input 
+                  type="number" 
+                  name="revenue" 
+                  className="form-input pl-11" 
+                  value={formData.revenue}
+                  onChange={handleChange}
+                />
+                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <label className="form-label">EBITDA</label>
+              <div className="relative">
+                <input 
+                  type="number" 
+                  name="ebitda" 
+                  className="form-input pl-11" 
+                  value={formData.ebitda}
+                  onChange={handleChange}
+                />
+                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <label className="form-label">Gross Profit</label>
+              <input 
+                type="number" 
+                name="gross_profit" 
+                className="form-input" 
+                value={formData.gross_profit}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="space-y-4">
+              <label className="form-label">YoY Growth %</label>
+              <input 
+                type="number" 
+                name="growth_rate_pct" 
+                className="form-input" 
+                value={formData.growth_rate_pct}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Section 4: Metadata & Strategic */}
+        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+              <PieChart className="text-purple-400" size={20} />
+            </div>
+            <h2 className="text-xl font-bold">Strategic Considerations</h2>
+          </div>
+
+          <div className="space-y-8">
             <div>
               <label className="form-label">Preferred Transaction Type</label>
               <select name="pref_transaction_type" className="form-input" value={formData.pref_transaction_type} onChange={handleChange}>
@@ -233,113 +267,55 @@ export default function SellerProfileForm({ userId }) {
               </select>
             </div>
             
-            <div className="grid grid-cols-2 gap-6">
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input type="checkbox" name="is_founder_owned" className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" checked={formData.is_founder_owned} onChange={handleChange} />
-                <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Founder Owned</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input type="checkbox" name="is_female_owned" className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" checked={formData.is_female_owned} onChange={handleChange} />
-                <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Female Owned</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input type="checkbox" name="is_minority_owned" className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" checked={formData.is_minority_owned} onChange={handleChange} />
-                <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Minority Owned</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <input type="checkbox" name="is_family_owned" className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" checked={formData.is_family_owned} onChange={handleChange} />
-                <span className="text-sm text-slate-300 group-hover:text-white transition-colors">Family Owned</span>
-              </label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[
+                { key: 'is_founder_owned', label: 'Founder-Owned' },
+                { key: 'is_female_owned', label: 'Female-Owned' },
+                { key: 'is_minority_owned', label: 'Minority-Owned' },
+                { key: 'is_family_owned', label: 'Family-Owned' }
+              ].map(flag => (
+                <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    name={flag.key} 
+                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" 
+                    checked={formData[flag.key]} 
+                    onChange={handleChange} 
+                  />
+                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{flag.label}</span>
+                </label>
+              ))}
             </div>
           </div>
-        );
-      default:
-        return null;
-    }
-  }
-
-  return (
-    <div className="max-w-2xl mx-auto py-12 px-6 animate-fade-in">
-      {/* Stepper Header */}
-      <div className="flex justify-between mb-12 relative">
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-800 -translate-y-1/2 z-0"></div>
-        {STEPS.map((step) => {
-          const Icon = step.icon;
-          const isActive = currentStep === step.id;
-          const isCompleted = currentStep > step.id;
-          
-          return (
-            <div key={step.id} className="relative z-10 flex flex-col items-center">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                isActive ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 scale-110' : 
-                isCompleted ? 'bg-emerald-500 text-white' : 'bg-slate-900 text-slate-500 border border-slate-800'
-              }`}>
-                {isCompleted ? <CheckCircle2 size={24} /> : <Icon size={24} />}
-              </div>
-              <span className={`text-xs font-bold mt-3 uppercase tracking-wider ${
-                isActive ? 'text-indigo-400' : 'text-slate-500'
-              }`}>{step.title}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Form Card */}
-      <div className="glass p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-3 opacity-10">
-          <TrendingUp size={120} className="text-slate-500" />
         </div>
-        
-        <form onSubmit={handleSubmit} className="relative z-10">
-          <div className="mb-8">
-            <h2 className="text-3xl font-black mb-2 tracking-tight">Step {currentStep}</h2>
-            <p className="text-slate-400">Complete your profile to find the perfect buyer match.</p>
+
+        {error && (
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-2">
+            <CheckCircle2 size={16} className="rotate-45" />
+            {error}
           </div>
+        )}
 
-          <div className="min-h-[300px]">
-            {renderStep()}
-          </div>
-
-          {error && (
-            <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-2">
-              <CheckCircle2 size={16} className="rotate-45" />
-              {error}
-            </div>
-          )}
-
-          <div className="mt-12 flex justify-between gap-4">
-            <button 
-              type="button" 
-              onClick={handleBack}
-              disabled={currentStep === 1 || loading}
-              className={`btn-secondary flex items-center gap-2 ${currentStep === 1 ? 'opacity-0 pointer-events-none' : ''}`}
-            >
-              <ChevronLeft size={18} />
-              Back
-            </button>
-            
-            {currentStep < STEPS.length ? (
-              <button 
-                type="button" 
-                onClick={handleNext} 
-                className="btn-primary flex items-center gap-2 px-8"
-              >
-                Next Step
-                <ChevronRight size={18} />
-              </button>
+        <div className="flex justify-center py-10">
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="btn-primary flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-indigo-500/20 group h-auto"
+          >
+            {loading ? (
+              <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
             ) : (
-              <button 
-                type="submit" 
-                disabled={loading}
-                className="btn-primary flex items-center gap-2 px-10"
-              >
-                {loading ? <Loader2 className="animate-spin" size={18} /> : 'Complete Profile'}
-                <CheckCircle2 size={18} />
-              </button>
+              <>
+                Create Listing
+                <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
+              </>
             )}
-          </div>
-        </form>
-      </div>
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
