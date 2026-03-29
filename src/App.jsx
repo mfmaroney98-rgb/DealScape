@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
 import { sellerService } from './services/sellerService';
 import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
+import Navbar from './components/Navbar';
 import { 
   TrendingUp, 
   Mail, 
@@ -14,7 +15,8 @@ import {
   Loader2,
   AlertCircle,
   ArrowRight,
-  PlusCircle
+  PlusCircle,
+  CheckCircle2
 } from 'lucide-react';
 
 /* --- Components --- */
@@ -193,34 +195,65 @@ const Signup = () => {
   );
 };
 
-const Dashboard = ({ onSignOut, hasProfile, role }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in">
-    <h1 className="text-6xl font-black mb-6 tracking-tight">Hello</h1>
-    
-    {!hasProfile && (
-      <div className="mb-12 glass p-8 rounded-2xl border border-indigo-500/30 max-w-sm mx-auto animate-fade-in">
-        <PlusCircle className="text-indigo-400 mx-auto mb-4" size={48} />
-        <h3 className="text-xl font-bold mb-2">
-          {role === 'seller' ? 'Complete Your Listing' : 'Set Your Criteria'}
-        </h3>
-        <p className="text-slate-400 text-sm mb-6">
-          {role === 'seller' 
-            ? "You haven't listed your business yet. Start finding buyers today."
-            : "Define what you're looking for to start receiving deals."}
-        </p>
-        <Link 
-          to={role === 'seller' ? "/onboarding/seller" : "/onboarding/buyer"} 
-          className="btn-primary flex items-center justify-center gap-2"
-        >
-          {role === 'seller' ? 'Create Profile' : 'Set Criteria'} <ArrowRight size={18} />
-        </Link>
-      </div>
-    )}
+const Dashboard = ({ hasProfile, role }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
+    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
+       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+    </div>
 
-    <button onClick={onSignOut} className="btn-secondary flex items-center gap-2 px-8">
-      <LogOut size={18} />
-      Sign Out
-    </button>
+    <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
+      Welcome Back
+    </div>
+    <h1 className="text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
+      Overview
+    </h1>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+      {!hasProfile ? (
+        <div className="glass p-10 rounded-3xl border border-indigo-500/30 text-center flex flex-col items-center group hover:border-indigo-500/50 transition-all duration-500">
+          <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <PlusCircle className="text-indigo-400" size={32} />
+          </div>
+          <h3 className="text-2xl font-bold mb-3">
+            {role === 'seller' ? 'Create Listing' : 'Set Your Criteria'}
+          </h3>
+          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+            {role === 'seller' 
+              ? "You haven't listed your business yet. Start finding buyers today."
+              : "Define what you're looking for to start receiving deals."}
+          </p>
+          <Link 
+            to={role === 'seller' ? "/onboarding/seller" : "/onboarding/buyer"} 
+            className="btn-primary w-full flex items-center justify-center gap-2 py-4 shadow-xl shadow-indigo-500/20"
+          >
+            Get Started <ArrowRight size={18} />
+          </Link>
+        </div>
+      ) : (
+        <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
+          <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-6 flex items-center justify-center">
+            <CheckCircle2 className="text-emerald-400" size={32} />
+          </div>
+          <h3 className="text-2xl font-bold mb-3">Profile Active</h3>
+          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+            Your profile is active and being matched with potential partners.
+          </p>
+          <button className="btn-secondary w-full text-sm py-4">View Listing</button>
+        </div>
+      )}
+
+      <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
+        <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
+          <Mail className="text-slate-400" size={32} />
+        </div>
+        <h3 className="text-2xl font-bold mb-3">Messages</h3>
+        <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+          Communicate securely with other members of the ecosystem.
+        </p>
+        <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
+      </div>
+    </div>
   </div>
 );
 
@@ -265,7 +298,8 @@ function App() {
 
     initAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth event:', event, !!session);
       setSession(session);
       if (session) {
         const userProfile = await profileService.getProfile(session.user.id);
@@ -292,36 +326,61 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
-        <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
-        <Route 
-          path="/onboarding/seller" 
-          element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/onboarding/buyer" 
-          element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/dashboard" 
-          element={
-            session ? (
-              <Dashboard 
-                hasProfile={hasListing}
-                role={profile?.role || 'seller'}
-                onSignOut={() => supabase.auth.signOut()} 
-              />
-            ) : (
-              <Navigate to="/" />
-            )
-          } 
-        />
-        {/* Redirect unknown routes */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <Layout session={session}>
+        <Routes>
+          <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
+          <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
+          <Route 
+            path="/onboarding/seller" 
+            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/onboarding/buyer" 
+            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />} 
+          />
+          <Route 
+            path="/dashboard" 
+            element={
+              session ? (
+                <Dashboard 
+                  hasProfile={hasListing}
+                  role={profile?.role || 'seller'}
+                />
+              ) : (
+                <Navigate to="/" />
+              )
+            } 
+          />
+          {/* Redirect unknown routes */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 }
+
+const Layout = ({ children, session }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const hideNavbarOn = ['/', '/signup'];
+  const shouldShowNavbar = session && !hideNavbarOn.includes(location.pathname);
+
+  useEffect(() => {
+    // Explicit global redirection if session is lost on a protected route
+    if (!session && !hideNavbarOn.includes(location.pathname)) {
+      console.log('Session lost, redirecting to login...');
+      navigate('/');
+    }
+  }, [session, location.pathname, navigate]);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      {shouldShowNavbar && <Navbar />}
+      <main className="flex-1">
+        {children}
+      </main>
+    </div>
+  );
+};
 
 export default App;
