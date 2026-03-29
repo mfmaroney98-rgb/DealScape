@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
+import TagInput from './TagInput';
 import { 
   Target, 
   Map, 
@@ -58,11 +59,6 @@ export default function BuyerCriteriaForm({ userId }) {
         ? prev.locations.filter(r => r !== region)
         : [...prev.locations, region]
     }));
-  };
-
-  const handleIndustryChange = (e) => {
-    const industries = e.target.value.split(',').map(s => s.trim());
-    setFormData(prev => ({ ...prev, industries: industries.filter(i => i !== '') }));
   };
 
   const handleSubmit = async (e) => {
@@ -182,12 +178,11 @@ export default function BuyerCriteriaForm({ userId }) {
           <div className="space-y-8">
             <div>
               <label className="form-label">Industries & Keywords</label>
-              <textarea 
-                className="form-input min-h-[100px] resize-none" 
-                placeholder="e.g. SaaS, Manufacturing, Medical, Logistics... (comma separated)"
-                onChange={handleIndustryChange}
-                value={formData.industries.join(', ')}
-              ></textarea>
+              <TagInput 
+                tags={formData.industries}
+                onChange={(newTags) => setFormData(prev => ({ ...prev, industries: newTags }))}
+                placeholder="e.g. SaaS, Manufacturing, Medical... (press Enter to add)"
+              />
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
