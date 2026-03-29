@@ -195,67 +195,84 @@ const Signup = () => {
   );
 };
 
-const Dashboard = ({ hasProfile, role }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
-    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
-       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText }) => (
+  <div className={`glass p-10 rounded-3xl border ${active ? 'border-slate-800' : 'border-indigo-500/30'} text-center flex flex-col items-center group ${!active ? 'hover:border-indigo-500/50' : ''} transition-all duration-500`}>
+    <div className={`w-16 h-16 ${active ? 'bg-emerald-500/10' : 'bg-indigo-500/10'} rounded-2xl mb-6 flex items-center justify-center ${!active ? 'group-hover:scale-110' : ''} transition-transform`}>
+      {active ? <CheckCircle2 className="text-emerald-400" size={32} /> : <Icon className="text-indigo-400" size={32} />}
     </div>
-
-    <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
-      Welcome Back
-    </div>
-    <h1 className="text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
-      Overview
-    </h1>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
-      {!hasProfile ? (
-        <div className="glass p-10 rounded-3xl border border-indigo-500/30 text-center flex flex-col items-center group hover:border-indigo-500/50 transition-all duration-500">
-          <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-            <PlusCircle className="text-indigo-400" size={32} />
-          </div>
-          <h3 className="text-2xl font-bold mb-3">
-            {role === 'seller' ? 'Create Listing' : 'Set Your Criteria'}
-          </h3>
-          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-            {role === 'seller' 
-              ? "You haven't listed your business yet. Start finding buyers today."
-              : "Define what you're looking for to start receiving deals."}
-          </p>
-          <Link 
-            to={role === 'seller' ? "/onboarding/seller" : "/onboarding/buyer"} 
-            className="btn-primary w-full flex items-center justify-center gap-2 py-4 shadow-xl shadow-indigo-500/20"
-          >
-            Get Started <ArrowRight size={18} />
-          </Link>
-        </div>
-      ) : (
-        <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
-          <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-6 flex items-center justify-center">
-            <CheckCircle2 className="text-emerald-400" size={32} />
-          </div>
-          <h3 className="text-2xl font-bold mb-3">Profile Active</h3>
-          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-            Your profile is active and being matched with potential partners.
-          </p>
-          <button className="btn-secondary w-full text-sm py-4">View Listing</button>
-        </div>
-      )}
-
-      <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
-        <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
-          <Mail className="text-slate-400" size={32} />
-        </div>
-        <h3 className="text-2xl font-bold mb-3">Messages</h3>
-        <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-          Communicate securely with other members of the ecosystem.
-        </p>
-        <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
-      </div>
-    </div>
+    <h3 className="text-2xl font-bold mb-3">{active ? (activeText || 'Active') : title}</h3>
+    <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+      {active ? `Your ${title.toLowerCase()} is active and being matched.` : subtitle}
+    </p>
+    {active ? (
+      <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
+    ) : (
+      <Link 
+        to={to} 
+        className="btn-primary w-full flex items-center justify-center gap-2 py-4 shadow-xl shadow-indigo-500/20"
+      >
+        Get Started <ArrowRight size={18} />
+      </Link>
+    )}
   </div>
 );
+
+const Dashboard = ({ hasListing, hasCriteria, role }) => {
+  const isCorporate = role === 'corporate';
+  
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
+      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
+         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
+        Welcome Back
+      </div>
+      <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
+        Overview
+      </h1>
+      
+      <div className={`grid grid-cols-1 ${isCorporate ? 'lg:grid-cols-3' : 'md:grid-cols-2'} gap-6 w-full max-w-6xl mx-auto`}>
+        {(isCorporate || role === 'seller') && (
+          <DashboardActionCard 
+            title="Seller Listing"
+            subtitle="List your business and start finding buyers today."
+            icon={PlusCircle}
+            to="/onboarding/seller"
+            active={hasListing}
+            activeText="Listing Active"
+            buttonText="View Listing"
+          />
+        )}
+
+        {(isCorporate || role === 'buyer') && (
+          <DashboardActionCard 
+            title="Buyer Criteria"
+            subtitle="Define what you're looking for to receive deals."
+            icon={PlusCircle}
+            to="/onboarding/buyer"
+            active={hasCriteria}
+            activeText="Criteria Set"
+            buttonText="Update Criteria"
+          />
+        )}
+
+        <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
+          <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
+            <Mail className="text-slate-400" size={32} />
+          </div>
+          <h3 className="text-2xl font-bold mb-3">Messages</h3>
+          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+            Communicate securely with other members of the ecosystem.
+          </p>
+          <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /* --- Main App --- */
 
@@ -263,6 +280,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [hasListing, setHasListing] = useState(false);
+  const [hasCriteria, setHasCriteria] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -280,12 +298,14 @@ function App() {
           const userProfile = await profileService.getProfile(session.user.id);
           setProfile(userProfile);
           
-          if (userProfile?.role === 'seller') {
+          if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
             const listing = await sellerService.getListing(session.user.id);
             setHasListing(!!listing);
-          } else if (userProfile?.role === 'buyer') {
+          }
+          
+          if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
             const criteria = await buyerService.getCriteria(session.user.id);
-            setHasListing(!!criteria);
+            setHasCriteria(!!criteria);
           }
         }
       } catch (err) {
@@ -304,9 +324,20 @@ function App() {
       if (session) {
         const userProfile = await profileService.getProfile(session.user.id);
         setProfile(userProfile);
+        
+        if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
+          const listing = await sellerService.getListing(session.user.id);
+          setHasListing(!!listing);
+        }
+        
+        if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
+          const criteria = await buyerService.getCriteria(session.user.id);
+          setHasCriteria(!!criteria);
+        }
       } else {
         setProfile(null);
         setHasListing(false);
+        setHasCriteria(false);
       }
     });
 
@@ -343,7 +374,8 @@ function App() {
             element={
               session ? (
                 <Dashboard 
-                  hasProfile={hasListing}
+                  hasListing={hasListing}
+                  hasCriteria={hasCriteria}
                   role={profile?.role || 'seller'}
                 />
               ) : (
