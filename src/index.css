@@ -116,6 +116,40 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
+.form-input-highlight {
+  background: rgba(234, 179, 8, 0.25) !important;
+  border-color: rgba(234, 179, 8, 0.6) !important;
+  color: rgba(253, 224, 71, 1) !important;
+}
+
+.form-input-highlight::placeholder {
+  color: rgba(234, 179, 8, 0.5) !important;
+}
+
+.form-input-highlight:focus {
+  border-color: rgba(234, 179, 8, 1) !important;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15) !important;
+}
+
+.tag-highlight {
+  background: rgba(234, 179, 8, 0.2) !important;
+  color: rgba(253, 224, 71, 1) !important;
+  border-color: rgba(234, 179, 8, 0.3) !important;
+}
+
+.tag-highlight-button {
+  color: rgba(253, 224, 71, 1) !important;
+}
+
+.tag-highlight-button:hover {
+  color: #fff !important;
+  background: rgba(234, 179, 8, 0.3) !important;
+}
+
+.text-highlight {
+  color: rgba(234, 179, 8, 1) !important;
+}
+
 .form-label {
   display: block;
   font-size: 0.875rem;

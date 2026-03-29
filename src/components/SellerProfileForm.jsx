@@ -12,12 +12,18 @@ import {
   ChevronRight,
   DollarSign,
   Tag,
-  Briefcase
+  Briefcase,
+  UploadCloud,
+  FileText,
+  AlertCircle
 } from 'lucide-react';
 
 export default function SellerProfileForm({ userId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isParsing, setIsParsing] = useState(false);
+  const [autoFilledFields, setAutoFilledFields] = useState(new Set());
+  const [autoFilledTags, setAutoFilledTags] = useState([]);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -45,10 +51,52 @@ export default function SellerProfileForm({ userId }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
+    if (autoFilledFields.has(name)) {
+      setAutoFilledFields(prev => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    setIsParsing(true);
+    // Mock parsing delay of 2 seconds
+    setTimeout(() => {
+      const mockData = {
+        employees_count: '145',
+        revenue: '24500000',
+        ebitda: '4200000',
+        company_type: 'LLC',
+        industry_codes: ['Manufacturing', 'Industrial', 'B2B']
+      };
+      
+      setFormData(prev => ({
+        ...prev,
+        ...mockData
+      }));
+      
+      setAutoFilledFields(new Set(Object.keys(mockData)));
+      setAutoFilledTags(mockData.industry_codes);
+      setIsParsing(false);
+    }, 2000);
+    
+    // Reset the input so the same file could be uploaded again if needed
+    e.target.value = null;
+  };
+
+  const getInputClass = (name, baseClass = 'form-input') => {
+    return `${baseClass} ${autoFilledFields.has(name) ? 'form-input-highlight' : ''} transition-colors`;
   };
 
   const handleSubmit = async (e) => {
@@ -72,9 +120,35 @@ export default function SellerProfileForm({ userId }) {
           <Briefcase className="text-indigo-400" size={32} />
         </div>
         <h1 className="text-4xl font-black mb-4 tracking-tight">Create Your Listing</h1>
-        <p className="text-slate-400 max-w-lg mx-auto">
+        <p className="text-slate-400 max-w-lg mx-auto mb-8">
           Provide the key details of your business to attract the right investors. All company names are kept private until mutual interest is confirmed.
         </p>
+
+        {/* Document Parsing Upload Area */}
+        <div className="max-w-xl mx-auto glass p-6 rounded-2xl border border-dashed border-slate-700 hover:border-indigo-500 transition-colors relative overflow-hidden group">
+          {isParsing && (
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
+              <Loader2 size={32} className="text-indigo-500 mb-4" />
+              <p className="text-indigo-200 font-medium">Extracting data via secure backend...</p>
+            </div>
+          )}
+          <input 
+            type="file" 
+            accept=".pdf,.doc,.docx"
+            onChange={handleFileUpload}
+            className="absolute inset-0 opacity-0 cursor-pointer z-20"
+            title="Upload Teaser or CIM"
+          />
+          <div className="flex flex-col items-center gap-3 relative z-10 pointer-events-none">
+            <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <UploadCloud className="text-slate-400 group-hover:text-indigo-400 transition-colors" size={24} />
+            </div>
+            <div>
+              <p className="font-bold text-lg">Auto-fill from Teaser or CIM</p>
+              <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -124,16 +198,19 @@ export default function SellerProfileForm({ userId }) {
                 />
               </div>
               <div>
-                <label className="form-label">Employees</label>
+                <label className="form-label flex justify-between">
+                  Employees
+                  {autoFilledFields.has('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                </label>
                 <div className="relative">
                   <input 
                     type="number" 
                     name="employees_count" 
-                    className="form-input pl-11" 
+                    className={getInputClass('employees_count', 'form-input pl-11')} 
                     value={formData.employees_count}
                     onChange={handleChange}
                   />
-                  <Users className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                  <Users className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('employees_count') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
             </div>
@@ -151,18 +228,35 @@ export default function SellerProfileForm({ userId }) {
 
           <div className="space-y-6">
             <div>
-              <label className="form-label">Industries / Keywords</label>
+              <label className="form-label flex justify-between">
+                Industries / Keywords
+                {autoFilledFields.has('industry_codes') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
               <TagInput 
                 tags={formData.industry_codes}
-                onChange={(newTags) => setFormData(prev => ({ ...prev, industry_codes: newTags }))}
+                onChange={(newTags) => {
+                  if (autoFilledFields.has('industry_codes')) {
+                    setAutoFilledFields(prev => {
+                      const next = new Set(prev);
+                      next.delete('industry_codes');
+                      return next;
+                    });
+                  }
+                  setFormData(prev => ({ ...prev, industry_codes: newTags }));
+                }}
                 placeholder="Software, HealthTech, AI (press Enter to add)"
+                isInputHighlighted={autoFilledFields.has('industry_codes')}
+                autoFilledTags={autoFilledTags}
               />
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="form-label">Company Type</label>
-                <select name="company_type" className="form-input" value={formData.company_type} onChange={handleChange}>
+                <label className="form-label flex justify-between">
+                  Company Type
+                  {autoFilledFields.has('company_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                </label>
+                <select name="company_type" className={getInputClass('company_type')} value={formData.company_type} onChange={handleChange}>
                   <option value="">Select Type</option>
                   <option value="LLC">LLC</option>
                   <option value="S-Corp">S-Corp</option>
@@ -199,29 +293,35 @@ export default function SellerProfileForm({ userId }) {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <label className="form-label">Latest Revenue</label>
+              <label className="form-label flex justify-between">
+                Latest Revenue
+                {autoFilledFields.has('revenue') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
               <div className="relative">
                 <input 
                   type="number" 
                   name="revenue" 
-                  className="form-input pl-11" 
+                  className={getInputClass('revenue', 'form-input pl-11')} 
                   value={formData.revenue}
                   onChange={handleChange}
                 />
-                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <DollarSign className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('revenue') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
               </div>
             </div>
             <div className="space-y-4">
-              <label className="form-label">EBITDA</label>
+              <label className="form-label flex justify-between">
+                EBITDA
+                {autoFilledFields.has('ebitda') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
               <div className="relative">
                 <input 
                   type="number" 
                   name="ebitda" 
-                  className="form-input pl-11" 
+                  className={getInputClass('ebitda', 'form-input pl-11')} 
                   value={formData.ebitda}
                   onChange={handleChange}
                 />
-                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <DollarSign className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('ebitda') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
               </div>
             </div>
             <div className="space-y-4">
