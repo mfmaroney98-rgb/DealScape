@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sellerService } from '../services/sellerService';
+import TagInput from './TagInput';
 import { 
   Building2, 
   TrendingUp, 
@@ -151,11 +152,10 @@ export default function SellerProfileForm({ userId }) {
           <div className="space-y-6">
             <div>
               <label className="form-label">Industries / Keywords</label>
-              <textarea 
-                className="form-input min-h-[80px] resize-none" 
-                placeholder="Software, HealthTech, AI (comma separated)"
-                value={formData.industry_codes.join(', ')}
-                onChange={(e) => setFormData(prev => ({ ...prev, industry_codes: e.target.value.split(',').map(s => s.trim()) }))}
+              <TagInput 
+                tags={formData.industry_codes}
+                onChange={(newTags) => setFormData(prev => ({ ...prev, industry_codes: newTags }))}
+                placeholder="Software, HealthTech, AI (press Enter to add)"
               />
             </div>
             
