@@ -67,6 +67,7 @@ export default function BuyerCriteriaForm({ userId }) {
     locations: [],
     industries: [],
     transaction_types: [],
+    pref_transaction_type: [],
     require_founder_owned: false,
     require_female_owned: false,
     require_minority_owned: false,
@@ -106,6 +107,16 @@ export default function BuyerCriteriaForm({ userId }) {
       ...prev,
       [name]: digits === '' ? '' : Number(digits)
     }));
+  };
+
+  // Preferred transaction types toggle for buyer
+  const handlePrefTransactionToggle = (type) => {
+    setFormData(prev => {
+      const current = prev.pref_transaction_type || [];
+      const exists = current.includes(type);
+      const updated = exists ? current.filter(t => t !== type) : [...current, type];
+      return { ...prev, pref_transaction_type: updated };
+    });
   };
 
   // Handle plain number input (employees): strip non-digits
@@ -469,6 +480,24 @@ export default function BuyerCriteriaForm({ userId }) {
                     </label>
                   ))}
                 </div>
+            </div>
+          </div>
+          {/* Preferred Transaction Types */}
+          <div className="space-y-4">
+            <label className="form-label">Preferred Transaction Types</label>
+            <div className="grid grid-cols-1 gap-2">
+              {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                <label key={type} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="pref_transaction_type"
+                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                    checked={formData.pref_transaction_type?.includes(type)}
+                    onChange={() => handlePrefTransactionToggle(type)}
+                  />
+                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                </label>
+              ))}
             </div>
           </div>
         </div>

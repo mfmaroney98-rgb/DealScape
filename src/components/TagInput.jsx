@@ -10,10 +10,7 @@ export default function TagInput({ tags = [], onChange, placeholder = "Add tag..
       e.preventDefault();
       addTag(inputValue);
     } 
-    // Delete previous tag on backspace if input is empty
-    else if (e.key === 'Backspace' && !inputValue && tags.length > 0) {
-      removeTag(tags.length - 1);
-    }
+    // Backspace does not delete tags when input is empty
   };
 
   const handleChange = (e) => {

@@ -41,7 +41,7 @@ export default function SellerProfileForm({ userId }) {
     is_female_owned: false,
     is_minority_owned: false,
     is_family_owned: false,
-    pref_transaction_type: 'Total Sale',
+    pref_transaction_type: [],
     revenue: '',
     ebitda: '',
     gross_profit: '',
@@ -92,6 +92,16 @@ export default function SellerProfileForm({ userId }) {
       ...prev,
       [name]: digits === '' ? '' : Number(digits)
     }));
+  };
+
+  // Preferred transaction types as checklist
+  const handlePrefTransactionToggle = (type) => {
+    setFormData(prev => {
+      const current = prev.pref_transaction_type || [];
+      const exists = current.includes(type);
+      const updated = exists ? current.filter(t => t !== type) : [...current, type];
+      return { ...prev, pref_transaction_type: updated };
+    });
   };
 
   const handleFileUpload = (e) => {
@@ -278,21 +288,26 @@ export default function SellerProfileForm({ userId }) {
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="form-label flex justify-between">
-                  Company Type
-                  {autoFilledFields.has('company_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-                </label>
-                <select name="company_type" className={getInputClass('company_type')} value={formData.company_type} onChange={handleChange}>
-                  <option value="">Select Type</option>
-                  <option value="LLC">LLC</option>
-                  <option value="S-Corp">S-Corp</option>
-                  <option value="C-Corp">C-Corp</option>
-                  <option value="Partnership">Partnership</option>
-                </select>
+            {/* Preferred Transaction Types */}
+            <div className="space-y-4">
+              <label className="form-label">Preferred Transaction Types</label>
+              <div className="grid grid-cols-1 gap-2">
+                {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                  <label key={type} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="pref_transaction_type"
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      checked={formData.pref_transaction_type?.includes(type)}
+                      onChange={() => handlePrefTransactionToggle(type)}
+                    />
+                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                  </label>
+                ))}
               </div>
-              <div>
+            </div>
+
+            <div>
                 <label className="form-label">Ownership Structure</label>
                 <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
                   <option value="">Select Ownership</option>
@@ -302,7 +317,6 @@ export default function SellerProfileForm({ userId }) {
                   <option value="Corporate Subsidiary">Corporate Subsidiary</option>
                 </select>
               </div>
-            </div>
           </div>
         </div>
 
@@ -385,13 +399,21 @@ export default function SellerProfileForm({ userId }) {
 
           <div className="space-y-8">
             <div>
-              <label className="form-label">Preferred Transaction Type</label>
-              <select name="pref_transaction_type" className="form-input" value={formData.pref_transaction_type} onChange={handleChange}>
-                <option value="Total Sale">Total Sale</option>
-                <option value="Acquisition of Majority Stake">Majority Stake</option>
-                <option value="Minority Equity Raise">Minority Equity</option>
-                <option value="Debt Raise">Debt Raise</option>
-              </select>
+              <label className="form-label">Preferred Transaction Types</label>
+                <div className="grid grid-cols-1 gap-2">
+                  {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                    <label key={type} className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="pref_transaction_type"
+                        className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                        checked={formData.pref_transaction_type?.includes(type)}
+                        onChange={() => handlePrefTransactionToggle(type)}
+                      />
+                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                    </label>
+                  ))}
+                </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
