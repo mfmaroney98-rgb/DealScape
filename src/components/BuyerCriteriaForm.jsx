@@ -235,153 +235,148 @@ export default function BuyerCriteriaForm({ userId }) {
         </div>
 
         {/* Section 2: Geographical Focus */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <Globe className="text-blue-400" size={20} />
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', position: 'relative' }}>
+          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Globe className="geo-globe" size={20} />
             </div>
-            <h2 className="text-xl font-bold">Geographical Focus</h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Geographical Focus</h2>
           </div>
 
-          <div className="font-medium text-slate-300 relative pl-2 pb-4">
+          <div className="geo-tree">
             {/* Root Node: USA */}
-            <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2">
+            <div className="geo-row">
               <div 
-                className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 ${
-                  allUSAStates.every(s => formData.locations.includes(s)) ? 'bg-blue-500 border-blue-500 text-white' : 
-                  allUSAStates.some(s => formData.locations.includes(s)) ? 'bg-blue-500/50 border-blue-500 text-white' : 'border-slate-500'
+                className={`geo-check ${
+                  allUSAStates.every(s => formData.locations.includes(s)) ? 'checked' : 
+                  allUSAStates.some(s => formData.locations.includes(s)) ? 'partial' : ''
                 }`}
                 onClick={(e) => { e.stopPropagation(); handleUSAToggle(); }}
               >
-                {allUSAStates.some(s => formData.locations.includes(s)) && <CheckCircle2 size={14} />}
+                {allUSAStates.every(s => formData.locations.includes(s)) 
+                  ? <CheckCircle2 size={14} />
+                  : allUSAStates.some(s => formData.locations.includes(s))
+                    ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                    : null
+                }
               </div>
-              <Globe size={18} className="text-blue-400" onClick={() => handleUSAToggle()} />
-              <span className="font-bold flex-1" onClick={() => handleUSAToggle()}>United States of America</span>
+              <Globe size={18} className="geo-globe" />
+              <span className="geo-label-bold" onClick={() => handleUSAToggle()}>United States of America</span>
               <button 
                 type="button" 
                 onClick={(e) => { e.stopPropagation(); setIsUSAExpanded(!isUSAExpanded); }}
-                className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
+                className="geo-toggle"
               >
                 {isUSAExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
             </div>
 
             {isUSAExpanded && (
-               <div className="ml-4 mt-1 tree-line pt-2 relative">
-                 {CENSUS_REGIONS.map((region, rIdx) => {
-                   const isLastRegion = rIdx === CENSUS_REGIONS.length - 1;
-                   const regionStates = region.divisions.flatMap(d => d.states);
-                   const allSelected = regionStates.every(s => formData.locations.includes(s));
-                   const someSelected = regionStates.some(s => formData.locations.includes(s)) && !allSelected;
-                   const isExpanded = expandedRegions.has(region.name);
+              <div className="geo-children">
+                {CENSUS_REGIONS.map((region, rIdx) => {
+                  const isLastRegion = rIdx === CENSUS_REGIONS.length - 1;
+                  const regionStates = region.divisions.flatMap(d => d.states);
+                  const allSelected = regionStates.every(s => formData.locations.includes(s));
+                  const someSelected = regionStates.some(s => formData.locations.includes(s)) && !allSelected;
+                  const isExpanded = expandedRegions.has(region.name);
 
-                   return (
-                     <div key={region.name} className={`tree-node ${isLastRegion ? 'tree-node-last' : ''} mb-1`}>
-                       <div className="pl-6">
-                         <div className={`flex items-center gap-3 py-1.5 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2 ${allSelected ? 'text-blue-300' : ''}`}>
-                           <div 
-                             className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
-                               allSelected ? 'bg-blue-500 border-blue-500 text-white' : 
-                               someSelected ? 'bg-blue-500/50 border-blue-500 text-white' : 'bg-slate-800 border-slate-500'
-                             }`}
-                           onClick={() => handleRegionToggle(region)}
-                         >
-                           {(allSelected || someSelected) && <CheckCircle2 size={12} />}
-                         </div>
-                         <span 
-                           className="font-semibold flex-1"
-                           onClick={() => handleRegionToggle(region)}
-                         >
-                           {region.name}
-                         </span>
-                         <button 
-                           type="button" 
-                           onClick={(e) => toggleRegionExpand(e, region.name)}
-                           className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
-                         >
-                             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                           </button>
-                         </div>
+                  return (
+                    <div key={region.name} className={`geo-branch ${isLastRegion ? 'geo-branch-last' : ''}`}>
+                      <div className="geo-row">
+                        <div 
+                          className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
+                          onClick={() => handleRegionToggle(region)}
+                        >
+                          {allSelected 
+                            ? <CheckCircle2 size={12} />
+                            : someSelected
+                              ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                              : null
+                          }
+                        </div>
+                        <span className="geo-label-semi" onClick={() => handleRegionToggle(region)}>
+                          {region.name}
+                        </span>
+                        <button 
+                          type="button" 
+                          onClick={(e) => toggleRegionExpand(e, region.name)}
+                          className="geo-toggle"
+                        >
+                          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </button>
+                      </div>
 
-                         {isExpanded && (
-                           <div className="ml-2 mt-1 tree-line relative pt-1">
-                            {region.divisions.map((division, dIdx) => {
-                               const isLastDev = dIdx === region.divisions.length - 1;
-                               const divisionStates = division.states;
-                               const dAllSelected = divisionStates.every(s => formData.locations.includes(s));
-                               const dSomeSelected = divisionStates.some(s => formData.locations.includes(s)) && !dAllSelected;
-                               const isDivExpanded = expandedDivisions.has(division.name);
+                      {isExpanded && (
+                        <div className="geo-children">
+                          {region.divisions.map((division, dIdx) => {
+                            const isLastDev = dIdx === region.divisions.length - 1;
+                            const divisionStates = division.states;
+                            const dAllSelected = divisionStates.every(s => formData.locations.includes(s));
+                            const dSomeSelected = divisionStates.some(s => formData.locations.includes(s)) && !dAllSelected;
+                            const isDivExpanded = expandedDivisions.has(division.name);
 
-                               return (
-                                 <div key={division.name} className={`tree-node ${isLastDev ? 'tree-node-last' : ''} mb-1`}>
-                                   <div className="pl-6">
-                                     <div className={`flex items-center gap-3 py-1 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2 ${dAllSelected ? 'text-blue-200' : ''}`}>
-                                       <div 
-                                         className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
-                                           dAllSelected ? 'bg-blue-500 border-blue-500 text-white' : 
-                                           dSomeSelected ? 'bg-blue-500/50 border-blue-500 text-white' : 'bg-slate-800 border-slate-500'
-                                         }`}
-                                      onClick={() => handleDivisionToggle(division)}
-                                    >
-                                      {(dAllSelected || dSomeSelected) && <CheckCircle2 size={12} />}
-                                    </div>
-                                    <span 
-                                      className="font-medium text-sm flex-1"
-                                      onClick={() => handleDivisionToggle(division)}
-                                    >
-                                      {division.name}
-                                    </span>
-                                    <button 
-                                      type="button" 
-                                      onClick={(e) => toggleDivisionExpand(e, division.name)}
-                                      className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
-                                    >
-                                       {isDivExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                     </button>
-                                   </div>
+                            return (
+                              <div key={division.name} className={`geo-branch ${isLastDev ? 'geo-branch-last' : ''}`}>
+                                <div className="geo-row">
+                                  <div 
+                                    className={`geo-check-sm ${dAllSelected ? 'checked' : dSomeSelected ? 'partial' : ''}`}
+                                    onClick={() => handleDivisionToggle(division)}
+                                  >
+                                    {dAllSelected 
+                                      ? <CheckCircle2 size={12} />
+                                      : dSomeSelected
+                                        ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                                        : null
+                                    }
+                                  </div>
+                                  <span className="geo-label" onClick={() => handleDivisionToggle(division)}>
+                                    {division.name}
+                                  </span>
+                                  <button 
+                                    type="button" 
+                                    onClick={(e) => toggleDivisionExpand(e, division.name)}
+                                    className="geo-toggle"
+                                  >
+                                    {isDivExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                                  </button>
+                                </div>
 
-                                   {isDivExpanded && (
-                                     <div className="ml-2 mt-1 tree-line relative pt-1 pb-1">
-                                      {division.states.map((stateName, sIdx) => {
-                                         const isLastState = sIdx === division.states.length - 1;
-                                         const isStateSelected = formData.locations.includes(stateName);
+                                {isDivExpanded && (
+                                  <div className="geo-children">
+                                    {division.states.map((stateName, sIdx) => {
+                                      const isLastState = sIdx === division.states.length - 1;
+                                      const isStateSelected = formData.locations.includes(stateName);
 
-                                         return (
-                                           <div key={stateName} className={`tree-node ${isLastState ? 'tree-node-last' : ''}`}>
-                                             <div className="pl-6">
-                                               <div className="flex items-center gap-2 py-0.5 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2">
-                                                  <div 
-                                                    className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${
-                                                      isStateSelected ? 'bg-blue-500 border-blue-500 text-white' : 'bg-slate-800 border-slate-600'
-                                                    }`}
-                                                  onClick={() => handleStateToggle(stateName)}
-                                                >
-                                                  {isStateSelected && <CheckCircle2 size={10} />}
-                                                </div>
-                                                <span 
-                                                  className={`text-sm ${isStateSelected ? 'text-blue-300' : 'text-slate-400 hover:text-slate-300'}`}
-                                                  onClick={() => handleStateToggle(stateName)}
-                                                >
-                                                  {stateName}
-                                                </span>
-                                               </div>
-                                             </div>
-                                           </div>
-                                         );
-                                      })}
-                                    </div>
-                                   )}
-                                 </div>
-                               </div>
-                             );
-                           })}
-                         </div>
-                       )}
-                     </div>
-                   </div>
-                 );
-               })}
-             </div>
+                                      return (
+                                        <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                          <div className="geo-row">
+                                            <div 
+                                              className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
+                                              onClick={() => handleStateToggle(stateName)}
+                                            >
+                                              {isStateSelected && <CheckCircle2 size={10} />}
+                                            </div>
+                                            <span 
+                                              className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
+                                              onClick={() => handleStateToggle(stateName)}
+                                            >
+                                              {stateName}
+                                            </span>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             )}
           </div>
         </div>

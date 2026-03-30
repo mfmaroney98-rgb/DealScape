@@ -99,31 +99,156 @@ h1, h2, h3, h4 {
 }
 
 /* Tree Component Styling */
-.tree-line {
-  border-left: 1px solid rgb(51 65 85); /* slate-700 */
+.geo-tree {
+  font-weight: 500;
+  color: #cbd5e1;
+  padding-bottom: 1rem;
 }
 
-.tree-node {
+/* Each row: checkbox + label + chevron */
+.geo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+.geo-row:hover {
+  background: rgba(30, 41, 59, 0.4);
+}
+
+/* Checkbox */
+.geo-check {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 4px;
+  border: 2px solid #475569;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: transparent;
+}
+.geo-check.checked {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+.geo-check.partial {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+  color: white;
+}
+.geo-check-sm {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 3px;
+  border: 2px solid #475569;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: transparent;
+}
+.geo-check-sm.checked {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+.geo-check-sm.partial {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+  color: white;
+}
+
+/* Label text */
+.geo-label {
+  cursor: pointer;
+}
+.geo-label-bold {
+  font-weight: 700;
+  cursor: pointer;
+}
+.geo-label-semi {
+  font-weight: 600;
+  cursor: pointer;
+}
+.geo-label-state {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.geo-label-state:hover {
+  color: #cbd5e1;
+}
+.geo-label-state.selected {
+  color: #93c5fd;
+}
+
+/* Toggle button */
+.geo-toggle {
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s;
+}
+.geo-toggle:hover {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+/* Tree container with vertical line */
+.geo-children {
+  margin-left: 1rem;
+  padding-left: 0;
+  border-left: 1px solid #334155;
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+/* Tree node with horizontal branch */
+.geo-branch {
   position: relative;
+  padding-left: 1.5rem;
 }
-
-.tree-node::before {
+.geo-branch::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 1.15rem; /* center with text line */
+  top: 1rem;
   width: 1.5rem;
-  border-top: 1px solid rgb(51 65 85);
+  border-top: 1px solid #334155;
 }
 
-.tree-node-last::after {
+/* Last branch hides the vertical line below it */
+.geo-branch-last::after {
   content: '';
   position: absolute;
   left: -1px;
-  top: 1.15rem;
+  top: 1rem;
   bottom: 0;
-  width: 2px;
-  background: var(--surface); /* overwrite the line going down past last element */
+  width: 3px;
+  background: var(--glass, rgba(15, 23, 42, 0.8));
+}
+
+/* Globe icon color */
+.geo-globe {
+  color: #60a5fa;
+  flex-shrink: 0;
 }
 
 
