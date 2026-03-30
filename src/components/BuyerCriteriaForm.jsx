@@ -53,7 +53,7 @@ export default function BuyerCriteriaForm({ userId }) {
   const [error, setError] = useState(null);
   const [expandedRegions, setExpandedRegions] = useState(new Set());
   const [expandedDivisions, setExpandedDivisions] = useState(new Set());
-  const [isUSAExpanded, setIsUSAExpanded] = useState(true);
+  const [isUSAExpanded, setIsUSAExpanded] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
