@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { sellerService } from '../services/sellerService';
 import TagInput from './TagInput';
-import { 
-  Building2, 
-  TrendingUp, 
-  MapPin, 
-  Users, 
-  PieChart, 
+import {
+  Building2,
+  TrendingUp,
+  MapPin,
+  Users,
+  PieChart,
   CheckCircle2,
   ChevronRight,
   DollarSign,
@@ -51,7 +51,7 @@ export default function SellerProfileForm({ userId }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
+
     if (autoFilledFields.has(name)) {
       setAutoFilledFields(prev => {
         const next = new Set(prev);
@@ -69,7 +69,7 @@ export default function SellerProfileForm({ userId }) {
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     setIsParsing(true);
     // Mock parsing delay of 2 seconds
     setTimeout(() => {
@@ -80,17 +80,17 @@ export default function SellerProfileForm({ userId }) {
         company_type: 'LLC',
         industry_codes: ['Manufacturing', 'Industrial', 'B2B']
       };
-      
+
       setFormData(prev => ({
         ...prev,
         ...mockData
       }));
-      
+
       setAutoFilledFields(new Set(Object.keys(mockData)));
       setAutoFilledTags(mockData.industry_codes);
       setIsParsing(false);
     }, 2000);
-    
+
     // Reset the input so the same file could be uploaded again if needed
     e.target.value = null;
   };
@@ -132,8 +132,8 @@ export default function SellerProfileForm({ userId }) {
               <p className="text-indigo-200 font-medium">Extracting data via secure backend...</p>
             </div>
           )}
-          <input 
-            type="file" 
+          <input
+            type="file"
             accept=".pdf,.doc,.docx"
             onChange={handleFileUpload}
             className="absolute inset-0 opacity-0 cursor-pointer z-20"
@@ -160,39 +160,39 @@ export default function SellerProfileForm({ userId }) {
             </div>
             <h2 className="text-xl font-bold">Business Identity</h2>
           </div>
-          
+
           <div className="space-y-6">
             <div>
               <label className="form-label">Listing Title (Anonymized)</label>
-              <input 
-                type="text" 
-                name="title" 
-                className="form-input" 
+              <input
+                type="text"
+                name="title"
+                className="form-input"
                 placeholder="e.g. Leading Material Handling Equipment Manufacturer"
                 value={formData.title}
                 onChange={handleChange}
-                required 
+                required
               />
               <p className="text-xs text-slate-500 mt-2">Use a descriptive title that doesn't reveal your company name.</p>
             </div>
-            
+
             <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <label className="form-label">City</label>
-                <input 
-                  type="text" 
-                  name="location_city" 
-                  className="form-input" 
+                <input
+                  type="text"
+                  name="location_city"
+                  className="form-input"
                   value={formData.location_city}
                   onChange={handleChange}
                 />
               </div>
               <div>
                 <label className="form-label">State/Region</label>
-                <input 
-                  type="text" 
-                  name="location_state" 
-                  className="form-input" 
+                <input
+                  type="text"
+                  name="location_state"
+                  className="form-input"
                   value={formData.location_state}
                   onChange={handleChange}
                 />
@@ -203,10 +203,10 @@ export default function SellerProfileForm({ userId }) {
                   {autoFilledFields.has('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
-                  <input 
-                    type="number" 
-                    name="employees_count" 
-                    className={getInputClass('employees_count', 'form-input pl-11')} 
+                  <input
+                    type="number"
+                    name="employees_count"
+                    className={getInputClass('employees_count', 'form-input pl-11')}
                     value={formData.employees_count}
                     onChange={handleChange}
                   />
@@ -232,7 +232,7 @@ export default function SellerProfileForm({ userId }) {
                 Industries / Keywords
                 {autoFilledFields.has('industry_codes') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
               </label>
-              <TagInput 
+              <TagInput
                 tags={formData.industry_codes}
                 onChange={(newTags) => {
                   if (autoFilledFields.has('industry_codes')) {
@@ -249,7 +249,7 @@ export default function SellerProfileForm({ userId }) {
                 autoFilledTags={autoFilledTags}
               />
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="form-label flex justify-between">
@@ -268,10 +268,10 @@ export default function SellerProfileForm({ userId }) {
                 <label className="form-label">Ownership Structure</label>
                 <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
                   <option value="">Select Ownership</option>
-                  <option value="Private Individual">Private Individual</option>
-                  <option value="Private Equity">Private Equity Owned</option>
+                  <option value="Private Company">Private Company</option>
+                  <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
+                  <option value="Public Company">Public Company</option>
                   <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-                  <option value="Family Office">Family Office</option>
                 </select>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function SellerProfileForm({ userId }) {
           <div className="absolute top-0 right-0 p-4 opacity-10">
             <TrendingUp size={80} />
           </div>
-          
+
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
               <TrendingUp className="text-emerald-400" size={20} />
@@ -298,10 +298,10 @@ export default function SellerProfileForm({ userId }) {
                 {autoFilledFields.has('revenue') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
               </label>
               <div className="relative">
-                <input 
-                  type="number" 
-                  name="revenue" 
-                  className={getInputClass('revenue', 'form-input pl-11')} 
+                <input
+                  type="number"
+                  name="revenue"
+                  className={getInputClass('revenue', 'form-input pl-11')}
                   value={formData.revenue}
                   onChange={handleChange}
                 />
@@ -314,10 +314,10 @@ export default function SellerProfileForm({ userId }) {
                 {autoFilledFields.has('ebitda') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
               </label>
               <div className="relative">
-                <input 
-                  type="number" 
-                  name="ebitda" 
-                  className={getInputClass('ebitda', 'form-input pl-11')} 
+                <input
+                  type="number"
+                  name="ebitda"
+                  className={getInputClass('ebitda', 'form-input pl-11')}
                   value={formData.ebitda}
                   onChange={handleChange}
                 />
@@ -326,20 +326,20 @@ export default function SellerProfileForm({ userId }) {
             </div>
             <div className="space-y-4">
               <label className="form-label">Gross Profit</label>
-              <input 
-                type="number" 
-                name="gross_profit" 
-                className="form-input" 
+              <input
+                type="number"
+                name="gross_profit"
+                className="form-input"
                 value={formData.gross_profit}
                 onChange={handleChange}
               />
             </div>
             <div className="space-y-4">
               <label className="form-label">YoY Growth %</label>
-              <input 
-                type="number" 
-                name="growth_rate_pct" 
-                className="form-input" 
+              <input
+                type="number"
+                name="growth_rate_pct"
+                className="form-input"
                 value={formData.growth_rate_pct}
                 onChange={handleChange}
               />
@@ -366,7 +366,7 @@ export default function SellerProfileForm({ userId }) {
                 <option value="Debt Raise">Debt Raise</option>
               </select>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { key: 'is_founder_owned', label: 'Founder-Owned' },
@@ -375,12 +375,12 @@ export default function SellerProfileForm({ userId }) {
                 { key: 'is_family_owned', label: 'Family-Owned' }
               ].map(flag => (
                 <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
-                  <input 
-                    type="checkbox" 
-                    name={flag.key} 
-                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500" 
-                    checked={formData[flag.key]} 
-                    onChange={handleChange} 
+                  <input
+                    type="checkbox"
+                    name={flag.key}
+                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                    checked={formData[flag.key]}
+                    onChange={handleChange}
                   />
                   <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{flag.label}</span>
                 </label>
@@ -397,8 +397,8 @@ export default function SellerProfileForm({ userId }) {
         )}
 
         <div className="flex justify-center py-10">
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="btn-primary flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-indigo-500/20 group h-auto"
           >
@@ -422,15 +422,15 @@ export default function SellerProfileForm({ userId }) {
 
 function Loader2({ size, className }) {
   return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={`animate-spin ${className}`}
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />

@@ -98,6 +98,35 @@ h1, h2, h3, h4 {
   border-color: var(--text-muted);
 }
 
+/* Tree Component Styling */
+.tree-line {
+  border-left: 1px solid rgb(51 65 85); /* slate-700 */
+}
+
+.tree-node {
+  position: relative;
+}
+
+.tree-node::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1.15rem; /* center with text line */
+  width: 1.5rem;
+  border-top: 1px solid rgb(51 65 85);
+}
+
+.tree-node-last::after {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 1.15rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--surface); /* overwrite the line going down past last element */
+}
+
+
 /* Form Styling */
 .form-input {
   width: 100%;

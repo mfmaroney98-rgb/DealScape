@@ -8,23 +8,52 @@ import {
   TrendingUp, 
   CheckCircle2, 
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   DollarSign,
   Users,
   Search,
   Globe
 } from 'lucide-react';
 
-const REGIONS = [
-  'Midwest',
-  'Northeast',
-  'Southeast',
-  'Southwest',
-  'West'
+const CENSUS_REGIONS = [
+  {
+    name: 'Northeast',
+    divisions: [
+      { name: 'New England', states: ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'Rhode Island', 'Vermont'] },
+      { name: 'Middle Atlantic', states: ['New Jersey', 'New York', 'Pennsylvania'] }
+    ]
+  },
+  {
+    name: 'Midwest',
+    divisions: [
+      { name: 'East North Central', states: ['Illinois', 'Indiana', 'Michigan', 'Ohio', 'Wisconsin'] },
+      { name: 'West North Central', states: ['Iowa', 'Kansas', 'Minnesota', 'Missouri', 'Nebraska', 'North Dakota', 'South Dakota'] }
+    ]
+  },
+  {
+    name: 'South',
+    divisions: [
+      { name: 'South Atlantic', states: ['Delaware', 'Florida', 'Georgia', 'Maryland', 'North Carolina', 'South Carolina', 'Virginia', 'District of Columbia', 'West Virginia'] },
+      { name: 'East South Central', states: ['Alabama', 'Kentucky', 'Mississippi', 'Tennessee'] },
+      { name: 'West South Central', states: ['Arkansas', 'Louisiana', 'Oklahoma', 'Texas'] }
+    ]
+  },
+  {
+    name: 'West',
+    divisions: [
+      { name: 'Mountain', states: ['Arizona', 'Colorado', 'Idaho', 'Montana', 'Nevada', 'New Mexico', 'Utah', 'Wyoming'] },
+      { name: 'Pacific', states: ['Alaska', 'California', 'Hawaii', 'Oregon', 'Washington'] }
+    ]
+  }
 ];
 
 export default function BuyerCriteriaForm({ userId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [expandedRegions, setExpandedRegions] = useState(new Set());
+  const [expandedDivisions, setExpandedDivisions] = useState(new Set());
+  const [isUSAExpanded, setIsUSAExpanded] = useState(true);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -52,13 +81,84 @@ export default function BuyerCriteriaForm({ userId }) {
     }));
   };
 
-  const handleRegionToggle = (region) => {
+  const handleStateToggle = (stateName) => {
     setFormData(prev => ({
       ...prev,
-      locations: prev.locations.includes(region)
-        ? prev.locations.filter(r => r !== region)
-        : [...prev.locations, region]
+      locations: prev.locations.includes(stateName)
+        ? prev.locations.filter(s => s !== stateName)
+        : [...prev.locations, stateName]
     }));
+  };
+
+  const allUSAStates = CENSUS_REGIONS.flatMap(r => r.divisions.flatMap(d => d.states));
+  
+  const handleUSAToggle = () => {
+    setFormData(prev => {
+      const allSelected = allUSAStates.every(s => prev.locations.includes(s));
+      let newLocations = [...prev.locations];
+      if (allSelected) {
+        newLocations = newLocations.filter(s => !allUSAStates.includes(s));
+      } else {
+        allUSAStates.forEach(s => {
+          if (!newLocations.includes(s)) newLocations.push(s);
+        });
+      }
+      return { ...prev, locations: newLocations };
+    });
+  };
+
+  const handleDivisionToggle = (division) => {
+    const states = division.states;
+    setFormData(prev => {
+      const allSelected = states.every(s => prev.locations.includes(s));
+      let newLocations = [...prev.locations];
+      
+      if (allSelected) {
+        newLocations = newLocations.filter(s => !states.includes(s));
+      } else {
+        states.forEach(s => {
+          if (!newLocations.includes(s)) newLocations.push(s);
+        });
+      }
+      return { ...prev, locations: newLocations };
+    });
+  };
+
+  const handleRegionToggle = (region) => {
+    const allStates = region.divisions.flatMap(d => d.states);
+    setFormData(prev => {
+      const allSelected = allStates.every(s => prev.locations.includes(s));
+      let newLocations = [...prev.locations];
+      
+      if (allSelected) {
+        newLocations = newLocations.filter(s => !allStates.includes(s));
+      } else {
+        allStates.forEach(s => {
+          if (!newLocations.includes(s)) newLocations.push(s);
+        });
+      }
+      return { ...prev, locations: newLocations };
+    });
+  };
+
+  const toggleRegionExpand = (e, regionName) => {
+    e.stopPropagation();
+    setExpandedRegions(prev => {
+      const next = new Set(prev);
+      if (next.has(regionName)) next.delete(regionName);
+      else next.add(regionName);
+      return next;
+    });
+  };
+
+  const toggleDivisionExpand = (e, divisionName) => {
+    e.stopPropagation();
+    setExpandedDivisions(prev => {
+      const next = new Set(prev);
+      if (next.has(divisionName)) next.delete(divisionName);
+      else next.add(divisionName);
+      return next;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -143,26 +243,146 @@ export default function BuyerCriteriaForm({ userId }) {
             <h2 className="text-xl font-bold">Geographical Focus</h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {REGIONS.map(region => (
-              <label 
-                key={region}
-                className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all cursor-pointer ${
-                  formData.locations.includes(region) 
-                    ? 'bg-blue-500/10 border-blue-500/40 text-blue-300' 
-                    : 'bg-slate-900/50 border-slate-800 text-slate-500 hover:border-slate-700'
+          <div className="font-medium text-slate-300 relative pl-2 pb-4">
+            {/* Root Node: USA */}
+            <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2">
+              <div 
+                className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 ${
+                  allUSAStates.every(s => formData.locations.includes(s)) ? 'bg-blue-500 border-blue-500 text-white' : 
+                  allUSAStates.some(s => formData.locations.includes(s)) ? 'bg-blue-500/50 border-blue-500 text-white' : 'border-slate-500'
                 }`}
+                onClick={(e) => { e.stopPropagation(); handleUSAToggle(); }}
               >
-                <input 
-                  type="checkbox" 
-                  className="hidden" 
-                  checked={formData.locations.includes(region)}
-                  onChange={() => handleRegionToggle(region)}
-                />
-                <Map size={24} className="mb-2" />
-                <span className="text-xs font-bold uppercase">{region}</span>
-              </label>
-            ))}
+                {allUSAStates.some(s => formData.locations.includes(s)) && <CheckCircle2 size={14} />}
+              </div>
+              <Globe size={18} className="text-blue-400" onClick={() => handleUSAToggle()} />
+              <span className="font-bold flex-1" onClick={() => handleUSAToggle()}>United States of America</span>
+              <button 
+                type="button" 
+                onClick={(e) => { e.stopPropagation(); setIsUSAExpanded(!isUSAExpanded); }}
+                className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
+              >
+                {isUSAExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </button>
+            </div>
+
+            {isUSAExpanded && (
+               <div className="ml-4 mt-1 tree-line pt-2 relative">
+                 {CENSUS_REGIONS.map((region, rIdx) => {
+                   const isLastRegion = rIdx === CENSUS_REGIONS.length - 1;
+                   const regionStates = region.divisions.flatMap(d => d.states);
+                   const allSelected = regionStates.every(s => formData.locations.includes(s));
+                   const someSelected = regionStates.some(s => formData.locations.includes(s)) && !allSelected;
+                   const isExpanded = expandedRegions.has(region.name);
+
+                   return (
+                     <div key={region.name} className={`tree-node ${isLastRegion ? 'tree-node-last' : ''} mb-1`}>
+                       <div className="pl-6">
+                         <div className={`flex items-center gap-3 py-1.5 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2 ${allSelected ? 'text-blue-300' : ''}`}>
+                           <div 
+                             className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                               allSelected ? 'bg-blue-500 border-blue-500 text-white' : 
+                               someSelected ? 'bg-blue-500/50 border-blue-500 text-white' : 'bg-slate-800 border-slate-500'
+                             }`}
+                           onClick={() => handleRegionToggle(region)}
+                         >
+                           {(allSelected || someSelected) && <CheckCircle2 size={12} />}
+                         </div>
+                         <span 
+                           className="font-semibold flex-1"
+                           onClick={() => handleRegionToggle(region)}
+                         >
+                           {region.name}
+                         </span>
+                         <button 
+                           type="button" 
+                           onClick={(e) => toggleRegionExpand(e, region.name)}
+                           className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
+                         >
+                             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                           </button>
+                         </div>
+
+                         {isExpanded && (
+                           <div className="ml-2 mt-1 tree-line relative pt-1">
+                            {region.divisions.map((division, dIdx) => {
+                               const isLastDev = dIdx === region.divisions.length - 1;
+                               const divisionStates = division.states;
+                               const dAllSelected = divisionStates.every(s => formData.locations.includes(s));
+                               const dSomeSelected = divisionStates.some(s => formData.locations.includes(s)) && !dAllSelected;
+                               const isDivExpanded = expandedDivisions.has(division.name);
+
+                               return (
+                                 <div key={division.name} className={`tree-node ${isLastDev ? 'tree-node-last' : ''} mb-1`}>
+                                   <div className="pl-6">
+                                     <div className={`flex items-center gap-3 py-1 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2 ${dAllSelected ? 'text-blue-200' : ''}`}>
+                                       <div 
+                                         className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                                           dAllSelected ? 'bg-blue-500 border-blue-500 text-white' : 
+                                           dSomeSelected ? 'bg-blue-500/50 border-blue-500 text-white' : 'bg-slate-800 border-slate-500'
+                                         }`}
+                                      onClick={() => handleDivisionToggle(division)}
+                                    >
+                                      {(dAllSelected || dSomeSelected) && <CheckCircle2 size={12} />}
+                                    </div>
+                                    <span 
+                                      className="font-medium text-sm flex-1"
+                                      onClick={() => handleDivisionToggle(division)}
+                                    >
+                                      {division.name}
+                                    </span>
+                                    <button 
+                                      type="button" 
+                                      onClick={(e) => toggleDivisionExpand(e, division.name)}
+                                      className="p-1 rounded hover:bg-slate-700/50 text-slate-400"
+                                    >
+                                       {isDivExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                                     </button>
+                                   </div>
+
+                                   {isDivExpanded && (
+                                     <div className="ml-2 mt-1 tree-line relative pt-1 pb-1">
+                                      {division.states.map((stateName, sIdx) => {
+                                         const isLastState = sIdx === division.states.length - 1;
+                                         const isStateSelected = formData.locations.includes(stateName);
+
+                                         return (
+                                           <div key={stateName} className={`tree-node ${isLastState ? 'tree-node-last' : ''}`}>
+                                             <div className="pl-6">
+                                               <div className="flex items-center gap-2 py-0.5 cursor-pointer hover:bg-slate-800/30 rounded-lg px-2">
+                                                  <div 
+                                                    className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${
+                                                      isStateSelected ? 'bg-blue-500 border-blue-500 text-white' : 'bg-slate-800 border-slate-600'
+                                                    }`}
+                                                  onClick={() => handleStateToggle(stateName)}
+                                                >
+                                                  {isStateSelected && <CheckCircle2 size={10} />}
+                                                </div>
+                                                <span 
+                                                  className={`text-sm ${isStateSelected ? 'text-blue-300' : 'text-slate-400 hover:text-slate-300'}`}
+                                                  onClick={() => handleStateToggle(stateName)}
+                                                >
+                                                  {stateName}
+                                                </span>
+                                               </div>
+                                             </div>
+                                           </div>
+                                         );
+                                      })}
+                                    </div>
+                                   )}
+                                 </div>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       )}
+                     </div>
+                   </div>
+                 );
+               })}
+             </div>
+            )}
           </div>
         </div>
 
