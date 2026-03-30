@@ -66,6 +66,34 @@ export default function SellerProfileForm({ userId }) {
     }));
   };
 
+  // Format a number with commas (e.g. 40000000 -> "40,000,000")
+  const formatWithCommas = (value) => {
+    if (!value && value !== 0) return '';
+    return Number(value).toLocaleString('en-US');
+  };
+
+  // Display value for currency fields: "$1,234,567" or "" if empty
+  const displayCurrency = (value) => {
+    if (!value && value !== 0) return '';
+    return '$' + formatWithCommas(value);
+  };
+
+  // Handle currency input: strip non-digits, store raw number
+  const handleCurrencyChange = (name, rawValue) => {
+    if (autoFilledFields.has(name)) {
+      setAutoFilledFields(prev => {
+        const next = new Set(prev);
+        next.delete(name);
+        return next;
+      });
+    }
+    const digits = rawValue.replace(/[^0-9]/g, '');
+    setFormData(prev => ({
+      ...prev,
+      [name]: digits === '' ? '' : Number(digits)
+    }));
+  };
+
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -279,67 +307,66 @@ export default function SellerProfileForm({ userId }) {
         </div>
 
         {/* Section 3: Financials */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
             <TrendingUp size={80} />
           </div>
 
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-              <TrendingUp className="text-emerald-400" size={20} />
+          <div className="geo-row" style={{ marginBottom: '1.5rem', cursor: 'default' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <TrendingUp style={{ color: '#34d399' }} size={20} />
             </div>
-            <h2 className="text-xl font-bold">Financial Performance</h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Financial Performance</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <label className="form-label flex justify-between">
-                Latest Revenue
-                {autoFilledFields.has('revenue') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="revenue"
-                  className={getInputClass('revenue', 'form-input pl-11')}
-                  value={formData.revenue}
-                  onChange={handleChange}
-                />
-                <DollarSign className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('revenue') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
-              </div>
-            </div>
-            <div className="space-y-4">
-              <label className="form-label flex justify-between">
-                EBITDA
-                {autoFilledFields.has('ebitda') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  name="ebitda"
-                  className={getInputClass('ebitda', 'form-input pl-11')}
-                  value={formData.ebitda}
-                  onChange={handleChange}
-                />
-                <DollarSign className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('ebitda') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
-              </div>
-            </div>
-            <div className="space-y-4">
-              <label className="form-label">Gross Profit</label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Latest Revenue</label>
               <input
-                type="number"
-                name="gross_profit"
-                className="form-input"
-                value={formData.gross_profit}
-                onChange={handleChange}
+                type="text"
+                className={`form-input-sm ${autoFilledFields.has('revenue') ? 'form-input-highlight' : ''}`}
+                placeholder="$ Revenue"
+                value={displayCurrency(formData.revenue)}
+                onChange={(e) => handleCurrencyChange('revenue', e.target.value)}
               />
             </div>
-            <div className="space-y-4">
-              <label className="form-label">YoY Growth %</label>
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.25rem' }}>EBITDA</label>
+              <input
+                type="text"
+                className={`form-input-sm ${autoFilledFields.has('ebitda') ? 'form-input-highlight' : ''}`}
+                placeholder="$ EBITDA"
+                value={displayCurrency(formData.ebitda)}
+                onChange={(e) => handleCurrencyChange('ebitda', e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Gross Profit</label>
+              <input
+                type="text"
+                className="form-input-sm"
+                placeholder="$ Gross Profit"
+                value={displayCurrency(formData.gross_profit)}
+                onChange={(e) => handleCurrencyChange('gross_profit', e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Net Income</label>
+              <input
+                type="text"
+                className="form-input-sm"
+                placeholder="$ Net Income"
+                value={displayCurrency(formData.net_income)}
+                onChange={(e) => handleCurrencyChange('net_income', e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.25rem' }}>YoY Growth %</label>
               <input
                 type="number"
                 name="growth_rate_pct"
-                className="form-input"
+                className="form-input-sm"
+                placeholder="e.g. 15"
                 value={formData.growth_rate_pct}
                 onChange={handleChange}
               />

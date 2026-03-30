@@ -81,6 +81,42 @@ export default function BuyerCriteriaForm({ userId }) {
     }));
   };
 
+  // Format a number with commas (e.g. 40000000 -> "40,000,000")
+  const formatWithCommas = (value) => {
+    if (!value && value !== 0) return '';
+    return Number(value).toLocaleString('en-US');
+  };
+
+  // Display value for currency fields: "$1,234,567" or "" if empty
+  const displayCurrency = (value) => {
+    if (!value && value !== 0) return '';
+    return '$' + formatWithCommas(value);
+  };
+
+  // Display value for number fields with commas but no $
+  const displayNumber = (value) => {
+    if (!value && value !== 0) return '';
+    return formatWithCommas(value);
+  };
+
+  // Handle currency input: strip non-digits, store raw number
+  const handleCurrencyChange = (name, rawValue) => {
+    const digits = rawValue.replace(/[^0-9]/g, '');
+    setFormData(prev => ({
+      ...prev,
+      [name]: digits === '' ? '' : Number(digits)
+    }));
+  };
+
+  // Handle plain number input (employees): strip non-digits
+  const handleNumberChange = (name, rawValue) => {
+    const digits = rawValue.replace(/[^0-9]/g, '');
+    setFormData(prev => ({
+      ...prev,
+      [name]: digits === '' ? '' : Number(digits)
+    }));
+  };
+
   const handleStateToggle = (stateName) => {
     setFormData(prev => ({
       ...prev,
@@ -189,46 +225,58 @@ export default function BuyerCriteriaForm({ userId }) {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 1: Financial Range */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl overflow-hidden relative group">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
             <DollarSign size={80} />
           </div>
           
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-              <TrendingUp className="text-emerald-400" size={20} />
+          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <TrendingUp style={{ color: '#34d399' }} size={20} />
             </div>
-            <h2 className="text-xl font-bold">Financial Performance Range</h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Financial Performance Range</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
+          <div className="fields-grid">
+            <div className="field-group">
               <label className="form-label">Revenue Target</label>
-              <div className="flex gap-4 items-center">
-                <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">$</span>
-                  <input type="number" name="min_revenue" className="form-input pl-7" placeholder="Min" value={formData.min_revenue} onChange={handleChange} />
-                </div>
-                <div className="text-slate-600">-</div>
-                <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">$</span>
-                  <input type="number" name="max_revenue" className="form-input pl-7" placeholder="Max" value={formData.max_revenue} onChange={handleChange} />
-                </div>
+              <div className="range-row">
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="$ Min" 
+                  value={displayCurrency(formData.min_revenue)} 
+                  onChange={(e) => handleCurrencyChange('min_revenue', e.target.value)} 
+                />
+                <span className="range-separator">To</span>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="$ Max" 
+                  value={displayCurrency(formData.max_revenue)} 
+                  onChange={(e) => handleCurrencyChange('max_revenue', e.target.value)} 
+                />
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="field-group">
               <label className="form-label">EBITDA Target</label>
-              <div className="flex gap-4 items-center">
-                <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">$</span>
-                  <input type="number" name="min_ebitda" className="form-input pl-7" placeholder="Min" value={formData.min_ebitda} onChange={handleChange} />
-                </div>
-                <div className="text-slate-600">-</div>
-                <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">$</span>
-                  <input type="number" name="max_ebitda" className="form-input pl-7" placeholder="Max" value={formData.max_ebitda} onChange={handleChange} />
-                </div>
+              <div className="range-row">
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="$ Min" 
+                  value={displayCurrency(formData.min_ebitda)} 
+                  onChange={(e) => handleCurrencyChange('min_ebitda', e.target.value)} 
+                />
+                <span className="range-separator">To</span>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  placeholder="$ Max" 
+                  value={displayCurrency(formData.max_ebitda)} 
+                  onChange={(e) => handleCurrencyChange('max_ebitda', e.target.value)} 
+                />
               </div>
             </div>
           </div>
@@ -400,19 +448,25 @@ export default function BuyerCriteriaForm({ userId }) {
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
+            <div className="fields-grid">
+              <div className="field-group">
                 <label className="form-label">Company Size (Employees)</label>
-                <div className="flex gap-4 items-center">
-                  <div className="relative flex-1">
-                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                    <input type="number" name="min_employees" className="form-input pl-9" placeholder="Min" value={formData.min_employees} onChange={handleChange} />
-                  </div>
-                  <div className="text-slate-600">-</div>
-                  <div className="relative flex-1">
-                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                    <input type="number" name="max_employees" className="form-input pl-9" placeholder="Max" value={formData.max_employees} onChange={handleChange} />
-                  </div>
+                <div className="range-row">
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="Min" 
+                    value={displayNumber(formData.min_employees)} 
+                    onChange={(e) => handleNumberChange('min_employees', e.target.value)} 
+                  />
+                  <span className="range-separator">To</span>
+                  <input 
+                    type="text" 
+                    className="form-input" 
+                    placeholder="Max" 
+                    value={displayNumber(formData.max_employees)} 
+                    onChange={(e) => handleNumberChange('max_employees', e.target.value)} 
+                  />
                 </div>
               </div>
 
