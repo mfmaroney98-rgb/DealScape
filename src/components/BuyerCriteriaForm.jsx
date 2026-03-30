@@ -448,29 +448,7 @@ export default function BuyerCriteriaForm({ userId }) {
               />
             </div>
 
-            <div className="fields-grid">
-              <div className="field-group">
-                <label className="form-label">Company Size (Employees)</label>
-                <div className="range-row">
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="Min" 
-                    value={displayNumber(formData.min_employees)} 
-                    onChange={(e) => handleNumberChange('min_employees', e.target.value)} 
-                  />
-                  <span className="range-separator">To</span>
-                  <input 
-                    type="text" 
-                    className="form-input" 
-                    placeholder="Max" 
-                    value={displayNumber(formData.max_employees)} 
-                    onChange={(e) => handleNumberChange('max_employees', e.target.value)} 
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-4">
+            <div style={{ marginTop: '2rem' }}>
                 <label className="form-label">Strategic Preferences</label>
                 <div className="grid grid-cols-1 gap-3">
                   {[
@@ -491,7 +469,6 @@ export default function BuyerCriteriaForm({ userId }) {
                     </label>
                   ))}
                 </div>
-              </div>
             </div>
           </div>
         </div>
