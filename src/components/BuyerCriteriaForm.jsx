@@ -458,32 +458,10 @@ export default function BuyerCriteriaForm({ userId }) {
                 placeholder="e.g. SaaS, Manufacturing, Medical... (press Enter to add)"
               />
             </div>
-
-            <div style={{ marginTop: '2rem' }}>
-                <label className="form-label">Strategic Preferences</label>
-                <div className="grid grid-cols-1 gap-3">
-                  {[
-                    { key: 'require_founder_owned', label: 'Founder-Owned' },
-                    { key: 'require_female_owned', label: 'Female-Owned' },
-                    { key: 'require_minority_owned', label: 'Minority-Owned' },
-                    { key: 'require_family_owned', label: 'Family-Owned' }
-                  ].map(pref => (
-                    <label key={pref.key} className="flex items-center gap-3 cursor-pointer group">
-                      <input 
-                        type="checkbox" 
-                        name={pref.key} 
-                        className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                        checked={formData[pref.key]}
-                        onChange={handleChange}
-                      />
-                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{pref.label} Preferred</span>
-                    </label>
-                  ))}
-                </div>
-            </div>
           </div>
+
           {/* Preferred Transaction Types */}
-          <div className="space-y-4">
+          <div className="space-y-4" style={{ marginTop: '2rem' }}>
             <label className="form-label">Preferred Transaction Types</label>
             <div className="grid grid-cols-1 gap-2">
               {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
@@ -496,6 +474,30 @@ export default function BuyerCriteriaForm({ userId }) {
                     onChange={() => handlePrefTransactionToggle(type)}
                   />
                   <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Other Preferences */}
+          <div className="space-y-4" style={{ marginTop: '2rem' }}>
+            <label className="form-label">Other Preferences</label>
+            <div className="grid grid-cols-1 gap-3">
+              {[
+                { key: 'require_founder_owned', label: 'Founder-Owned' },
+                { key: 'require_female_owned', label: 'Female-Owned' },
+                { key: 'require_minority_owned', label: 'Minority-Owned' },
+                { key: 'require_family_owned', label: 'Family-Owned' }
+              ].map(pref => (
+                <label key={pref.key} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    name={pref.key}
+                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                    checked={formData[pref.key]}
+                    onChange={handleChange}
+                  />
+                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{pref.label}</span>
                 </label>
               ))}
             </div>

@@ -242,7 +242,9 @@ export default function SellerProfileForm({ userId }) {
                 </label>
                 <div className="relative">
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     name="employees_count"
                     className={getInputClass('employees_count', 'form-input pl-11')}
                     value={formData.employees_count}
@@ -292,7 +294,7 @@ export default function SellerProfileForm({ userId }) {
             <div className="space-y-4">
               <label className="form-label">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-2">
-                {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
@@ -401,7 +403,7 @@ export default function SellerProfileForm({ userId }) {
             <div>
               <label className="form-label">Preferred Transaction Types</label>
                 <div className="grid grid-cols-1 gap-2">
-                  {['Total Sale', 'Acquisition of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                  {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
                     <label key={type} className="flex items-center gap-3 cursor-pointer">
                       <input
                         type="checkbox"
@@ -416,24 +418,27 @@ export default function SellerProfileForm({ userId }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { key: 'is_founder_owned', label: 'Founder-Owned' },
-                { key: 'is_female_owned', label: 'Female-Owned' },
-                { key: 'is_minority_owned', label: 'Minority-Owned' },
-                { key: 'is_family_owned', label: 'Family-Owned' }
-              ].map(flag => (
-                <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name={flag.key}
-                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                    checked={formData[flag.key]}
-                    onChange={handleChange}
-                  />
-                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{flag.label}</span>
-                </label>
-              ))}
+            <div className="space-y-4">
+              <label className="form-label">Other Preferences</label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { key: 'is_founder_owned', label: 'Founder-Owned' },
+                  { key: 'is_female_owned', label: 'Female-Owned' },
+                  { key: 'is_minority_owned', label: 'Minority-Owned' },
+                  { key: 'is_family_owned', label: 'Family-Owned' }
+                ].map(flag => (
+                  <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      name={flag.key}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      checked={formData[flag.key]}
+                      onChange={handleChange}
+                    />
+                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{flag.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         </div>
