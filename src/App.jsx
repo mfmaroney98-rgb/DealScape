@@ -7,10 +7,10 @@ import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import Navbar from './components/Navbar';
-import { 
-  TrendingUp, 
-  Mail, 
-  Lock, 
+import {
+  TrendingUp,
+  Mail,
+  Lock,
   LogOut,
   Loader2,
   AlertCircle,
@@ -30,7 +30,7 @@ const AuthLayout = ({ children, title, subtitle }) => (
         </div>
         <span className="text-2xl font-bold tracking-tight font-['Outfit']">DealScape</span>
       </Link>
-      
+
       {import.meta.env.VITE_SUPABASE_ANON_KEY?.includes('placeholder') && (
         <div className="mb-8 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs text-center">
           <AlertCircle size={14} className="inline mr-1" />
@@ -73,13 +73,13 @@ const Login = () => {
         <div>
           <label className="form-label">Email Address</label>
           <div className="relative">
-            <input 
-              type="email" 
-              className="form-input pl-11" 
+            <input
+              type="email"
+              className="form-input pl-11"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required 
+              required
             />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
           </div>
@@ -87,13 +87,13 @@ const Login = () => {
         <div>
           <label className="form-label">Password</label>
           <div className="relative">
-            <input 
-              type="password" 
-              className="form-input pl-11" 
+            <input
+              type="password"
+              className="form-input pl-11"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required 
+              required
             />
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
           </div>
@@ -153,13 +153,13 @@ const Signup = () => {
         <div>
           <label className="form-label">Email Address</label>
           <div className="relative">
-            <input 
-              type="email" 
-              className="form-input pl-11" 
+            <input
+              type="email"
+              className="form-input pl-11"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required 
+              required
             />
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
           </div>
@@ -167,13 +167,13 @@ const Signup = () => {
         <div>
           <label className="form-label">Password</label>
           <div className="relative">
-            <input 
-              type="password" 
-              className="form-input pl-11" 
+            <input
+              type="password"
+              className="form-input pl-11"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required 
+              required
             />
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
           </div>
@@ -207,8 +207,8 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
     {active ? (
       <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
     ) : (
-      <Link 
-        to={to} 
+      <Link
+        to={to}
         className="btn-primary w-full flex items-center justify-center gap-2 py-4 shadow-xl shadow-indigo-500/20"
       >
         Get Started <ArrowRight size={18} />
@@ -219,12 +219,12 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
 
 const Dashboard = ({ hasListing, hasCriteria, role }) => {
   const isCorporate = role === 'corporate';
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
       <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
-         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
       </div>
 
       <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
@@ -233,10 +233,10 @@ const Dashboard = ({ hasListing, hasCriteria, role }) => {
       <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
         Overview
       </h1>
-      
+
       <div className={`grid grid-cols-1 ${isCorporate ? 'lg:grid-cols-3' : 'md:grid-cols-2'} gap-6 w-full max-w-6xl mx-auto`}>
         {(isCorporate || role === 'seller') && (
-          <DashboardActionCard 
+          <DashboardActionCard
             title="Seller Listing"
             subtitle="List your business and start finding buyers today."
             icon={PlusCircle}
@@ -248,7 +248,7 @@ const Dashboard = ({ hasListing, hasCriteria, role }) => {
         )}
 
         {(isCorporate || role === 'buyer') && (
-          <DashboardActionCard 
+          <DashboardActionCard
             title="Buyer Criteria"
             subtitle="Define what you're looking for to receive deals."
             icon={PlusCircle}
@@ -293,16 +293,16 @@ function App() {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
-        
+
         if (session) {
           const userProfile = await profileService.getProfile(session.user.id);
           setProfile(userProfile);
-          
+
           if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
             const listing = await sellerService.getListing(session.user.id);
             setHasListing(!!listing);
           }
-          
+
           if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
             const criteria = await buyerService.getCriteria(session.user.id);
             setHasCriteria(!!criteria);
@@ -324,12 +324,12 @@ function App() {
       if (session) {
         const userProfile = await profileService.getProfile(session.user.id);
         setProfile(userProfile);
-        
+
         if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
           const listing = await sellerService.getListing(session.user.id);
           setHasListing(!!listing);
         }
-        
+
         if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
           const criteria = await buyerService.getCriteria(session.user.id);
           setHasCriteria(!!criteria);
@@ -361,19 +361,19 @@ function App() {
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
-          <Route 
-            path="/onboarding/seller" 
-            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />} 
+          <Route
+            path="/onboarding/seller"
+            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />}
           />
-          <Route 
-            path="/onboarding/buyer" 
-            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />} 
+          <Route
+            path="/onboarding/buyer"
+            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
           />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               session ? (
-                <Dashboard 
+                <Dashboard
                   hasListing={hasListing}
                   hasCriteria={hasCriteria}
                   role={profile?.role || 'seller'}
@@ -381,7 +381,7 @@ function App() {
               ) : (
                 <Navigate to="/" />
               )
-            } 
+            }
           />
           {/* Redirect unknown routes */}
           <Route path="*" element={<Navigate to="/" />} />
