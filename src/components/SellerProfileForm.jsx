@@ -77,6 +77,7 @@ export default function SellerProfileForm({ userId }) {
     is_female_owned: false,
     is_minority_owned: false,
     is_family_owned: false,
+    is_operator_owned: false,
     pref_transaction_type: [],
     revenue: '',
     ebitda: '',
@@ -608,7 +609,8 @@ export default function SellerProfileForm({ userId }) {
                   { key: 'is_founder_owned', label: 'Founder-Owned' },
                   { key: 'is_female_owned', label: 'Female-Owned' },
                   { key: 'is_minority_owned', label: 'Minority-Owned' },
-                  { key: 'is_family_owned', label: 'Family-Owned' }
+                  { key: 'is_family_owned', label: 'Family-Owned' },
+                  { key: 'is_operator_owned', label: 'Operator-Owned' }
                 ].map(flag => (
                   <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
                     <input
