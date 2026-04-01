@@ -62,6 +62,7 @@ export default function SellerProfileForm({ userId }) {
   const [expandedRegions, setExpandedRegions] = useState(new Set());
   const [expandedDivisions, setExpandedDivisions] = useState(new Set());
   const [isUSAExpanded, setIsUSAExpanded] = useState(false);
+  const [focusedField, setFocusedField] = useState(null); // { year, field }
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -79,11 +80,12 @@ export default function SellerProfileForm({ userId }) {
     is_family_owned: false,
     is_operator_owned: false,
     pref_transaction_type: [],
-    revenue: '',
-    ebitda: '',
-    gross_profit: '',
-    net_income: '',
-    growth_rate_pct: ''
+    financials: {
+      '2023': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+      '2024': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+      '2025': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+      'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
+    }
   });
 
   const handleChange = (e) => {
@@ -116,18 +118,31 @@ export default function SellerProfileForm({ userId }) {
   };
 
   // Handle currency input: strip non-digits, store raw number
-  const handleCurrencyChange = (name, rawValue) => {
-    if (autoFilledFields.has(name)) {
-      setAutoFilledFields(prev => {
-        const next = new Set(prev);
-        next.delete(name);
-        return next;
-      });
-    }
+  const handleFinancialChange = (year, field, rawValue) => {
     const digits = rawValue.replace(/[^0-9]/g, '');
+    const numValue = digits === '' ? '' : Number(digits);
     setFormData(prev => ({
       ...prev,
-      [name]: digits === '' ? '' : Number(digits)
+      financials: {
+        ...prev.financials,
+        [year]: {
+          ...prev.financials[year],
+          [field]: numValue
+        }
+      }
+    }));
+  };
+
+  const handleFinancialDateChange = (dateValue) => {
+    setFormData(prev => ({
+      ...prev,
+      financials: {
+        ...prev.financials,
+        LTM: {
+          ...prev.financials.LTM,
+          date: dateValue
+        }
+      }
     }));
   };
 
@@ -220,18 +235,24 @@ export default function SellerProfileForm({ userId }) {
     setTimeout(() => {
       const mockData = {
         employees_count: '145',
-        revenue: '24500000',
-        ebitda: '4200000',
         company_type: 'LLC',
         industry_codes: ['Manufacturing', 'Industrial', 'B2B']
       };
 
       setFormData(prev => ({
         ...prev,
-        ...mockData
+        ...mockData,
+        financials: {
+          ...prev.financials,
+          'LTM': {
+            ...prev.financials['LTM'],
+            revenue: 24500000,
+            ebitda: 4200000,
+          }
+        }
       }));
 
-      setAutoFilledFields(new Set(Object.keys(mockData)));
+      setAutoFilledFields(new Set([...Object.keys(mockData), 'financials']));
       setAutoFilledTags(mockData.industry_codes);
       setIsParsing(false);
     }, 2000);
@@ -348,10 +369,9 @@ export default function SellerProfileForm({ userId }) {
               <div className="geo-tree">
                 <div className="geo-row">
                   <div
-                    className={`geo-check ${
-                      allUSAStates.every(s => formData.locations.includes(s)) ? 'checked' :
-                      allUSAStates.some(s => formData.locations.includes(s)) ? 'partial' : ''
-                    }`}
+                    className={`geo-check ${allUSAStates.every(s => formData.locations.includes(s)) ? 'checked' :
+                        allUSAStates.some(s => formData.locations.includes(s)) ? 'partial' : ''
+                      }`}
                     onClick={(e) => { e.stopPropagation(); handleUSAToggle(); }}
                   >
                     {allUSAStates.every(s => formData.locations.includes(s))
@@ -491,15 +511,15 @@ export default function SellerProfileForm({ userId }) {
             </div>
 
             <div>
-                <label className="form-label">Ownership Structure</label>
-                <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
-                  <option value="">Select Ownership</option>
-                  <option value="Private Company">Private Company</option>
-                  <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
-                  <option value="Public Company">Public Company</option>
-                  <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-                </select>
-              </div>
+              <label className="form-label">Ownership Structure</label>
+              <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
+                <option value="">Select Ownership</option>
+                <option value="Private Company">Private Company</option>
+                <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
+                <option value="Public Company">Public Company</option>
+                <option value="Corporate Subsidiary">Corporate Subsidiary</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -516,61 +536,226 @@ export default function SellerProfileForm({ userId }) {
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Financial Performance</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Latest Revenue</label>
-              <input
-                type="text"
-                className={`form-input-sm ${autoFilledFields.has('revenue') ? 'form-input-highlight' : ''}`}
-                placeholder="$ Revenue"
-                value={displayCurrency(formData.revenue)}
-                onChange={(e) => handleCurrencyChange('revenue', e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.25rem' }}>EBITDA</label>
-              <input
-                type="text"
-                className={`form-input-sm ${autoFilledFields.has('ebitda') ? 'form-input-highlight' : ''}`}
-                placeholder="$ EBITDA"
-                value={displayCurrency(formData.ebitda)}
-                onChange={(e) => handleCurrencyChange('ebitda', e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Gross Profit</label>
-              <input
-                type="text"
-                className="form-input-sm"
-                placeholder="$ Gross Profit"
-                value={displayCurrency(formData.gross_profit)}
-                onChange={(e) => handleCurrencyChange('gross_profit', e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.25rem' }}>Net Income</label>
-              <input
-                type="text"
-                className="form-input-sm"
-                placeholder="$ Net Income"
-                value={displayCurrency(formData.net_income)}
-                onChange={(e) => handleCurrencyChange('net_income', e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.25rem' }}>YoY Growth %</label>
-              <input
-                type="text"
-                inputMode="decimal"
-                className="form-input-sm"
-                placeholder="e.g. 15%"
-                value={formData.growth_rate_pct !== '' ? `${formData.growth_rate_pct}%` : ''}
-                onChange={(e) => {
-                  const raw = e.target.value.replace('%', '').replace(/[^0-9.]/g, '');
-                  setFormData(prev => ({ ...prev, growth_rate_pct: raw }));
-                }}
-              />
-            </div>
+          <div className="overflow-x-auto mt-8">
+            <table className="w-full" style={{ tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: '24px 0' }}>
+              <thead>
+                <tr>
+                  <th className="p-2 font-normal text-slate-500 text-left" style={{ width: '180px' }}></th>
+                  <th className="px-8 py-2 font-bold text-slate-300 text-right">2023</th>
+                  <th className="px-8 py-2 font-bold text-slate-300 text-right">2024</th>
+                  <th className="px-8 py-2 font-bold text-slate-300 text-right">2025</th>
+                  <th className="px-8 py-2 font-bold text-slate-300 text-right">
+                    <div className="flex flex-col items-end">
+                      <span>LTM</span>
+                      <input
+                        type="text"
+                        style={{ textAlign: 'right' }}
+                        className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs mt-1"
+                        placeholder="Enter Date"
+                        value={formData.financials.LTM.date}
+                        onChange={(e) => handleFinancialDateChange(e.target.value)}
+                      />
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {/* --- Revenue --- */}
+                <tr>
+                  <td className="p-2 pt-4 font-bold text-slate-200">Revenue</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const rev = formData.financials[year].revenue;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-4 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(rev)}
+                            onChange={(e) => handleFinancialChange(year, 'revenue', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'revenue' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>YoY Growth</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    let yoy = '';
+                    const isFocused = focusedField && (
+                      (focusedField.year === year && focusedField.field === 'revenue') ||
+                      (year === '2024' && focusedField.year === '2023' && focusedField.field === 'revenue') ||
+                      (year === '2025' && focusedField.year === '2024' && focusedField.field === 'revenue')
+                    );
+
+                    if (!isFocused) {
+                      if (year === '2024' && formData.financials['2023'].revenue) {
+                        yoy = Math.round(((formData.financials['2024'].revenue - formData.financials['2023'].revenue) / formData.financials['2023'].revenue) * 100);
+                      } else if (year === '2025' && formData.financials['2024'].revenue) {
+                        yoy = Math.round(((formData.financials['2025'].revenue - formData.financials['2024'].revenue) / formData.financials['2024'].revenue) * 100);
+                      }
+                    }
+                    return (
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {yoy !== '' ? `${yoy}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* --- Gross Profit --- */}
+                <tr>
+                  <td className="p-2 pt-6 font-bold text-slate-200">Gross Profit</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].gross_profit;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-6 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(val)}
+                            onChange={(e) => handleFinancialChange(year, 'gross_profit', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'gross_profit' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Gross Profit Margin</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].gross_profit;
+                    const rev = formData.financials[year].revenue;
+                    const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'gross_profit' || focusedField.field === 'revenue');
+                    const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
+                    return (
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {margin !== '' ? `${margin}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* --- EBITDA --- */}
+                <tr>
+                  <td className="p-2 pt-6 font-bold text-slate-200">EBITDA</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].ebitda;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-6 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(val)}
+                            onChange={(e) => handleFinancialChange(year, 'ebitda', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'ebitda' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBITDA Margin</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].ebitda;
+                    const rev = formData.financials[year].revenue;
+                    const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebitda' || focusedField.field === 'revenue');
+                    const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
+                    return (
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {margin !== '' ? `${margin}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* --- EBIT --- */}
+                <tr>
+                  <td className="p-2 pt-6 font-bold text-slate-200">EBIT</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].ebit;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-6 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(val)}
+                            onChange={(e) => handleFinancialChange(year, 'ebit', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'ebit' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBIT Margin</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].ebit;
+                    const rev = formData.financials[year].revenue;
+                    const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebit' || focusedField.field === 'revenue');
+                    const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
+                    return (
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {margin !== '' ? `${margin}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* --- Net Income --- */}
+                <tr>
+                  <td className="p-2 pt-6 font-bold text-slate-200">Net Income</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].net_income;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-6 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(val)}
+                            onChange={(e) => handleFinancialChange(year, 'net_income', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'net_income' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Net Income Margin</td>
+                  {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financials[year].net_income;
+                    const rev = formData.financials[year].revenue;
+                    const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'net_income' || focusedField.field === 'revenue');
+                    const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
+                    return (
+                      <td key={year} style={{ padding: '0.25rem 2rem 1.5rem 2rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {margin !== '' ? `${margin}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -586,20 +771,20 @@ export default function SellerProfileForm({ userId }) {
           <div className="space-y-8">
             <div>
               <label className="form-label">Preferred Transaction Types</label>
-                <div className="grid grid-cols-1 gap-2">
-                  {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
-                    <label key={type} className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        name="pref_transaction_type"
-                        className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                        checked={formData.pref_transaction_type?.includes(type)}
-                        onChange={() => handlePrefTransactionToggle(type)}
-                      />
-                      <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
-                    </label>
-                  ))}
-                </div>
+              <div className="grid grid-cols-1 gap-2">
+                {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                  <label key={type} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="pref_transaction_type"
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      checked={formData.pref_transaction_type?.includes(type)}
+                      onChange={() => handlePrefTransactionToggle(type)}
+                    />
+                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-4">
