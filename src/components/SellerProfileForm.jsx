@@ -328,6 +328,30 @@ export default function SellerProfileForm({ userId }) {
           </div>
 
           <div className="space-y-6">
+            <div className="glass border border-slate-700/50 rounded-2xl p-5 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500/0 via-indigo-500/50 to-indigo-500/0" />
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Building2 className="text-indigo-400" size={16} />
+                </div>
+                <div className="flex-1">
+                  <label className="form-label mb-1">Company Name or Project Name</label>
+                  <input
+                    type="text"
+                    name="project_name"
+                    className="form-input"
+                    placeholder="e.g. Acme Manufacturing LLC"
+                    value={formData.project_name}
+                    onChange={handleChange}
+                  />
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <p className="text-xs text-indigo-300/70">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div>
               <label className="form-label">Listing Title (Anonymized)</label>
               <input
