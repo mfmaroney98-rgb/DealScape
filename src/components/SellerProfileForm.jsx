@@ -70,6 +70,7 @@ export default function SellerProfileForm({ userId }) {
     title: '',
     project_name: '',
     locations: [],
+    year_founded: '',
     employees_count: '',
     industry_codes: [],
     company_type: '',
@@ -384,10 +385,10 @@ export default function SellerProfileForm({ userId }) {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
+              <div style={{ flex: 1 }}>
                 <label className="form-label flex justify-between">
-                  Employees
+                  Employee Count
                   {autoFilledFields.has('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
@@ -399,8 +400,30 @@ export default function SellerProfileForm({ userId }) {
                     className={getInputClass('employees_count', 'form-input pl-11')}
                     value={formData.employees_count}
                     onChange={handleChange}
+                    placeholder="e.g. 50"
                   />
                   <Users className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('employees_count') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
+                </div>
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <label className="form-label flex justify-between">
+                  Year Founded
+                  {autoFilledFields.has('year_founded') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]{4}"
+                    maxLength="4"
+                    name="year_founded"
+                    className={getInputClass('year_founded', 'form-input pl-11')}
+                    value={formData.year_founded}
+                    onChange={handleChange}
+                    placeholder="YYYY"
+                  />
+                  <Building2 className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('year_founded') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
             </div>
@@ -537,7 +560,7 @@ export default function SellerProfileForm({ userId }) {
             <div className="space-y-4">
               <label className="form-label">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-2">
-                {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                {['Total Sale', 'Sale of Majority Stake', 'Sale of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
@@ -814,7 +837,7 @@ export default function SellerProfileForm({ userId }) {
             <div>
               <label className="form-label">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-2">
-                {['Total Sale', 'Sale of Majority Stake', 'Minority Equity Raise', 'Debt Raise', 'Carve-out'].map(type => (
+                {['Total Sale', 'Sale of Majority Stake', 'Sale of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
