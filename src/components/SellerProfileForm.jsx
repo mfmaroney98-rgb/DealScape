@@ -109,6 +109,7 @@ export default function SellerProfileForm({ userId }) {
   // Format a number with commas (e.g. 40000000 -> "40,000,000")
   const formatWithCommas = (value) => {
     if (!value && value !== 0) return '';
+    if (value === '-') return '-';
     return Number(value).toLocaleString('en-US');
   };
 
@@ -120,8 +121,20 @@ export default function SellerProfileForm({ userId }) {
 
   // Handle currency input: strip non-digits, store raw number
   const handleFinancialChange = (year, field, rawValue) => {
+    let isNegative = false;
+    if (['gross_profit', 'ebitda', 'ebit', 'net_income'].includes(field) && rawValue.startsWith('-')) {
+      isNegative = true;
+    }
+
     const digits = rawValue.replace(/[^0-9]/g, '');
-    const numValue = digits === '' ? '' : Number(digits);
+    let numValue = '';
+
+    if (digits === '') {
+       numValue = isNegative ? '-' : '';
+    } else {
+       numValue = Number(isNegative ? '-' + digits : digits);
+    }
+
     setFormData(prev => ({
       ...prev,
       financials: {
