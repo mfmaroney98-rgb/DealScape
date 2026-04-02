@@ -291,28 +291,44 @@ export default function SellerProfileForm({ userId }) {
         </p>
 
         {/* Document Parsing Upload Area */}
-        <div className="max-w-xl mx-auto glass p-6 rounded-2xl border border-dashed border-slate-700 hover:border-indigo-500 transition-colors relative overflow-hidden group">
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', position: 'relative', zIndex: 10, marginBottom: '2rem' }} className="max-w-4xl mx-auto text-left">
           {isParsing && (
-            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
-              <Loader2 size={32} className="text-indigo-500 mb-4" />
+            <div className="absolute inset-[-1rem] bg-slate-900/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center rounded-2xl">
+              <Loader2 className="text-indigo-500 mb-4 animate-spin" size={32} />
               <p className="text-indigo-200 font-medium">Extracting data via secure backend...</p>
             </div>
           )}
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={handleFileUpload}
-            className="absolute inset-0 opacity-0 cursor-pointer z-20"
-            title="Upload Teaser or CIM"
-          />
-          <div className="flex flex-col items-center gap-3 relative z-10 pointer-events-none">
-            <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <UploadCloud className="text-slate-400 group-hover:text-indigo-400 transition-colors" size={24} />
+
+          {/* Teaser Upload */}
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileUpload}
+              className="text-sm text-slate-300 cursor-pointer"
+              title="Upload Teaser"
+            />
+            <div className="mt-2">
+              <UploadCloud className="text-slate-200" size={24} />
             </div>
-            <div>
-              <p className="font-bold text-lg">Auto-fill from Teaser or CIM</p>
-              <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
+            <p className="font-semibold text-white">Upload Teaser</p>
+            <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
+          </div>
+
+          {/* CIM Upload */}
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2">
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileUpload}
+              className="text-sm text-slate-300 cursor-pointer"
+              title="Upload CIM"
+            />
+            <div className="mt-2 text-slate-200">
+              <FileText size={24} />
             </div>
+            <p className="font-semibold text-white">Upload CIM</p>
+            <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
           </div>
         </div>
       </div>
@@ -328,42 +344,44 @@ export default function SellerProfileForm({ userId }) {
           </div>
 
           <div className="space-y-6">
-            <div className="glass border border-slate-700/50 rounded-2xl p-5 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500/0 via-indigo-500/50 to-indigo-500/0" />
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Building2 className="text-indigo-400" size={16} />
-                </div>
-                <div className="flex-1">
-                  <label className="form-label mb-1">Company Name or Project Name</label>
-                  <input
-                    type="text"
-                    name="project_name"
-                    className="form-input"
-                    placeholder="e.g. Acme Manufacturing LLC"
-                    value={formData.project_name}
-                    onChange={handleChange}
-                  />
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    <p className="text-xs text-indigo-300/70">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
+              <div className="glass border border-slate-700/50 rounded-2xl p-5 relative overflow-hidden" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500/0 via-indigo-500/50 to-indigo-500/0" />
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Building2 className="text-indigo-400" size={16} />
+                  </div>
+                  <div className="flex-1">
+                    <label className="form-label mb-1">Company Name or Project Name</label>
+                    <input
+                      type="text"
+                      name="project_name"
+                      className="form-input"
+                      placeholder="e.g. Acme Manufacturing LLC"
+                      value={formData.project_name}
+                      onChange={handleChange}
+                    />
+                    <div className="flex items-center gap-1.5 mt-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <p className="text-xs text-indigo-300/70">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div>
-              <label className="form-label">Listing Title (Anonymized)</label>
-              <input
-                type="text"
-                name="title"
-                className="form-input"
-                placeholder="e.g. Leading Material Handling Equipment Manufacturer"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
-              <p className="text-xs text-slate-500 mt-2">Use a descriptive title that doesn't reveal your company name.</p>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <label className="form-label">Listing Title (Anonymized)</label>
+                <input
+                  type="text"
+                  name="title"
+                  className="form-input"
+                  placeholder="e.g. Leading Material Handling..."
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
+                <p className="text-xs text-slate-500 mt-2">Use a descriptive title that doesn't reveal your company name.</p>
+              </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
