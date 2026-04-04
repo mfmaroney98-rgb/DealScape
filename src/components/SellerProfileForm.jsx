@@ -441,8 +441,9 @@ export default function SellerProfileForm({ userId }) {
               </div>
             </div>
 
-            {/* Geography Tree */}
-            <div>
+            {/* Business Location & Ownership Structure */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
+              <div>
               <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Business Location</label>
               <div className="geo-tree">
                 <div className="geo-row">
@@ -533,6 +534,18 @@ export default function SellerProfileForm({ userId }) {
                 )}
               </div>
             </div>
+
+            <div>
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
+              <select name="company_ownership" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.company_ownership} onChange={handleChange}>
+                <option value="">Select Ownership</option>
+                <option value="Private Company">Private Company</option>
+                <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
+                <option value="Public Company">Public Company</option>
+                <option value="Corporate Subsidiary">Corporate Subsidiary</option>
+              </select>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -569,35 +582,7 @@ export default function SellerProfileForm({ userId }) {
               />
             </div>
 
-            {/* Preferred Transaction Types */}
-            <div className="space-y-4">
-              <label className="form-label">Preferred Transaction Types</label>
-              <div className="grid grid-cols-1 gap-2">
-                {['Total Sale', 'Sale of Majority Stake', 'Sale of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      name="pref_transaction_type"
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                      checked={formData.pref_transaction_type?.includes(type)}
-                      onChange={() => handlePrefTransactionToggle(type)}
-                    />
-                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
 
-            <div>
-              <label className="form-label">Ownership Structure</label>
-              <select name="company_ownership" className="form-input" value={formData.company_ownership} onChange={handleChange}>
-                <option value="">Select Ownership</option>
-                <option value="Private Company">Private Company</option>
-                <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
-                <option value="Public Company">Public Company</option>
-                <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-              </select>
-            </div>
           </div>
         </div>
 
