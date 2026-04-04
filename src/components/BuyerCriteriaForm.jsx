@@ -202,6 +202,8 @@ export default function BuyerCriteriaForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
+    overview: '',
+    buyer_type: '',
     min_revenue: '',
     max_revenue: '',
     min_ebitda: '',
@@ -425,6 +427,52 @@ export default function BuyerCriteriaForm({ userId }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Section 0: About the Buyer */}
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
+            <Users size={80} />
+          </div>
+          
+          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Users style={{ color: '#818cf8' }} size={20} />
+            </div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>About the Buyer</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+            <div className="field-group">
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Brief Overview / Summary</label>
+              <textarea
+                name="overview"
+                className="form-input"
+                style={{ width: '100%', minHeight: '120px', resize: 'vertical' }}
+                placeholder="Tell us about yourself..."
+                value={formData.overview}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="field-group">
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Buyer Type</label>
+              <select
+                name="buyer_type"
+                className="form-input"
+                style={{ width: '100%', cursor: 'pointer', appearance: 'auto' }}
+                value={formData.buyer_type || ''}
+                onChange={handleChange}
+              >
+                <option value="" disabled>Select buyer type...</option>
+                <option value="Strategic">Strategic</option>
+                <option value="Private Equity">Private Equity</option>
+                <option value="Family Office">Family Office</option>
+                <option value="Individual">Individual</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         {/* Section 1: Financial Range */}
         <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
