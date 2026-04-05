@@ -13,7 +13,9 @@ import {
   DollarSign,
   Users,
   Search,
-  Globe
+  Globe,
+  Plus,
+  X
 } from 'lucide-react';
 
 const NAICS_SECTORS = [
@@ -204,10 +206,10 @@ export default function BuyerCriteriaForm({ userId }) {
     user_id: userId,
     overview: '',
     buyer_type: '',
-    min_revenue: '',
-    max_revenue: '',
-    min_ebitda: '',
-    max_ebitda: '',
+    financial_criteria: [
+      { id: Date.now(), metric: 'Revenue', min: '', max: '' },
+      { id: Date.now() + 1, metric: 'EBITDA Margin', min: '', max: '' }
+    ],
     min_employees: '',
     max_employees: '',
     locations: [],
@@ -248,12 +250,50 @@ export default function BuyerCriteriaForm({ userId }) {
     return formatWithCommas(value);
   };
 
+  // Display value for percentage fields: "25%" or "" if empty
+  const displayPercentage = (value) => {
+    if (!value && value !== 0) return '';
+    return formatWithCommas(value) + '%';
+  };
+
   // Handle currency input: strip non-digits, store raw number
   const handleCurrencyChange = (name, rawValue) => {
     const digits = rawValue.replace(/[^0-9]/g, '');
     setFormData(prev => ({
       ...prev,
       [name]: digits === '' ? '' : Number(digits)
+    }));
+  };
+
+  const handleFinancialCriteriaChange = (index, field, value) => {
+    setFormData(prev => {
+      const updated = [...(prev.financial_criteria || [])];
+      if (!updated[index]) return prev;
+      
+      if (field === 'min' || field === 'max') {
+        const digits = value.replace(/[^0-9.-]/g, '');
+        updated[index] = { ...updated[index], [field]: digits === '' ? '' : Number(digits) };
+      } else {
+        updated[index] = { ...updated[index], [field]: value };
+      }
+      return { ...prev, financial_criteria: updated };
+    });
+  };
+
+  const addFinancialCriteria = () => {
+    setFormData(prev => ({
+      ...prev,
+      financial_criteria: [
+        ...(prev.financial_criteria || []),
+        { id: Date.now(), metric: 'Revenue', min: '', max: '' }
+      ]
+    }));
+  };
+
+  const removeFinancialCriteria = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      financial_criteria: (prev.financial_criteria || []).filter((_, i) => i !== index)
     }));
   };
 
@@ -486,49 +526,73 @@ export default function BuyerCriteriaForm({ userId }) {
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Financial Performance Range</h2>
           </div>
 
-          <div className="fields-grid">
-            <div className="field-group">
-              <label className="form-label">Revenue Target</label>
-              <div className="range-row">
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  placeholder="$ Min" 
-                  value={displayCurrency(formData.min_revenue)} 
-                  onChange={(e) => handleCurrencyChange('min_revenue', e.target.value)} 
-                />
-                <span className="range-separator">To</span>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  placeholder="$ Max" 
-                  value={displayCurrency(formData.max_revenue)} 
-                  onChange={(e) => handleCurrencyChange('max_revenue', e.target.value)} 
-                />
+          <div className="flex flex-col gap-4 mb-4">
+            {(formData.financial_criteria || []).map((criteria, index) => (
+              <div key={criteria.id} className="field-group bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+                <div className="flex items-center justify-between mb-3">
+                  <select
+                    className="form-input"
+                    style={{ width: '50%', appearance: 'auto', cursor: 'pointer', padding: '0.6rem 0.75rem' }}
+                    value={criteria.metric}
+                    onChange={(e) => handleFinancialCriteriaChange(index, 'metric', e.target.value)}
+                  >
+                    <option value="Revenue">Revenue</option>
+                    <option value="Revenue Growth (YoY)">Revenue Growth (YoY)</option>
+                    <option value="EBITDA">EBITDA</option>
+                    <option value="EBITDA Margin">EBITDA Margin</option>
+                    <option value="EBITDA Growth (YoY)">EBITDA Growth (YoY)</option>
+                    <option value="Gross Profit">Gross Profit</option>
+                    <option value="Net Income">Net Income</option>
+                  </select>
+                  
+                  <button
+                    type="button"
+                    className="p-1 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-red-400 transition-colors"
+                    onClick={() => removeFinancialCriteria(index)}
+                    title="Remove criteria"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                
+                <div className="range-row">
+                  {(() => {
+                    const isPct = criteria.metric.includes('Margin') || criteria.metric.includes('Growth') || criteria.metric.includes('%');
+                    return (
+                      <>
+                        <input 
+                          type="text" 
+                          className="form-input flex-1" 
+                          placeholder={isPct ? "% Min" : "$ Min"} 
+                          value={isPct ? displayPercentage(criteria.min) : displayCurrency(criteria.min)} 
+                          onChange={(e) => handleFinancialCriteriaChange(index, 'min', e.target.value)} 
+                        />
+                        <span className="range-separator px-1">To</span>
+                        <input 
+                          type="text" 
+                          className="form-input flex-1" 
+                          placeholder={isPct ? "% Max" : "$ Max"} 
+                          value={isPct ? displayPercentage(criteria.max) : displayCurrency(criteria.max)} 
+                          onChange={(e) => handleFinancialCriteriaChange(index, 'max', e.target.value)} 
+                        />
+                      </>
+                    );
+                  })()}
+                </div>
               </div>
-            </div>
-
-            <div className="field-group">
-              <label className="form-label">EBITDA Target</label>
-              <div className="range-row">
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  placeholder="$ Min" 
-                  value={displayCurrency(formData.min_ebitda)} 
-                  onChange={(e) => handleCurrencyChange('min_ebitda', e.target.value)} 
-                />
-                <span className="range-separator">To</span>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  placeholder="$ Max" 
-                  value={displayCurrency(formData.max_ebitda)} 
-                  onChange={(e) => handleCurrencyChange('max_ebitda', e.target.value)} 
-                />
-              </div>
-            </div>
+            ))}
           </div>
+            
+          <button
+             type="button"
+             className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors mt-2 text-sm font-semibold w-fit px-2"
+             onClick={addFinancialCriteria}
+          >
+            <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
+              <Plus size={18} />
+            </div>
+            Add another criteria
+          </button>
         </div>
 
         {/* Section 2: Geographical Focus */}
