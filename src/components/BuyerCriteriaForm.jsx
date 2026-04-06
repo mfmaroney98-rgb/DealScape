@@ -204,6 +204,8 @@ export default function BuyerCriteriaForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
+    company_name: '',
+    website: '',
     overview: '',
     buyer_type: '',
     financial_criteria: [
@@ -478,6 +480,32 @@ export default function BuyerCriteriaForm({ userId }) {
               <Users style={{ color: '#818cf8' }} size={20} />
             </div>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>About the Buyer</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', marginBottom: '1.5rem' }}>
+            <div className="field-group" style={{ marginBottom: 0 }}>
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Company Name</label>
+              <input
+                type="text"
+                name="company_name"
+                className="form-input"
+                placeholder="e.g. Acme Investments"
+                value={formData.company_name || ''}
+                onChange={handleChange}
+              />
+            </div>
+            
+            <div className="field-group" style={{ marginBottom: 0 }}>
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Website</label>
+              <input
+                type="text"
+                name="website"
+                className="form-input"
+                placeholder="e.g. www.example.com"
+                value={formData.website || ''}
+                onChange={handleChange}
+              />
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
