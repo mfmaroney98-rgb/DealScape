@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import TagInput from './TagInput';
+import { fetchNaicsSectors } from '../services/naicsService';
 import { 
   Target, 
   Map, 
@@ -18,147 +19,7 @@ import {
   X
 } from 'lucide-react';
 
-const NAICS_SECTORS = [
-  { code: '11', name: 'Agriculture, Forestry, Fishing and Hunting', subsectors: [
-    { code: '111', name: 'Crop Production' },
-    { code: '112', name: 'Animal Production and Aquaculture' },
-    { code: '113', name: 'Forestry and Logging' },
-    { code: '114', name: 'Fishing, Hunting and Trapping' },
-    { code: '115', name: 'Support Activities for Agriculture and Forestry' }
-  ]},
-  { code: '21', name: 'Mining, Quarrying, and Oil and Gas Extraction', subsectors: [
-    { code: '211', name: 'Oil and Gas Extraction' },
-    { code: '212', name: 'Mining (except Oil and Gas)' },
-    { code: '213', name: 'Support Activities for Mining' }
-  ]},
-  { code: '22', name: 'Utilities', subsectors: [
-    { code: '221', name: 'Utilities' }
-  ]},
-  { code: '23', name: 'Construction', subsectors: [
-    { code: '236', name: 'Construction of Buildings' },
-    { code: '237', name: 'Heavy and Civil Engineering Construction' },
-    { code: '238', name: 'Specialty Trade Contractors' }
-  ]},
-  { code: '31-33', name: 'Manufacturing', subsectors: [
-    { code: '311', name: 'Food Manufacturing' },
-    { code: '312', name: 'Beverage and Tobacco Product Manufacturing' },
-    { code: '313', name: 'Textile Mills' },
-    { code: '314', name: 'Textile Product Mills' },
-    { code: '315', name: 'Apparel Manufacturing' },
-    { code: '316', name: 'Leather and Allied Product Manufacturing' },
-    { code: '321', name: 'Wood Product Manufacturing' },
-    { code: '322', name: 'Paper Manufacturing' },
-    { code: '323', name: 'Printing and Related Support Activities' },
-    { code: '324', name: 'Petroleum and Coal Products Manufacturing' },
-    { code: '325', name: 'Chemical Manufacturing' },
-    { code: '326', name: 'Plastics and Rubber Products Manufacturing' },
-    { code: '327', name: 'Nonmetallic Mineral Product Manufacturing' },
-    { code: '331', name: 'Primary Metal Manufacturing' },
-    { code: '332', name: 'Fabricated Metal Product Manufacturing' },
-    { code: '333', name: 'Machinery Manufacturing' },
-    { code: '334', name: 'Computer and Electronic Product Manufacturing' },
-    { code: '335', name: 'Electrical Equipment and Appliance Manufacturing' },
-    { code: '336', name: 'Transportation Equipment Manufacturing' },
-    { code: '337', name: 'Furniture and Related Product Manufacturing' },
-    { code: '339', name: 'Miscellaneous Manufacturing' }
-  ]},
-  { code: '42', name: 'Wholesale Trade', subsectors: [
-    { code: '423', name: 'Merchant Wholesalers, Durable Goods' },
-    { code: '424', name: 'Merchant Wholesalers, Nondurable Goods' },
-    { code: '425', name: 'Electronic Markets and Agents and Brokers' }
-  ]},
-  { code: '44-45', name: 'Retail Trade', subsectors: [
-    { code: '441', name: 'Motor Vehicle and Parts Dealers' },
-    { code: '442', name: 'Furniture and Home Furnishings Stores' },
-    { code: '443', name: 'Electronics and Appliance Stores' },
-    { code: '444', name: 'Building Material and Garden Equipment Dealers' },
-    { code: '445', name: 'Food and Beverage Retailers' },
-    { code: '449', name: 'Furniture, Home Furnishings, Electronics, and Appliance Retailers' },
-    { code: '455', name: 'General Merchandise Retailers' },
-    { code: '456', name: 'Health and Personal Care Retailers' },
-    { code: '457', name: 'Gasoline Stations and Fuel Dealers' },
-    { code: '458', name: 'Clothing, Clothing Accessories, Shoe, and Jewelry Retailers' },
-    { code: '459', name: 'Sporting Goods, Hobby, Musical Instrument, Book, and Misc. Retailers' }
-  ]},
-  { code: '48-49', name: 'Transportation and Warehousing', subsectors: [
-    { code: '481', name: 'Air Transportation' },
-    { code: '482', name: 'Rail Transportation' },
-    { code: '483', name: 'Water Transportation' },
-    { code: '484', name: 'Truck Transportation' },
-    { code: '485', name: 'Transit and Ground Passenger Transportation' },
-    { code: '486', name: 'Pipeline Transportation' },
-    { code: '487', name: 'Scenic and Sightseeing Transportation' },
-    { code: '488', name: 'Support Activities for Transportation' },
-    { code: '491', name: 'Postal Service' },
-    { code: '492', name: 'Couriers and Messengers' },
-    { code: '493', name: 'Warehousing and Storage' }
-  ]},
-  { code: '51', name: 'Information', subsectors: [
-    { code: '511', name: 'Publishing Industries' },
-    { code: '512', name: 'Motion Picture and Sound Recording Industries' },
-    { code: '515', name: 'Broadcasting (except Internet)' },
-    { code: '516', name: 'Internet Publishing and Beyond' },
-    { code: '517', name: 'Telecommunications' },
-    { code: '518', name: 'Computing Infrastructure Providers, Data Processing, and Related Services' },
-    { code: '519', name: 'Web Search Portals, Libraries, Archives, and Other Information Services' }
-  ]},
-  { code: '52', name: 'Finance and Insurance', subsectors: [
-    { code: '521', name: 'Monetary Authorities — Central Bank' },
-    { code: '522', name: 'Credit Intermediation and Related Activities' },
-    { code: '523', name: 'Securities, Commodity Contracts, and Other Financial Investments' },
-    { code: '524', name: 'Insurance Carriers and Related Activities' },
-    { code: '525', name: 'Funds, Trusts, and Other Financial Vehicles' }
-  ]},
-  { code: '53', name: 'Real Estate and Rental and Leasing', subsectors: [
-    { code: '531', name: 'Real Estate' },
-    { code: '532', name: 'Rental and Leasing Services' },
-    { code: '533', name: 'Lessors of Nonfinancial Intangible Assets' }
-  ]},
-  { code: '54', name: 'Professional, Scientific, and Technical Services', subsectors: [
-    { code: '541', name: 'Professional, Scientific, and Technical Services' }
-  ]},
-  { code: '55', name: 'Management of Companies and Enterprises', subsectors: [
-    { code: '551', name: 'Management of Companies and Enterprises' }
-  ]},
-  { code: '56', name: 'Administrative and Support and Waste Management Services', subsectors: [
-    { code: '561', name: 'Administrative and Support Services' },
-    { code: '562', name: 'Waste Management and Remediation Services' }
-  ]},
-  { code: '61', name: 'Educational Services', subsectors: [
-    { code: '611', name: 'Educational Services' }
-  ]},
-  { code: '62', name: 'Health Care and Social Assistance', subsectors: [
-    { code: '621', name: 'Ambulatory Health Care Services' },
-    { code: '622', name: 'Hospitals' },
-    { code: '623', name: 'Nursing and Residential Care Facilities' },
-    { code: '624', name: 'Social Assistance' }
-  ]},
-  { code: '71', name: 'Arts, Entertainment, and Recreation', subsectors: [
-    { code: '711', name: 'Performing Arts, Spectator Sports, and Related Industries' },
-    { code: '712', name: 'Museums, Historical Sites, and Similar Institutions' },
-    { code: '713', name: 'Amusement, Gambling, and Recreation Industries' }
-  ]},
-  { code: '72', name: 'Accommodation and Food Services', subsectors: [
-    { code: '721', name: 'Accommodation' },
-    { code: '722', name: 'Food Services and Drinking Places' }
-  ]},
-  { code: '81', name: 'Other Services (except Public Administration)', subsectors: [
-    { code: '811', name: 'Repair and Maintenance' },
-    { code: '812', name: 'Personal and Laundry Services' },
-    { code: '813', name: 'Religious, Grantmaking, Civic, Professional, and Similar Organizations' },
-    { code: '814', name: 'Private Households' }
-  ]},
-  { code: '92', name: 'Public Administration', subsectors: [
-    { code: '921', name: 'Executive, Legislative, and Other General Government Support' },
-    { code: '922', name: 'Justice, Public Order, and Safety Activities' },
-    { code: '923', name: 'Administration of Human Resource Programs' },
-    { code: '924', name: 'Administration of Environmental Quality Programs' },
-    { code: '925', name: 'Administration of Housing Programs, Urban Planning, and Community Development' },
-    { code: '926', name: 'Administration of Economic Programs' },
-    { code: '927', name: 'Space Research and Technology' },
-    { code: '928', name: 'National Security and International Affairs' }
-  ]}
-];
+
 
 const CENSUS_REGIONS = [
   {
@@ -201,6 +62,18 @@ export default function BuyerCriteriaForm({ userId }) {
   const navigate = useNavigate();
 
   const [expandedNaicsSectors, setExpandedNaicsSectors] = useState(new Set());
+
+  // NAICS data loaded from Supabase
+  const [naicsSectors, setNaicsSectors] = useState([]);
+  const [naicsLoading, setNaicsLoading] = useState(true);
+  const [naicsError, setNaicsError] = useState(null);
+
+  useEffect(() => {
+    fetchNaicsSectors()
+      .then(data => setNaicsSectors(data))
+      .catch(err => setNaicsError(err.message || 'Failed to load NAICS codes'))
+      .finally(() => setNaicsLoading(false));
+  }, []);
 
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -334,7 +207,7 @@ export default function BuyerCriteriaForm({ userId }) {
       } else {
         if (!updated.includes(subsectorCode)) updated.push(subsectorCode);
         // Check if all subsectors selected → also select parent
-        const sector = NAICS_SECTORS.find(s => s.code === sectorCode);
+        const sector = naicsSectors.find(s => s.code === sectorCode);
         if (sector && sector.subsectors.every(s => updated.includes(s.code))) {
           if (!updated.includes(sectorCode)) updated.push(sectorCode);
         }
@@ -801,75 +674,85 @@ export default function BuyerCriteriaForm({ userId }) {
                 )}
               </label>
               <div className="geo-tree" style={{ maxHeight: '320px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-                {NAICS_SECTORS.map((sector, sIdx) => {
-                  const isLastSector = sIdx === NAICS_SECTORS.length - 1;
-                  const allSubCodes = sector.subsectors.map(s => s.code);
-                  const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
-                  const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
-                  const isExpanded = expandedNaicsSectors.has(sector.code);
+                {naicsLoading ? (
+                  <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
+                    Loading NAICS codes...
+                  </div>
+                ) : naicsError ? (
+                  <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
+                    {naicsError}
+                  </div>
+                ) : (
+                  naicsSectors.map((sector, sIdx) => {
+                    const isLastSector = sIdx === naicsSectors.length - 1;
+                    const allSubCodes = sector.subsectors.map(s => s.code);
+                    const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
+                    const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
+                    const isExpanded = expandedNaicsSectors.has(sector.code);
 
-                  return (
-                    <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
-                      <div className="geo-row">
-                        <div
-                          className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
-                          onClick={() => handleNaicsSectorToggle(sector)}
-                        >
-                          {allSelected
-                            ? <CheckCircle2 size={12} />
-                            : someSelected
-                              ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                              : null
-                          }
+                    return (
+                      <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
+                        <div className="geo-row">
+                          <div
+                            className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
+                            onClick={() => handleNaicsSectorToggle(sector)}
+                          >
+                            {allSelected
+                              ? <CheckCircle2 size={12} />
+                              : someSelected
+                                ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                                : null
+                            }
+                          </div>
+                          <span
+                            className="geo-label-semi"
+                            style={{ fontSize: '0.875rem' }}
+                            onClick={() => handleNaicsSectorToggle(sector)}
+                          >
+                            <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
+                            {sector.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
+                            className="geo-toggle"
+                          >
+                            {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                          </button>
                         </div>
-                        <span
-                          className="geo-label-semi"
-                          style={{ fontSize: '0.875rem' }}
-                          onClick={() => handleNaicsSectorToggle(sector)}
-                        >
-                          <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
-                          {sector.name}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
-                          className="geo-toggle"
-                        >
-                          {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                        </button>
-                      </div>
 
-                      {isExpanded && (
-                        <div className="geo-children">
-                          {sector.subsectors.map((sub, ssIdx) => {
-                            const isLastSub = ssIdx === sector.subsectors.length - 1;
-                            const isSubSelected = formData.naics_codes.includes(sub.code);
-                            return (
-                              <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
-                                <div className="geo-row">
-                                  <div
-                                    className={`geo-check-sm ${isSubSelected ? 'checked' : ''}`}
-                                    onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
-                                  >
-                                    {isSubSelected && <CheckCircle2 size={10} />}
+                        {isExpanded && (
+                          <div className="geo-children">
+                            {sector.subsectors.map((sub, ssIdx) => {
+                              const isLastSub = ssIdx === sector.subsectors.length - 1;
+                              const isSubSelected = formData.naics_codes.includes(sub.code);
+                              return (
+                                <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
+                                  <div className="geo-row">
+                                    <div
+                                      className={`geo-check-sm ${isSubSelected ? 'checked' : ''}`}
+                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
+                                    >
+                                      {isSubSelected && <CheckCircle2 size={10} />}
+                                    </div>
+                                    <span
+                                      className={`geo-label-state ${isSubSelected ? 'selected' : ''}`}
+                                      style={{ fontSize: '0.875rem' }}
+                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
+                                    >
+                                      <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
+                                      {sub.name}
+                                    </span>
                                   </div>
-                                  <span
-                                    className={`geo-label-state ${isSubSelected ? 'selected' : ''}`}
-                                    style={{ fontSize: '0.875rem' }}
-                                    onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
-                                  >
-                                    <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
-                                    {sub.name}
-                                  </span>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </div>
           </div>
