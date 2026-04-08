@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors } from '../services/naicsService';
+import { fetchGeographyTree } from '../services/geographyService';
 import { 
   Target, 
   Map, 
@@ -21,45 +22,25 @@ import {
 
 
 
-const CENSUS_REGIONS = [
-  {
-    name: 'Northeast',
-    divisions: [
-      { name: 'New England', states: ['Connecticut', 'Maine', 'Massachusetts', 'New Hampshire', 'Rhode Island', 'Vermont'] },
-      { name: 'Middle Atlantic', states: ['New Jersey', 'New York', 'Pennsylvania'] }
-    ]
-  },
-  {
-    name: 'Midwest',
-    divisions: [
-      { name: 'East North Central', states: ['Illinois', 'Indiana', 'Michigan', 'Ohio', 'Wisconsin'] },
-      { name: 'West North Central', states: ['Iowa', 'Kansas', 'Minnesota', 'Missouri', 'Nebraska', 'North Dakota', 'South Dakota'] }
-    ]
-  },
-  {
-    name: 'South',
-    divisions: [
-      { name: 'South Atlantic', states: ['Delaware', 'Florida', 'Georgia', 'Maryland', 'North Carolina', 'South Carolina', 'Virginia', 'District of Columbia', 'West Virginia'] },
-      { name: 'East South Central', states: ['Alabama', 'Kentucky', 'Mississippi', 'Tennessee'] },
-      { name: 'West South Central', states: ['Arkansas', 'Louisiana', 'Oklahoma', 'Texas'] }
-    ]
-  },
-  {
-    name: 'West',
-    divisions: [
-      { name: 'Mountain', states: ['Arizona', 'Colorado', 'Idaho', 'Montana', 'Nevada', 'New Mexico', 'Utah', 'Wyoming'] },
-      { name: 'Pacific', states: ['Alaska', 'California', 'Hawaii', 'Oregon', 'Washington'] }
-    ]
-  }
-];
+
 
 export default function BuyerCriteriaForm({ userId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [expandedRegions, setExpandedRegions] = useState(new Set());
-  const [expandedDivisions, setExpandedDivisions] = useState(new Set());
-  const [isUSAExpanded, setIsUSAExpanded] = useState(false);
+  const [expandedCountries, setExpandedCountries] = useState(new Set());
   const navigate = useNavigate();
+
+  // Geography data loaded from Supabase
+  const [geoTree, setGeoTree] = useState([]);
+  const [geoLoading, setGeoLoading] = useState(true);
+  const [geoError, setGeoError] = useState(null);
+
+  useEffect(() => {
+    fetchGeographyTree()
+      .then(data => setGeoTree(data))
+      .catch(err => setGeoError(err.message || 'Failed to load geography data'))
+      .finally(() => setGeoLoading(false));
+  }, []);
 
   const [expandedNaicsSectors, setExpandedNaicsSectors] = useState(new Set());
 
@@ -244,16 +225,14 @@ export default function BuyerCriteriaForm({ userId }) {
     }));
   };
 
-  const allUSAStates = CENSUS_REGIONS.flatMap(r => r.divisions.flatMap(d => d.states));
-  
-  const handleUSAToggle = () => {
+  const handleCountryToggle = (country) => {
     setFormData(prev => {
-      const allSelected = allUSAStates.every(s => prev.locations.includes(s));
+      const allSelected = country.states.every(s => prev.locations.includes(s));
       let newLocations = [...prev.locations];
       if (allSelected) {
-        newLocations = newLocations.filter(s => !allUSAStates.includes(s));
+        newLocations = newLocations.filter(s => !country.states.includes(s));
       } else {
-        allUSAStates.forEach(s => {
+        country.states.forEach(s => {
           if (!newLocations.includes(s)) newLocations.push(s);
         });
       }
@@ -261,56 +240,12 @@ export default function BuyerCriteriaForm({ userId }) {
     });
   };
 
-  const handleDivisionToggle = (division) => {
-    const states = division.states;
-    setFormData(prev => {
-      const allSelected = states.every(s => prev.locations.includes(s));
-      let newLocations = [...prev.locations];
-      
-      if (allSelected) {
-        newLocations = newLocations.filter(s => !states.includes(s));
-      } else {
-        states.forEach(s => {
-          if (!newLocations.includes(s)) newLocations.push(s);
-        });
-      }
-      return { ...prev, locations: newLocations };
-    });
-  };
-
-  const handleRegionToggle = (region) => {
-    const allStates = region.divisions.flatMap(d => d.states);
-    setFormData(prev => {
-      const allSelected = allStates.every(s => prev.locations.includes(s));
-      let newLocations = [...prev.locations];
-      
-      if (allSelected) {
-        newLocations = newLocations.filter(s => !allStates.includes(s));
-      } else {
-        allStates.forEach(s => {
-          if (!newLocations.includes(s)) newLocations.push(s);
-        });
-      }
-      return { ...prev, locations: newLocations };
-    });
-  };
-
-  const toggleRegionExpand = (e, regionName) => {
+  const toggleCountryExpand = (e, countryCode) => {
     e.stopPropagation();
-    setExpandedRegions(prev => {
+    setExpandedCountries(prev => {
       const next = new Set(prev);
-      if (next.has(regionName)) next.delete(regionName);
-      else next.add(regionName);
-      return next;
-    });
-  };
-
-  const toggleDivisionExpand = (e, divisionName) => {
-    e.stopPropagation();
-    setExpandedDivisions(prev => {
-      const next = new Set(prev);
-      if (next.has(divisionName)) next.delete(divisionName);
-      else next.add(divisionName);
+      if (next.has(countryCode)) next.delete(countryCode);
+      else next.add(countryCode);
       return next;
     });
   };
@@ -506,139 +441,77 @@ export default function BuyerCriteriaForm({ userId }) {
           </div>
 
           <div className="geo-tree">
-            {/* Root Node: USA */}
-            <div className="geo-row">
-              <div 
-                className={`geo-check ${
-                  allUSAStates.every(s => formData.locations.includes(s)) ? 'checked' : 
-                  allUSAStates.some(s => formData.locations.includes(s)) ? 'partial' : ''
-                }`}
-                onClick={(e) => { e.stopPropagation(); handleUSAToggle(); }}
-              >
-                {allUSAStates.every(s => formData.locations.includes(s)) 
-                  ? <CheckCircle2 size={14} />
-                  : allUSAStates.some(s => formData.locations.includes(s))
-                    ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                    : null
-                }
+            {geoLoading ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
+                Loading geography data...
               </div>
-              <Globe size={18} className="geo-globe" />
-              <span className="geo-label-bold" onClick={() => handleUSAToggle()}>United States of America</span>
-              <button 
-                type="button" 
-                onClick={(e) => { e.stopPropagation(); setIsUSAExpanded(!isUSAExpanded); }}
-                className="geo-toggle"
-              >
-                {isUSAExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-              </button>
-            </div>
+            ) : geoError ? (
+              <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
+                {geoError}
+              </div>
+            ) : (
+              geoTree.map((country, cIdx) => {
+                const isLastCountry = cIdx === geoTree.length - 1;
+                const allSelected = country.states.every(s => formData.locations.includes(s));
+                const someSelected = country.states.some(s => formData.locations.includes(s)) && !allSelected;
+                const isExpanded = expandedCountries.has(country.code);
 
-            {isUSAExpanded && (
-              <div className="geo-children">
-                {CENSUS_REGIONS.map((region, rIdx) => {
-                  const isLastRegion = rIdx === CENSUS_REGIONS.length - 1;
-                  const regionStates = region.divisions.flatMap(d => d.states);
-                  const allSelected = regionStates.every(s => formData.locations.includes(s));
-                  const someSelected = regionStates.some(s => formData.locations.includes(s)) && !allSelected;
-                  const isExpanded = expandedRegions.has(region.name);
-
-                  return (
-                    <div key={region.name} className={`geo-branch ${isLastRegion ? 'geo-branch-last' : ''}`}>
-                      <div className="geo-row">
-                        <div 
-                          className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
-                          onClick={() => handleRegionToggle(region)}
-                        >
-                          {allSelected 
-                            ? <CheckCircle2 size={12} />
-                            : someSelected
-                              ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                              : null
-                          }
-                        </div>
-                        <span className="geo-label-semi" onClick={() => handleRegionToggle(region)}>
-                          {region.name}
-                        </span>
-                        <button 
-                          type="button" 
-                          onClick={(e) => toggleRegionExpand(e, region.name)}
-                          className="geo-toggle"
-                        >
-                          {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                        </button>
+                return (
+                  <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
+                    <div className="geo-row">
+                      <div
+                        className={`geo-check ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); handleCountryToggle(country); }}
+                      >
+                        {allSelected
+                          ? <CheckCircle2 size={14} />
+                          : someSelected
+                            ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                            : null
+                        }
                       </div>
-
-                      {isExpanded && (
-                        <div className="geo-children">
-                          {region.divisions.map((division, dIdx) => {
-                            const isLastDev = dIdx === region.divisions.length - 1;
-                            const divisionStates = division.states;
-                            const dAllSelected = divisionStates.every(s => formData.locations.includes(s));
-                            const dSomeSelected = divisionStates.some(s => formData.locations.includes(s)) && !dAllSelected;
-                            const isDivExpanded = expandedDivisions.has(division.name);
-
-                            return (
-                              <div key={division.name} className={`geo-branch ${isLastDev ? 'geo-branch-last' : ''}`}>
-                                <div className="geo-row">
-                                  <div 
-                                    className={`geo-check-sm ${dAllSelected ? 'checked' : dSomeSelected ? 'partial' : ''}`}
-                                    onClick={() => handleDivisionToggle(division)}
-                                  >
-                                    {dAllSelected 
-                                      ? <CheckCircle2 size={12} />
-                                      : dSomeSelected
-                                        ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                        : null
-                                    }
-                                  </div>
-                                  <span className="geo-label" onClick={() => handleDivisionToggle(division)}>
-                                    {division.name}
-                                  </span>
-                                  <button 
-                                    type="button" 
-                                    onClick={(e) => toggleDivisionExpand(e, division.name)}
-                                    className="geo-toggle"
-                                  >
-                                    {isDivExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                  </button>
-                                </div>
-
-                                {isDivExpanded && (
-                                  <div className="geo-children">
-                                    {division.states.map((stateName, sIdx) => {
-                                      const isLastState = sIdx === division.states.length - 1;
-                                      const isStateSelected = formData.locations.includes(stateName);
-
-                                      return (
-                                        <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
-                                          <div className="geo-row">
-                                            <div 
-                                              className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
-                                              onClick={() => handleStateToggle(stateName)}
-                                            >
-                                              {isStateSelected && <CheckCircle2 size={10} />}
-                                            </div>
-                                            <span 
-                                              className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
-                                              onClick={() => handleStateToggle(stateName)}
-                                            >
-                                              {stateName}
-                                            </span>
-                                          </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
+                      <Globe size={18} className="geo-globe" />
+                      <span className="geo-label-bold" onClick={() => handleCountryToggle(country)}>
+                        {country.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={(e) => toggleCountryExpand(e, country.code)}
+                        className="geo-toggle"
+                      >
+                        {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      </button>
                     </div>
-                  );
-                })}
-              </div>
+
+                    {isExpanded && (
+                      <div className="geo-children">
+                        {country.states.map((stateName, sIdx) => {
+                          const isLastState = sIdx === country.states.length - 1;
+                          const isStateSelected = formData.locations.includes(stateName);
+                          return (
+                            <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                              <div className="geo-row">
+                                <div
+                                  className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
+                                  onClick={() => handleStateToggle(stateName)}
+                                >
+                                  {isStateSelected && <CheckCircle2 size={10} />}
+                                </div>
+                                <span
+                                  className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
+                                  onClick={() => handleStateToggle(stateName)}
+                                >
+                                  {stateName}
+                                </span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })
             )}
           </div>
         </div>
