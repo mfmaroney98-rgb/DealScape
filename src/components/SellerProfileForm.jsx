@@ -445,7 +445,6 @@ export default function SellerProfileForm({ userId }) {
                                 : null
                             }
                           </div>
-                          <Globe size={18} className="geo-globe" />
                           <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
                             {continent.name}
                           </span>

@@ -52,11 +52,15 @@ export async function fetchGeographyTree() {
 
   if (countriesError) throw countriesError;
 
+  // Military postal codes to exclude from US
+  const US_EXCLUDED_STATES = new Set(['AA', 'AE', 'AP']);
+
   // Build continent → countries map, skipping countries with no states
   const continentMap = {};
   for (const country of countries) {
     const countryStates = states
       .filter(s => s.country_code === country.code)
+      .filter(s => !(country.code === 'US' && US_EXCLUDED_STATES.has(s.name)))
       .map(s => s.name);
 
     if (countryStates.length === 0) continue; // skip countries with no state data
