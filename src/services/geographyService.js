@@ -70,6 +70,9 @@ export async function fetchGeographyTree() {
     });
   }
 
+  // Countries to pin to the top of their continent (rest stay alphabetical)
+  const PINNED_FIRST = { 'North America': ['US'] };
+
   // Return in a defined continent order
   const CONTINENT_ORDER = [
     'North America', 'South America', 'Europe', 'Africa',
@@ -78,6 +81,13 @@ export async function fetchGeographyTree() {
 
   return CONTINENT_ORDER
     .filter(name => continentMap[name])
-    .map(name => ({ name, countries: continentMap[name] }));
+    .map(name => {
+      const pinned = PINNED_FIRST[name] || [];
+      const countries = [
+        ...pinned.map(code => continentMap[name].find(c => c.code === code)).filter(Boolean),
+        ...continentMap[name].filter(c => !pinned.includes(c.code))
+      ];
+      return { name, countries };
+    });
 }
 

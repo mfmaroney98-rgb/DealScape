@@ -415,7 +415,7 @@ export default function SellerProfileForm({ userId }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
               <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Business Location</label>
-              <div className="geo-tree">
+              <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                 {geoLoading ? (
                   <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
                     Loading geography data...

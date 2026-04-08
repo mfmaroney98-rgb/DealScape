@@ -465,7 +465,7 @@ export default function BuyerCriteriaForm({ userId }) {
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Geographical Focus</h2>
           </div>
 
-          <div className="geo-tree">
+          <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
             {geoLoading ? (
               <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
                 Loading geography data...
