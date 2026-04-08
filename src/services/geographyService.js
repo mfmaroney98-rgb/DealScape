@@ -31,30 +31,53 @@ async function fetchAllStates() {
 }
 
 /**
- * Fetches all countries and their states from Supabase.
- * Returns an array shaped like:
+ * Fetches all countries (with continent) and their states from Supabase,
+ * returning a 3-level hierarchy:
  * [
- *   { code: 'US', name: 'United States', states: ['Alabama', 'Alaska', ...] },
- *   { code: 'CA', name: 'Canada', states: ['Alberta', 'British Columbia', ...] },
+ *   {
+ *     name: 'North America',
+ *     countries: [
+ *       { code: 'US', name: 'United States', states: ['Alabama', ...] },
+ *       ...
+ *     ]
+ *   },
  *   ...
  * ]
- * Only countries that have at least one state entry are returned.
  */
 export async function fetchGeographyTree() {
   const [{ data: countries, error: countriesError }, states] = await Promise.all([
-    supabase.from('global_countries').select('code, name').order('name'),
+    supabase.from('global_countries').select('code, name, continent').order('name'),
     fetchAllStates()
   ]);
 
   if (countriesError) throw countriesError;
 
-  return countries
-    .map(country => ({
+  // Build continent → countries map, skipping countries with no states
+  const continentMap = {};
+  for (const country of countries) {
+    const countryStates = states
+      .filter(s => s.country_code === country.code)
+      .map(s => s.name);
+
+    if (countryStates.length === 0) continue; // skip countries with no state data
+
+    const continentName = country.continent || 'Other';
+    if (!continentMap[continentName]) continentMap[continentName] = [];
+    continentMap[continentName].push({
       code: country.code,
       name: country.name,
-      states: states
-        .filter(s => s.country_code === country.code)
-        .map(s => s.name)
-    }))
-    .filter(c => c.states.length > 0);
+      states: countryStates
+    });
+  }
+
+  // Return in a defined continent order
+  const CONTINENT_ORDER = [
+    'North America', 'South America', 'Europe', 'Africa',
+    'Asia', 'Oceania', 'Antarctica', 'Other'
+  ];
+
+  return CONTINENT_ORDER
+    .filter(name => continentMap[name])
+    .map(name => ({ name, countries: continentMap[name] }));
 }
+

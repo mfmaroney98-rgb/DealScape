@@ -27,6 +27,7 @@ import {
 export default function BuyerCriteriaForm({ userId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [expandedContinents, setExpandedContinents] = useState(new Set());
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const navigate = useNavigate();
 
@@ -250,6 +251,30 @@ export default function BuyerCriteriaForm({ userId }) {
     });
   };
 
+  const handleContinentToggle = (continent) => {
+    const allStates = continent.countries.flatMap(c => c.states);
+    setFormData(prev => {
+      const allSelected = allStates.every(s => prev.locations.includes(s));
+      let newLocations = [...prev.locations];
+      if (allSelected) {
+        newLocations = newLocations.filter(s => !allStates.includes(s));
+      } else {
+        allStates.forEach(s => { if (!newLocations.includes(s)) newLocations.push(s); });
+      }
+      return { ...prev, locations: newLocations };
+    });
+  };
+
+  const toggleContinentExpand = (e, continentName) => {
+    e.stopPropagation();
+    setExpandedContinents(prev => {
+      const next = new Set(prev);
+      if (next.has(continentName)) next.delete(continentName);
+      else next.add(continentName);
+      return next;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -450,60 +475,100 @@ export default function BuyerCriteriaForm({ userId }) {
                 {geoError}
               </div>
             ) : (
-              geoTree.map((country, cIdx) => {
-                const isLastCountry = cIdx === geoTree.length - 1;
-                const allSelected = country.states.every(s => formData.locations.includes(s));
-                const someSelected = country.states.some(s => formData.locations.includes(s)) && !allSelected;
-                const isExpanded = expandedCountries.has(country.code);
+              geoTree.map((continent, coIdx) => {
+                const isLastContinent = coIdx === geoTree.length - 1;
+                const allContinentStates = continent.countries.flatMap(c => c.states);
+                const allContSelected = allContinentStates.every(s => formData.locations.includes(s));
+                const someContSelected = allContinentStates.some(s => formData.locations.includes(s)) && !allContSelected;
+                const isContExpanded = expandedContinents.has(continent.name);
 
                 return (
-                  <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
+                  <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
                     <div className="geo-row">
                       <div
-                        className={`geo-check ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
-                        onClick={(e) => { e.stopPropagation(); handleCountryToggle(country); }}
+                        className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
                       >
-                        {allSelected
+                        {allContSelected
                           ? <CheckCircle2 size={14} />
-                          : someSelected
+                          : someContSelected
                             ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
                             : null
                         }
                       </div>
                       <Globe size={18} className="geo-globe" />
-                      <span className="geo-label-bold" onClick={() => handleCountryToggle(country)}>
-                        {country.name}
+                      <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
+                        {continent.name}
                       </span>
                       <button
                         type="button"
-                        onClick={(e) => toggleCountryExpand(e, country.code)}
+                        onClick={(e) => toggleContinentExpand(e, continent.name)}
                         className="geo-toggle"
                       >
-                        {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                        {isContExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                       </button>
                     </div>
 
-                    {isExpanded && (
+                    {isContExpanded && (
                       <div className="geo-children">
-                        {country.states.map((stateName, sIdx) => {
-                          const isLastState = sIdx === country.states.length - 1;
-                          const isStateSelected = formData.locations.includes(stateName);
+                        {continent.countries.map((country, cIdx) => {
+                          const isLastCountry = cIdx === continent.countries.length - 1;
+                          const allCtrySelected = country.states.every(s => formData.locations.includes(s));
+                          const someCtrySelected = country.states.some(s => formData.locations.includes(s)) && !allCtrySelected;
+                          const isCtryExpanded = expandedCountries.has(country.code);
+
                           return (
-                            <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                            <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
                               <div className="geo-row">
                                 <div
-                                  className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
-                                  onClick={() => handleStateToggle(stateName)}
+                                  className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
+                                  onClick={() => handleCountryToggle(country)}
                                 >
-                                  {isStateSelected && <CheckCircle2 size={10} />}
+                                  {allCtrySelected
+                                    ? <CheckCircle2 size={12} />
+                                    : someCtrySelected
+                                      ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                                      : null
+                                  }
                                 </div>
-                                <span
-                                  className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
-                                  onClick={() => handleStateToggle(stateName)}
-                                >
-                                  {stateName}
+                                <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>
+                                  {country.name}
                                 </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => toggleCountryExpand(e, country.code)}
+                                  className="geo-toggle"
+                                >
+                                  {isCtryExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                </button>
                               </div>
+
+                              {isCtryExpanded && (
+                                <div className="geo-children">
+                                  {country.states.map((stateName, sIdx) => {
+                                    const isLastState = sIdx === country.states.length - 1;
+                                    const isStateSelected = formData.locations.includes(stateName);
+                                    return (
+                                      <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                        <div className="geo-row">
+                                          <div
+                                            className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
+                                            onClick={() => handleStateToggle(stateName)}
+                                          >
+                                            {isStateSelected && <CheckCircle2 size={10} />}
+                                          </div>
+                                          <span
+                                            className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
+                                            onClick={() => handleStateToggle(stateName)}
+                                          >
+                                            {stateName}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
