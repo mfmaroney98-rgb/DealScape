@@ -63,7 +63,7 @@ export default function SellerProfileForm({ userId }) {
     is_family_owned: false,
     is_operator_owned: false,
     pref_transaction_type: [],
-    financials: {
+    financial_history: {
       '2023': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
       '2024': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
       '2025': { revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
@@ -119,10 +119,10 @@ export default function SellerProfileForm({ userId }) {
 
     setFormData(prev => ({
       ...prev,
-      financials: {
-        ...prev.financials,
+      financial_history: {
+        ...prev.financial_history,
         [year]: {
-          ...prev.financials[year],
+          ...prev.financial_history[year],
           [field]: numValue
         }
       }
@@ -132,10 +132,10 @@ export default function SellerProfileForm({ userId }) {
   const handleFinancialDateChange = (dateValue) => {
     setFormData(prev => ({
       ...prev,
-      financials: {
-        ...prev.financials,
+      financial_history: {
+        ...prev.financial_history,
         LTM: {
-          ...prev.financials.LTM,
+          ...prev.financial_history.LTM,
           date: dateValue
         }
       }
@@ -230,17 +230,17 @@ export default function SellerProfileForm({ userId }) {
       setFormData(prev => ({
         ...prev,
         ...mockData,
-        financials: {
-          ...prev.financials,
+        financial_history: {
+          ...prev.financial_history,
           'LTM': {
-            ...prev.financials['LTM'],
+            ...prev.financial_history['LTM'],
             revenue: 24500000,
             ebitda: 4200000,
           }
         }
       }));
 
-      setAutoFilledFields(new Set([...Object.keys(mockData), 'financials']));
+      setAutoFilledFields(new Set([...Object.keys(mockData), 'financial_history']));
       setAutoFilledTags(mockData.industry_codes);
       setIsParsing(false);
     }, 2000);
@@ -594,7 +594,7 @@ export default function SellerProfileForm({ userId }) {
                         style={{ textAlign: 'right' }}
                         className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs mt-1"
                         placeholder="Enter Date"
-                        value={formData.financials.LTM.date}
+                        value={formData.financial_history.LTM.date}
                         onChange={(e) => handleFinancialDateChange(e.target.value)}
                       />
                     </div>
@@ -606,7 +606,7 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td className="p-2 pt-4 font-bold text-slate-200">Revenue</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const rev = formData.financials[year].revenue;
+                    const rev = formData.financial_history[year].revenue;
                     return (
                       <td key={year} className="px-4 py-2 pt-4 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -635,10 +635,10 @@ export default function SellerProfileForm({ userId }) {
                     );
 
                     if (!isFocused) {
-                      if (year === '2024' && formData.financials['2023'].revenue) {
-                        yoy = Math.round(((formData.financials['2024'].revenue - formData.financials['2023'].revenue) / formData.financials['2023'].revenue) * 100);
-                      } else if (year === '2025' && formData.financials['2024'].revenue) {
-                        yoy = Math.round(((formData.financials['2025'].revenue - formData.financials['2024'].revenue) / formData.financials['2024'].revenue) * 100);
+                      if (year === '2024' && formData.financial_history['2023'].revenue) {
+                        yoy = Math.round(((formData.financial_history['2024'].revenue - formData.financial_history['2023'].revenue) / formData.financial_history['2023'].revenue) * 100);
+                      } else if (year === '2025' && formData.financial_history['2024'].revenue) {
+                        yoy = Math.round(((formData.financial_history['2025'].revenue - formData.financial_history['2024'].revenue) / formData.financial_history['2024'].revenue) * 100);
                       }
                     }
                     return (
@@ -653,7 +653,7 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Gross Profit</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].gross_profit;
+                    const val = formData.financial_history[year].gross_profit;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -674,8 +674,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Gross Profit Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].gross_profit;
-                    const rev = formData.financials[year].revenue;
+                    const val = formData.financial_history[year].gross_profit;
+                    const rev = formData.financial_history[year].revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'gross_profit' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -690,7 +690,7 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBITDA</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].ebitda;
+                    const val = formData.financial_history[year].ebitda;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -711,8 +711,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBITDA Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].ebitda;
-                    const rev = formData.financials[year].revenue;
+                    const val = formData.financial_history[year].ebitda;
+                    const rev = formData.financial_history[year].revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebitda' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -727,7 +727,7 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBIT</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].ebit;
+                    const val = formData.financial_history[year].ebit;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -748,8 +748,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBIT Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].ebit;
-                    const rev = formData.financials[year].revenue;
+                    const val = formData.financial_history[year].ebit;
+                    const rev = formData.financial_history[year].revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebit' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -764,7 +764,7 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Net Income</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].net_income;
+                    const val = formData.financial_history[year].net_income;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -785,8 +785,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Net Income Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financials[year].net_income;
-                    const rev = formData.financials[year].revenue;
+                    const val = formData.financial_history[year].net_income;
+                    const rev = formData.financial_history[year].revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'net_income' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
