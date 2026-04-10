@@ -7,15 +7,15 @@ export const sellerService = {
   /**
    * Fetches the listing for a specific seller.
    */
-  async getListing(userId) {
+  async getListings(userId) {
     const { data, error } = await supabase
       .from('sellers')
       .select('*')
       .eq('user_id', userId)
-      .single();
+      .order('created_at', { ascending: false });
 
-    if (error && error.code !== 'PGRST116') throw error;
-    return data;
+    if (error) throw error;
+    return data || [];
   },
 
   /**

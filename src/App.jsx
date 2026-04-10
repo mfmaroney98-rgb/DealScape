@@ -6,6 +6,7 @@ import { sellerService } from './services/sellerService';
 import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
+import SellerListings from './components/SellerListings';
 import Navbar from './components/Navbar';
 import {
   TrendingUp,
@@ -195,7 +196,7 @@ const Signup = () => {
   );
 };
 
-const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, secondaryAction, secondaryTo }) => (
+const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, activeTo, secondaryAction, secondaryTo }) => (
   <div className={`glass p-10 rounded-3xl border ${active ? 'border-slate-800' : 'border-indigo-500/30'} text-center flex flex-col items-center group ${!active ? 'hover:border-indigo-500/50' : ''} transition-all duration-500`}>
     <div className={`w-16 h-16 ${active ? 'bg-emerald-500/10' : 'bg-indigo-500/10'} rounded-2xl mb-6 flex items-center justify-center ${!active ? 'group-hover:scale-110' : ''} transition-transform`}>
       {active ? <CheckCircle2 className="text-emerald-400" size={32} /> : <Icon className="text-indigo-400" size={32} />}
@@ -206,7 +207,13 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
     </p>
     {active ? (
       <div className="flex flex-col gap-3 w-full">
-        <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
+        {activeTo ? (
+          <Link to={activeTo} className="btn-secondary w-full flex items-center justify-center text-sm py-4">
+            {buttonText || 'View'}
+          </Link>
+        ) : (
+          <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
+        )}
         {secondaryAction && secondaryTo && (
           <Link
             to={secondaryTo}
@@ -258,8 +265,9 @@ const SellerDashboard = ({ hasListing }) => (
         icon={PlusCircle}
         to="/onboarding/seller"
         active={hasListing}
-        activeText="Listing Active"
-        buttonText="View Listing"
+        activeText="Listings Active"
+        buttonText="View Listings"
+        activeTo="/dashboard/seller/listings"
         secondaryAction="Create New Profile"
         secondaryTo="/onboarding/seller"
       />
@@ -363,8 +371,8 @@ function App() {
           setProfile(userProfile);
 
           if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
-            const listing = await sellerService.getListing(session.user.id);
-            setHasListing(!!listing);
+            const listings = await sellerService.getListings(session.user.id);
+            setHasListing(listings && listings.length > 0);
           }
 
           if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
@@ -390,8 +398,8 @@ function App() {
         setProfile(userProfile);
 
         if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
-          const listing = await sellerService.getListing(session.user.id);
-          setHasListing(!!listing);
+          const listings = await sellerService.getListings(session.user.id);
+          setHasListing(listings && listings.length > 0);
         }
 
         if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
@@ -449,6 +457,20 @@ function App() {
               session ? (
                 (profile?.role === 'seller' || profile?.role === 'corporate') ? (
                   <SellerDashboard hasListing={hasListing} />
+                ) : (
+                  <Navigate to="/dashboard/buyer" replace />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/dashboard/seller/listings"
+            element={
+              session ? (
+                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                  <SellerListings />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )
