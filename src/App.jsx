@@ -227,8 +227,76 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
   </div>
 );
 
-const Dashboard = ({ hasListing, hasCriteria, role }) => {
-  const isCorporate = role === 'corporate';
+const MessagesCard = () => (
+  <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
+    <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
+      <Mail className="text-slate-400" size={32} />
+    </div>
+    <h3 className="text-2xl font-bold mb-3">Messages</h3>
+    <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+      Communicate securely with other members of the ecosystem.
+    </p>
+    <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
+  </div>
+);
+
+const SellerDashboard = ({ hasListing }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
+    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
+    </div>
+    <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
+      Workspace
+    </div>
+    <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
+      Seller Dashboard
+    </h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+      <DashboardActionCard
+        title="Seller Listing"
+        subtitle="List your business and start finding buyers today."
+        icon={PlusCircle}
+        to="/onboarding/seller"
+        active={hasListing}
+        activeText="Listing Active"
+        buttonText="View Listing"
+        secondaryAction="Create New Profile"
+        secondaryTo="/onboarding/seller"
+      />
+      <MessagesCard />
+    </div>
+  </div>
+);
+
+const BuyerDashboard = ({ hasCriteria }) => (
+  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
+    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+    </div>
+    <div className="mb-2 px-4 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
+      Workspace
+    </div>
+    <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
+      Buyer Dashboard
+    </h1>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+      <DashboardActionCard
+        title="Buyer Criteria"
+        subtitle="Define what you're looking for to receive deals."
+        icon={PlusCircle}
+        to="/onboarding/buyer"
+        active={hasCriteria}
+        activeText="Criteria Set"
+        buttonText="Update Criteria"
+      />
+      <MessagesCard />
+    </div>
+  </div>
+);
+
+const RootDashboardDispatcher = ({ role }) => {
+  if (role === 'seller') return <Navigate to="/dashboard/seller" replace />;
+  if (role === 'buyer') return <Navigate to="/dashboard/buyer" replace />;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
@@ -241,46 +309,30 @@ const Dashboard = ({ hasListing, hasCriteria, role }) => {
         Welcome Back
       </div>
       <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
-        Overview
+        Select Workspace
       </h1>
 
-      <div className={`grid grid-cols-1 ${isCorporate ? 'lg:grid-cols-3' : 'md:grid-cols-2'} gap-6 w-full max-w-6xl mx-auto`}>
-        {(isCorporate || role === 'seller') && (
-          <DashboardActionCard
-            title="Seller Listing"
-            subtitle="List your business and start finding buyers today."
-            icon={PlusCircle}
-            to="/onboarding/seller"
-            active={hasListing}
-            activeText="Listing Active"
-            buttonText="View Listing"
-            secondaryAction="Create New Profile"
-            secondaryTo="/onboarding/seller"
-          />
-        )}
-
-        {(isCorporate || role === 'buyer') && (
-          <DashboardActionCard
-            title="Buyer Criteria"
-            subtitle="Define what you're looking for to receive deals."
-            icon={PlusCircle}
-            to="/onboarding/buyer"
-            active={hasCriteria}
-            activeText="Criteria Set"
-            buttonText="Update Criteria"
-          />
-        )}
-
-        <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
-          <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
-            <Mail className="text-slate-400" size={32} />
-          </div>
-          <h3 className="text-2xl font-bold mb-3">Messages</h3>
-          <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-            Communicate securely with other members of the ecosystem.
-          </p>
-          <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto mt-8">
+        <Link to="/dashboard/seller" className="glass p-10 rounded-3xl border border-indigo-500/30 text-center flex flex-col items-center group hover:border-indigo-500/60 transition-all duration-300">
+           <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
+             <PlusCircle className="text-indigo-400" size={32} />
+           </div>
+           <h3 className="text-2xl font-bold mb-3">Seller Dashboard</h3>
+           <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+             Manage your seller profile, listings, and receive buyer matches.
+           </p>
+           <span className="btn-primary w-full flex items-center justify-center gap-2 py-4">Enter Workspace <ArrowRight size={18} /></span>
+        </Link>
+        <Link to="/dashboard/buyer" className="glass p-10 rounded-3xl border border-emerald-500/30 text-center flex flex-col items-center group hover:border-emerald-500/60 transition-all duration-300">
+           <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
+             <PlusCircle className="text-emerald-400" size={32} />
+           </div>
+           <h3 className="text-2xl font-bold mb-3">Buyer Dashboard</h3>
+           <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+             Define investment criteria and browse curated seller listings.
+           </p>
+           <span className="btn-primary w-full flex items-center justify-center gap-2 py-4">Enter Workspace <ArrowRight size={18} /></span>
+        </Link>
       </div>
     </div>
   );
@@ -385,11 +437,35 @@ function App() {
             path="/dashboard"
             element={
               session ? (
-                <Dashboard
-                  hasListing={hasListing}
-                  hasCriteria={hasCriteria}
-                  role={profile?.role || 'seller'}
-                />
+                <RootDashboardDispatcher role={profile?.role || 'seller'} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/dashboard/seller"
+            element={
+              session ? (
+                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                  <SellerDashboard hasListing={hasListing} />
+                ) : (
+                  <Navigate to="/dashboard/buyer" replace />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/dashboard/buyer"
+            element={
+              session ? (
+                (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
+                  <BuyerDashboard hasCriteria={hasCriteria} />
+                ) : (
+                  <Navigate to="/dashboard/seller" replace />
+                )
               ) : (
                 <Navigate to="/" />
               )
