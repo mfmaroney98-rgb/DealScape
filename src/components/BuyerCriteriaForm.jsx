@@ -364,11 +364,22 @@ export default function BuyerCriteriaForm({ userId }) {
                 onChange={handleChange}
               >
                 <option value="" disabled>Select buyer type...</option>
-                <option value="Strategic">Strategic</option>
-                <option value="Private Equity">Private Equity</option>
+                <option value="PE Firm">PE Firm</option>
+                <option value="Independent Sponsor / Fundless Sponsor">Independent Sponsor / Fundless Sponsor</option>
+                <option value="Search Fund">Search Fund</option>
+                <option value="Growth Equity Firm">Growth Equity Firm</option>
+                <option value="Venture Capital Firm">Venture Capital Firm</option>
+                <option value="Strategic Acquirer (Public)">Strategic Acquirer (Public)</option>
+                <option value="Strategic Acquirer (Private / PE Owned)">Strategic Acquirer (Private / PE Owned)</option>
                 <option value="Family Office">Family Office</option>
-                <option value="Individual">Individual</option>
-                <option value="Other">Other</option>
+                <option value="High Net Worth Individual">High Net Worth Individual</option>
+                <option value="Entrepreneur via Acquisition (ETA)">Entrepreneur via Acquisition (ETA)</option>
+                <option value="Mezzanine Fund">Mezzanine Fund</option>
+                <option value="BDC">BDC</option>
+                <option value="Direct Lending Fund">Direct Lending Fund</option>
+                <option value="Distressed Debt Fund">Distressed Debt Fund</option>
+                <option value="Holding Company">Holding Company</option>
+                <option value="Sovereign Wealth Fund">Sovereign Wealth Fund</option>
               </select>
             </div>
           </div>
