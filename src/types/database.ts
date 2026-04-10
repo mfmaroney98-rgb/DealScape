@@ -31,7 +31,7 @@ export interface Seller {
   year_founded?: string;
   employees_count?: number;
   keywords: string[];
-  company_type?: string;
+  legal_entity?: string;
   ownership_structure?: string;
 
   // Metadata

@@ -55,7 +55,7 @@ export default function SellerProfileForm({ userId }) {
     year_founded: '',
     employees_count: '',
     keywords: [],
-    company_type: '',
+    legal_entity: '',
     ownership_structure: '',
     is_founder_owned: false,
     is_female_owned: false,
@@ -223,7 +223,7 @@ export default function SellerProfileForm({ userId }) {
     setTimeout(() => {
       const mockData = {
         employees_count: '145',
-        company_type: 'LLC',
+        legal_entity: 'LLC',
         keywords: ['Manufacturing', 'Industrial', 'B2B']
       };
 
@@ -514,15 +514,38 @@ export default function SellerProfileForm({ userId }) {
                 </div>
               </div>
 
-              <div>
-                <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
-                <select name="ownership_structure" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
-                  <option value="">Select Ownership</option>
-                  <option value="Private Company">Private Company</option>
-                  <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
-                  <option value="Public Company">Public Company</option>
-                  <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-                </select>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
+                  <select name="ownership_structure" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
+                    <option value="">Select Ownership</option>
+                    <option value="Private Company">Private Company</option>
+                    <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
+                    <option value="Public Company">Public Company</option>
+                    <option value="Corporate Subsidiary">Corporate Subsidiary</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="form-label flex justify-between">
+                    Legal Entity
+                    {autoFilledFields.has('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                  </label>
+                  <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ appearance: 'auto', marginTop: '0.75rem' }} value={formData.legal_entity} onChange={handleChange}>
+                    <option value="">Select Legal Entity</option>
+                    <option value="Sole Proprietorship">Sole Proprietorship</option>
+                    <option value="LLC">LLC</option>
+                    <option value="S-Corp">S-Corp</option>
+                    <option value="C-Corp">C-Corp</option>
+                    <option value="General Partnership">General Partnership</option>
+                    <option value="LP">LP</option>
+                    <option value="LLP">LLP</option>
+                    <option value="PLLC">PLLC</option>
+                    <option value="PC">PC</option>
+                    <option value="Trust">Trust</option>
+                    <option value="Nonprofit">Nonprofit</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -590,10 +613,9 @@ export default function SellerProfileForm({ userId }) {
                     <div className="flex flex-col items-end">
                       <span>LTM</span>
                       <input
-                        type="text"
+                        type="date"
                         style={{ textAlign: 'right' }}
-                        className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs mt-1"
-                        placeholder="Enter Date"
+                        className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs mt-1 cursor-pointer"
                         value={formData.financial_history.LTM.date}
                         onChange={(e) => handleFinancialDateChange(e.target.value)}
                       />
