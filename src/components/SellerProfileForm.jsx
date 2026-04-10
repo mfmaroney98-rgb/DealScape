@@ -154,23 +154,27 @@ export default function SellerProfileForm({ userId }) {
 
   const allUSAStates = geoTree.find(c => c.code === 'US')?.states ?? [];
 
-  const handleStateToggle = (stateName) => {
+  const makeStateKey = (countryCode, stateName) => `${countryCode}:${stateName}`;
+
+  const handleStateToggle = (countryCode, stateName) => {
+    const key = makeStateKey(countryCode, stateName);
     setFormData(prev => ({
       ...prev,
-      locations: prev.locations.includes(stateName)
-        ? prev.locations.filter(s => s !== stateName)
-        : [...prev.locations, stateName]
+      locations: prev.locations.includes(key)
+        ? prev.locations.filter(s => s !== key)
+        : [...prev.locations, key]
     }));
   };
 
   const handleCountryToggle = (country) => {
+    const keys = country.states.map(s => makeStateKey(country.code, s));
     setFormData(prev => {
-      const allSelected = country.states.every(s => prev.locations.includes(s));
+      const allSelected = keys.every(k => prev.locations.includes(k));
       let newLocations = [...prev.locations];
       if (allSelected) {
-        newLocations = newLocations.filter(s => !country.states.includes(s));
+        newLocations = newLocations.filter(k => !keys.includes(k));
       } else {
-        country.states.forEach(s => { if (!newLocations.includes(s)) newLocations.push(s); });
+        keys.forEach(k => { if (!newLocations.includes(k)) newLocations.push(k); });
       }
       return { ...prev, locations: newLocations };
     });
@@ -187,14 +191,14 @@ export default function SellerProfileForm({ userId }) {
   };
 
   const handleContinentToggle = (continent) => {
-    const allStates = continent.countries.flatMap(c => c.states);
+    const allKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
     setFormData(prev => {
-      const allSelected = allStates.every(s => prev.locations.includes(s));
+      const allSelected = allKeys.length > 0 && allKeys.every(k => prev.locations.includes(k));
       let newLocations = [...prev.locations];
       if (allSelected) {
-        newLocations = newLocations.filter(s => !allStates.includes(s));
+        newLocations = newLocations.filter(k => !allKeys.includes(k));
       } else {
-        allStates.forEach(s => { if (!newLocations.includes(s)) newLocations.push(s); });
+        allKeys.forEach(k => { if (!newLocations.includes(k)) newLocations.push(k); });
       }
       return { ...prev, locations: newLocations };
     });
@@ -427,9 +431,9 @@ export default function SellerProfileForm({ userId }) {
                 ) : (
                   geoTree.map((continent, coIdx) => {
                     const isLastContinent = coIdx === geoTree.length - 1;
-                    const allContinentStates = continent.countries.flatMap(c => c.states);
-                    const allContSelected = allContinentStates.every(s => formData.locations.includes(s));
-                    const someContSelected = allContinentStates.some(s => formData.locations.includes(s)) && !allContSelected;
+                    const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
+                    const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
+                    const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
                     const isContExpanded = expandedContinents.has(continent.name);
                     return (
                       <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
@@ -456,8 +460,9 @@ export default function SellerProfileForm({ userId }) {
                           <div className="geo-children">
                             {continent.countries.map((country, cIdx) => {
                               const isLastCountry = cIdx === continent.countries.length - 1;
-                              const allCtrySelected = country.states.every(s => formData.locations.includes(s));
-                              const someCtrySelected = country.states.some(s => formData.locations.includes(s)) && !allCtrySelected;
+                              const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
+                              const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
+                              const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
                               const isCtryExpanded = expandedCountries.has(country.code);
                               return (
                                 <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
@@ -482,14 +487,15 @@ export default function SellerProfileForm({ userId }) {
                                     <div className="geo-children">
                                       {country.states.map((stateName, sIdx) => {
                                         const isLastState = sIdx === country.states.length - 1;
-                                        const isStateSelected = formData.locations.includes(stateName);
+                                        const stateKey = makeStateKey(country.code, stateName);
+                                        const isStateSelected = formData.locations.includes(stateKey);
                                         return (
-                                          <div key={stateName} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                          <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
                                             <div className="geo-row">
-                                              <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(stateName)}>
+                                              <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>
                                                 {isStateSelected && <CheckCircle2 size={10} />}
                                               </div>
-                                              <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(stateName)}>{stateName}</span>
+                                              <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>{stateName}</span>
                                             </div>
                                           </div>
                                         );
