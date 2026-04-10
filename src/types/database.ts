@@ -1,11 +1,11 @@
 export type UserRole = 'buyer' | 'seller' | 'admin';
 
-export type TransactionType = 
-  | 'Total Sale' 
-  | 'Acquisition of Majority Stake' 
-  | 'Debt Raise' 
-  | 'Minority Equity Raise' 
-  | 'Mezzanine Financing' 
+export type TransactionType =
+  | 'Total Sale'
+  | 'Acquisition of Majority Stake'
+  | 'Debt Raise'
+  | 'Minority Equity Raise'
+  | 'Mezzanine Financing'
   | 'Divestiture / Carve-out';
 
 export interface Profile {
@@ -20,36 +20,37 @@ export interface Profile {
 export interface Seller {
   id: string;
   user_id: string;
-  title: string;
-  project_name?: string;
-  
+  // Anonymized Display
+  seller_anon_name: string;
+  seller_name?: string;
+
   // Location
-  location_city?: string;
-  location_state?: string;
-  location_country: string;
-  
+  locations: string[];
+
   // Stats
+  year_founded?: string;
   employees_count?: number;
-  industry_codes: string[];
+  keywords: string[];
   company_type?: string;
-  company_ownership?: string;
-  
+  ownership_structure?: string;
+
   // Metadata
   is_founder_owned: boolean;
   is_female_owned: boolean;
   is_minority_owned: boolean;
   is_family_owned: boolean;
-  
+  is_operator_owned: boolean;
+
   // Transaction
-  pref_transaction_type?: TransactionType;
-  
+  pref_transaction_type?: TransactionType[];
+
   // Key Financials
   revenue?: number;
   ebitda?: number;
   gross_profit?: number;
   net_income?: number;
   growth_rate_pct?: number;
-  
+
   // Historical data
   financial_history: Array<{
     year: number;
@@ -57,7 +58,7 @@ export interface Seller {
     ebitda: number;
     // ... other metrics
   }>;
-  
+
   created_at: string;
   updated_at: string;
 }
@@ -65,26 +66,34 @@ export interface Seller {
 export interface BuyerCriteria {
   id: string;
   user_id: string;
-  
+
+  // Identity
+  buyer_name?: string;
+  buyer_url?: string;
+  overview?: string;
+  buyer_type?: string;
+
   // Preferred Ranges
-  min_revenue?: number;
-  max_revenue?: number;
-  min_ebitda?: number;
-  max_ebitda?: number;
-  min_employees?: number;
-  max_employees?: number;
-  
+  financial_criteria?: Array<{
+    id: number;
+    metric: string;
+    min: string | number;
+    max: string | number;
+  }>;
+
   // Preferred Attributes
   locations: string[];
-  industries: string[];
-  transaction_types: TransactionType[];
-  
+  keywords: string[];
+  naics_codes: string[];
+  pref_transaction_type: TransactionType[];
+
   // Requirements
   require_founder_owned?: boolean;
   require_female_owned?: boolean;
   require_minority_owned?: boolean;
   require_family_owned?: boolean;
-  
+  require_operator_owned?: boolean;
+
   created_at: string;
   updated_at: string;
 }

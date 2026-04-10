@@ -49,14 +49,14 @@ export default function SellerProfileForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
-    title: '',
-    project_name: '',
+    seller_name: '',
+    seller_anon_name: '',
     locations: [],
     year_founded: '',
     employees_count: '',
-    industry_codes: [],
+    keywords: [],
     company_type: '',
-    company_ownership: '',
+    ownership_structure: '',
     is_founder_owned: false,
     is_female_owned: false,
     is_minority_owned: false,
@@ -112,9 +112,9 @@ export default function SellerProfileForm({ userId }) {
     let numValue = '';
 
     if (digits === '') {
-       numValue = isNegative ? '-' : '';
+      numValue = isNegative ? '-' : '';
     } else {
-       numValue = Number(isNegative ? '-' + digits : digits);
+      numValue = Number(isNegative ? '-' + digits : digits);
     }
 
     setFormData(prev => ({
@@ -224,7 +224,7 @@ export default function SellerProfileForm({ userId }) {
       const mockData = {
         employees_count: '145',
         company_type: 'LLC',
-        industry_codes: ['Manufacturing', 'Industrial', 'B2B']
+        keywords: ['Manufacturing', 'Industrial', 'B2B']
       };
 
       setFormData(prev => ({
@@ -241,7 +241,7 @@ export default function SellerProfileForm({ userId }) {
       }));
 
       setAutoFilledFields(new Set([...Object.keys(mockData), 'financial_history']));
-      setAutoFilledTags(mockData.industry_codes);
+      setAutoFilledTags(mockData.keywords);
       setIsParsing(false);
     }, 2000);
 
@@ -343,14 +343,14 @@ export default function SellerProfileForm({ userId }) {
                     <label className="form-label mb-1">Company Name or Project Name</label>
                     <input
                       type="text"
-                      name="project_name"
+                      name="seller_name"
                       className="form-input"
                       placeholder="e.g. Acme Manufacturing LLC"
-                      value={formData.project_name}
+                      value={formData.seller_name}
                       onChange={handleChange}
                     />
                     <div className="flex items-center gap-1.5 mt-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
                       <p className="text-xs text-indigo-300/70">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
                     </div>
                   </div>
@@ -361,10 +361,10 @@ export default function SellerProfileForm({ userId }) {
                 <label className="form-label">Listing Title (Anonymized)</label>
                 <input
                   type="text"
-                  name="title"
+                  name="seller_anon_name"
                   className="form-input"
                   placeholder="e.g. Leading Material Handling..."
-                  value={formData.title}
+                  value={formData.seller_anon_name}
                   onChange={handleChange}
                   required
                 />
@@ -418,113 +418,113 @@ export default function SellerProfileForm({ userId }) {
             {/* Business Location & Ownership Structure */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Business Location</label>
-              <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-                {geoLoading ? (
-                  <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
-                    Loading geography data...
-                  </div>
-                ) : geoError ? (
-                  <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
-                    {geoError}
-                  </div>
-                ) : (
-                  geoTree.map((continent, coIdx) => {
-                    const isLastContinent = coIdx === geoTree.length - 1;
-                    const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
-                    const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
-                    const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
-                    const isContExpanded = expandedContinents.has(continent.name);
-                    return (
-                      <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
-                        <div className="geo-row">
-                          <div
-                            className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
-                            onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
-                          >
-                            {allContSelected
-                              ? <CheckCircle2 size={14} />
-                              : someContSelected
-                                ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                : null
-                            }
+                <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Business Location</label>
+                <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                  {geoLoading ? (
+                    <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
+                      Loading geography data...
+                    </div>
+                  ) : geoError ? (
+                    <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
+                      {geoError}
+                    </div>
+                  ) : (
+                    geoTree.map((continent, coIdx) => {
+                      const isLastContinent = coIdx === geoTree.length - 1;
+                      const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
+                      const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
+                      const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
+                      const isContExpanded = expandedContinents.has(continent.name);
+                      return (
+                        <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
+                          <div className="geo-row">
+                            <div
+                              className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
+                              onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
+                            >
+                              {allContSelected
+                                ? <CheckCircle2 size={14} />
+                                : someContSelected
+                                  ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                                  : null
+                              }
+                            </div>
+                            <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
+                              {continent.name}
+                            </span>
+                            <button type="button" onClick={(e) => toggleContinentExpand(e, continent.name)} className="geo-toggle">
+                              {isContExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                            </button>
                           </div>
-                          <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
-                            {continent.name}
-                          </span>
-                          <button type="button" onClick={(e) => toggleContinentExpand(e, continent.name)} className="geo-toggle">
-                            {isContExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                          </button>
-                        </div>
-                        {isContExpanded && (
-                          <div className="geo-children">
-                            {continent.countries.map((country, cIdx) => {
-                              const isLastCountry = cIdx === continent.countries.length - 1;
-                              const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
-                              const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
-                              const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
-                              const isCtryExpanded = expandedCountries.has(country.code);
-                              return (
-                                <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
-                                  <div className="geo-row">
-                                    <div
-                                      className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
-                                      onClick={() => handleCountryToggle(country)}
-                                    >
-                                      {allCtrySelected
-                                        ? <CheckCircle2 size={12} />
-                                        : someCtrySelected
-                                          ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                          : null
-                                      }
+                          {isContExpanded && (
+                            <div className="geo-children">
+                              {continent.countries.map((country, cIdx) => {
+                                const isLastCountry = cIdx === continent.countries.length - 1;
+                                const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
+                                const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
+                                const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
+                                const isCtryExpanded = expandedCountries.has(country.code);
+                                return (
+                                  <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
+                                    <div className="geo-row">
+                                      <div
+                                        className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
+                                        onClick={() => handleCountryToggle(country)}
+                                      >
+                                        {allCtrySelected
+                                          ? <CheckCircle2 size={12} />
+                                          : someCtrySelected
+                                            ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
+                                            : null
+                                        }
+                                      </div>
+                                      <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
+                                      <button type="button" onClick={(e) => toggleCountryExpand(e, country.code)} className="geo-toggle">
+                                        {isCtryExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                      </button>
                                     </div>
-                                    <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
-                                    <button type="button" onClick={(e) => toggleCountryExpand(e, country.code)} className="geo-toggle">
-                                      {isCtryExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                                    </button>
-                                  </div>
-                                  {isCtryExpanded && (
-                                    <div className="geo-children">
-                                      {country.states.map((stateName, sIdx) => {
-                                        const isLastState = sIdx === country.states.length - 1;
-                                        const stateKey = makeStateKey(country.code, stateName);
-                                        const isStateSelected = formData.locations.includes(stateKey);
-                                        return (
-                                          <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
-                                            <div className="geo-row">
-                                              <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>
-                                                {isStateSelected && <CheckCircle2 size={10} />}
+                                    {isCtryExpanded && (
+                                      <div className="geo-children">
+                                        {country.states.map((stateName, sIdx) => {
+                                          const isLastState = sIdx === country.states.length - 1;
+                                          const stateKey = makeStateKey(country.code, stateName);
+                                          const isStateSelected = formData.locations.includes(stateKey);
+                                          return (
+                                            <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                              <div className="geo-row">
+                                                <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>
+                                                  {isStateSelected && <CheckCircle2 size={10} />}
+                                                </div>
+                                                <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>{stateName}</span>
                                               </div>
-                                              <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>{stateName}</span>
                                             </div>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })
-                )}
+                                          );
+                                        })}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
+                <select name="ownership_structure" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
+                  <option value="">Select Ownership</option>
+                  <option value="Private Company">Private Company</option>
+                  <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
+                  <option value="Public Company">Public Company</option>
+                  <option value="Corporate Subsidiary">Corporate Subsidiary</option>
+                </select>
               </div>
             </div>
-
-            <div>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
-              <select name="company_ownership" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.company_ownership} onChange={handleChange}>
-                <option value="">Select Ownership</option>
-                <option value="Private Company">Private Company</option>
-                <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
-                <option value="Public Company">Public Company</option>
-                <option value="Corporate Subsidiary">Corporate Subsidiary</option>
-              </select>
-            </div>
-          </div>
           </div>
         </div>
 
@@ -540,23 +540,23 @@ export default function SellerProfileForm({ userId }) {
           <div className="space-y-6">
             <div>
               <label className="form-label flex justify-between">
-                Industries / Keywords
-                {autoFilledFields.has('industry_codes') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                Keywords
+                {autoFilledFields.has('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
               </label>
               <TagInput
-                tags={formData.industry_codes}
+                tags={formData.keywords}
                 onChange={(newTags) => {
-                  if (autoFilledFields.has('industry_codes')) {
+                  if (autoFilledFields.has('keywords')) {
                     setAutoFilledFields(prev => {
                       const next = new Set(prev);
-                      next.delete('industry_codes');
+                      next.delete('keywords');
                       return next;
                     });
                   }
-                  setFormData(prev => ({ ...prev, industry_codes: newTags }));
+                  setFormData(prev => ({ ...prev, keywords: newTags }));
                 }}
                 placeholder="Software, HealthTech, AI (press Enter to add)"
-                isInputHighlighted={autoFilledFields.has('industry_codes')}
+                isInputHighlighted={autoFilledFields.has('keywords')}
                 autoFilledTags={autoFilledTags}
               />
             </div>

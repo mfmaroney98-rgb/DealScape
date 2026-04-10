@@ -71,20 +71,17 @@ export default function BuyerCriteriaForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
-    company_name: '',
-    website: '',
+    buyer_name: '',
+    buyer_url: '',
     overview: '',
     buyer_type: '',
     financial_criteria: [
       { id: Date.now(), metric: 'Revenue', min: '', max: '' },
       { id: Date.now() + 1, metric: 'EBITDA Margin', min: '', max: '' }
     ],
-    min_employees: '',
-    max_employees: '',
     locations: [],
-    industries: [],
+    keywords: [],
     naics_codes: [],
-    transaction_types: [],
     pref_transaction_type: [],
     require_founder_owned: false,
     require_female_owned: false,
@@ -331,13 +328,13 @@ export default function BuyerCriteriaForm({ userId }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', marginBottom: '1.5rem' }}>
             <div className="field-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Company Name</label>
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Buyer Name</label>
               <input
                 type="text"
-                name="company_name"
+                name="buyer_name"
                 className="form-input"
                 placeholder="e.g. Acme Investments"
-                value={formData.company_name || ''}
+                value={formData.buyer_name || ''}
                 onChange={handleChange}
               />
             </div>
@@ -346,10 +343,10 @@ export default function BuyerCriteriaForm({ userId }) {
               <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Website</label>
               <input
                 type="text"
-                name="website"
+                name="buyer_url"
                 className="form-input"
                 placeholder="e.g. www.example.com"
-                value={formData.website || ''}
+                value={formData.buyer_url || ''}
                 onChange={handleChange}
               />
             </div>
@@ -615,10 +612,10 @@ export default function BuyerCriteriaForm({ userId }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
             {/* Left: Keyword Tags */}
             <div>
-              <label className="form-label">Industries & Keywords</label>
+              <label className="form-label">Keywords</label>
               <TagInput 
-                tags={formData.industries}
-                onChange={(newTags) => setFormData(prev => ({ ...prev, industries: newTags }))}
+                tags={formData.keywords}
+                onChange={(newTags) => setFormData(prev => ({ ...prev, keywords: newTags }))}
                 placeholder="e.g. SaaS, Manufacturing, Medical... (press Enter to add)"
               />
             </div>
