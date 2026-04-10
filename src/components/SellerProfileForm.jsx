@@ -814,7 +814,7 @@ export default function SellerProfileForm({ userId }) {
             <div>
               <label className="form-label">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-2">
-                {['Total Sale', 'Sale of Majority Stake', 'Sale of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
+                {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
