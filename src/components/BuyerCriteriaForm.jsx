@@ -4,6 +4,7 @@ import { buyerService } from '../services/buyerService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
+import { fetchFinancialMetrics } from '../services/financialMetricsService';
 import { 
   Target, 
   Map, 
@@ -55,6 +56,17 @@ export default function BuyerCriteriaForm({ userId }) {
       .then(data => setNaicsSectors(data))
       .catch(err => setNaicsError(err.message || 'Failed to load NAICS codes'))
       .finally(() => setNaicsLoading(false));
+  }, []);
+
+  // Financial metrics loaded from Supabase
+  const [financialMetrics, setFinancialMetrics] = useState([]);
+
+  useEffect(() => {
+    fetchFinancialMetrics()
+      .then(data => setFinancialMetrics(data))
+      .catch(() => {
+        setFinancialMetrics(['Revenue', 'Gross Profit', 'EBITDA', 'EBITDA Margin', 'Net Income']);
+      });
   }, []);
 
   const [formData, setFormData] = useState({
@@ -408,13 +420,9 @@ export default function BuyerCriteriaForm({ userId }) {
                     value={criteria.metric}
                     onChange={(e) => handleFinancialCriteriaChange(index, 'metric', e.target.value)}
                   >
-                    <option value="Revenue">Revenue</option>
-                    <option value="Revenue Growth (YoY)">Revenue Growth (YoY)</option>
-                    <option value="EBITDA">EBITDA</option>
-                    <option value="EBITDA Margin">EBITDA Margin</option>
-                    <option value="EBITDA Growth (YoY)">EBITDA Growth (YoY)</option>
-                    <option value="Gross Profit">Gross Profit</option>
-                    <option value="Net Income">Net Income</option>
+                    {financialMetrics.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
                   </select>
                   
                   <button
