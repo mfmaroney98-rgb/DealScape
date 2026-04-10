@@ -195,7 +195,7 @@ const Signup = () => {
   );
 };
 
-const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText }) => (
+const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, secondaryAction, secondaryTo }) => (
   <div className={`glass p-10 rounded-3xl border ${active ? 'border-slate-800' : 'border-indigo-500/30'} text-center flex flex-col items-center group ${!active ? 'hover:border-indigo-500/50' : ''} transition-all duration-500`}>
     <div className={`w-16 h-16 ${active ? 'bg-emerald-500/10' : 'bg-indigo-500/10'} rounded-2xl mb-6 flex items-center justify-center ${!active ? 'group-hover:scale-110' : ''} transition-transform`}>
       {active ? <CheckCircle2 className="text-emerald-400" size={32} /> : <Icon className="text-indigo-400" size={32} />}
@@ -205,7 +205,17 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
       {active ? `Your ${title.toLowerCase()} is active and being matched.` : subtitle}
     </p>
     {active ? (
-      <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
+      <div className="flex flex-col gap-3 w-full">
+        <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
+        {secondaryAction && secondaryTo && (
+          <Link
+            to={secondaryTo}
+            className="btn-primary w-full flex items-center justify-center gap-2 py-3 shadow-xl shadow-indigo-500/20 text-sm"
+          >
+            {secondaryAction}
+          </Link>
+        )}
+      </div>
     ) : (
       <Link
         to={to}
@@ -244,6 +254,8 @@ const Dashboard = ({ hasListing, hasCriteria, role }) => {
             active={hasListing}
             activeText="Listing Active"
             buttonText="View Listing"
+            secondaryAction="Create New Profile"
+            secondaryTo="/onboarding/seller"
           />
         )}
 
