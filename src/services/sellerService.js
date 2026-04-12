@@ -19,6 +19,21 @@ export const sellerService = {
   },
 
   /**
+   * Fetches a specific listing by its ID, ensuring it belongs to the user.
+   */
+  async getListingById(id, userId) {
+    const { data, error } = await supabase
+      .from('sellers')
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
    * Creates or updates a seller listing.
    */
   async saveListing(listingData) {

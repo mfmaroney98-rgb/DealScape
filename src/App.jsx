@@ -7,6 +7,7 @@ import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
+import SellerListingOverview from './components/SellerListingOverview';
 import Navbar from './components/Navbar';
 import {
   TrendingUp,
@@ -471,6 +472,20 @@ function App() {
               session ? (
                 (profile?.role === 'seller' || profile?.role === 'corporate') ? (
                   <SellerListings />
+                ) : (
+                  <Navigate to="/dashboard/buyer" replace />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/dashboard/seller/listings/:id"
+            element={
+              session ? (
+                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                  <SellerListingOverview />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )

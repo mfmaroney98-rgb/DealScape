@@ -98,10 +98,17 @@ export default function SellerListings() {
           <div className="flex flex-col gap-10">
             {listings.map((listing) => (
               <div key={listing.id} className="glass p-8 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300">
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#818cf8', marginBottom: '1.5rem' }}>
-                  {listing.seller_anon_name || '--'}
-                </h3>
-
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
+                    <Link 
+                      to={`/dashboard/seller/listings/${listing.id}`}
+                      style={{ color: '#818cf8', textDecoration: 'none' }}
+                      className="hover:text-indigo-300 hover:underline transition-all"
+                    >
+                      {listing.seller_anon_name || '--'}
+                    </Link>
+                  </h3>
+                </div>
                 {/* Headings row */}
                 <div style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '0.5rem' }}>
                   <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Company Name</div>
