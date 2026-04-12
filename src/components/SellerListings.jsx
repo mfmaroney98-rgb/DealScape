@@ -95,42 +95,36 @@ export default function SellerListings() {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-10">
             {listings.map((listing) => (
-              <div key={listing.id} className="glass p-8 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 flex flex-col h-full group">
-                <div className="mb-6 flex-grow">
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="text-xl font-bold line-clamp-2">{listing.seller_anon_name || '--'}</h3>
-                  </div>
-                  <p className="text-sm text-slate-400 flex items-center gap-2">
-                    {listing.seller_name || '--'}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {(Array.isArray(listing.keywords) ? listing.keywords : []).slice(0, 3).map((kw, i) => (
-                      <span key={i} className="px-2 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs">
-                        {kw}
-                      </span>
-                    ))}
-                    {(Array.isArray(listing.keywords) && listing.keywords.length > 3) && (
-                      <span className="px-2 py-1 rounded-md bg-slate-800 text-slate-400 text-xs">
-                        +{listing.keywords.length - 3}
-                      </span>
-                    )}
-                    {(!Array.isArray(listing.keywords) || listing.keywords.length === 0) && (
-                      <span className="text-xs text-slate-500 italic">No keywords</span>
-                    )}
-                  </div>
+              <div key={listing.id} className="glass p-8 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300">
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#818cf8', marginBottom: '1.5rem' }}>
+                  {listing.seller_anon_name || '--'}
+                </h3>
+
+                {/* Headings row */}
+                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '0.5rem' }}>
+                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Company Name</div>
+                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Keywords</div>
+                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Revenue</div>
+                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>EBITDA</div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-auto pt-6 border-t border-slate-800/50">
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1 flex items-center gap-1"><DollarSign size={12}/> Revenue (latest)</p>
-                    <p className="font-semibold">{getLatestFinancial(listing.financial_history, 'revenue')}</p>
+                {/* Values row */}
+                <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
+                    {listing.seller_name || '--'}
                   </div>
-                  <div>
-                    <p className="text-xs text-slate-500 mb-1 flex items-center gap-1"><TrendingUp size={12}/> EBITDA (latest)</p>
-                    <p className="font-semibold">{getLatestFinancial(listing.financial_history, 'ebitda')}</p>
+                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
+                    {(Array.isArray(listing.keywords) && listing.keywords.length > 0)
+                      ? listing.keywords.slice(0, 3).join(', ') + (listing.keywords.length > 3 ? '...' : '')
+                      : '--'}
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
+                    {getLatestFinancial(listing.financial_history, 'revenue')}
+                  </div>
+                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
+                    {getLatestFinancial(listing.financial_history, 'ebitda')}
                   </div>
                 </div>
               </div>
