@@ -946,7 +946,14 @@ export default function SellerProfileForm({ userId }) {
           </div>
         )}
 
-        <div className="flex justify-center py-10">
+        <div className="flex justify-center items-center gap-6 py-10">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="btn-secondary px-12 py-4 text-lg font-bold border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white transition-all h-auto"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             disabled={loading}
