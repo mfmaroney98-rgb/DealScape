@@ -98,7 +98,7 @@ export default function SellerListingOverview() {
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
             }`}
           >
-            Profile Overview
+            Listing Overview
           </button>
           <button 
             onClick={() => setActiveTab('buyers')}
@@ -225,10 +225,9 @@ export default function SellerListingOverview() {
                 </div>
               </div>
 
-              {/* Profile Status */}
               <div className="glass p-6 rounded-2xl border border-slate-800">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-                  <CheckCircle2 className="text-emerald-400" size={20} /> Profile Status
+                  <CheckCircle2 className="text-emerald-400" size={20} /> Listing Status
                 </h3>
                 <div className="space-y-5">
                   <div>
@@ -258,7 +257,7 @@ export default function SellerListingOverview() {
                 <button 
                   onClick={() => navigate(`/onboarding/seller/edit/${listing.id}`)}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 border border-indigo-500/30 text-indigo-400 font-semibold transition-all">
-                  <Edit3 size={18} /> Edit Profile
+                  <Edit3 size={18} /> Edit Listing
                 </button>
                 <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-orange-400 font-semibold transition-all">
                   <EyeOff size={18} /> Hide / Pause Client
@@ -267,7 +266,7 @@ export default function SellerListingOverview() {
                   <CheckCircle2 size={18} /> Close Deal
                 </button>
                 <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold transition-all">
-                  <Trash2 size={18} /> Permanently Remove Profile
+                  <Trash2 size={18} /> Permanently Remove Listing
                 </button>
               </div>
 
@@ -309,7 +308,7 @@ export default function SellerListingOverview() {
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Buyer Matches</h2>
             <p className="text-slate-400 max-w-md mx-auto">
-              This section will display all relevant buyers based on the score between their investment criteria and this seller profile.
+              This section will display all relevant buyers based on the score between their investment criteria and this seller listing.
             </p>
             <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-sm font-medium border border-slate-700">Coming Soon</span>
           </div>

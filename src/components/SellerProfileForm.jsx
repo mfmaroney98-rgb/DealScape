@@ -322,7 +322,7 @@ export default function SellerProfileForm({ userId }) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
         <Loader2 className="animate-spin text-indigo-500" size={48} />
-        <p className="text-slate-400 font-medium">Loading your listing profile...</p>
+        <p className="text-slate-400 font-medium">Loading your listing...</p>
       </div>
     );
   }

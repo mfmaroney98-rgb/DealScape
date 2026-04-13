@@ -88,7 +88,7 @@ export default function SellerListings() {
               <Briefcase className="text-indigo-400" size={24} />
             </div>
             <h1 className="text-4xl font-black tracking-tight mb-2">My Active Listings</h1>
-            <p className="text-slate-400">View and manage all your created seller profiles.</p>
+            <p className="text-slate-400">View and manage all your created seller listings.</p>
           </div>
           <Link to="/onboarding/seller" className="btn-primary flex items-center gap-2 px-6 py-3 shrink-0">
             <PlusCircle size={18} /> New Listing
@@ -107,7 +107,7 @@ export default function SellerListings() {
               <Search className="text-slate-500" size={40} />
             </div>
             <h3 className="text-xl font-bold mb-2">No listings found</h3>
-            <p className="text-slate-400 mb-6">You haven't created any seller profiles yet.</p>
+            <p className="text-slate-400 mb-6">You haven't created any seller listings yet.</p>
             <Link to="/onboarding/seller" className="btn-primary flex items-center gap-2 py-3 px-8">
               Get Started <ArrowLeft className="rotate-180" size={18} />
             </Link>

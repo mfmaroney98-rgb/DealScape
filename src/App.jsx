@@ -269,7 +269,7 @@ const SellerDashboard = ({ hasListing }) => (
         activeText="Listings Active"
         buttonText="View Listings"
         activeTo="/dashboard/seller/listings"
-        secondaryAction="Create New Profile"
+        secondaryAction="Create New Listing"
         secondaryTo="/onboarding/seller"
       />
       <MessagesCard />
@@ -328,7 +328,7 @@ const RootDashboardDispatcher = ({ role }) => {
            </div>
            <h3 className="text-2xl font-bold mb-3">Seller Dashboard</h3>
            <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-             Manage your seller profile, listings, and receive buyer matches.
+             Manage your seller listings, analytics, and receive buyer matches.
            </p>
            <span className="btn-primary w-full flex items-center justify-center gap-2 py-4">Enter Workspace <ArrowRight size={18} /></span>
         </Link>
