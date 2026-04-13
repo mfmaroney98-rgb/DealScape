@@ -45,6 +45,24 @@ export default function SellerListings() {
     return '--';
   };
 
+  const getDisplayKeywords = (keywords) => {
+    if (!keywords) return '--';
+    
+    let kwArray = [];
+    if (Array.isArray(keywords)) {
+      kwArray = keywords;
+    } else if (typeof keywords === 'string') {
+      // Handle Postgres array format "{a,b,c}", JSON arrays '["a","b"]', or comma-separated strings
+      kwArray = keywords.replace(/[{}"[\]]/g, '').split(',').map(k => k.trim()).filter(Boolean);
+    }
+    
+    if (!kwArray || kwArray.length === 0) return '--';
+    
+    const displaySize = 3;
+    const display = kwArray.slice(0, displaySize).join('\n');
+    return kwArray.length > displaySize ? `${display}\n...` : display;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -122,10 +140,8 @@ export default function SellerListings() {
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
                     {listing.seller_name || '--'}
                   </div>
-                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
-                    {(Array.isArray(listing.keywords) && listing.keywords.length > 0)
-                      ? listing.keywords.slice(0, 3).join(', ') + (listing.keywords.length > 3 ? '...' : '')
-                      : '--'}
+                  <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '0.95rem', whiteSpace: 'pre-line', lineHeight: '1.4' }}>
+                    {getDisplayKeywords(listing.keywords)}
                   </div>
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
                     {getLatestFinancial(listing.financial_history, 'revenue')}
