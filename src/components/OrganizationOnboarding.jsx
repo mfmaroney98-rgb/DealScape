@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { organizationService } from '../services/organizationService';
 import { Building2, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 
-export default function OrganizationOnboarding({ userId, userRole }) {
+export default function OrganizationOnboarding({ userId, userRole, onComplete }) {
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,11 +15,15 @@ export default function OrganizationOnboarding({ userId, userRole }) {
     setError(null);
 
     try {
-      await organizationService.createOrganization(name, userRole, userId);
-      // Redirect based on role
-      if (userRole === 'seller') navigate('/dashboard/seller');
-      else if (userRole === 'buyer') navigate('/dashboard/buyer');
-      else navigate('/dashboard');
+      const org = await organizationService.createOrganization(name, userRole, userId);
+      
+      // Refresh user profile in App state
+      if (onComplete) {
+        await onComplete();
+      }
+
+      // Redirect to type selection, passing the new org ID in state as a fallback
+      navigate('/onboarding/type', { state: { orgId: org.id } });
     } catch (err) {
       setError(err.message);
       setLoading(false);

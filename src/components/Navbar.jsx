@@ -4,10 +4,11 @@ import {
   TrendingUp,
   LogOut,
   User,
-  LayoutDashboard
+  LayoutDashboard,
+  Building2
 } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ organizationName }) {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -28,6 +29,13 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center gap-4">
+          {organizationName && (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+              <Building2 className="text-indigo-400" size={14} />
+              <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider">{organizationName}</span>
+            </div>
+          )}
+
           <Link
             to="/dashboard"
             className="hidden md:flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-slate-800/50"

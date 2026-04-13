@@ -31,11 +31,14 @@ export const organizationService = {
 
     if (orgError) throw orgError;
 
-    // 2. Link Profile to Organization
+    // 2. Link Profile to Organization using upsert to ensure record exists
     const { error: profileError } = await supabase
       .from('profiles')
-      .update({ organization_id: org.id })
-      .eq('id', userId);
+      .upsert({ 
+        id: userId,
+        organization_id: org.id,
+        updated_at: new Date().toISOString()
+      });
 
     if (profileError) throw profileError;
 

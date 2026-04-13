@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
@@ -10,6 +10,7 @@ import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
 import BuyerCriteriaList from './components/BuyerCriteriaList';
 import OrganizationOnboarding from './components/OrganizationOnboarding';
+import OrganizationTypeSelection from './components/OrganizationTypeSelection';
 import Navbar from './components/Navbar';
 import {
   TrendingUp,
@@ -308,13 +309,20 @@ const BuyerDashboard = ({ hasCriteria }) => (
   </div>
 );
 
-const RootDashboardDispatcher = ({ role, organizationId }) => {
-  if (!organizationId && (role === 'seller' || role === 'buyer')) {
+const RootDashboardDispatcher = ({ role, organization }) => {
+  if (!organization?.id && (role === 'seller' || role === 'buyer' || !role)) {
     return <Navigate to="/onboarding/organization" replace />;
   }
 
-  if (role === 'seller') return <Navigate to="/dashboard/seller" replace />;
-  if (role === 'buyer') return <Navigate to="/dashboard/buyer" replace />;
+  if (!organization?.type && (role === 'seller' || role === 'buyer' || !role)) {
+    return <Navigate to="/onboarding/type" replace />;
+  }
+
+  // Determine role from organization type if not corporate
+  const effectiveRole = role === 'corporate' ? 'corporate' : organization?.type;
+
+  if (effectiveRole === 'seller') return <Navigate to="/dashboard/seller" replace />;
+  if (effectiveRole === 'buyer') return <Navigate to="/dashboard/buyer" replace />;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
@@ -365,6 +373,38 @@ function App() {
   const [hasCriteria, setHasCriteria] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const loadUserData = useCallback(async (currentSession) => {
+    if (!currentSession) return;
+    try {
+      const userProfile = await profileService.getProfile(currentSession.user.id);
+      
+      // Normalize organization data (sometimes Supabase returns an array for joins)
+      if (userProfile?.organizations) {
+        userProfile.organization = Array.isArray(userProfile.organizations) 
+          ? userProfile.organizations[0] 
+          : userProfile.organizations;
+      }
+
+      setProfile(userProfile);
+
+      if (userProfile?.organization_id) {
+        const isCorporate = userProfile.role === 'corporate';
+        
+        if (userProfile.role === 'seller' || isCorporate) {
+          const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
+          setHasListing(listings && listings.length > 0);
+        }
+
+        if (userProfile.role === 'buyer' || isCorporate) {
+          const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
+          setHasCriteria(criteriaList && criteriaList.length > 0);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load user data:', err);
+    }
+  }, []);
+
   useEffect(() => {
     // Safety net: don't hang on loading if everything goes wrong
     const timeout = setTimeout(() => {
@@ -373,26 +413,10 @@ function App() {
 
     const initAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
-
-        if (session) {
-          const userProfile = await profileService.getProfile(session.user.id);
-          setProfile(userProfile);
-
-          if (userProfile?.organization_id) {
-            const isCorporate = userProfile.role === 'corporate';
-            
-            if (userProfile.role === 'seller' || isCorporate) {
-              const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
-              setHasListing(listings && listings.length > 0);
-            }
-
-            if (userProfile.role === 'buyer' || isCorporate) {
-              const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
-              setHasCriteria(criteriaList && criteriaList.length > 0);
-            }
-          }
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        setSession(currentSession);
+        if (currentSession) {
+          await loadUserData(currentSession);
         }
       } catch (err) {
         console.error('Init failed:', err);
@@ -408,22 +432,7 @@ function App() {
       console.log('Auth event:', event, !!session);
       setSession(session);
       if (session) {
-        const userProfile = await profileService.getProfile(session.user.id);
-        setProfile(userProfile);
-
-        if (userProfile?.organization_id) {
-          const isCorporate = userProfile.role === 'corporate';
-          
-          if (userProfile.role === 'seller' || isCorporate) {
-            const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
-            setHasListing(listings && listings.length > 0);
-          }
-
-          if (userProfile.role === 'buyer' || isCorporate) {
-            const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
-            setHasCriteria(criteriaList && criteriaList.length > 0);
-          }
-        }
+        await loadUserData(session);
       } else {
         setProfile(null);
         setHasListing(false);
@@ -435,7 +444,7 @@ function App() {
       subscription.unsubscribe();
       clearTimeout(timeout);
     };
-  }, []);
+  }, [loadUserData]);
 
   if (loading) {
     return (
@@ -447,7 +456,10 @@ function App() {
 
   return (
     <Router>
-      <Layout session={session}>
+      <Layout 
+        session={session} 
+        organizationName={profile?.organization?.name}
+      >
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
@@ -458,7 +470,29 @@ function App() {
                 profile?.organization_id ? (
                   <Navigate to="/dashboard" replace />
                 ) : (
-                  <OrganizationOnboarding userId={session.user.id} userRole={profile?.role} />
+                  <OrganizationOnboarding 
+                    userId={session.user.id} 
+                    userRole={profile?.role} 
+                    onComplete={() => loadUserData(session)}
+                  />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/onboarding/type"
+            element={
+              session ? (
+                profile?.organization?.type ? (
+                  <Navigate to="/dashboard" replace />
+                ) : (
+                  <OrganizationTypeSelection 
+                    userId={session.user.id} 
+                    orgId={profile?.organization_id} 
+                    onComplete={() => loadUserData(session)}
+                  />
                 )
               ) : (
                 <Navigate to="/" />
@@ -499,7 +533,7 @@ function App() {
             path="/dashboard"
             element={
               session ? (
-                <RootDashboardDispatcher role={profile?.role || 'seller'} organizationId={profile?.organization_id} />
+                <RootDashboardDispatcher role={profile?.role} organization={profile?.organization} />
               ) : (
                 <Navigate to="/" />
               )
@@ -569,7 +603,7 @@ function App() {
   );
 }
 
-const Layout = ({ children, session }) => {
+const Layout = ({ children, session, organizationName }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const hideNavbarOn = ['/', '/signup'];
@@ -585,7 +619,7 @@ const Layout = ({ children, session }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {shouldShowNavbar && <Navbar />}
+      {shouldShowNavbar && <Navbar organizationName={organizationName} />}
       <main className="flex-1">
         {children}
       </main>
