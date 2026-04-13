@@ -718,7 +718,7 @@ export default function BuyerCriteriaForm({ userId }) {
           <div className="space-y-4" style={{ marginTop: '2rem' }}>
             <label className="form-label">Preferred Transaction Types</label>
             <div className="grid grid-cols-1 gap-2">
-              {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization'].map(type => (
+              {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
                 <label key={type} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
