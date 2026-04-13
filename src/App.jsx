@@ -439,6 +439,10 @@ function App() {
             element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />}
           />
           <Route
+            path="/onboarding/seller/edit/:listingId"
+            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />}
+          />
+          <Route
             path="/onboarding/buyer"
             element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
           />

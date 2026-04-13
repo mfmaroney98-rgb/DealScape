@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { sellerService } from '../services/sellerService';
 import TagInput from './TagInput';
 import { fetchGeographyTree } from '../services/geographyService';
@@ -19,7 +19,8 @@ import {
   UploadCloud,
   FileText,
   AlertCircle,
-  Globe
+  Globe,
+  Loader2
 } from 'lucide-react';
 
 
@@ -34,6 +35,8 @@ export default function SellerProfileForm({ userId }) {
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const [focusedField, setFocusedField] = useState(null); // { year, field }
   const navigate = useNavigate();
+  const { listingId } = useParams();
+  const isEditing = !!listingId;
 
   // Geography data loaded from Supabase
   const [geoTree, setGeoTree] = useState([]);
@@ -45,7 +48,55 @@ export default function SellerProfileForm({ userId }) {
       .then(data => setGeoTree(data))
       .catch(err => setGeoError(err.message || 'Failed to load geography data'))
       .finally(() => setGeoLoading(false));
-  }, []);
+
+    // Fetch listing data if editing
+    if (isEditing) {
+      setLoading(true);
+      sellerService.getListingById(listingId, userId)
+        .then(data => {
+          if (data) {
+            setFormData(prev => {
+              // Ensure we have a valid object base for financial_history
+              const sanitizedHistory = { ...prev.financial_history };
+              
+              const incomingHistory = data.financial_history || {};
+              Object.keys(sanitizedHistory).forEach(year => {
+                const incomingYearData = incomingHistory[year];
+                if (incomingYearData && typeof incomingYearData === 'object') {
+                  sanitizedHistory[year] = {
+                    ...sanitizedHistory[year],
+                    ...incomingYearData
+                  };
+                }
+              });
+
+              return {
+                ...prev,
+                ...data,
+                // Force correct types for known fields
+                seller_name: data.seller_name || '',
+                seller_anon_name: data.seller_anon_name || '',
+                locations: Array.isArray(data.locations) ? data.locations : [],
+                year_founded: data.year_founded || '',
+                employees_count: data.employees_count || '',
+                keywords: Array.isArray(data.keywords) ? data.keywords : [],
+                legal_entity: data.legal_entity || '',
+                ownership_structure: data.ownership_structure || '',
+                pref_transaction_type: Array.isArray(data.pref_transaction_type) ? data.pref_transaction_type : [],
+                financial_history: sanitizedHistory
+              };
+            });
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching listing:', err);
+          setError('Failed to load listing data. Please refresh and try again.');
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [listingId, userId, isEditing]);
 
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -267,13 +318,24 @@ export default function SellerProfileForm({ userId }) {
     }
   };
 
+  if (loading && isEditing) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+        <Loader2 className="animate-spin text-indigo-500" size={48} />
+        <p className="text-slate-400 font-medium">Loading your listing profile...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto py-12 px-6 animate-fade-in">
       <div className="mb-12 text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4">
           <Briefcase className="text-indigo-400" size={32} />
         </div>
-        <h1 className="text-4xl font-black mb-4 tracking-tight">Create Your Listing</h1>
+        <h1 className="text-4xl font-black mb-4 tracking-tight">
+          {isEditing ? 'Update Your Listing' : 'Create Your Listing'}
+        </h1>
         <p className="text-slate-400 max-w-lg mx-auto mb-8">
           Provide the key details of your business to attract the right investors. All company names are kept private until mutual interest is confirmed.
         </p>
@@ -616,7 +678,7 @@ export default function SellerProfileForm({ userId }) {
                         type="date"
                         style={{ textAlign: 'right' }}
                         className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs mt-1 cursor-pointer"
-                        value={formData.financial_history.LTM.date}
+                        value={formData.financial_history?.LTM?.date || ''}
                         onChange={(e) => handleFinancialDateChange(e.target.value)}
                       />
                     </div>
@@ -627,8 +689,8 @@ export default function SellerProfileForm({ userId }) {
                 {/* --- Revenue --- */}
                 <tr>
                   <td className="p-2 pt-4 font-bold text-slate-200">Revenue</td>
-                  {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const rev = formData.financial_history[year].revenue;
+                   {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const rev = formData.financial_history?.[year]?.revenue;
                     return (
                       <td key={year} className="px-4 py-2 pt-4 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -657,10 +719,10 @@ export default function SellerProfileForm({ userId }) {
                     );
 
                     if (!isFocused) {
-                      if (year === '2024' && formData.financial_history['2023'].revenue) {
-                        yoy = Math.round(((formData.financial_history['2024'].revenue - formData.financial_history['2023'].revenue) / formData.financial_history['2023'].revenue) * 100);
-                      } else if (year === '2025' && formData.financial_history['2024'].revenue) {
-                        yoy = Math.round(((formData.financial_history['2025'].revenue - formData.financial_history['2024'].revenue) / formData.financial_history['2024'].revenue) * 100);
+                      if (year === '2024' && formData.financial_history?.['2023']?.revenue) {
+                        yoy = Math.round(((formData.financial_history['2024']?.revenue - formData.financial_history['2023']?.revenue) / formData.financial_history['2023']?.revenue) * 100);
+                      } else if (year === '2025' && formData.financial_history?.['2024']?.revenue) {
+                        yoy = Math.round(((formData.financial_history['2025']?.revenue - formData.financial_history['2024']?.revenue) / formData.financial_history['2024']?.revenue) * 100);
                       }
                     }
                     return (
@@ -672,10 +734,10 @@ export default function SellerProfileForm({ userId }) {
                 </tr>
 
                 {/* --- Gross Profit --- */}
-                <tr>
+                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Gross Profit</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financial_history[year].gross_profit;
+                    const val = formData.financial_history?.[year]?.gross_profit;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -696,8 +758,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Gross Profit Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financial_history[year].gross_profit;
-                    const rev = formData.financial_history[year].revenue;
+                    const val = formData.financial_history?.[year]?.gross_profit;
+                    const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'gross_profit' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -711,8 +773,8 @@ export default function SellerProfileForm({ userId }) {
                 {/* --- EBITDA --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBITDA</td>
-                  {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financial_history[year].ebitda;
+                   {['2023', '2024', '2025', 'LTM'].map(year => {
+                    const val = formData.financial_history?.[year]?.ebitda;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -733,8 +795,8 @@ export default function SellerProfileForm({ userId }) {
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBITDA Margin</td>
                   {['2023', '2024', '2025', 'LTM'].map(year => {
-                    const val = formData.financial_history[year].ebitda;
-                    const rev = formData.financial_history[year].revenue;
+                    const val = formData.financial_history?.[year]?.ebitda;
+                    const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebitda' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -891,13 +953,10 @@ export default function SellerProfileForm({ userId }) {
             className="btn-primary flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-indigo-500/20 group h-auto"
           >
             {loading ? (
-              <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
+              <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                Create Listing
+                {isEditing ? 'Update Listing' : 'Create Listing'}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
               </>
             )}
@@ -905,23 +964,5 @@ export default function SellerProfileForm({ userId }) {
         </div>
       </form>
     </div>
-  );
-}
-
-function Loader2({ size, className }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={`animate-spin ${className}`}
-    >
-      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-    </svg>
   );
 }

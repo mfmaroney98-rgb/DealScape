@@ -256,7 +256,7 @@ export default function SellerListingOverview() {
               {/* Actions */}
               <div className="flex flex-col gap-3">
                 <button 
-                  onClick={() => navigate(`/onboarding/seller?id=${listing.id}`)}
+                  onClick={() => navigate(`/onboarding/seller/edit/${listing.id}`)}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 border border-indigo-500/30 text-indigo-400 font-semibold transition-all">
                   <Edit3 size={18} /> Edit Profile
                 </button>
