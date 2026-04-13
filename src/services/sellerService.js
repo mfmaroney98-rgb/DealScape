@@ -5,29 +5,41 @@ import { supabase } from '../lib/supabase';
  */
 export const sellerService = {
   /**
-   * Fetches the listing for a specific seller.
+   * Fetches the listings for a specific organization.
+   * If isCorporate is true, it fetches all listings.
    */
-  async getListings(userId) {
-    const { data, error } = await supabase
+  async getListings(orgId, isCorporate = false) {
+    let query = supabase
       .from('sellers')
       .select('*')
-      .eq('user_id', userId)
       .order('created_at', { ascending: false });
+
+    if (!isCorporate) {
+      if (!orgId) return [];
+      query = query.eq('organization_id', orgId);
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
     return data || [];
   },
 
   /**
-   * Fetches a specific listing by its ID, ensuring it belongs to the user.
+   * Fetches a specific listing by its ID, ensuring it belongs to the organization (unless corporate).
    */
-  async getListingById(id, userId) {
-    const { data, error } = await supabase
+  async getListingById(id, orgId, isCorporate = false) {
+    let query = supabase
       .from('sellers')
       .select('*')
-      .eq('id', id)
-      .eq('user_id', userId)
-      .single();
+      .eq('id', id);
+
+    if (!isCorporate) {
+      if (!orgId) throw new Error('Organization ID is required');
+      query = query.eq('organization_id', orgId);
+    }
+
+    const { data, error } = await query.single();
 
     if (error) throw error;
     return data;

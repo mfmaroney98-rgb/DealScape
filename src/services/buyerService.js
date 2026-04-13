@@ -5,14 +5,21 @@ import { supabase } from '../lib/supabase';
  */
 export const buyerService = {
   /**
-   * Fetches all search criteria for a specific user.
+   * Fetches all search criteria for a specific organization.
+   * If isCorporate is true, it fetches all criteria.
    */
-  async getCriteriaList(userId) {
-    const { data, error } = await supabase
+  async getCriteriaList(orgId, isCorporate = false) {
+    let query = supabase
       .from('buyer_criteria')
       .select('*')
-      .eq('user_id', userId)
       .order('created_at', { ascending: false });
+
+    if (!isCorporate) {
+      if (!orgId) return [];
+      query = query.eq('organization_id', orgId);
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
     return data;
@@ -21,12 +28,18 @@ export const buyerService = {
   /**
    * Fetches a specific search criteria record by ID.
    */
-  async getCriteriaById(id) {
-    const { data, error } = await supabase
+  async getCriteriaById(id, orgId, isCorporate = false) {
+    let query = supabase
       .from('buyer_criteria')
       .select('*')
-      .eq('id', id)
-      .single();
+      .eq('id', id);
+
+    if (!isCorporate) {
+      if (!orgId) throw new Error('Organization ID is required');
+      query = query.eq('organization_id', orgId);
+    }
+
+    const { data, error } = await query.single();
 
     if (error) throw error;
     return data;

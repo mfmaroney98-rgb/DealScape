@@ -9,6 +9,7 @@ import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
 import BuyerCriteriaList from './components/BuyerCriteriaList';
+import OrganizationOnboarding from './components/OrganizationOnboarding';
 import Navbar from './components/Navbar';
 import {
   TrendingUp,
@@ -307,7 +308,11 @@ const BuyerDashboard = ({ hasCriteria }) => (
   </div>
 );
 
-const RootDashboardDispatcher = ({ role }) => {
+const RootDashboardDispatcher = ({ role, organizationId }) => {
+  if (!organizationId && (role === 'seller' || role === 'buyer')) {
+    return <Navigate to="/onboarding/organization" replace />;
+  }
+
   if (role === 'seller') return <Navigate to="/dashboard/seller" replace />;
   if (role === 'buyer') return <Navigate to="/dashboard/buyer" replace />;
 
@@ -375,14 +380,18 @@ function App() {
           const userProfile = await profileService.getProfile(session.user.id);
           setProfile(userProfile);
 
-          if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
-            const listings = await sellerService.getListings(session.user.id);
-            setHasListing(listings && listings.length > 0);
-          }
+          if (userProfile?.organization_id) {
+            const isCorporate = userProfile.role === 'corporate';
+            
+            if (userProfile.role === 'seller' || isCorporate) {
+              const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
+              setHasListing(listings && listings.length > 0);
+            }
 
-          if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
-            const criteriaList = await buyerService.getCriteriaList(session.user.id);
-            setHasCriteria(criteriaList && criteriaList.length > 0);
+            if (userProfile.role === 'buyer' || isCorporate) {
+              const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
+              setHasCriteria(criteriaList && criteriaList.length > 0);
+            }
           }
         }
       } catch (err) {
@@ -402,14 +411,18 @@ function App() {
         const userProfile = await profileService.getProfile(session.user.id);
         setProfile(userProfile);
 
-        if (userProfile?.role === 'seller' || userProfile?.role === 'corporate') {
-          const listings = await sellerService.getListings(session.user.id);
-          setHasListing(listings && listings.length > 0);
-        }
+        if (userProfile?.organization_id) {
+          const isCorporate = userProfile.role === 'corporate';
+          
+          if (userProfile.role === 'seller' || isCorporate) {
+            const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
+            setHasListing(listings && listings.length > 0);
+          }
 
-        if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
-          const criteriaList = await buyerService.getCriteriaList(session.user.id);
-          setHasCriteria(criteriaList && criteriaList.length > 0);
+          if (userProfile.role === 'buyer' || isCorporate) {
+            const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
+            setHasCriteria(criteriaList && criteriaList.length > 0);
+          }
         }
       } else {
         setProfile(null);
@@ -439,27 +452,41 @@ function App() {
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={session ? <Navigate to="/dashboard" /> : <Signup />} />
           <Route
+            path="/onboarding/organization"
+            element={
+              session ? (
+                profile?.organization_id ? (
+                  <Navigate to="/dashboard" replace />
+                ) : (
+                  <OrganizationOnboarding userId={session.user.id} userRole={profile?.role} />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
             path="/onboarding/seller"
-            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/seller/edit/:listingId"
-            element={session ? <SellerProfileForm userId={session.user.id} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer/edit/:id"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/buyer/criteria"
             element={
               session ? (
                 (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerCriteriaList />
+                  <BuyerCriteriaList orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -472,7 +499,7 @@ function App() {
             path="/dashboard"
             element={
               session ? (
-                <RootDashboardDispatcher role={profile?.role || 'seller'} />
+                <RootDashboardDispatcher role={profile?.role || 'seller'} organizationId={profile?.organization_id} />
               ) : (
                 <Navigate to="/" />
               )
@@ -497,7 +524,7 @@ function App() {
             element={
               session ? (
                 (profile?.role === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerListings />
+                  <SellerListings orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )
@@ -511,7 +538,7 @@ function App() {
             element={
               session ? (
                 (profile?.role === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerListingOverview />
+                  <SellerListingOverview orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )

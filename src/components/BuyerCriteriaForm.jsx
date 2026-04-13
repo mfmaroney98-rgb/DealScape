@@ -25,7 +25,7 @@ import {
 
 
 
-export default function BuyerCriteriaForm({ userId }) {
+export default function BuyerCriteriaForm({ userId, orgId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedContinents, setExpandedContinents] = useState(new Set());
@@ -72,7 +72,8 @@ export default function BuyerCriteriaForm({ userId }) {
 
     if (isEditing) {
       setLoading(true);
-      buyerService.getCriteriaById(id)
+      // isCorporate could be passed down, but for now we assume orgId filter
+      buyerService.getCriteriaById(id, orgId)
         .then(data => {
           if (data) {
             setFormData(prev => ({
@@ -95,6 +96,7 @@ export default function BuyerCriteriaForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
+    organization_id: orgId,
     investment_criteria_name: '',
     buyer_url: '',
     overview: '',

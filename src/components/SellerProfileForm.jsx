@@ -25,7 +25,7 @@ import {
 
 
 
-export default function SellerProfileForm({ userId }) {
+export default function SellerProfileForm({ userId, orgId }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
@@ -52,7 +52,8 @@ export default function SellerProfileForm({ userId }) {
     // Fetch listing data if editing
     if (isEditing) {
       setLoading(true);
-      sellerService.getListingById(listingId, userId)
+      // isCorporate could be passed down, but for now we assume orgId filter
+      sellerService.getListingById(listingId, orgId)
         .then(data => {
           if (data) {
             setFormData(prev => {
@@ -100,6 +101,7 @@ export default function SellerProfileForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
+    organization_id: orgId,
     seller_name: '',
     seller_anon_name: '',
     locations: [],

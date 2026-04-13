@@ -4,7 +4,7 @@ import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
 import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag } from 'lucide-react';
 
-export default function BuyerCriteriaList() {
+export default function BuyerCriteriaList({ orgId, isCorporate }) {
   const [criteriaList, setCriteriaList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ export default function BuyerCriteriaList() {
           return;
         }
 
-        const data = await buyerService.getCriteriaList(session.user.id);
+        const data = await buyerService.getCriteriaList(orgId, isCorporate);
         setCriteriaList(data || []);
       } catch (err) {
         setError(err.message);

@@ -4,7 +4,7 @@ import { sellerService } from '../services/sellerService';
 import { supabase } from '../lib/supabase';
 import { Briefcase, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search } from 'lucide-react';
 
-export default function SellerListings() {
+export default function SellerListings({ orgId, isCorporate }) {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ export default function SellerListings() {
           return;
         }
 
-        const data = await sellerService.getListings(session.user.id);
+        const data = await sellerService.getListings(orgId, isCorporate);
         setListings(data || []);
       } catch (err) {
         setError(err.message);
