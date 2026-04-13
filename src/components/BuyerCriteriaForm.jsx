@@ -71,7 +71,7 @@ export default function BuyerCriteriaForm({ userId }) {
 
   const [formData, setFormData] = useState({
     user_id: userId,
-    buyer_name: '',
+    investment_criteria_name: '',
     buyer_url: '',
     overview: '',
     buyer_type: '',
@@ -328,13 +328,13 @@ export default function BuyerCriteriaForm({ userId }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', marginBottom: '1.5rem' }}>
             <div className="field-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Buyer Name</label>
+              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Investment Criteria Name</label>
               <input
                 type="text"
-                name="buyer_name"
+                name="investment_criteria_name"
                 className="form-input"
-                placeholder="e.g. Acme Investments"
-                value={formData.buyer_name || ''}
+                placeholder="e.g. Acme Investments (US Focus)"
+                value={formData.investment_criteria_name || ''}
                 onChange={handleChange}
               />
             </div>

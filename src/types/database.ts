@@ -68,7 +68,7 @@ export interface BuyerCriteria {
   user_id: string;
 
   // Identity
-  buyer_name?: string;
+  investment_criteria_name?: string;
   buyer_url?: string;
   overview?: string;
   buyer_type?: string;
