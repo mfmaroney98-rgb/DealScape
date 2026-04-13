@@ -5,16 +5,30 @@ import { supabase } from '../lib/supabase';
  */
 export const buyerService = {
   /**
-   * Fetches the search criteria for a specific buyer.
+   * Fetches all search criteria for a specific user.
    */
-  async getCriteria(userId) {
+  async getCriteriaList(userId) {
     const { data, error } = await supabase
       .from('buyer_criteria')
       .select('*')
       .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
+   * Fetches a specific search criteria record by ID.
+   */
+  async getCriteriaById(id) {
+    const { data, error } = await supabase
+      .from('buyer_criteria')
+      .select('*')
+      .eq('id', id)
       .single();
 
-    if (error && error.code !== 'PGRST116') throw error;
+    if (error) throw error;
     return data;
   },
 

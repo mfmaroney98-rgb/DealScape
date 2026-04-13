@@ -8,6 +8,7 @@ import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
+import BuyerCriteriaList from './components/BuyerCriteriaList';
 import Navbar from './components/Navbar';
 import {
   TrendingUp,
@@ -296,7 +297,10 @@ const BuyerDashboard = ({ hasCriteria }) => (
         to="/onboarding/buyer"
         active={hasCriteria}
         activeText="Criteria Set"
-        buttonText="Update Criteria"
+        buttonText="View Criteria"
+        activeTo="/dashboard/buyer/criteria"
+        secondaryAction="Create New Criteria"
+        secondaryTo="/onboarding/buyer"
       />
       <MessagesCard />
     </div>
@@ -377,8 +381,8 @@ function App() {
           }
 
           if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
-            const criteria = await buyerService.getCriteria(session.user.id);
-            setHasCriteria(!!criteria);
+            const criteriaList = await buyerService.getCriteriaList(session.user.id);
+            setHasCriteria(criteriaList && criteriaList.length > 0);
           }
         }
       } catch (err) {
@@ -404,8 +408,8 @@ function App() {
         }
 
         if (userProfile?.role === 'buyer' || userProfile?.role === 'corporate') {
-          const criteria = await buyerService.getCriteria(session.user.id);
-          setHasCriteria(!!criteria);
+          const criteriaList = await buyerService.getCriteriaList(session.user.id);
+          setHasCriteria(criteriaList && criteriaList.length > 0);
         }
       } else {
         setProfile(null);
@@ -445,6 +449,24 @@ function App() {
           <Route
             path="/onboarding/buyer"
             element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/onboarding/buyer/edit/:id"
+            element={session ? <BuyerCriteriaForm userId={session.user.id} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/dashboard/buyer/criteria"
+            element={
+              session ? (
+                (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
+                  <BuyerCriteriaList />
+                ) : (
+                  <Navigate to="/dashboard/seller" replace />
+                )
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="/dashboard"

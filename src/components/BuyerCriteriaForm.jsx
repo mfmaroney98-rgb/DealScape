@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors } from '../services/naicsService';
@@ -31,6 +31,8 @@ export default function BuyerCriteriaForm({ userId }) {
   const [expandedContinents, setExpandedContinents] = useState(new Set());
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditing = !!id;
 
   // Geography data loaded from Supabase
   const [geoTree, setGeoTree] = useState([]);
@@ -67,7 +69,29 @@ export default function BuyerCriteriaForm({ userId }) {
       .catch(() => {
         setFinancialMetrics(['Revenue', 'Gross Profit', 'EBITDA', 'EBITDA Margin', 'Net Income']);
       });
-  }, []);
+
+    if (isEditing) {
+      setLoading(true);
+      buyerService.getCriteriaById(id)
+        .then(data => {
+          if (data) {
+            setFormData(prev => ({
+              ...prev,
+              ...data,
+              financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
+              locations: Array.isArray(data.locations) ? data.locations : [],
+              keywords: Array.isArray(data.keywords) ? data.keywords : [],
+              naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
+            }));
+          }
+        })
+        .catch(err => {
+          console.error('Failed to load criteria:', err);
+          setError('Failed to load investment criteria data.');
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [isEditing, id]);
 
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -768,20 +792,24 @@ export default function BuyerCriteriaForm({ userId }) {
         )}
 
         {/* Action Buttons */}
-        <div className="flex justify-center py-6">
+        <div className="flex justify-center items-center gap-6 py-10">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="btn-secondary px-12 py-4 text-lg font-bold border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white transition-all h-auto"
+          >
+            Cancel
+          </button>
           <button 
             type="submit" 
             disabled={loading}
-            className="btn-primary flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-indigo-500/20 group h-auto"
+            className="btn-primary-emerald flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-emerald-500/20 group h-auto"
           >
             {loading ? (
-              <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
+              <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                Save Investment Criteria
+                {isEditing ? 'Update Investment Criteria' : 'Save Investment Criteria'}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
               </>
             )}
