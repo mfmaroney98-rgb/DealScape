@@ -18,14 +18,15 @@ import {
   Search,
   Globe,
   Plus,
-  X
+  X,
+  Loader2
 } from 'lucide-react';
 
 
 
 
 
-export default function BuyerCriteriaForm({ userId, orgId }) {
+export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedContinents, setExpandedContinents] = useState(new Set());
@@ -319,6 +320,11 @@ export default function BuyerCriteriaForm({ userId, orgId }) {
 
     try {
       await buyerService.saveCriteria(formData);
+      
+      if (onComplete) {
+        await onComplete();
+      }
+
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);

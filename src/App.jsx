@@ -309,8 +309,11 @@ const BuyerDashboard = ({ hasCriteria }) => (
   </div>
 );
 
-const RootDashboardDispatcher = ({ role, organization }) => {
-  if (!organization?.id && (role === 'seller' || role === 'buyer' || !role)) {
+const RootDashboardDispatcher = ({ profile }) => {
+  const role = profile?.role;
+  const organization = profile?.organization;
+
+  if (!profile?.organization_id && (role === 'seller' || role === 'buyer' || !role)) {
     return <Navigate to="/onboarding/organization" replace />;
   }
 
@@ -383,6 +386,9 @@ function App() {
         userProfile.organization = Array.isArray(userProfile.organizations) 
           ? userProfile.organizations[0] 
           : userProfile.organizations;
+      } else if (userProfile?.organization_id) {
+        // If organization_id exists but the object is missing, we might need a fallback or re-fetch
+        userProfile.organization = null;
       }
 
       setProfile(userProfile);
@@ -501,19 +507,19 @@ function App() {
           />
           <Route
             path="/onboarding/seller"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/seller/edit/:listingId"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer/edit/:id"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/buyer/criteria"
@@ -533,7 +539,7 @@ function App() {
             path="/dashboard"
             element={
               session ? (
-                <RootDashboardDispatcher role={profile?.role} organization={profile?.organization} />
+                <RootDashboardDispatcher profile={profile} />
               ) : (
                 <Navigate to="/" />
               )
@@ -543,7 +549,7 @@ function App() {
             path="/dashboard/seller"
             element={
               session ? (
-                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                (profile?.role === 'seller' || profile?.organization?.type === 'seller' || profile?.role === 'corporate') ? (
                   <SellerDashboard hasListing={hasListing} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
@@ -585,7 +591,7 @@ function App() {
             path="/dashboard/buyer"
             element={
               session ? (
-                (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
+                (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
                   <BuyerDashboard hasCriteria={hasCriteria} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />

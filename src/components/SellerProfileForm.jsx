@@ -25,7 +25,7 @@ import {
 
 
 
-export default function SellerProfileForm({ userId, orgId }) {
+export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
@@ -313,6 +313,11 @@ export default function SellerProfileForm({ userId, orgId }) {
 
     try {
       await sellerListingService.saveListing(formData);
+      
+      if (onComplete) {
+        await onComplete();
+      }
+
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);
