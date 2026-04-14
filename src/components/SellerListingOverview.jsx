@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { sellerService } from '../services/sellerService';
+import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, Loader2, Edit3, EyeOff, XCircle, Trash2, Users, FileText, CheckCircle2 } from 'lucide-react';
 
@@ -22,7 +22,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           return;
         }
 
-        const data = await sellerService.getListingById(id, orgId, isCorporate);
+        const data = await sellerListingService.getListingById(id, orgId, isCorporate);
         setListing(data);
       } catch (err) {
         console.error("Error fetching listing:", err);

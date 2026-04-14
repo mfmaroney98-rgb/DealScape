@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { sellerService } from '../services/sellerService';
+import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
 import { Briefcase, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search } from 'lucide-react';
 
@@ -19,7 +19,7 @@ export default function SellerListings({ orgId, isCorporate }) {
           return;
         }
 
-        const data = await sellerService.getListings(orgId, isCorporate);
+        const data = await sellerListingService.getListings(orgId, isCorporate);
         setListings(data || []);
       } catch (err) {
         setError(err.message);

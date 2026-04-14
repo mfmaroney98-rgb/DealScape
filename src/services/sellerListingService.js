@@ -2,15 +2,16 @@ import { supabase } from '../lib/supabase';
 
 /**
  * Service to manage seller listings and profiles.
+ * Renamed from sellerService for consistency with backend.
  */
-export const sellerService = {
+export const sellerListingService = {
   /**
    * Fetches the listings for a specific organization.
    * If isCorporate is true, it fetches all listings.
    */
   async getListings(orgId, isCorporate = false) {
     let query = supabase
-      .from('sellers')
+      .from('seller_listings')
       .select('*')
       .order('created_at', { ascending: false });
 
@@ -30,7 +31,7 @@ export const sellerService = {
    */
   async getListingById(id, orgId, isCorporate = false) {
     let query = supabase
-      .from('sellers')
+      .from('seller_listings')
       .select('*')
       .eq('id', id);
 
@@ -50,7 +51,7 @@ export const sellerService = {
    */
   async saveListing(listingData) {
     const { data, error } = await supabase
-      .from('sellers')
+      .from('seller_listings')
       .upsert({
         ...listingData,
         updated_at: new Date().toISOString(),
@@ -67,7 +68,7 @@ export const sellerService = {
    */
   async deleteListing(listingId) {
     const { error } = await supabase
-      .from('sellers')
+      .from('seller_listings')
       .delete()
       .eq('id', listingId);
 

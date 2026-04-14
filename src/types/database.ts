@@ -1,4 +1,4 @@
-export type UserRole = 'buyer' | 'seller' | 'admin';
+export type UserRole = 'buyer' | 'seller' | 'admin' | 'corporate';
 
 export type TransactionType =
   | 'Total Sale'
@@ -8,18 +8,21 @@ export type TransactionType =
   | 'Mezzanine Financing'
   | 'Divestiture / Carve-out';
 
-export interface Profile {
+export interface UserProfile {
   id: string; // UUID from auth.users
-  name: string;
-  role: UserRole;
-  company_name?: string;
-  created_at: string;
-  updated_at: string;
+  name?: string;
+  role?: UserRole;
+  organization_id?: string;
+  organization_name?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export interface Seller {
+export interface SellerListing {
   id: string;
   user_id: string;
+  organization_id?: string;
+  
   // Anonymized Display
   seller_anon_name: string;
   seller_name?: string;
@@ -66,6 +69,7 @@ export interface Seller {
 export interface BuyerCriteria {
   id: string;
   user_id: string;
+  organization_id?: string;
 
   // Identity
   investment_criteria_name?: string;

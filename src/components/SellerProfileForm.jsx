@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { sellerService } from '../services/sellerService';
+import { sellerListingService } from '../services/sellerListingService';
 import TagInput from './TagInput';
 import { fetchGeographyTree } from '../services/geographyService';
 import {
@@ -53,7 +53,7 @@ export default function SellerProfileForm({ userId, orgId }) {
     if (isEditing) {
       setLoading(true);
       // isCorporate could be passed down, but for now we assume orgId filter
-      sellerService.getListingById(listingId, orgId)
+      sellerListingService.getListingById(listingId, orgId)
         .then(data => {
           if (data) {
             setFormData(prev => {
@@ -312,7 +312,7 @@ export default function SellerProfileForm({ userId, orgId }) {
     setError(null);
 
     try {
-      await sellerService.saveListing(formData);
+      await sellerListingService.saveListing(formData);
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
-import { sellerService } from './services/sellerService';
+import { sellerListingService } from './services/sellerListingService';
 import { buyerService } from './services/buyerService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
@@ -391,7 +391,7 @@ function App() {
         const isCorporate = userProfile.role === 'corporate';
         
         if (userProfile.role === 'seller' || isCorporate) {
-          const listings = await sellerService.getListings(userProfile.organization_id, isCorporate);
+          const listings = await sellerListingService.getListings(userProfile.organization_id, isCorporate);
           setHasListing(listings && listings.length > 0);
         }
 
@@ -458,7 +458,7 @@ function App() {
     <Router>
       <Layout 
         session={session} 
-        organizationName={profile?.organization?.name}
+        organizationName={profile?.organization?.organization_name}
       >
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />

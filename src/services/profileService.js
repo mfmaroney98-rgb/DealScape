@@ -9,8 +9,8 @@ export const profileService = {
    */
   async getProfile(userId) {
     const { data, error } = await supabase
-      .from('profiles')
-      .select('*, organizations(id, name, type)')
+      .from('user_profiles')
+      .select('*, organizations(id, organization_name, type)')
       .eq('id', userId)
       .single();
 
@@ -25,7 +25,7 @@ export const profileService = {
    */
   async updateProfile(profile) {
     const { data, error } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .upsert({
         ...profile,
         updated_at: new Date().toISOString(),
@@ -42,7 +42,7 @@ export const profileService = {
    */
   async setRole(userId, role) {
     const { data, error } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .upsert({ 
         id: userId, 
         role, 

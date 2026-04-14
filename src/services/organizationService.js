@@ -25,7 +25,7 @@ export const organizationService = {
     // 1. Create Organization
     const { data: org, error: orgError } = await supabase
       .from('organizations')
-      .insert({ name, type })
+      .insert({ organization_name: name, type })
       .select()
       .single();
 
@@ -33,7 +33,7 @@ export const organizationService = {
 
     // 2. Link Profile to Organization using upsert to ensure record exists
     const { error: profileError } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .upsert({ 
         id: userId,
         organization_id: org.id,
