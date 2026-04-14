@@ -10,6 +10,7 @@ import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
 import BuyerCriteriaList from './components/BuyerCriteriaList';
 import BuyerProfileForm from './components/BuyerProfileForm';
+import SellerProfilePage from './components/SellerProfilePage';
 import OrganizationOnboarding from './components/OrganizationOnboarding';
 import OrganizationTypeSelection from './components/OrganizationTypeSelection';
 import Navbar from './components/Navbar';
@@ -253,7 +254,7 @@ const MessagesCard = () => (
   </div>
 );
 
-const SellerDashboard = ({ hasListing }) => (
+const SellerDashboard = ({ hasListing, profile }) => (
   <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
     <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
@@ -264,7 +265,7 @@ const SellerDashboard = ({ hasListing }) => (
     <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
       Seller Dashboard
     </h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
       <DashboardActionCard
         title="Seller Listing"
         subtitle="List your business and start finding buyers today."
@@ -276,6 +277,16 @@ const SellerDashboard = ({ hasListing }) => (
         activeTo="/dashboard/seller/listings"
         secondaryAction="Create New Listing"
         secondaryTo="/onboarding/seller"
+      />
+      <DashboardActionCard
+        title="Seller Profile"
+        subtitle="Manage your organization's website and public summary."
+        icon={Users}
+        to="/dashboard/seller/profile"
+        active={!!profile?.organization?.website_url}
+        activeText="Profile Active"
+        buttonText="Edit Profile"
+        activeTo="/dashboard/seller/profile"
       />
       <MessagesCard />
     </div>
@@ -526,6 +537,10 @@ function App() {
             element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
+            path="/dashboard/seller/profile"
+            element={session ? <SellerProfilePage userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+          />
+          <Route
             path="/onboarding/buyer"
             element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
@@ -566,7 +581,7 @@ function App() {
             element={
               session ? (
                 (profile?.role === 'seller' || profile?.organization?.type === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerDashboard hasListing={hasListing} />
+                  <SellerDashboard hasListing={hasListing} profile={profile} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )
