@@ -9,6 +9,7 @@ import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
 import BuyerCriteriaList from './components/BuyerCriteriaList';
+import BuyerProfileForm from './components/BuyerProfileForm';
 import OrganizationOnboarding from './components/OrganizationOnboarding';
 import OrganizationTypeSelection from './components/OrganizationTypeSelection';
 import Navbar from './components/Navbar';
@@ -21,7 +22,8 @@ import {
   AlertCircle,
   ArrowRight,
   PlusCircle,
-  CheckCircle2
+  CheckCircle2,
+  Users
 } from 'lucide-react';
 
 /* --- Components --- */
@@ -280,7 +282,7 @@ const SellerDashboard = ({ hasListing }) => (
   </div>
 );
 
-const BuyerDashboard = ({ hasCriteria }) => (
+const BuyerDashboard = ({ hasCriteria, profile }) => (
   <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
     <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
@@ -291,7 +293,7 @@ const BuyerDashboard = ({ hasCriteria }) => (
     <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
       Buyer Dashboard
     </h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
       <DashboardActionCard
         title="Buyer Criteria"
         subtitle="Define what you're looking for to receive deals."
@@ -303,6 +305,16 @@ const BuyerDashboard = ({ hasCriteria }) => (
         activeTo="/dashboard/buyer/criteria"
         secondaryAction="Create New Criteria"
         secondaryTo="/onboarding/buyer"
+      />
+      <DashboardActionCard
+        title="Buyer Profile"
+        subtitle="Manage your organization's website, description, and buyer identity."
+        icon={Users}
+        to="/dashboard/buyer/profile"
+        active={!!profile?.organization?.buyer_type}
+        activeText="Profile Active"
+        buttonText="Edit Profile"
+        activeTo="/dashboard/buyer/profile"
       />
       <MessagesCard />
     </div>
@@ -522,6 +534,10 @@ function App() {
             element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
+            path="/dashboard/buyer/profile"
+            element={session ? <BuyerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+          />
+          <Route
             path="/dashboard/buyer/criteria"
             element={
               session ? (
@@ -592,7 +608,7 @@ function App() {
             element={
               session ? (
                 (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerDashboard hasCriteria={hasCriteria} />
+                  <BuyerDashboard hasCriteria={hasCriteria} profile={profile} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )

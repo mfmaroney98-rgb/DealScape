@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
 import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag } from 'lucide-react';
+import { organizationService } from '../services/organizationService';
 
 export default function BuyerCriteriaList({ orgId, isCorporate }) {
   const [criteriaList, setCriteriaList] = useState([]);
+  const [organization, setOrganization] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -19,8 +21,13 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
           return;
         }
 
-        const data = await buyerService.getCriteriaList(orgId, isCorporate);
-        setCriteriaList(data || []);
+        const [criteriaData, orgData] = await Promise.all([
+          buyerService.getCriteriaList(orgId, isCorporate),
+          !isCorporate && orgId ? organizationService.getOrganization(orgId) : Promise.resolve(null)
+        ]);
+
+        setCriteriaList(criteriaData || []);
+        setOrganization(orgData);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -133,7 +140,9 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       <h3 className="text-xl font-bold text-white">
                         {criteria.investment_criteria_name || 'Untitled Criteria'}
                       </h3>
-                      <p className="text-sm text-slate-400">{criteria.buyer_type || 'Unspecified Type'}</p>
+                      <p className="text-sm text-slate-400">
+                        {organization?.buyer_type || criteria.buyer_type || 'Unspecified Type'}
+                      </p>
                     </div>
                   </div>
                   <Link 

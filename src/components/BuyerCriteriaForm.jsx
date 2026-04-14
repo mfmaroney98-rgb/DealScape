@@ -99,9 +99,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     user_id: userId,
     organization_id: orgId,
     investment_criteria_name: '',
-    buyer_url: '',
-    overview: '',
-    buyer_type: '',
     financial_criteria: [
       { id: Date.now(), metric: 'Revenue', min: '', max: '' },
       { id: Date.now() + 1, metric: 'EBITDA Margin', min: '', max: '' }
@@ -345,86 +342,29 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Section 0: About the Buyer */}
-        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
-          <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
-            <Users size={80} />
-          </div>
-          
-          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+        {/* Section 0: Criteria Identity */}
+        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+          <div className="geo-row" style={{ marginBottom: '1.5rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Users style={{ color: '#818cf8' }} size={20} />
+              <Target style={{ color: '#818cf8' }} size={20} />
             </div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>About the Buyer</h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Criteria Identity</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start', marginBottom: '1.5rem' }}>
-            <div className="field-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Investment Criteria Name</label>
-              <input
-                type="text"
-                name="investment_criteria_name"
-                className="form-input"
-                placeholder="e.g. Acme Investments (US Focus)"
-                value={formData.investment_criteria_name || ''}
-                onChange={handleChange}
-              />
-            </div>
-            
-            <div className="field-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Website</label>
-              <input
-                type="text"
-                name="buyer_url"
-                className="form-input"
-                placeholder="e.g. www.example.com"
-                value={formData.buyer_url || ''}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-            <div className="field-group">
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Brief Overview / Summary</label>
-              <textarea
-                name="overview"
-                className="form-input"
-                style={{ width: '100%', minHeight: '120px', resize: 'vertical' }}
-                placeholder="Tell us about yourself..."
-                value={formData.overview}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="field-group">
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Buyer Type</label>
-              <select
-                name="buyer_type"
-                className="form-input"
-                style={{ width: '100%', cursor: 'pointer', appearance: 'auto' }}
-                value={formData.buyer_type || ''}
-                onChange={handleChange}
-              >
-                <option value="" disabled>Select buyer type...</option>
-                <option value="PE Firm">PE Firm</option>
-                <option value="Independent Sponsor / Fundless Sponsor">Independent Sponsor / Fundless Sponsor</option>
-                <option value="Search Fund">Search Fund</option>
-                <option value="Growth Equity Firm">Growth Equity Firm</option>
-                <option value="Venture Capital Firm">Venture Capital Firm</option>
-                <option value="Strategic Acquirer (Public)">Strategic Acquirer (Public)</option>
-                <option value="Strategic Acquirer (Private / PE Owned)">Strategic Acquirer (Private / PE Owned)</option>
-                <option value="Family Office">Family Office</option>
-                <option value="High Net Worth Individual">High Net Worth Individual</option>
-                <option value="Entrepreneur via Acquisition (ETA)">Entrepreneur via Acquisition (ETA)</option>
-                <option value="Mezzanine Fund">Mezzanine Fund</option>
-                <option value="BDC">BDC</option>
-                <option value="Direct Lending Fund">Direct Lending Fund</option>
-                <option value="Distressed Debt Fund">Distressed Debt Fund</option>
-                <option value="Holding Company">Holding Company</option>
-                <option value="Sovereign Wealth Fund">Sovereign Wealth Fund</option>
-              </select>
-            </div>
+          <div className="field-group" style={{ marginBottom: 0 }}>
+            <label className="form-label mb-2 block">Investment Criteria Name</label>
+            <input
+              type="text"
+              name="investment_criteria_name"
+              className="form-input"
+              placeholder="e.g. Mid-Market Software (US/Canada)"
+              value={formData.investment_criteria_name || ''}
+              onChange={handleChange}
+              required
+            />
+            <p className="text-xs text-slate-500 mt-2">
+              Give this specific set of filters a descriptive name for your dashboard.
+            </p>
           </div>
         </div>
 

@@ -66,6 +66,17 @@ export interface SellerListing {
   updated_at: string;
 }
 
+export interface Organization {
+  id: string;
+  organization_name: string;
+  type: 'buyer' | 'seller';
+  website_url?: string;
+  organization_summary?: string;
+  buyer_type?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface BuyerCriteria {
   id: string;
   user_id: string;
@@ -73,9 +84,6 @@ export interface BuyerCriteria {
 
   // Identity
   investment_criteria_name?: string;
-  buyer_url?: string;
-  overview?: string;
-  buyer_type?: string;
 
   // Preferred Ranges
   financial_criteria?: Array<{
