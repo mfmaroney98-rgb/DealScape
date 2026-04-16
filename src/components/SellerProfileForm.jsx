@@ -136,9 +136,19 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       });
     }
 
+    let finalValue = type === 'checkbox' ? checked : value;
+
+    // Handle numeric fields
+    if ((name === 'employees_count' || name === 'year_founded') && value !== '') {
+      const parsed = parseInt(value, 10);
+      if (!isNaN(parsed)) {
+        finalValue = parsed;
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: finalValue
     }));
   };
 
@@ -276,7 +286,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     // Mock parsing delay of 2 seconds
     setTimeout(() => {
       const mockData = {
-        employees_count: '145',
+        employees_count: 145,
+        year_founded: 1998,
         legal_entity: 'LLC',
         keywords: ['Manufacturing', 'Industrial', 'B2B']
       };
@@ -313,7 +324,14 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     setError(null);
 
     try {
-      await sellerListingService.saveListing(formData);
+      // Sanitize data for Supabase (convert empty strings to null for numeric/integer columns)
+      const sanitizedData = {
+        ...formData,
+        employees_count: formData.employees_count === '' || formData.employees_count === null ? null : parseInt(formData.employees_count, 10),
+        year_founded: formData.year_founded === '' || formData.year_founded === null ? null : String(formData.year_founded)
+      };
+
+      await sellerListingService.saveListing(sanitizedData);
       
       if (onComplete) {
         await onComplete();
