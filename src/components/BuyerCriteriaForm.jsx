@@ -316,7 +316,42 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     setError(null);
 
     try {
-      await buyerService.saveCriteria(formData);
+      // Map the dynamic financial_criteria array to flat columns for high-performance searching
+      const metricMapping = {
+        'Revenue': 'search_revenue',
+        'Revenue Growth (YoY)': 'search_revenue_growth_yoy',
+        'Revenue CAGR': 'search_revenue_cagr',
+        'Gross Profit': 'search_gross_profit',
+        'Gross Profit Margin': 'search_gross_margin',
+        'EBITDA': 'search_ebitda',
+        'EBITDA Growth (YoY)': 'search_ebitda_growth_yoy',
+        'EBITDA Margin': 'search_ebitda_margin',
+        'EBIT': 'search_ebit',
+        'EBIT Margin': 'search_ebit_margin',
+        'Net Income': 'search_net_income',
+        'Net Margin': 'search_net_margin'
+      };
+
+      const flattenedData = { ...formData };
+      
+      // Initialize all searchable columns to null first
+      Object.values(metricMapping).forEach(col => {
+        flattenedData[`${col}_min`] = null;
+        flattenedData[`${col}_max`] = null;
+      });
+
+      // Populate columns from the dynamic list
+      if (Array.isArray(formData.financial_criteria)) {
+        formData.financial_criteria.forEach(fc => {
+          const colBase = metricMapping[fc.metric];
+          if (colBase) {
+            flattenedData[`${colBase}_min`] = fc.min === '' ? null : Number(fc.min);
+            flattenedData[`${colBase}_max`] = fc.max === '' ? null : Number(fc.max);
+          }
+        });
+      }
+
+      await buyerService.saveCriteria(flattenedData);
       
       if (onComplete) {
         await onComplete();
