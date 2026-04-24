@@ -345,8 +345,21 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         formData.financial_criteria.forEach(fc => {
           const colBase = metricMapping[fc.metric];
           if (colBase) {
-            flattenedData[`${colBase}_min`] = fc.min === '' ? null : Number(fc.min);
-            flattenedData[`${colBase}_max`] = fc.max === '' ? null : Number(fc.max);
+            const isPct = (fc.metric || '').toLowerCase().includes('margin') || 
+                          (fc.metric || '').toLowerCase().includes('growth') || 
+                          (fc.metric || '').toLowerCase().includes('%') || 
+                          (fc.metric || '').toLowerCase().includes('cagr');
+                          
+            let parsedMin = fc.min === '' || fc.min == null ? null : Number(fc.min);
+            let parsedMax = fc.max === '' || fc.max == null ? null : Number(fc.max);
+            
+            if (isPct) {
+              if (parsedMin !== null) parsedMin = parsedMin / 100;
+              if (parsedMax !== null) parsedMax = parsedMax / 100;
+            }
+            
+            flattenedData[`${colBase}_min`] = parsedMin;
+            flattenedData[`${colBase}_max`] = parsedMax;
           }
         });
       }
