@@ -55,12 +55,12 @@ export interface SellerListing {
   growth_rate_pct?: number;
 
   // Historical data
-  financial_history: Array<{
-    year: number;
-    revenue: number;
-    ebitda: number;
-    // ... other metrics
-  }>;
+  financial_history: {
+    'LTM': { date: string; revenue: number; ebitda: number; [key: string]: any };
+    'FY0': { date: string; revenue: number; ebitda: number; [key: string]: any };
+    'FY-1': { date: string; revenue: number; ebitda: number; [key: string]: any };
+    'FY-2': { date: string; revenue: number; ebitda: number; [key: string]: any };
+  };
 
   created_at: string;
   updated_at: string;

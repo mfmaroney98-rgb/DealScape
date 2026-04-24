@@ -44,10 +44,10 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
   const getLatestFinancial = (history, field) => {
     if (!history) return '--';
-    if (history['LTM'] && history['LTM'][field] !== null) return formatCurrency(history['LTM'][field]);
-    if (history['2025'] && history['2025'][field] !== null) return formatCurrency(history['2025'][field]);
-    if (history['2024'] && history['2024'][field] !== null) return formatCurrency(history['2024'][field]);
-    if (history['2023'] && history['2023'][field] !== null) return formatCurrency(history['2023'][field]);
+    if (history['LTM'] && history['LTM'][field] !== null && history['LTM'][field] !== '') return formatCurrency(history['LTM'][field]);
+    if (history['FY0'] && history['FY0'][field] !== null && history['FY0'][field] !== '') return formatCurrency(history['FY0'][field]);
+    if (history['FY-1'] && history['FY-1'][field] !== null && history['FY-1'][field] !== '') return formatCurrency(history['FY-1'][field]);
+    if (history['FY-2'] && history['FY-2'][field] !== null && history['FY-2'][field] !== '') return formatCurrency(history['FY-2'][field]);
     return '--';
   };
 
