@@ -443,7 +443,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 
                 <div className="range-row">
                   {(() => {
-                    const isPct = criteria.metric.includes('Margin') || criteria.metric.includes('Growth') || criteria.metric.includes('%');
+                    const lowerMetric = (criteria.metric || '').toLowerCase();
+                    const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
                     return (
                       <>
                         <input 
