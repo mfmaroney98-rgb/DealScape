@@ -122,36 +122,39 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     }));
   };
 
-  // Format a number with commas (e.g. 40000000 -> "40,000,000")
+  // Format a number with commas (e.g. 40000000 -> "40,000,000") while preserving decimals
   const formatWithCommas = (value) => {
-    if (!value && value !== 0) return '';
-    return Number(value).toLocaleString('en-US');
+    if (!value && value !== 0 && value !== '0') return '';
+    const strVal = value.toString();
+    const parts = strVal.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join('.');
   };
 
   // Display value for currency fields: "$1,234,567" or "" if empty
   const displayCurrency = (value) => {
-    if (!value && value !== 0) return '';
+    if (!value && value !== 0 && value !== '0') return '';
     return '$' + formatWithCommas(value);
   };
 
   // Display value for number fields with commas but no $
   const displayNumber = (value) => {
-    if (!value && value !== 0) return '';
+    if (!value && value !== 0 && value !== '0') return '';
     return formatWithCommas(value);
   };
 
   // Display value for percentage fields: "25%" or "" if empty
   const displayPercentage = (value) => {
-    if (!value && value !== 0) return '';
+    if (!value && value !== 0 && value !== '0') return '';
     return formatWithCommas(value) + '%';
   };
 
-  // Handle currency input: strip non-digits, store raw number
+  // Handle currency input: strip non-digits, store raw string
   const handleCurrencyChange = (name, rawValue) => {
-    const digits = rawValue.replace(/[^0-9]/g, '');
+    const digits = rawValue.replace(/[^0-9.-]/g, '');
     setFormData(prev => ({
       ...prev,
-      [name]: digits === '' ? '' : Number(digits)
+      [name]: digits
     }));
   };
 
@@ -161,8 +164,27 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       if (!updated[index]) return prev;
       
       if (field === 'min' || field === 'max') {
-        const digits = value.replace(/[^0-9.-]/g, '');
-        updated[index] = { ...updated[index], [field]: digits === '' ? '' : Number(digits) };
+        const lowerMetric = (updated[index].metric || '').toLowerCase();
+        const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
+        
+        let rawValue = value;
+        const oldVal = updated[index][field];
+        const oldFormatted = isPct ? displayPercentage(oldVal) : displayCurrency(oldVal);
+        
+        // If it's a percentage and they deleted the '%' sign at the end
+        if (isPct && oldFormatted.endsWith('%') && value === oldFormatted.slice(0, -1)) {
+          rawValue = value.slice(0, -1);
+        }
+
+        let digits = rawValue.replace(/[^0-9.-]/g, '');
+        
+        // Prevent multiple decimals
+        const decimalParts = digits.split('.');
+        if (decimalParts.length > 2) {
+          digits = decimalParts[0] + '.' + decimalParts.slice(1).join('');
+        }
+
+        updated[index] = { ...updated[index], [field]: digits };
       } else {
         updated[index] = { ...updated[index], [field]: value };
       }
