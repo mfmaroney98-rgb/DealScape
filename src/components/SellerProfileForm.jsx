@@ -141,7 +141,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
         'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
       },
-      embedding: null
+      embedding: null,
+      status: 'Draft'
     }
   });
 
@@ -408,13 +409,19 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     setError(null);
 
     try {
-      // Sanitize data for Supabase (convert empty strings to null for numeric/integer columns)
-      const sanitizedData = {
-        ...formData,
-        employees_count: formData.employees_count === '' || formData.employees_count === null ? null : parseInt(formData.employees_count, 10),
-        year_founded: formData.year_founded === '' || formData.year_founded === null ? null : String(formData.year_founded),
-        status: submitStatus
-      };
+      // Strip generated columns that start with 'search_' to prevent Postgres errors
+      // and ensure numeric fields are correctly typed
+      const sanitizedData = Object.keys(formData).reduce((acc, key) => {
+        if (!key.startsWith('search_')) {
+          acc[key] = formData[key];
+        }
+        return acc;
+      }, {});
+
+      // Apply specific type conversions and status
+      sanitizedData.employees_count = sanitizedData.employees_count === '' || sanitizedData.employees_count === null ? null : parseInt(sanitizedData.employees_count, 10);
+      sanitizedData.year_founded = sanitizedData.year_founded === '' || sanitizedData.year_founded === null ? null : String(sanitizedData.year_founded);
+      sanitizedData.status = submitStatus;
 
       await sellerListingService.saveListing(sanitizedData);
       
@@ -1155,7 +1162,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                {isEditing ? 'Update Listing' : 'Publish Listing'}
+                {formData.status === 'Draft' ? 'Publish Listing' : (isEditing ? 'Update Listing' : 'Publish Listing')}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
               </>
             )}
