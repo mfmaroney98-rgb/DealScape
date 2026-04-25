@@ -33,8 +33,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [autoFilledFields, setAutoFilledFields] = useState(() => {
     try {
       const saved = sessionStorage.getItem(`sellerFormFields_${listingId || 'new'}`);
-      return saved ? new Set(JSON.parse(saved)) : new Set();
-    } catch { return new Set(); }
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
   });
   const [autoFilledTags, setAutoFilledTags] = useState(() => {
     try {
@@ -148,7 +148,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   useEffect(() => {
     if (!loading && !isParsing) {
       sessionStorage.setItem(`sellerFormData_${listingId || 'new'}`, JSON.stringify(formData));
-      sessionStorage.setItem(`sellerFormFields_${listingId || 'new'}`, JSON.stringify(Array.from(autoFilledFields)));
+      sessionStorage.setItem(`sellerFormFields_${listingId || 'new'}`, JSON.stringify(autoFilledFields));
       sessionStorage.setItem(`sellerFormTags_${listingId || 'new'}`, JSON.stringify(autoFilledTags));
     }
   }, [formData, autoFilledFields, autoFilledTags, listingId, loading, isParsing]);
@@ -156,12 +156,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (autoFilledFields.has(name)) {
-      setAutoFilledFields(prev => {
-        const next = new Set(prev);
-        next.delete(name);
-        return next;
-      });
+    if (autoFilledFields.includes(name)) {
+      setAutoFilledFields(prev => prev.filter(field => field !== name));
     }
 
     let finalValue = type === 'checkbox' ? checked : value;
@@ -337,9 +333,16 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
         return {
           ...prev,
+          seller_anon_name: parsedData.seller_anon_name || prev.seller_anon_name,
           employees_count: parsedData.employees_count || prev.employees_count,
           year_founded: parsedData.year_founded || prev.year_founded,
           legal_entity: parsedData.legal_entity || prev.legal_entity,
+          pref_transaction_type: parsedData.pref_transaction_type?.length ? [...new Set([...prev.pref_transaction_type, ...parsedData.pref_transaction_type])] : prev.pref_transaction_type,
+          is_founder_owned: parsedData.is_founder_owned ?? prev.is_founder_owned,
+          is_female_owned: parsedData.is_female_owned ?? prev.is_female_owned,
+          is_minority_owned: parsedData.is_minority_owned ?? prev.is_minority_owned,
+          is_family_owned: parsedData.is_family_owned ?? prev.is_family_owned,
+          is_operator_owned: parsedData.is_operator_owned ?? prev.is_operator_owned,
           keywords: parsedData.keywords?.length ? [...new Set([...prev.keywords, ...parsedData.keywords])] : prev.keywords,
           summary: parsedData.summary || prev.summary, // If we had a summary field
           financial_history: mergedHistory
@@ -347,15 +350,32 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       });
 
       // Track highlighted fields for UX
-      const updatedFields = new Set();
-      if (parsedData.employees_count) updatedFields.add('employees_count');
-      if (parsedData.year_founded) updatedFields.add('year_founded');
-      if (parsedData.legal_entity) updatedFields.add('legal_entity');
-      if (parsedData.keywords?.length) updatedFields.add('keywords');
-      if (parsedData.financial_history) updatedFields.add('financial_history');
+      const updatedFields = [];
+      if (parsedData.seller_anon_name) updatedFields.push('seller_anon_name');
+      if (parsedData.employees_count) updatedFields.push('employees_count');
+      if (parsedData.year_founded) updatedFields.push('year_founded');
+      if (parsedData.legal_entity) updatedFields.push('legal_entity');
+      if (parsedData.keywords?.length) updatedFields.push('keywords');
+      if (parsedData.pref_transaction_type?.length) updatedFields.push('pref_transaction_type');
+      if (parsedData.is_founder_owned !== undefined) updatedFields.push('is_founder_owned');
+      if (parsedData.is_female_owned !== undefined) updatedFields.push('is_female_owned');
+      if (parsedData.is_minority_owned !== undefined) updatedFields.push('is_minority_owned');
+      if (parsedData.is_family_owned !== undefined) updatedFields.push('is_family_owned');
+      if (parsedData.is_operator_owned !== undefined) updatedFields.push('is_operator_owned');
+      if (parsedData.financial_history) updatedFields.push('financial_history');
 
       setAutoFilledFields(updatedFields);
       if (parsedData.keywords?.length) setAutoFilledTags(parsedData.keywords);
+
+      // Force direct write to sessionStorage immediately to prevent React batching / useEffect race conditions
+      sessionStorage.setItem(`sellerFormData_${listingId || 'new'}`, JSON.stringify({
+        ...formData,
+        ...parsedData,
+        financial_history: mergedHistory,
+        keywords: parsedData.keywords?.length ? [...new Set([...formData.keywords, ...parsedData.keywords])] : formData.keywords
+      }));
+      sessionStorage.setItem(`sellerFormFields_${listingId || 'new'}`, JSON.stringify(updatedFields));
+      if (parsedData.keywords?.length) sessionStorage.setItem(`sellerFormTags_${listingId || 'new'}`, JSON.stringify(parsedData.keywords));
 
     } catch (err) {
       console.error('AI Parsing Error:', err);
@@ -368,7 +388,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   };
 
   const getInputClass = (name, baseClass = 'form-input') => {
-    return `${baseClass} ${autoFilledFields.has(name) ? 'form-input-highlight' : ''} transition-colors`;
+    return `${baseClass} ${autoFilledFields.includes(name) ? 'form-input-highlight' : ''} transition-colors`;
   };
 
   const handleSubmit = async (e) => {
@@ -432,6 +452,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         <h1 className="text-4xl font-black mb-4 tracking-tight">
           {isEditing ? 'Update Your Listing' : 'Create Your Listing'}
         </h1>
+        <div style={{ color: 'red', fontSize: '10px' }}>
+          Debug Fields: {JSON.stringify(autoFilledFields)} | Tags: {JSON.stringify(autoFilledTags)}
+        </div>
         <p className="text-slate-400 max-w-lg mx-auto mb-8">
           Provide the key details of your business to attract the right investors. All company names are kept private until mutual interest is confirmed.
         </p>
@@ -534,7 +557,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               <div style={{ flex: 1 }}>
                 <label className="form-label flex justify-between">
                   Employee Count
-                  {autoFilledFields.has('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                  {autoFilledFields.includes('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
                   <input
@@ -547,14 +570,14 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     onChange={handleChange}
                     placeholder="e.g. 50"
                   />
-                  <Users className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('employees_count') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
+                  <Users className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.includes('employees_count') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
 
               <div style={{ flex: 1 }}>
                 <label className="form-label flex justify-between">
                   Year Founded
-                  {autoFilledFields.has('year_founded') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                  {autoFilledFields.includes('year_founded') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
                   <input
@@ -568,7 +591,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     onChange={handleChange}
                     placeholder="YYYY"
                   />
-                  <Building2 className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.has('year_founded') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
+                  <Building2 className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.includes('year_founded') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
             </div>
@@ -686,7 +709,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 <div>
                   <label className="form-label flex justify-between">
                     Legal Entity
-                    {autoFilledFields.has('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                    {autoFilledFields.includes('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                   </label>
                   <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ appearance: 'auto', marginTop: '0.75rem' }} value={formData.legal_entity} onChange={handleChange}>
                     <option value="">Select Legal Entity</option>
@@ -722,22 +745,18 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <div>
               <label className="form-label flex justify-between">
                 Keywords
-                {autoFilledFields.has('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                {autoFilledFields.includes('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
               </label>
               <TagInput
                 tags={formData.keywords}
                 onChange={(newTags) => {
-                  if (autoFilledFields.has('keywords')) {
-                    setAutoFilledFields(prev => {
-                      const next = new Set(prev);
-                      next.delete('keywords');
-                      return next;
-                    });
+                  if (autoFilledFields.includes('keywords')) {
+                    setAutoFilledFields(prev => prev.filter(f => f !== 'keywords'));
                   }
                   setFormData(prev => ({ ...prev, keywords: newTags }));
                 }}
                 placeholder="Software, HealthTech, AI (press Enter to add)"
-                isInputHighlighted={autoFilledFields.has('keywords')}
+                isInputHighlighted={autoFilledFields.includes('keywords')}
                 autoFilledTags={autoFilledTags}
               />
             </div>
@@ -1043,25 +1062,35 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
           <div className="space-y-8">
             <div>
-              <label className="form-label">Preferred Transaction Types</label>
+              <label className="form-label flex justify-between">
+                Preferred Transaction Types
+                {autoFilledFields.includes('pref_transaction_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
               <div className="grid grid-cols-1 gap-2">
                 {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
                       name="pref_transaction_type"
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes('pref_transaction_type') ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
                       checked={formData.pref_transaction_type?.includes(type)}
-                      onChange={() => handlePrefTransactionToggle(type)}
+                      onChange={() => {
+                        if (autoFilledFields.includes('pref_transaction_type')) {
+                          setAutoFilledFields(prev => prev.filter(f => f !== 'pref_transaction_type'));
+                        }
+                        handlePrefTransactionToggle(type);
+                      }}
                     />
-                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
+                    <span className={`text-sm transition-colors ${autoFilledFields.includes('pref_transaction_type') && formData.pref_transaction_type?.includes(type) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-400 group-hover:text-white'}`}>
+                      {type}
+                    </span>
                   </label>
                 ))}
               </div>
             </div>
 
             <div className="space-y-4">
-              <label className="form-label">Other Preferences</label>
+              <label className="form-label">Ownership Characteristics</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
                   { key: 'is_founder_owned', label: 'Founder-Owned' },
@@ -1074,11 +1103,19 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     <input
                       type="checkbox"
                       name={flag.key}
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes(flag.key) ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
                       checked={formData[flag.key]}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        if (autoFilledFields.includes(flag.key)) {
+                          setAutoFilledFields(prev => prev.filter(f => f !== flag.key));
+                        }
+                        handleChange(e);
+                      }}
                     />
-                    <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{flag.label}</span>
+                    <span className={`text-sm transition-colors ${autoFilledFields.includes(flag.key) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-400 group-hover:text-white'}`}>
+                      {flag.label}
+                    </span>
+                    {autoFilledFields.includes(flag.key) && <AlertCircle size={12} className="text-highlight ml-[-4px]" title="Auto-populated from document" />}
                   </label>
                 ))}
               </div>

@@ -38,11 +38,18 @@ You are an expert M&A analyst. Extract the following business details from the p
 Return the result as a strict JSON object matching exactly this schema:
 
 {
+  "seller_anon_name": "string or null (e.g., 'Project Apollo' or 'Project Falcon')",
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
   "legal_entity": string or null,
   "keywords": array of 8-15 relevant industry/business keywords,
   "summary": "A 1-2 paragraph executive summary of the business.",
+  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
+  "is_founder_owned": boolean,
+  "is_female_owned": boolean,
+  "is_minority_owned": boolean,
+  "is_family_owned": boolean,
+  "is_operator_owned": boolean,
   "financial_history": {
     "FY-2": { "date": "YYYY-MM-DD", "revenue": number, "gross_profit": number, "ebitda": number, "ebit": number, "net_income": number },
     "FY-1": { "date": "YYYY-MM-DD", "revenue": number, "gross_profit": number, "ebitda": number, "ebit": number, "net_income": number },
