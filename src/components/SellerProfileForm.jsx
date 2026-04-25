@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
+import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
 import { fetchGeographyTree } from '../services/geographyService';
 import {
@@ -29,8 +30,18 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
-  const [autoFilledFields, setAutoFilledFields] = useState(new Set());
-  const [autoFilledTags, setAutoFilledTags] = useState([]);
+  const [autoFilledFields, setAutoFilledFields] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(`sellerFormFields_${listingId || 'new'}`);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+  const [autoFilledTags, setAutoFilledTags] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(`sellerFormTags_${listingId || 'new'}`);
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [expandedContinents, setExpandedContinents] = useState(new Set());
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const [focusedField, setFocusedField] = useState(null); // { year, field }
@@ -100,7 +111,13 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     }
   }, [listingId, userId, isEditing]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(`sellerFormData_${listingId || 'new'}`);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+
+    return {
     user_id: userId,
     organization_id: orgId,
     seller_name: '',
@@ -109,6 +126,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     year_founded: '',
     employees_count: '',
     keywords: [],
+    summary: '',
     legal_entity: '',
     ownership_structure: '',
     is_founder_owned: false,
@@ -123,7 +141,17 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
       'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
     }
+    }
   });
+
+  // Save form draft to sessionStorage automatically
+  useEffect(() => {
+    if (!loading && !isParsing) {
+      sessionStorage.setItem(`sellerFormData_${listingId || 'new'}`, JSON.stringify(formData));
+      sessionStorage.setItem(`sellerFormFields_${listingId || 'new'}`, JSON.stringify(Array.from(autoFilledFields)));
+      sessionStorage.setItem(`sellerFormTags_${listingId || 'new'}`, JSON.stringify(autoFilledTags));
+    }
+  }, [formData, autoFilledFields, autoFilledTags, listingId, loading, isParsing]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -278,41 +306,65 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     });
   };
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsParsing(true);
-    // Mock parsing delay of 2 seconds
-    setTimeout(() => {
-      const mockData = {
-        employees_count: 145,
-        year_founded: 1998,
-        legal_entity: 'LLC',
-        keywords: ['Manufacturing', 'Industrial', 'B2B']
-      };
+    setError(null);
 
-      setFormData(prev => ({
-        ...prev,
-        ...mockData,
-        financial_history: {
-          ...prev.financial_history,
-          'LTM': {
-            ...prev.financial_history['LTM'],
-            revenue: 24500000,
-            ebitda: 4200000,
-            date: new Date().toISOString().split('T')[0]
-          }
+    try {
+      // 1. Extract text from PDF
+      const text = await aiService.extractTextFromPDF(file);
+
+      // 2. Extract structured data via OpenAI
+      const parsedData = await aiService.parseListingDocument(text);
+
+      // 3. Update form data
+      setFormData(prev => {
+        // Deep merge financial history
+        const mergedHistory = { ...prev.financial_history };
+        if (parsedData.financial_history) {
+          Object.keys(mergedHistory).forEach(year => {
+            if (parsedData.financial_history[year]) {
+              mergedHistory[year] = {
+                ...mergedHistory[year],
+                ...parsedData.financial_history[year]
+              };
+            }
+          });
         }
-      }));
 
-      setAutoFilledFields(new Set([...Object.keys(mockData), 'financial_history']));
-      setAutoFilledTags(mockData.keywords);
+        return {
+          ...prev,
+          employees_count: parsedData.employees_count || prev.employees_count,
+          year_founded: parsedData.year_founded || prev.year_founded,
+          legal_entity: parsedData.legal_entity || prev.legal_entity,
+          keywords: parsedData.keywords?.length ? [...new Set([...prev.keywords, ...parsedData.keywords])] : prev.keywords,
+          summary: parsedData.summary || prev.summary, // If we had a summary field
+          financial_history: mergedHistory
+        };
+      });
+
+      // Track highlighted fields for UX
+      const updatedFields = new Set();
+      if (parsedData.employees_count) updatedFields.add('employees_count');
+      if (parsedData.year_founded) updatedFields.add('year_founded');
+      if (parsedData.legal_entity) updatedFields.add('legal_entity');
+      if (parsedData.keywords?.length) updatedFields.add('keywords');
+      if (parsedData.financial_history) updatedFields.add('financial_history');
+
+      setAutoFilledFields(updatedFields);
+      if (parsedData.keywords?.length) setAutoFilledTags(parsedData.keywords);
+
+    } catch (err) {
+      console.error('AI Parsing Error:', err);
+      // Display the actual technical error to the user for debugging
+      setError(`Extraction failed: ${err.message || err.toString()}`);
+    } finally {
       setIsParsing(false);
-    }, 2000);
-
-    // Reset the input so the same file could be uploaded again if needed
-    e.target.value = null;
+      e.target.value = null; // Reset input
+    }
   };
 
   const getInputClass = (name, baseClass = 'form-input') => {
@@ -325,15 +377,32 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     setError(null);
 
     try {
+      // Generate Semantic Embedding for Matching
+      const textToEmbed = `Industry Keywords: ${formData.keywords?.join(', ') || ''}. Business Summary: ${formData.summary || formData.seller_anon_name}`.trim();
+      let embedding = null;
+      if (textToEmbed.length > 20) {
+        try {
+          embedding = await aiService.generateEmbedding(textToEmbed);
+        } catch (err) {
+          console.warn('Failed to generate embedding', err);
+        }
+      }
+
       // Sanitize data for Supabase (convert empty strings to null for numeric/integer columns)
       const sanitizedData = {
         ...formData,
         employees_count: formData.employees_count === '' || formData.employees_count === null ? null : parseInt(formData.employees_count, 10),
-        year_founded: formData.year_founded === '' || formData.year_founded === null ? null : String(formData.year_founded)
+        year_founded: formData.year_founded === '' || formData.year_founded === null ? null : String(formData.year_founded),
+        embedding: embedding
       };
 
       await sellerListingService.saveListing(sanitizedData);
       
+      // Clear draft after successful save
+      sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
+      sessionStorage.removeItem(`sellerFormFields_${listingId || 'new'}`);
+      sessionStorage.removeItem(`sellerFormTags_${listingId || 'new'}`);
+
       if (onComplete) {
         await onComplete();
       }
