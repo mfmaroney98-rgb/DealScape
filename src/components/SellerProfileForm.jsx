@@ -335,6 +335,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
         return {
           ...prev,
+          seller_name: parsedData.seller_name || prev.seller_name,
           seller_anon_name: parsedData.seller_anon_name || prev.seller_anon_name,
           employees_count: parsedData.employees_count || prev.employees_count,
           year_founded: parsedData.year_founded || prev.year_founded,
@@ -354,6 +355,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
       // Track highlighted fields for UX
       const updatedFields = [...new Set([...autoFilledFields])];
+      if (parsedData.seller_name) updatedFields.push('seller_name');
       if (parsedData.seller_anon_name) updatedFields.push('seller_anon_name');
       if (parsedData.employees_count) updatedFields.push('employees_count');
       if (parsedData.year_founded) updatedFields.push('year_founded');
@@ -528,11 +530,14 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     <Building2 className="text-indigo-400" size={16} />
                   </div>
                   <div className="flex-1">
-                    <label className="form-label mb-1">Company Name or Project Name</label>
+                    <label className="form-label mb-1 flex justify-between items-center pr-2">
+                      Company Name or Project Name
+                      {autoFilledFields.includes('seller_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                    </label>
                     <input
                       type="text"
                       name="seller_name"
-                      className="form-input"
+                      className={getInputClass('seller_name')}
                       placeholder="e.g. Acme Manufacturing LLC"
                       value={formData.seller_name}
                       onChange={handleChange}
