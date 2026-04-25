@@ -761,21 +761,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               />
             </div>
 
-            <div>
-              <label className="form-label flex justify-between">
-                Business Summary
-                {autoFilledFields.includes('summary') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
-              <textarea
-                name="summary"
-                className={getInputClass('summary', 'form-input w-full min-h-[120px] py-3')}
-                placeholder="Briefly describe the business model, products, and value proposition..."
-                value={formData.summary}
-                onChange={handleChange}
-              />
-              <p className="text-xs text-slate-500 mt-2">A concise overview of what the company does and why it's a compelling opportunity.</p>
-            </div>
-
 
           </div>
         </div>

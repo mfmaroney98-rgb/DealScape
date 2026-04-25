@@ -43,7 +43,6 @@ Return the result as a strict JSON object matching exactly this schema:
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (e.g., 'LLC', 'S-Corp', 'C-Corp', 'Sole Proprietorship', 'Partnership')",
   "keywords": array of 8-15 relevant industry/business keywords,
-  "summary": "A 1-2 paragraph executive summary of the business.",
   "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
   "is_founder_owned": boolean,
   "is_female_owned": boolean,
