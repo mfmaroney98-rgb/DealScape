@@ -21,7 +21,8 @@ import {
   FileText,
   AlertCircle,
   Globe,
-  Loader2
+  Loader2,
+  Sparkles
 } from 'lucide-react';
 
 
@@ -30,6 +31,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
+  const [teaserFile, setTeaserFile] = useState(null);
+  const [cimFile, setCimFile] = useState(null);
   const [autoFilledFields, setAutoFilledFields] = useState(() => {
     try {
       const saved = sessionStorage.getItem(`sellerFormFields_${listingId || 'new'}`);
@@ -71,7 +74,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             setFormData(prev => {
               // Ensure we have a valid object base for financial_history
               const sanitizedHistory = { ...prev.financial_history };
-              
+
               const incomingHistory = data.financial_history || {};
               Object.keys(sanitizedHistory).forEach(year => {
                 const incomingYearData = incomingHistory[year];
@@ -115,26 +118,26 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     try {
       const saved = sessionStorage.getItem(`sellerFormData_${listingId || 'new'}`);
       if (saved) return JSON.parse(saved);
-    } catch {}
+    } catch { }
 
     return {
-    user_id: userId,
-    organization_id: orgId,
-    seller_name: '',
-    seller_anon_name: '',
-    locations: [],
-    year_founded: '',
-    employees_count: '',
-    keywords: [],
-    summary: '',
-    legal_entity: '',
-    ownership_structure: '',
-    is_founder_owned: false,
-    is_female_owned: false,
-    is_minority_owned: false,
-    is_family_owned: false,
-    is_operator_owned: false,
-    pref_transaction_type: [],
+      user_id: userId,
+      organization_id: orgId,
+      seller_name: '',
+      seller_anon_name: '',
+      locations: [],
+      year_founded: '',
+      employees_count: '',
+      keywords: [],
+      summary: '',
+      legal_entity: '',
+      ownership_structure: '',
+      is_founder_owned: false,
+      is_female_owned: false,
+      is_minority_owned: false,
+      is_family_owned: false,
+      is_operator_owned: false,
+      pref_transaction_type: [],
       financial_history: {
         'FY-2': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
         'FY-1': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
@@ -304,19 +307,25 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     });
   };
 
-  const handleFileUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleExtractData = async () => {
+    if (!teaserFile && !cimFile) return;
 
     setIsParsing(true);
     setError(null);
 
     try {
-      // 1. Extract text from PDF
-      const text = await aiService.extractTextFromPDF(file);
+      let combinedText = '';
+
+      // 1. Extract text from uploaded PDFs
+      if (teaserFile) {
+        combinedText += await aiService.extractTextFromPDF(teaserFile) + '\n\n';
+      }
+      if (cimFile) {
+        combinedText += await aiService.extractTextFromPDF(cimFile) + '\n\n';
+      }
 
       // 2. Extract structured data via OpenAI
-      const parsedData = await aiService.parseListingDocument(text);
+      const parsedData = await aiService.parseListingDocument(combinedText);
 
       // 3. Update form data
       setFormData(prev => {
@@ -426,7 +435,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       sanitizedData.status = submitStatus;
 
       await sellerListingService.saveListing(sanitizedData);
-      
+
       // Clear draft after successful save
       sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
       sessionStorage.removeItem(`sellerFormFields_${listingId || 'new'}`);
@@ -482,15 +491,16 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <input
               type="file"
               accept=".pdf,.doc,.docx"
-              onChange={handleFileUpload}
+              onChange={(e) => setTeaserFile(e.target.files?.[0] || null)}
               className="text-sm text-slate-300 cursor-pointer"
               title="Upload Teaser"
             />
-            <div className="mt-2">
-              <UploadCloud className="text-slate-200" size={24} />
+            <div className={`mt-2 ${teaserFile ? 'text-amber-400' : 'text-slate-200'}`}>
+              <UploadCloud size={24} />
             </div>
             <p className="font-semibold text-white">Upload Teaser</p>
             <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
+            {teaserFile && <p className="text-xs text-amber-400 truncate max-w-full">{teaserFile.name}</p>}
           </div>
 
           {/* CIM Upload */}
@@ -498,17 +508,34 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <input
               type="file"
               accept=".pdf,.doc,.docx"
-              onChange={handleFileUpload}
+              onChange={(e) => setCimFile(e.target.files?.[0] || null)}
               className="text-sm text-slate-300 cursor-pointer"
               title="Upload CIM"
             />
-            <div className="mt-2 text-slate-200">
+            <div className={`mt-2 ${cimFile ? 'text-amber-400' : 'text-slate-200'}`}>
               <FileText size={24} />
             </div>
             <p className="font-semibold text-white">Upload CIM</p>
             <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
+            {cimFile && <p className="text-xs text-amber-400 truncate max-w-full">{cimFile.name}</p>}
           </div>
         </div>
+
+        {/* Extract Button */}
+        {(teaserFile || cimFile) && (
+          <div className="flex justify-center mb-10 max-w-4xl mx-auto">
+            <button
+              type="button"
+              onClick={handleExtractData}
+              disabled={isParsing}
+              className="btn-primary flex items-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-600 border-none text-white font-bold rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Sparkles size={20} className={isParsing ? "animate-spin" : ""} />
+              {isParsing ? 'Extracting Data...' : 'Extract Data with AI'}
+            </button>
+          </div>
+        )}
+
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -867,7 +894,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- Revenue --- */}
                 <tr>
                   <td className="p-2 pt-4 font-bold text-slate-200">Revenue</td>
-                   {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
                     const rev = formData.financial_history?.[year]?.revenue;
                     return (
                       <td key={year} className="px-4 py-2 pt-4 text-right">
@@ -912,7 +939,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
 
                 {/* --- Gross Profit --- */}
-                 <tr>
+                <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Gross Profit</td>
                   {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
                     const val = formData.financial_history?.[year]?.gross_profit;
@@ -951,7 +978,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- EBITDA --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBITDA</td>
-                   {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
                     const val = formData.financial_history?.[year]?.ebitda;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">

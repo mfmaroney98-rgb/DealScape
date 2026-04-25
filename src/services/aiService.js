@@ -59,7 +59,7 @@ Return the result as a strict JSON object matching exactly this schema:
 }
 
 Important Rules:
-1. Extract ALL absolute financial metrics (Revenue, Gross Profit, EBITDA, EBIT, Net Income).
+1. Extract ALL absolute financial metrics (Revenue, Gross Profit, EBITDA, EBIT, Net Income). IMPORTANT: Pay close attention to unit scales (e.g. "in thousands", "K", "M", "B", "Millions"). You MUST expand all financials into their full, un-abbreviated integer values. For example, if the document says "$5.2M" or "5,200 (in thousands)", you must output the integer 5200000. Never output "5.2" for 5 million.
 2. If the document provides margins (e.g., "20% EBITDA Margin") instead of absolute values, calculate the absolute value (e.g., Revenue * 0.20) and put that in the JSON. The system relies on absolute numbers to generate the search filters.
 3. If a value is genuinely not present and cannot be calculated, set it to null.
 4. FY0 is the most recent completed fiscal year. FY-1 is the year before that. LTM is the Last Twelve Months (if provided).
