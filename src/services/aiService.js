@@ -41,7 +41,7 @@ Return the result as a strict JSON object matching exactly this schema:
   "seller_anon_name": "string or null (e.g., 'Project Apollo' or 'Project Falcon')",
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
-  "legal_entity": string or null,
+  "legal_entity": "string or null (e.g., 'LLC', 'S-Corp', 'C-Corp', 'Sole Proprietorship', 'Partnership')",
   "keywords": array of 8-15 relevant industry/business keywords,
   "summary": "A 1-2 paragraph executive summary of the business.",
   "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
@@ -63,7 +63,8 @@ Important Rules:
 2. If the document provides margins (e.g., "20% EBITDA Margin") instead of absolute values, calculate the absolute value (e.g., Revenue * 0.20) and put that in the JSON. The system relies on absolute numbers to generate the search filters.
 3. If a value is genuinely not present and cannot be calculated, set it to null.
 4. FY0 is the most recent completed fiscal year. FY-1 is the year before that. LTM is the Last Twelve Months (if provided).
-5. Extract only the JSON, no markdown formatting or extra text.
+5. For legal_entity, extract the corporate structure type (e.g., LLC, S-Corp, C-Corp), NOT the name of the company.
+6. Extract only the JSON, no markdown formatting or extra text.
 
 Document Text:
 ${text.slice(0, 30000)} // Ensure we don't blow past token limits for huge PDFs

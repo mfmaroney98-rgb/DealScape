@@ -135,12 +135,13 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     is_family_owned: false,
     is_operator_owned: false,
     pref_transaction_type: [],
-    financial_history: {
-      'FY-2': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-      'FY-1': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-      'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-      'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
-    }
+      financial_history: {
+        'FY-2': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+        'FY-1': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+        'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
+        'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
+      },
+      embedding: null
     }
   });
 
@@ -336,7 +337,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           seller_anon_name: parsedData.seller_anon_name || prev.seller_anon_name,
           employees_count: parsedData.employees_count || prev.employees_count,
           year_founded: parsedData.year_founded || prev.year_founded,
-          legal_entity: parsedData.legal_entity || prev.legal_entity,
+          // Only keep previous value if it wasn't an auto-filled one, or if AI returned nothing
+          legal_entity: parsedData.legal_entity || (autoFilledFields.includes('legal_entity') ? '' : prev.legal_entity),
           pref_transaction_type: parsedData.pref_transaction_type?.length ? [...new Set([...prev.pref_transaction_type, ...parsedData.pref_transaction_type])] : prev.pref_transaction_type,
           is_founder_owned: parsedData.is_founder_owned ?? prev.is_founder_owned,
           is_female_owned: parsedData.is_female_owned ?? prev.is_female_owned,
@@ -344,13 +346,13 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           is_family_owned: parsedData.is_family_owned ?? prev.is_family_owned,
           is_operator_owned: parsedData.is_operator_owned ?? prev.is_operator_owned,
           keywords: parsedData.keywords?.length ? [...new Set([...prev.keywords, ...parsedData.keywords])] : prev.keywords,
-          summary: parsedData.summary || prev.summary, // If we had a summary field
+          summary: parsedData.summary || (autoFilledFields.includes('summary') ? '' : prev.summary),
           financial_history: mergedHistory
         };
       });
 
       // Track highlighted fields for UX
-      const updatedFields = [];
+      const updatedFields = [...new Set([...autoFilledFields])];
       if (parsedData.seller_anon_name) updatedFields.push('seller_anon_name');
       if (parsedData.employees_count) updatedFields.push('employees_count');
       if (parsedData.year_founded) updatedFields.push('year_founded');
@@ -363,19 +365,21 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (parsedData.is_family_owned !== undefined) updatedFields.push('is_family_owned');
       if (parsedData.is_operator_owned !== undefined) updatedFields.push('is_operator_owned');
       if (parsedData.financial_history) updatedFields.push('financial_history');
+      if (parsedData.summary) updatedFields.push('summary');
 
       setAutoFilledFields(updatedFields);
       if (parsedData.keywords?.length) setAutoFilledTags(parsedData.keywords);
 
-      // Force direct write to sessionStorage immediately to prevent React batching / useEffect race conditions
-      sessionStorage.setItem(`sellerFormData_${listingId || 'new'}`, JSON.stringify({
-        ...formData,
-        ...parsedData,
-        financial_history: mergedHistory,
-        keywords: parsedData.keywords?.length ? [...new Set([...formData.keywords, ...parsedData.keywords])] : formData.keywords
-      }));
-      sessionStorage.setItem(`sellerFormFields_${listingId || 'new'}`, JSON.stringify(updatedFields));
-      if (parsedData.keywords?.length) sessionStorage.setItem(`sellerFormTags_${listingId || 'new'}`, JSON.stringify(parsedData.keywords));
+      // 4. Generate Semantic Embedding for Matching (AI-assisted only)
+      const textToEmbed = `Industry Keywords: ${parsedData.keywords?.join(', ') || formData.keywords?.join(', ') || ''}. Business Summary: ${parsedData.summary || formData.summary || parsedData.seller_anon_name || formData.seller_anon_name}`.trim();
+      if (textToEmbed.length > 20) {
+        try {
+          const embedding = await aiService.generateEmbedding(textToEmbed);
+          setFormData(prev => ({ ...prev, embedding }));
+        } catch (err) {
+          console.warn('Failed to generate embedding during parsing', err);
+        }
+      }
 
     } catch (err) {
       console.error('AI Parsing Error:', err);
@@ -391,29 +395,25 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     return `${baseClass} ${autoFilledFields.includes(name) ? 'form-input-highlight' : ''} transition-colors`;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleCancel = () => {
+    sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
+    sessionStorage.removeItem(`sellerFormFields_${listingId || 'new'}`);
+    sessionStorage.removeItem(`sellerFormTags_${listingId || 'new'}`);
+    navigate(-1);
+  };
+
+  const handleSubmit = async (e, submitStatus = 'Active') => {
+    if (e) e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      // Generate Semantic Embedding for Matching
-      const textToEmbed = `Industry Keywords: ${formData.keywords?.join(', ') || ''}. Business Summary: ${formData.summary || formData.seller_anon_name}`.trim();
-      let embedding = null;
-      if (textToEmbed.length > 20) {
-        try {
-          embedding = await aiService.generateEmbedding(textToEmbed);
-        } catch (err) {
-          console.warn('Failed to generate embedding', err);
-        }
-      }
-
       // Sanitize data for Supabase (convert empty strings to null for numeric/integer columns)
       const sanitizedData = {
         ...formData,
         employees_count: formData.employees_count === '' || formData.employees_count === null ? null : parseInt(formData.employees_count, 10),
         year_founded: formData.year_founded === '' || formData.year_founded === null ? null : String(formData.year_founded),
-        embedding: embedding
+        status: submitStatus
       };
 
       await sellerListingService.saveListing(sanitizedData);
@@ -759,6 +759,21 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 isInputHighlighted={autoFilledFields.includes('keywords')}
                 autoFilledTags={autoFilledTags}
               />
+            </div>
+
+            <div>
+              <label className="form-label flex justify-between">
+                Business Summary
+                {autoFilledFields.includes('summary') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
+              <textarea
+                name="summary"
+                className={getInputClass('summary', 'form-input w-full min-h-[120px] py-3')}
+                placeholder="Briefly describe the business model, products, and value proposition..."
+                value={formData.summary}
+                onChange={handleChange}
+              />
+              <p className="text-xs text-slate-500 mt-2">A concise overview of what the company does and why it's a compelling opportunity.</p>
             </div>
 
 
@@ -1133,10 +1148,18 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         <div className="flex justify-center items-center gap-6 py-10">
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={handleCancel}
             className="btn-secondary px-12 py-4 text-lg font-bold border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white transition-all h-auto"
           >
             Cancel
+          </button>
+          <button
+            type="button"
+            onClick={(e) => handleSubmit(e, 'Draft')}
+            disabled={loading}
+            className="btn-secondary px-12 py-4 text-lg font-bold border-indigo-500/30 hover:border-indigo-500 text-indigo-300 hover:text-indigo-100 transition-all h-auto bg-indigo-500/5 hover:bg-indigo-500/10"
+          >
+            Save as Draft
           </button>
           <button
             type="submit"
@@ -1147,7 +1170,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                {isEditing ? 'Update Listing' : 'Create Listing'}
+                {isEditing ? 'Update Listing' : 'Publish Listing'}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
               </>
             )}

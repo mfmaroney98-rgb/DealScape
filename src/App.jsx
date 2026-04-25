@@ -203,7 +203,7 @@ const Signup = () => {
   );
 };
 
-const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, activeTo, secondaryAction, secondaryTo }) => (
+const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, activeTo, secondaryAction, secondaryTo, onSecondaryClick }) => (
   <div className={`glass p-10 rounded-3xl border ${active ? 'border-slate-800' : 'border-indigo-500/30'} text-center flex flex-col items-center group ${!active ? 'hover:border-indigo-500/50' : ''} transition-all duration-500`}>
     <div className={`w-16 h-16 ${active ? 'bg-emerald-500/10' : 'bg-indigo-500/10'} rounded-2xl mb-6 flex items-center justify-center ${!active ? 'group-hover:scale-110' : ''} transition-transform`}>
       {active ? <CheckCircle2 className="text-emerald-400" size={32} /> : <Icon className="text-indigo-400" size={32} />}
@@ -224,6 +224,7 @@ const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonTe
         {secondaryAction && secondaryTo && (
           <Link
             to={secondaryTo}
+            onClick={onSecondaryClick}
             className="btn-primary w-full flex items-center justify-center gap-2 py-3 shadow-xl shadow-indigo-500/20 text-sm"
           >
             {secondaryAction}
@@ -277,6 +278,11 @@ const SellerDashboard = ({ hasListing, profile }) => (
         activeTo="/dashboard/seller/listings"
         secondaryAction="Create New Listing"
         secondaryTo="/onboarding/seller"
+        onSecondaryClick={() => {
+          sessionStorage.removeItem('sellerFormData_new');
+          sessionStorage.removeItem('sellerFormFields_new');
+          sessionStorage.removeItem('sellerFormTags_new');
+        }}
       />
       <DashboardActionCard
         title="Seller Profile"
@@ -316,6 +322,9 @@ const BuyerDashboard = ({ hasCriteria, profile }) => (
         activeTo="/dashboard/buyer/criteria"
         secondaryAction="Create New Criteria"
         secondaryTo="/onboarding/buyer"
+        onSecondaryClick={() => {
+          sessionStorage.removeItem('buyerFormData_new');
+        }}
       />
       <DashboardActionCard
         title="Buyer Profile"
