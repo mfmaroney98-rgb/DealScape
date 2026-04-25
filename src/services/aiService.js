@@ -65,6 +65,7 @@ Important Rules:
 4. FY0 is the most recent completed fiscal year. FY-1 is the year before that. LTM is the Last Twelve Months (if provided).
 5. For legal_entity, extract the corporate structure type (e.g., LLC, S-Corp, C-Corp), NOT the name of the company.
 6. Extract only the JSON, no markdown formatting or extra text.
+7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
 
 KEYWORD RULES:
 Extract 10-16 sharp, discriminating phrases (1-4 words each) that capture the following signals. Do not infer or embellish. If a category is missing, skip it.

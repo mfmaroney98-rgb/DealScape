@@ -318,10 +318,10 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
       // 1. Extract text from uploaded PDFs
       if (teaserFile) {
-        combinedText += await aiService.extractTextFromPDF(teaserFile) + '\n\n';
+        combinedText += '--- START OF TEASER DOCUMENT ---\n' + await aiService.extractTextFromPDF(teaserFile) + '\n--- END OF TEASER DOCUMENT ---\n\n';
       }
       if (cimFile) {
-        combinedText += await aiService.extractTextFromPDF(cimFile) + '\n\n';
+        combinedText += '--- START OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n' + await aiService.extractTextFromPDF(cimFile) + '\n--- END OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n\n';
       }
 
       // 2. Extract structured data via OpenAI
