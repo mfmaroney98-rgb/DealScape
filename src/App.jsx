@@ -345,6 +345,15 @@ const RootDashboardDispatcher = ({ profile }) => {
   const role = profile?.role;
   const organization = profile?.organization;
 
+  // If profile is still loading (undefined), show loader
+  if (profile === undefined) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin text-indigo-500" size={32} />
+      </div>
+    );
+  }
+
   if (!profile?.organization_id && (role === 'seller' || role === 'buyer' || !role)) {
     return <Navigate to="/onboarding/organization" replace />;
   }
@@ -403,7 +412,7 @@ const RootDashboardDispatcher = ({ profile }) => {
 
 function App() {
   const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(undefined); // undefined = loading, null = not found
   const [hasListing, setHasListing] = useState(false);
   const [hasCriteria, setHasCriteria] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -440,35 +449,43 @@ function App() {
       }
     } catch (err) {
       console.error('Failed to load user data:', err);
+      setProfile(null);
     }
   }, []);
 
   useEffect(() => {
-    // Safety net: don't hang on loading if everything goes wrong
-    const timeout = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
+    let mounted = true;
 
     const initAuth = async () => {
       try {
+        // Get initial session
         const { data: { session: currentSession } } = await supabase.auth.getSession();
-        setSession(currentSession);
-        if (currentSession) {
-          await loadUserData(currentSession);
+        
+        if (mounted) {
+          setSession(currentSession);
+          if (currentSession) {
+            await loadUserData(currentSession);
+          } else {
+            setProfile(null); // No session, so no profile
+          }
         }
       } catch (err) {
         console.error('Init failed:', err);
       } finally {
-        setLoading(false);
-        clearTimeout(timeout);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     initAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (!mounted) return;
+      
       console.log('Auth event:', event, !!session);
       setSession(session);
+      
       if (session) {
         await loadUserData(session);
       } else {
@@ -479,8 +496,8 @@ function App() {
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
-      clearTimeout(timeout);
     };
   }, [loadUserData]);
 
@@ -505,7 +522,11 @@ function App() {
             path="/onboarding/organization"
             element={
               session ? (
-                profile?.organization_id ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : profile?.organization_id ? (
                   <Navigate to="/dashboard" replace />
                 ) : (
                   <OrganizationOnboarding 
@@ -523,7 +544,11 @@ function App() {
             path="/onboarding/type"
             element={
               session ? (
-                profile?.organization?.type ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : profile?.organization?.type ? (
                   <Navigate to="/dashboard" replace />
                 ) : (
                   <OrganizationTypeSelection 

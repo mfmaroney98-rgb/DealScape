@@ -399,7 +399,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       setError(`Extraction failed: ${err.message || err.toString()}`);
     } finally {
       setIsParsing(false);
-      e.target.value = null; // Reset input
     }
   };
 
