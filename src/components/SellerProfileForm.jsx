@@ -515,7 +515,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-6 animate-fade-in">
+    <div className="max-w-6xl mx-auto py-12 px-6 animate-fade-in">
       <div className="mb-12 text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4">
           <Briefcase className="text-indigo-400" size={32} />
@@ -833,34 +833,36 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <h2 className="text-xl font-bold">Business Characteristics</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
             {KEYWORD_CATEGORIES.map(cat => (
-              <div key={cat.id} className="space-y-3">
-                <label className="form-label flex justify-between items-center text-slate-300 font-semibold">
+              <div key={cat.id} style={{ minWidth: 0 }} className="bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 flex flex-col shadow-inner transition-all hover:border-slate-700/80">
+                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-4 flex justify-between items-center px-1">
                   {cat.label}
                   {autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0 && (
-                    <AlertCircle size={14} className="text-amber-400 animate-pulse" title="Auto-populated from document" />
+                    <AlertCircle size={12} className="text-amber-400 animate-pulse" title="Auto-populated" />
                   )}
                 </label>
-                <TagInput
-                  tags={formData.categorized_keywords?.[cat.id] || []}
-                  onChange={(newTags) => {
-                    setFormData(prev => {
-                      const updatedCategorized = {
-                        ...(prev.categorized_keywords || {}),
-                        [cat.id]: newTags
-                      };
-                      return {
-                        ...prev,
-                        categorized_keywords: updatedCategorized,
-                        keywords: Object.values(updatedCategorized).flat().filter(Boolean)
-                      };
-                    });
-                  }}
-                  placeholder={`e.g. ${cat.example}`}
-                  isInputHighlighted={autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0}
-                  autoFilledTags={autoFilledTags}
-                />
+                <div className="flex-1">
+                  <TagInput
+                    tags={formData.categorized_keywords?.[cat.id] || []}
+                    onChange={(newTags) => {
+                      setFormData(prev => {
+                        const updatedCategorized = {
+                          ...(prev.categorized_keywords || {}),
+                          [cat.id]: newTags
+                        };
+                        return {
+                          ...prev,
+                          categorized_keywords: updatedCategorized,
+                          keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                        };
+                      });
+                    }}
+                    placeholder={`e.g. ${cat.example}`}
+                    isInputHighlighted={autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0}
+                    autoFilledTags={autoFilledTags}
+                  />
+                </div>
               </div>
             ))}
           </div>

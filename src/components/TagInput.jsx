@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function TagInput({ tags = [], onChange, placeholder = "Add tag...", isInputHighlighted = false, autoFilledTags = [] }) {
+export default function TagInput({ 
+  tags = [], 
+  onChange, 
+  placeholder = "Add tag...", 
+  isInputHighlighted = false, 
+  autoFilledTags = [],
+  variant = "cloud" // "cloud" or "list"
+}) {
   const [inputValue, setInputValue] = useState('');
 
   const handleKeyDown = (e) => {
@@ -10,7 +17,6 @@ export default function TagInput({ tags = [], onChange, placeholder = "Add tag..
       e.preventDefault();
       addTag(inputValue);
     } 
-    // Backspace does not delete tags when input is empty
   };
 
   const handleChange = (e) => {
@@ -18,7 +24,6 @@ export default function TagInput({ tags = [], onChange, placeholder = "Add tag..
   };
 
   const handleBlur = () => {
-    // Optionally add the tag when input loses focus
     if (inputValue) {
       addTag(inputValue);
     }
@@ -40,7 +45,7 @@ export default function TagInput({ tags = [], onChange, placeholder = "Add tag..
     <div className="space-y-3">
       <input
         type="text"
-        className={`form-input focus:ring-2 focus:ring-offset-0 focus:outline-none ${isInputHighlighted ? 'form-input-highlight' : 'focus:ring-indigo-500'} transition-colors`}
+        className={`form-input focus:ring-2 focus:ring-offset-0 focus:outline-none ${isInputHighlighted ? 'form-input-highlight' : 'focus:ring-indigo-500'} transition-colors w-full`}
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
@@ -48,9 +53,27 @@ export default function TagInput({ tags = [], onChange, placeholder = "Add tag..
         placeholder={placeholder}
       />
       {tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className={variant === 'list' ? "flex flex-col gap-1" : "flex flex-wrap gap-2 items-center"}>
           {tags.map((tag, index) => {
             const isTagHighlighted = autoFilledTags.includes(tag);
+            
+            if (variant === 'list') {
+              return (
+                <div key={index} className="flex items-center justify-between group py-1 border-b border-slate-800/50 last:border-0">
+                  <span className={`text-sm ${isTagHighlighted ? 'text-amber-400 font-semibold' : 'text-slate-300'}`}>
+                    {tag}
+                  </span>
+                  <button
+                    type="button"
+                    className="text-slate-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-1"
+                    onClick={() => removeTag(index)}
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              );
+            }
+
             return (
               <span 
                 key={index} 
