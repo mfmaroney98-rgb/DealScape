@@ -95,34 +95,38 @@ const Login = () => {
     <AuthLayout title="Welcome Back" subtitle="Sign in to your DealScape account to manage your deals.">
       <form onSubmit={handleSignIn} className="space-y-5">
         <div className="space-y-2">
-          <label className="form-label">Email Address</label>
+          <label className="form-label flex items-center gap-2">
+            <Mail size={16} className="text-muted-foreground" />
+            Email Address
+          </label>
           <div className="relative group">
             <input
               type="email"
-              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
+              className="form-input group-hover:border-accent/30 transition-colors"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="form-label mb-0">Password</label>
+            <label className="form-label flex items-center gap-2 mb-0">
+              <Lock size={16} className="text-muted-foreground" />
+              Password
+            </label>
             <a href="#" className="text-xs text-accent hover:underline">Forgot password?</a>
           </div>
           <div className="relative group">
             <input
               type="password"
-              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
+              className="form-input group-hover:border-accent/30 transition-colors"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
         
@@ -195,31 +199,35 @@ const Signup = () => {
     <AuthLayout title="Create Account" subtitle="Join the DealScape ecosystem and start your journey today.">
       <form onSubmit={handleSignUp} className="space-y-5">
         <div className="space-y-2">
-          <label className="form-label">Email Address</label>
+          <label className="form-label flex items-center gap-2">
+            <Mail size={16} className="text-muted-foreground" />
+            Email Address
+          </label>
           <div className="relative group">
             <input
               type="email"
-              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
+              className="form-input group-hover:border-accent/30 transition-colors"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
         <div className="space-y-2">
-          <label className="form-label">Password</label>
+          <label className="form-label flex items-center gap-2">
+            <Lock size={16} className="text-muted-foreground" />
+            Password
+          </label>
           <div className="relative group">
             <input
               type="password"
-              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
+              className="form-input group-hover:border-accent/30 transition-colors"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
         

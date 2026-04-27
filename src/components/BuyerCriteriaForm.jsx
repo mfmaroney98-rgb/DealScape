@@ -19,7 +19,9 @@ import {
   Globe,
   Plus,
   X,
-  Loader2
+  Loader2,
+  Tag,
+  Briefcase
 } from 'lucide-react';
 
 
@@ -550,12 +552,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                         className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
                         onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
                       >
-                        {allContSelected
-                          ? <CheckCircle2 size={14} />
-                          : someContSelected
-                            ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                            : null
-                        }
+                        {allContSelected && <CheckCircle2 size={14} />}
                       </div>
                       <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
                         {continent.name}
@@ -565,7 +562,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                         onClick={(e) => toggleContinentExpand(e, continent.name)}
                         className="geo-toggle"
                       >
-                        {isContExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                        {isContExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                       </button>
                     </div>
 
@@ -585,12 +582,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                   className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
                                   onClick={() => handleCountryToggle(country)}
                                 >
-                                  {allCtrySelected
-                                    ? <CheckCircle2 size={12} />
-                                    : someCtrySelected
-                                      ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                      : null
-                                  }
+                                  {allCtrySelected && <CheckCircle2 size={12} />}
                                 </div>
                                 <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>
                                   {country.name}
@@ -600,7 +592,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                   onClick={(e) => toggleCountryExpand(e, country.code)}
                                   className="geo-toggle"
                                 >
-                                  {isCtryExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                  {isCtryExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                                 </button>
                               </div>
 
@@ -639,6 +631,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                   </div>
                 );
               })
+
             )}
           </div>
         </div>
@@ -655,7 +648,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
             {/* Left: Keyword Tags */}
             <div>
-              <label className="form-label">Keywords</label>
+              <label className="form-label flex items-center gap-2">
+                <Tag size={16} className="text-slate-400" />
+                Keywords
+              </label>
               <TagInput 
                 tags={formData.keywords}
                 onChange={(newTags) => setFormData(prev => ({ ...prev, keywords: newTags }))}
@@ -665,7 +661,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
             {/* Right: NAICS Code Tree */}
             <div>
-              <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>
+              <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                <Briefcase size={16} className="text-slate-400" />
                 NAICS Industry Codes
                 {formData.naics_codes.length > 0 && (
                   <span style={{ marginLeft: '0.5rem', fontSize: '0.7rem', background: 'rgba(99,102,241,0.15)', color: '#818cf8', borderRadius: 999, padding: '2px 8px', fontWeight: 600 }}>
@@ -697,19 +694,14 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                             className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
                             onClick={() => handleNaicsSectorToggle(sector)}
                           >
-                            {allSelected
-                              ? <CheckCircle2 size={12} />
-                              : someSelected
-                                ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                : null
-                            }
+                            {allSelected && <CheckCircle2 size={12} />}
                           </div>
                           <span
                             className="geo-label-semi"
                             style={{ fontSize: '0.875rem' }}
                             onClick={() => handleNaicsSectorToggle(sector)}
                           >
-                            <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
+                            <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
                             {sector.name}
                           </span>
                           <button
@@ -740,7 +732,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                       style={{ fontSize: '0.875rem' }}
                                       onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
                                     >
-                                      <span style={{ color: '#6366f1', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
+                                      <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
                                       {sub.name}
                                     </span>
                                   </div>
@@ -752,6 +744,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       </div>
                     );
                   })
+
                 )}
               </div>
             </div>

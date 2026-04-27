@@ -115,50 +115,56 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
             {/* Organization Identity */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="field-group">
-                <label className="form-label mb-2 block">Organization Name</label>
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <Building2 size={16} className="text-slate-500" />
+                  Organization Name
+                </label>
                 <div className="relative">
                   <input
                     type="text"
                     name="organization_name"
-                    className="form-input pl-11"
+                    className="form-input"
                     placeholder="Company Name"
                     value={formData.organization_name}
                     onChange={handleChange}
                     required
                   />
-                  <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                 </div>
               </div>
 
               <div className="field-group">
-                <label className="form-label mb-2 block">Website URL</label>
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <Globe size={16} className="text-slate-500" />
+                  Website URL
+                </label>
                 <div className="relative">
                   <input
                     type="text"
                     name="website_url"
-                    className="form-input pl-11"
+                    className="form-input"
                     placeholder="https://www.example.com"
                     value={formData.website_url}
                     onChange={handleChange}
                   />
-                  <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
                 </div>
               </div>
             </div>
 
             {/* Organization Summary */}
             <div className="field-group">
-              <label className="form-label mb-2 block">Organization Summary</label>
+              <label className="form-label mb-2 flex items-center gap-2">
+                <FileText size={16} className="text-slate-500" />
+                Organization Summary
+              </label>
               <div className="relative">
                 <textarea
                   name="organization_summary"
-                  className="form-input pl-11 min-h-[160px] pt-3"
+                  className="form-input min-h-[160px]"
                   placeholder="Tell us about your organization, team, and general industry focus..."
                   value={formData.organization_summary}
                   onChange={handleChange}
                   required
                 />
-                <FileText className="absolute left-4 top-4 text-slate-500" size={18} />
               </div>
               <p className="text-xs text-slate-500 mt-2">
                 This summary helps buyers understand the team behind your listings.

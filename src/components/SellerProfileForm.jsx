@@ -605,35 +605,33 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
           <div className="space-y-6">
             <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
-              <div className="glass border border-slate-700/50 rounded-2xl p-5 relative overflow-hidden" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-indigo-500/0 via-indigo-500/50 to-indigo-500/0" />
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Building2 className="text-indigo-400" size={16} />
-                  </div>
-                  <div className="flex-1">
-                    <label className="form-label mb-1 flex justify-between items-center pr-2">
-                      Company Name or Project Name
-                      {autoFilledFields.includes('seller_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-                    </label>
-                    <input
-                      type="text"
-                      name="seller_name"
-                      className={getInputClass('seller_name')}
-                      placeholder="e.g. Acme Manufacturing LLC"
-                      value={formData.seller_name}
-                      onChange={handleChange}
-                    />
-                    <div className="flex items-center gap-1.5 mt-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-indigo-400 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
-                      <p className="text-xs text-indigo-300/70">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
-                    </div>
-                  </div>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <label className="form-label flex justify-between items-center pr-2">
+                  <span className="flex items-center gap-2">
+                    <Building2 size={16} className={autoFilledFields.includes('seller_name') ? 'text-highlight' : 'text-slate-400'} />
+                    Company Name or Project Name
+                  </span>
+                  {autoFilledFields.includes('seller_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                </label>
+                <input
+                  type="text"
+                  name="seller_name"
+                  className={getInputClass('seller_name')}
+                  placeholder="e.g. Acme Manufacturing LLC"
+                  value={formData.seller_name}
+                  onChange={handleChange}
+                />
+                <div className="flex items-center gap-1.5 mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-500 flex-shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+                  <p className="text-xs text-slate-500">This information is for internal reference only and will <strong>not</strong> be visible to buyers.</p>
                 </div>
               </div>
 
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <label className="form-label">Listing Title (Anonymized)</label>
+                <label className="form-label flex items-center gap-2">
+                  <FileText size={16} className="text-slate-400" />
+                  Listing Title (Anonymized)
+                </label>
                 <input
                   type="text"
                   name="seller_anon_name"
@@ -649,8 +647,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
             <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
               <div style={{ flex: 1 }}>
-                <label className="form-label flex justify-between">
-                  Employee Count
+                <label className="form-label flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Users size={16} className={autoFilledFields.includes('employees_count') ? 'text-highlight' : 'text-slate-400'} />
+                    Employee Count
+                  </span>
                   {autoFilledFields.includes('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
@@ -659,18 +660,20 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     inputMode="numeric"
                     pattern="[0-9]*"
                     name="employees_count"
-                    className={getInputClass('employees_count', 'form-input pl-11')}
+                    className={getInputClass('employees_count', 'form-input')}
                     value={formData.employees_count}
                     onChange={handleChange}
                     placeholder="e.g. 50"
                   />
-                  <Users className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.includes('employees_count') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
 
               <div style={{ flex: 1 }}>
-                <label className="form-label flex justify-between">
-                  Year Founded
+                <label className="form-label flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Building2 size={16} className={autoFilledFields.includes('year_founded') ? 'text-highlight' : 'text-slate-400'} />
+                    Year Founded
+                  </span>
                   {autoFilledFields.includes('year_founded') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                 </label>
                 <div className="relative">
@@ -680,12 +683,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     pattern="[0-9]{4}"
                     maxLength="4"
                     name="year_founded"
-                    className={getInputClass('year_founded', 'form-input pl-11')}
+                    className={getInputClass('year_founded', 'form-input')}
                     value={formData.year_founded}
                     onChange={handleChange}
                     placeholder="YYYY"
                   />
-                  <Building2 className={`absolute left-4 top-1/2 -translate-y-1/2 ${autoFilledFields.includes('year_founded') ? 'text-highlight' : 'text-slate-500'}`} size={18} />
                 </div>
               </div>
             </div>
@@ -693,7 +695,10 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             {/* Business Location & Ownership Structure */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
-                <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Business Location</label>
+                <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                  <MapPin size={16} className="text-slate-400" />
+                  Business Location
+                </label>
                 <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                   {geoLoading ? (
                     <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
@@ -717,18 +722,13 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                               className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
                               onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
                             >
-                              {allContSelected
-                                ? <CheckCircle2 size={14} />
-                                : someContSelected
-                                  ? <span style={{ width: 8, height: 8, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                  : null
-                              }
+                              {allContSelected && <CheckCircle2 size={14} />}
                             </div>
                             <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
                               {continent.name}
                             </span>
                             <button type="button" onClick={(e) => toggleContinentExpand(e, continent.name)} className="geo-toggle">
-                              {isContExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                              {isContExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                             </button>
                           </div>
                           {isContExpanded && (
@@ -746,16 +746,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                                         className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
                                         onClick={() => handleCountryToggle(country)}
                                       >
-                                        {allCtrySelected
-                                          ? <CheckCircle2 size={12} />
-                                          : someCtrySelected
-                                            ? <span style={{ width: 6, height: 6, background: '#e2e8f0', borderRadius: 1, display: 'block' }} />
-                                            : null
-                                        }
+                                        {allCtrySelected && <CheckCircle2 size={12} />}
                                       </div>
                                       <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
                                       <button type="button" onClick={(e) => toggleCountryExpand(e, country.code)} className="geo-toggle">
-                                        {isCtryExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                        {isCtryExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                                       </button>
                                     </div>
                                     {isCtryExpanded && (
@@ -785,13 +780,17 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                         </div>
                       );
                     })
+
                   )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-6">
                 <div>
-                  <label className="form-label" style={{ marginBottom: '0.75rem', display: 'block' }}>Ownership Structure</label>
+                  <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                    <Briefcase size={16} className="text-slate-400" />
+                    Ownership Structure
+                  </label>
                   <select name="ownership_structure" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
                     <option value="">Select Ownership</option>
                     <option value="Private Company">Private Company</option>
@@ -801,8 +800,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   </select>
                 </div>
                 <div>
-                  <label className="form-label flex justify-between">
-                    Legal Entity
+                  <label className="form-label flex justify-between items-center">
+                    <span className="flex items-center gap-2">
+                      <FileText size={16} className={autoFilledFields.includes('legal_entity') ? 'text-highlight' : 'text-slate-400'} />
+                      Legal Entity
+                    </span>
                     {autoFilledFields.includes('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                   </label>
                   <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ appearance: 'auto', marginTop: '0.75rem' }} value={formData.legal_entity} onChange={handleChange}>

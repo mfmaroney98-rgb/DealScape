@@ -112,6 +112,89 @@
   to { transform: rotate(360deg); }
 }
 
-.animate-rotate-slow {
-  animation: rotate-slow 60s linear infinite;
+
+
+/* Geography Tree Styles */
+.geo-tree {
+  @apply space-y-0.5;
+}
+
+.geo-branch {
+  @apply relative pl-5 border-l border-slate-200/60 ml-3 py-0.5;
+}
+
+.geo-branch-last {
+  @apply border-l-transparent;
+}
+
+.geo-branch-last::before {
+  content: '';
+  @apply absolute top-0 -left-[1px] w-[1px] h-4 bg-slate-200/60;
+}
+
+.geo-row {
+  @apply flex items-center gap-3 py-1.5 relative hover:bg-slate-100/50 rounded-xl px-2.5 -ml-2.5 transition-all duration-200 cursor-pointer group;
+}
+
+.geo-row::before {
+  content: '';
+  @apply absolute top-1/2 -left-2.5 w-2.5 h-[1px] bg-slate-200/60;
+}
+
+
+.geo-check, .geo-check-sm {
+  @apply shrink-0 border border-slate-300 rounded-md flex items-center justify-center transition-all duration-200 bg-white;
+}
+
+.geo-check {
+  @apply w-5.5 h-5.5;
+}
+
+.geo-check-sm {
+  @apply w-4.5 h-4.5;
+}
+
+.geo-check.checked, .geo-check-sm.checked {
+  @apply bg-accent border-accent text-white shadow-sm shadow-accent/20;
+}
+
+.geo-check.partial, .geo-check-sm.partial {
+  @apply bg-slate-50 border-slate-300;
+}
+
+.geo-check.partial::after, .geo-check-sm.partial::after {
+  content: '';
+  @apply block bg-slate-400 rounded-xs;
+}
+
+.geo-check.partial::after {
+  @apply w-2.5 h-2.5;
+}
+
+.geo-check-sm.partial::after {
+  @apply w-1.5 h-1.5;
+}
+
+.geo-label-bold {
+  @apply text-[13px] font-bold text-slate-900 select-none;
+}
+
+.geo-label-semi {
+  @apply text-[13px] font-semibold text-slate-700 select-none;
+}
+
+.geo-label-state {
+  @apply text-[13px] text-slate-500 select-none;
+}
+
+.geo-label-state.selected {
+  @apply text-accent font-semibold;
+}
+
+.geo-toggle {
+  @apply ml-auto p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition-all duration-200;
+}
+
+.geo-children {
+  @apply mt-0.5;
 }
