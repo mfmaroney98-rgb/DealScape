@@ -27,6 +27,17 @@ import {
 
 
 
+const KEYWORD_CATEGORIES = [
+  { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
+  { id: 'industry', label: 'Industry / Vertical', example: 'Dental Practice Management, HealthTech' },
+  { id: 'revenue_model', label: 'Revenue Model', example: 'Subscription, Recurring' },
+  { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
+  { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
+  { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
+  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' },
+  { id: 'deal_characteristics', label: 'Deal Characteristics', example: 'Founder-led, Owner retiring' }
+];
+
 export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -129,6 +140,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       year_founded: '',
       employees_count: '',
       keywords: [],
+      categorized_keywords: {},
       summary: '',
       legal_entity: '',
       ownership_structure: '',
@@ -342,6 +354,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           });
         }
 
+        // Flatten keywords for the UI tag cloud while keeping categories for matching
+        const flattenedKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object')
+          ? Object.values(parsedData.keywords).flat().filter(Boolean)
+          : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
+
         return {
           ...prev,
           seller_name: parsedData.seller_name || prev.seller_name,
@@ -356,7 +373,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           is_minority_owned: parsedData.is_minority_owned ?? prev.is_minority_owned,
           is_family_owned: parsedData.is_family_owned ?? prev.is_family_owned,
           is_operator_owned: parsedData.is_operator_owned ?? prev.is_operator_owned,
-          keywords: parsedData.keywords?.length ? [...new Set([...prev.keywords, ...parsedData.keywords])] : prev.keywords,
+          keywords: flattenedKeywords.length ? [...new Set([...prev.keywords, ...flattenedKeywords])] : prev.keywords,
+          categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords,
           summary: parsedData.summary || (autoFilledFields.includes('summary') ? '' : prev.summary),
           financial_history: mergedHistory
         };
@@ -364,12 +382,16 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
       // Track highlighted fields for UX
       const updatedFields = [...new Set([...autoFilledFields])];
+      const hasKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object') 
+        ? Object.values(parsedData.keywords).flat().length > 0
+        : (parsedData.keywords?.length > 0);
+
       if (parsedData.seller_name) updatedFields.push('seller_name');
       if (parsedData.seller_anon_name) updatedFields.push('seller_anon_name');
       if (parsedData.employees_count) updatedFields.push('employees_count');
       if (parsedData.year_founded) updatedFields.push('year_founded');
       if (parsedData.legal_entity) updatedFields.push('legal_entity');
-      if (parsedData.keywords?.length) updatedFields.push('keywords');
+      if (hasKeywords) updatedFields.push('keywords');
       if (parsedData.pref_transaction_type?.length) updatedFields.push('pref_transaction_type');
       if (parsedData.is_founder_owned !== undefined) updatedFields.push('is_founder_owned');
       if (parsedData.is_female_owned !== undefined) updatedFields.push('is_female_owned');
@@ -380,10 +402,25 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (parsedData.summary) updatedFields.push('summary');
 
       setAutoFilledFields(updatedFields);
-      if (parsedData.keywords?.length) setAutoFilledTags(parsedData.keywords);
+      if (hasKeywords) {
+        const tagsToHighlight = (parsedData.keywords && typeof parsedData.keywords === 'object')
+          ? Object.values(parsedData.keywords).flat().filter(Boolean)
+          : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
+        setAutoFilledTags(tagsToHighlight);
+      }
 
-      // 4. Generate Semantic Embedding for Matching (AI-assisted only)
-      const textToEmbed = `Industry Keywords: ${parsedData.keywords?.join(', ') || formData.keywords?.join(', ') || ''}. Business Summary: ${parsedData.summary || formData.summary || parsedData.seller_anon_name || formData.seller_anon_name}`.trim();
+      // 4. Generate Enriched Semantic Embedding for Matching
+      let keywordContext = '';
+      if (parsedData.keywords && typeof parsedData.keywords === 'object') {
+        keywordContext = Object.entries(parsedData.keywords)
+          .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
+          .filter(s => !s.endsWith(': '))
+          .join('; ');
+      } else if (flattenedKeywords.length) {
+        keywordContext = flattenedKeywords.join(', ');
+      }
+
+      const textToEmbed = `Categorized Business Traits: ${keywordContext}. Executive Summary: ${parsedData.summary || formData.summary || parsedData.seller_anon_name || formData.seller_anon_name}`.trim();
       if (textToEmbed.length > 20) {
         try {
           const embedding = await aiService.generateEmbedding(textToEmbed);
@@ -776,30 +813,39 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
               <Tag className="text-amber-400" size={20} />
             </div>
-            <h2 className="text-xl font-bold">Classification & Ownership</h2>
+            <h2 className="text-xl font-bold">Business Characteristics</h2>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <label className="form-label flex justify-between">
-                Keywords
-                {autoFilledFields.includes('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
-              <TagInput
-                tags={formData.keywords}
-                onChange={(newTags) => {
-                  if (autoFilledFields.includes('keywords')) {
-                    setAutoFilledFields(prev => prev.filter(f => f !== 'keywords'));
-                  }
-                  setFormData(prev => ({ ...prev, keywords: newTags }));
-                }}
-                placeholder="Software, HealthTech, AI (press Enter to add)"
-                isInputHighlighted={autoFilledFields.includes('keywords')}
-                autoFilledTags={autoFilledTags}
-              />
-            </div>
-
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+            {KEYWORD_CATEGORIES.map(cat => (
+              <div key={cat.id} className="space-y-3">
+                <label className="form-label flex justify-between items-center text-slate-300 font-semibold">
+                  {cat.label}
+                  {autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0 && (
+                    <AlertCircle size={14} className="text-amber-400 animate-pulse" title="Auto-populated from document" />
+                  )}
+                </label>
+                <TagInput
+                  tags={formData.categorized_keywords?.[cat.id] || []}
+                  onChange={(newTags) => {
+                    setFormData(prev => {
+                      const updatedCategorized = {
+                        ...(prev.categorized_keywords || {}),
+                        [cat.id]: newTags
+                      };
+                      return {
+                        ...prev,
+                        categorized_keywords: updatedCategorized,
+                        keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                      };
+                    });
+                  }}
+                  placeholder={`e.g. ${cat.example}`}
+                  isInputHighlighted={autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0}
+                  autoFilledTags={autoFilledTags}
+                />
+              </div>
+            ))}
           </div>
         </div>
 

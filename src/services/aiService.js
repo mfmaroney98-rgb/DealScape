@@ -43,7 +43,16 @@ Return the result as a strict JSON object matching exactly this schema:
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (Allowed values: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other')",
-  "keywords": array of 10-16 sharp, discriminating 1-4 word phrases (see Keyword Rules below),
+  "keywords": {
+    "business_model": ["string (1-2 phrases)"],
+    "industry": ["string (1-3 phrases)"],
+    "revenue_model": ["string (1-2 phrases)"],
+    "customer_type": ["string (1-2 phrases)"],
+    "operational_model": ["string (1-2 phrases)"],
+    "differentiation": ["string (1-2 phrases)"],
+    "end_market": ["string (1-2 phrases)"],
+    "deal_characteristics": ["string (1-2 phrases)"]
+  },
   "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
   "is_founder_owned": boolean,
   "is_female_owned": boolean,
@@ -68,7 +77,7 @@ Important Rules:
 7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
 
 KEYWORD RULES:
-Extract 10-16 sharp, discriminating phrases (1-4 words each) that capture the following signals. Do not infer or embellish. If a category is missing, skip it.
+Extract 10-16 sharp, discriminating phrases (1-4 words each) that capture the following signals. Do not infer or embellish. If a category is missing, return an empty array for that key.
 INCLUDE:
 - Business model descriptor (1-2): e.g. "B2B SaaS", "managed services provider", "staffing firm".
 - Industry or vertical (1-3): Prefer narrow over broad. e.g. "dental practice management".
