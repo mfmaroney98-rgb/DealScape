@@ -34,8 +34,7 @@ const KEYWORD_CATEGORIES = [
   { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
   { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
   { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
-  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' },
-  { id: 'deal_characteristics', label: 'Deal Characteristics', example: 'Founder-led, Owner retiring' }
+  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
 ];
 
 export default function SellerProfileForm({ userId, orgId, onComplete }) {
@@ -157,6 +156,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
       },
       embedding: null,
+      last_embedded_text: '',
       status: 'Draft'
     }
   });
@@ -424,7 +424,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (textToEmbed.length > 20) {
         try {
           const embedding = await aiService.generateEmbedding(textToEmbed);
-          setFormData(prev => ({ ...prev, embedding }));
+          setFormData(prev => ({ ...prev, embedding, last_embedded_text: textToEmbed }));
         } catch (err) {
           console.warn('Failed to generate embedding during parsing', err);
         }
@@ -469,6 +469,23 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       sanitizedData.employees_count = sanitizedData.employees_count === '' || sanitizedData.employees_count === null ? null : parseInt(sanitizedData.employees_count, 10);
       sanitizedData.year_founded = sanitizedData.year_founded === '' || sanitizedData.year_founded === null ? null : String(sanitizedData.year_founded);
       sanitizedData.status = submitStatus;
+
+      // Smart Refresh: Only update embedding if the strategic text has changed
+      const keywordContext = Object.entries(formData.categorized_keywords || {})
+        .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
+        .filter(s => !s.endsWith(': '))
+        .join('; ');
+      const textToEmbed = `Categorized Business Traits: ${keywordContext}. Executive Summary: ${formData.summary || formData.seller_anon_name}`.trim();
+
+      if (textToEmbed.length > 20 && textToEmbed !== formData.last_embedded_text) {
+        try {
+          const embedding = await aiService.generateEmbedding(textToEmbed);
+          sanitizedData.embedding = embedding;
+          sanitizedData.last_embedded_text = textToEmbed;
+        } catch (err) {
+          console.warn('Failed to refresh embedding on submit:', err);
+        }
+      }
 
       await sellerListingService.saveListing(sanitizedData);
 

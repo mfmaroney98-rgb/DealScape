@@ -50,8 +50,7 @@ Return the result as a strict JSON object matching exactly this schema:
     "customer_type": ["string (1-2 phrases)"],
     "operational_model": ["string (1-2 phrases)"],
     "differentiation": ["string (1-2 phrases)"],
-    "end_market": ["string (1-2 phrases)"],
-    "deal_characteristics": ["string (1-2 phrases)"]
+    "end_market": ["string (1-2 phrases)"]
   },
   "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
   "is_founder_owned": boolean,
@@ -86,7 +85,6 @@ INCLUDE:
 - Delivery/Operational model (1-2): e.g. "asset-light", "remote-first", "field service operations".
 - Differentiation (1-2): e.g. "proprietary software", "sole-source contracts", "patented process".
 - End market served (1-2): e.g. "hospitals and health systems", "mid-market CFOs".
-- Deal characteristics (1-2): e.g. "founder-led", "owner retiring", "bolt-on candidate".
 
 EXCLUDE (Do NOT extract these):
 - Generic business praise ("growth opportunity", "profitable company", "loyal customer base")
