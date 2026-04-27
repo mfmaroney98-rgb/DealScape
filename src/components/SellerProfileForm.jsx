@@ -34,7 +34,8 @@ const KEYWORD_CATEGORIES = [
   { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
   { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
   { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
-  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
+  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' },
+  { id: 'reason_for_sale', label: 'Reason for Sale', example: 'Owner retirement, Growth capital' }
 ];
 
 export default function SellerProfileForm({ userId, orgId, onComplete }) {
