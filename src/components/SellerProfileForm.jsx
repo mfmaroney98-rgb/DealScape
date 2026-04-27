@@ -835,13 +835,13 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <h2 className="text-xl font-bold">Business Characteristics</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {KEYWORD_CATEGORIES.map(cat => (
-              <div key={cat.id} style={{ minWidth: 0 }} className="bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 flex flex-col shadow-inner transition-all hover:border-slate-700/80">
-                <label className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-4 flex justify-between items-center px-1">
+              <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
                   {cat.label}
                   {autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0 && (
-                    <AlertCircle size={12} className="text-amber-400 animate-pulse" title="Auto-populated" />
+                    <AlertCircle size={14} className="text-accent animate-pulse" title="Auto-populated" />
                   )}
                 </label>
                 <div className="flex-1">

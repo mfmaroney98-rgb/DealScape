@@ -178,11 +178,11 @@ export default function SellerListings({ orgId, isCorporate }) {
                 </div>
                 
                 {/* Headings row */}
-                <div style={{ display: 'flex', flexDirection: 'row', width: '100%', marginBottom: '0.5rem' }}>
-                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Legal Entity</div>
-                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Keywords</div>
-                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>Revenue</div>
-                  <div style={{ flex: 1, textAlign: 'center', fontSize: '0.875rem', fontWeight: 500, color: '#e2e8f0' }}>EBITDA</div>
+                <div className="flex flex-row w-full mb-2">
+                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Company Name</div>
+                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Keywords</div>
+                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Revenue</div>
+                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">EBITDA</div>
                 </div>
 
                 {/* Values row */}

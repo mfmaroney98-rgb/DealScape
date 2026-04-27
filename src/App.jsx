@@ -24,33 +24,49 @@ import {
   ArrowRight,
   PlusCircle,
   CheckCircle2,
-  Users
+  Users,
+  ShieldCheck
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from './components/ui/Button';
+import { Card } from './components/ui/Card';
+import { Badge } from './components/ui/Badge';
+import { twMerge } from 'tailwind-merge';
+import { clsx } from 'clsx';
 
 /* --- Components --- */
 
 const AuthLayout = ({ children, title, subtitle }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center p-6">
-    <div className="w-full max-w-md animate-fade-in">
-      <Link to="/" className="flex items-center justify-center gap-2 mb-12 hover:opacity-80 transition-opacity">
-        <div className="w-10 h-10 bg-gradient-to-tr from-indigo-600 to-indigo-400 rounded-xl flex items-center justify-center">
-          <TrendingUp className="text-white" size={24} />
-        </div>
-        <span className="text-2xl font-bold tracking-tight font-['Outfit']">DealScape</span>
-      </Link>
+  <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background relative overflow-hidden">
+    {/* Decorative background elements */}
+    <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full" />
+    <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-secondary/5 blur-[120px] rounded-full" />
+    
+    <div className="w-full max-w-md relative z-10">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex flex-col items-center text-center mb-10"
+      >
+        <Link to="/" className="flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity">
+          <div className="w-12 h-12 bg-gradient-to-tr from-accent to-accent-secondary rounded-2xl flex items-center justify-center shadow-accent">
+            <TrendingUp className="text-white" size={26} />
+          </div>
+          <span className="text-3xl font-display tracking-tight text-foreground">DealScape</span>
+        </Link>
+        <Badge className="mb-4">Secure Access</Badge>
+        <h1 className="text-4xl font-display mb-3">{title}</h1>
+        <p className="text-muted-foreground max-w-[320px] mx-auto">{subtitle}</p>
+      </motion.div>
 
-      {import.meta.env.VITE_SUPABASE_ANON_KEY?.includes('placeholder') && (
-        <div className="mb-8 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs text-center">
-          <AlertCircle size={14} className="inline mr-1" />
-          Anon Key missing in .env
-        </div>
-      )}
-
-      <div className="glass p-8 rounded-2xl border border-slate-800 shadow-2xl">
-        <h2 className="text-2xl font-bold mb-2">{title}</h2>
-        <p className="text-slate-400 text-sm mb-8">{subtitle}</p>
+      <Card className="p-8 shadow-2xl shadow-accent/5 border-border/50">
         {children}
-      </div>
+      </Card>
+      
+      <p className="text-center text-sm text-muted-foreground mt-8">
+        By continuing, you agree to our <a href="#" className="text-accent hover:underline">Terms of Service</a> and <a href="#" className="text-accent hover:underline">Privacy Policy</a>.
+      </p>
     </div>
   </div>
 );
@@ -76,49 +92,60 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout title="Sign In" subtitle="Enter your credentials to access your workspace.">
-      <form onSubmit={handleSignIn} className="space-y-6">
-        <div>
+    <AuthLayout title="Welcome Back" subtitle="Sign in to your DealScape account to manage your deals.">
+      <form onSubmit={handleSignIn} className="space-y-5">
+        <div className="space-y-2">
           <label className="form-label">Email Address</label>
-          <div className="relative">
+          <div className="relative group">
             <input
               type="email"
-              className="form-input pl-11"
+              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
-        <div>
-          <label className="form-label">Password</label>
-          <div className="relative">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="form-label mb-0">Password</label>
+            <a href="#" className="text-xs text-accent hover:underline">Forgot password?</a>
+          </div>
+          <div className="relative group">
             <input
               type="password"
-              className="form-input pl-11"
+              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
+        
         {error && (
-          <div className="flex items-start gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-            <AlertCircle size={16} className="shrink-0 mt-0.5" />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-start gap-3 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-600 text-sm"
+          >
+            <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <span>{error}</span>
-          </div>
+          </motion.div>
         )}
-        <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center h-12">
-          {loading ? <Loader2 className="animate-spin" size={20} /> : 'Sign In'}
-        </button>
+
+        <Button type="submit" isLoading={loading} className="w-full h-14 text-lg mt-2">
+          Sign In
+        </Button>
       </form>
-      <p className="text-center text-sm text-slate-400 mt-8">
-        Don't have an account? <Link to="/signup" className="text-indigo-400 font-semibold hover:underline">Sign Up</Link>
-      </p>
+      <div className="mt-8 pt-6 border-t border-border flex flex-col items-center gap-4">
+        <p className="text-sm text-muted-foreground">
+          Don't have an account? <Link to="/signup" className="text-accent font-semibold hover:underline">Create Account</Link>
+        </p>
+      </div>
     </AuthLayout>
   );
 };
@@ -147,197 +174,258 @@ const Signup = () => {
   if (success) {
     return (
       <AuthLayout title="Verify Identity" subtitle="We've sent a magic link to your email.">
-        <div className="text-center py-4">
-          <p className="text-slate-300 mb-8">Please check {email} to confirm your registration.</p>
-          <Link to="/" className="btn-secondary inline-flex items-center gap-2">Return to Login</Link>
+        <div className="text-center py-6 flex flex-col items-center">
+          <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-6 text-accent">
+            <Mail size={40} />
+          </div>
+          <p className="text-muted-foreground mb-10 leading-relaxed">
+            Please check your inbox at <span className="text-foreground font-semibold">{email}</span> to confirm your registration.
+          </p>
+          <Link to="/">
+            <Button variant="secondary" className="w-full">
+              Return to Sign In
+            </Button>
+          </Link>
         </div>
       </AuthLayout>
     );
   }
 
   return (
-    <AuthLayout title="Create Account" subtitle="Join the DealScape ecosystem today.">
-      <form onSubmit={handleSignUp} className="space-y-6">
-        <div>
+    <AuthLayout title="Create Account" subtitle="Join the DealScape ecosystem and start your journey today.">
+      <form onSubmit={handleSignUp} className="space-y-5">
+        <div className="space-y-2">
           <label className="form-label">Email Address</label>
-          <div className="relative">
+          <div className="relative group">
             <input
               type="email"
-              className="form-input pl-11"
+              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
               placeholder="name@company.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
-        <div>
+        <div className="space-y-2">
           <label className="form-label">Password</label>
-          <div className="relative">
+          <div className="relative group">
             <input
               type="password"
-              className="form-input pl-11"
+              className="form-input pl-11 group-hover:border-accent/30 transition-colors"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-accent transition-colors" size={18} />
           </div>
         </div>
+        
+        <div className="flex items-center gap-2 py-2">
+          <input type="checkbox" id="terms" required className="rounded border-border text-accent focus:ring-accent" />
+          <label htmlFor="terms" className="text-xs text-muted-foreground">
+            I agree to receive transactional emails and updates.
+          </label>
+        </div>
+
         {error && (
-          <div className="flex items-start gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-            <AlertCircle size={16} className="shrink-0 mt-0.5" />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex items-start gap-3 p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-red-600 text-sm"
+          >
+            <AlertCircle size={18} className="shrink-0 mt-0.5" />
             <span>{error}</span>
-          </div>
+          </motion.div>
         )}
-        <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center h-12">
-          {loading ? <Loader2 className="animate-spin" size={20} /> : 'Register'}
-        </button>
+
+        <Button type="submit" isLoading={loading} className="w-full h-14 text-lg mt-2">
+          Create Account
+        </Button>
       </form>
-      <p className="text-center text-sm text-slate-400 mt-8">
-        Already have an account? <Link to="/" className="text-indigo-400 font-semibold hover:underline">Sign In</Link>
-      </p>
+      <div className="mt-8 pt-6 border-t border-border flex flex-col items-center gap-4">
+        <p className="text-sm text-muted-foreground">
+          Already have an account? <Link to="/" className="text-accent font-semibold hover:underline">Sign In</Link>
+        </p>
+      </div>
     </AuthLayout>
   );
 };
 
 const DashboardActionCard = ({ title, subtitle, icon: Icon, to, active, buttonText, activeText, activeTo, secondaryAction, secondaryTo, onSecondaryClick }) => (
-  <div className={`glass p-10 rounded-3xl border ${active ? 'border-slate-800' : 'border-indigo-500/30'} text-center flex flex-col items-center group ${!active ? 'hover:border-indigo-500/50' : ''} transition-all duration-500`}>
-    <div className={`w-16 h-16 ${active ? 'bg-emerald-500/10' : 'bg-indigo-500/10'} rounded-2xl mb-6 flex items-center justify-center ${!active ? 'group-hover:scale-110' : ''} transition-transform`}>
-      {active ? <CheckCircle2 className="text-emerald-400" size={32} /> : <Icon className="text-indigo-400" size={32} />}
+  <Card 
+    featured={!active} 
+    className="p-10 flex flex-col items-center text-center group"
+  >
+    <div className={twMerge(
+      "w-20 h-20 rounded-2xl mb-8 flex items-center justify-center transition-transform duration-500 group-hover:scale-110",
+      active 
+        ? "bg-emerald-500/10 text-emerald-500" 
+        : "bg-gradient-to-tr from-accent to-accent-secondary text-white shadow-accent"
+    )}>
+      {active ? <CheckCircle2 size={36} /> : <Icon size={36} />}
     </div>
-    <h3 className="text-2xl font-bold mb-3">{active ? (activeText || 'Active') : title}</h3>
-    <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+    
+    <h3 className="text-2xl font-semibold mb-4 text-foreground">
+      {active ? (activeText || 'Active') : title}
+    </h3>
+    
+    <p className="text-muted-foreground text-sm mb-10 leading-relaxed max-w-[260px]">
       {active ? `Your ${title.toLowerCase()} is active and being matched.` : subtitle}
     </p>
-    {active ? (
-      <div className="flex flex-col gap-3 w-full">
-        {activeTo ? (
-          <Link to={activeTo} className="btn-secondary w-full flex items-center justify-center text-sm py-4">
-            {buttonText || 'View'}
-          </Link>
-        ) : (
-          <button className="btn-secondary w-full text-sm py-4">{buttonText || 'View'}</button>
-        )}
-        {secondaryAction && secondaryTo && (
-          <Link
-            to={secondaryTo}
-            onClick={onSecondaryClick}
-            className="btn-primary w-full flex items-center justify-center gap-2 py-3 shadow-xl shadow-indigo-500/20 text-sm"
-          >
-            {secondaryAction}
-          </Link>
-        )}
-      </div>
-    ) : (
-      <Link
-        to={to}
-        className="btn-primary w-full flex items-center justify-center gap-2 py-4 shadow-xl shadow-indigo-500/20"
-      >
-        Get Started <ArrowRight size={18} />
-      </Link>
-    )}
-  </div>
+
+    <div className="w-full mt-auto space-y-4">
+      {active ? (
+        <>
+          {activeTo ? (
+            <Link to={activeTo} className="block w-full">
+              <Button variant="secondary" className="w-full h-14">
+                {buttonText || 'View Details'}
+              </Button>
+            </Link>
+          ) : (
+            <Button variant="secondary" className="w-full h-14">
+              {buttonText || 'View Details'}
+            </Button>
+          )}
+          {secondaryAction && secondaryTo && (
+            <Link to={secondaryTo} onClick={onSecondaryClick} className="block w-full">
+              <Button variant="primary" className="w-full h-14">
+                {secondaryAction}
+              </Button>
+            </Link>
+          )}
+        </>
+      ) : (
+        <Link to={to} className="block w-full">
+          <Button variant="primary" className="w-full h-14 group/btn">
+            Get Started 
+            <ArrowRight size={20} className="ml-2 transition-transform group-hover/btn:translate-x-1" />
+          </Button>
+        </Link>
+      )}
+    </div>
+  </Card>
 );
 
 const MessagesCard = () => (
-  <div className="glass p-10 rounded-3xl border border-slate-800 text-center flex flex-col items-center group">
-    <div className="w-16 h-16 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
-      <Mail className="text-slate-400" size={32} />
+  <Card className="p-10 flex flex-col items-center text-center opacity-70">
+    <div className="w-20 h-20 bg-muted rounded-2xl mb-8 flex items-center justify-center text-muted-foreground">
+      <Mail size={36} />
     </div>
-    <h3 className="text-2xl font-bold mb-3">Messages</h3>
-    <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
+    <h3 className="text-2xl font-semibold mb-4 text-foreground">Messages</h3>
+    <p className="text-muted-foreground text-sm mb-10 leading-relaxed max-w-[260px]">
       Communicate securely with other members of the ecosystem.
     </p>
-    <button className="btn-secondary w-full text-sm py-4 opacity-50 cursor-not-allowed">Coming Soon</button>
-  </div>
+    <Button variant="secondary" className="w-full h-14 cursor-not-allowed opacity-50">
+      Coming Soon
+    </Button>
+  </Card>
 );
 
 const SellerDashboard = ({ hasListing, profile }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
-    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
+  <div className="min-h-screen pt-32 pb-20 px-6 bg-background relative overflow-hidden">
+    {/* Background texture and glows */}
+    <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[150px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent-secondary/5 blur-[150px] rounded-full" />
     </div>
-    <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
-      Workspace
-    </div>
-    <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
-      Seller Dashboard
-    </h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
-      <DashboardActionCard
-        title="Seller Listing"
-        subtitle="List your business and start finding buyers today."
-        icon={PlusCircle}
-        to="/onboarding/seller"
-        active={hasListing}
-        activeText="Listings Active"
-        buttonText="View Listings"
-        activeTo="/dashboard/seller/listings"
-        secondaryAction="Create New Listing"
-        secondaryTo="/onboarding/seller"
-        onSecondaryClick={() => {
-          sessionStorage.removeItem('sellerFormData_new');
-          sessionStorage.removeItem('sellerFormFields_new');
-          sessionStorage.removeItem('sellerFormTags_new');
-        }}
-      />
-      <DashboardActionCard
-        title="Seller Profile"
-        subtitle="Manage your organization's website and public summary."
-        icon={Users}
-        to="/dashboard/seller/profile"
-        active={!!profile?.organization?.website_url}
-        activeText="Profile Active"
-        buttonText="Edit Profile"
-        activeTo="/dashboard/seller/profile"
-      />
-      <MessagesCard />
-    </div>
+
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      className="max-w-7xl mx-auto flex flex-col items-center text-center"
+    >
+      <Badge className="mb-6">Workspace</Badge>
+      <h1 className="text-5xl md:text-7xl mb-12 leading-tight">
+        Seller <span className="gradient-text">Dashboard</span>
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+        <DashboardActionCard
+          title="Seller Listing"
+          subtitle="List your business and start finding buyers today."
+          icon={PlusCircle}
+          to="/onboarding/seller"
+          active={hasListing}
+          activeText="Listings Active"
+          buttonText="View Listings"
+          activeTo="/dashboard/seller/listings"
+          secondaryAction="Create New Listing"
+          secondaryTo="/onboarding/seller"
+          onSecondaryClick={() => {
+            sessionStorage.removeItem('sellerFormData_new');
+            sessionStorage.removeItem('sellerFormFields_new');
+            sessionStorage.removeItem('sellerFormTags_new');
+          }}
+        />
+        <DashboardActionCard
+          title="Seller Profile"
+          subtitle="Manage your organization's website and public summary."
+          icon={Users}
+          to="/dashboard/seller/profile"
+          active={!!profile?.organization?.website_url}
+          activeText="Profile Active"
+          buttonText="Edit Profile"
+          activeTo="/dashboard/seller/profile"
+        />
+        <MessagesCard />
+      </div>
+    </motion.div>
   </div>
 );
 
 const BuyerDashboard = ({ hasCriteria, profile }) => (
-  <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
-    <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+  <div className="min-h-screen pt-32 pb-20 px-6 bg-background relative overflow-hidden">
+    {/* Background texture and glows */}
+    <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[150px] rounded-full" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent-secondary/5 blur-[150px] rounded-full" />
     </div>
-    <div className="mb-2 px-4 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
-      Workspace
-    </div>
-    <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
-      Buyer Dashboard
-    </h1>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
-      <DashboardActionCard
-        title="Buyer Criteria"
-        subtitle="Define what you're looking for to receive deals."
-        icon={PlusCircle}
-        to="/onboarding/buyer"
-        active={hasCriteria}
-        activeText="Criteria Set"
-        buttonText="View Criteria"
-        activeTo="/dashboard/buyer/criteria"
-        secondaryAction="Create New Criteria"
-        secondaryTo="/onboarding/buyer"
-        onSecondaryClick={() => {
-          sessionStorage.removeItem('buyerFormData_new');
-        }}
-      />
-      <DashboardActionCard
-        title="Buyer Profile"
-        subtitle="Manage your organization's website, description, and buyer identity."
-        icon={Users}
-        to="/dashboard/buyer/profile"
-        active={!!profile?.organization?.buyer_type}
-        activeText="Profile Active"
-        buttonText="Edit Profile"
-        activeTo="/dashboard/buyer/profile"
-      />
-      <MessagesCard />
-    </div>
+
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7 }}
+      className="max-w-7xl mx-auto flex flex-col items-center text-center"
+    >
+      <Badge className="mb-6">Workspace</Badge>
+      <h1 className="text-5xl md:text-7xl mb-12 leading-tight">
+        Buyer <span className="gradient-text">Dashboard</span>
+      </h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+        <DashboardActionCard
+          title="Buyer Criteria"
+          subtitle="Define what you're looking for to receive deals."
+          icon={PlusCircle}
+          to="/onboarding/buyer"
+          active={hasCriteria}
+          activeText="Criteria Set"
+          buttonText="View Criteria"
+          activeTo="/dashboard/buyer/criteria"
+          secondaryAction="Create New Criteria"
+          secondaryTo="/onboarding/buyer"
+          onSecondaryClick={() => {
+            sessionStorage.removeItem('buyerFormData_new');
+          }}
+        />
+        <DashboardActionCard
+          title="Buyer Profile"
+          subtitle="Manage your organization's website, description, and buyer identity."
+          icon={Users}
+          to="/dashboard/buyer/profile"
+          active={!!profile?.organization?.buyer_type}
+          activeText="Profile Active"
+          buttonText="Edit Profile"
+          activeTo="/dashboard/buyer/profile"
+        />
+        <MessagesCard />
+      </div>
+    </motion.div>
   </div>
 );
 
@@ -345,11 +433,10 @@ const RootDashboardDispatcher = ({ profile }) => {
   const role = profile?.role;
   const organization = profile?.organization;
 
-  // If profile is still loading (undefined), show loader
   if (profile === undefined) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin text-indigo-500" size={32} />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="animate-spin text-accent" size={40} />
       </div>
     );
   }
@@ -362,48 +449,63 @@ const RootDashboardDispatcher = ({ profile }) => {
     return <Navigate to="/onboarding/type" replace />;
   }
 
-  // Determine role from organization type if not corporate
   const effectiveRole = role === 'corporate' ? 'corporate' : organization?.type;
 
   if (effectiveRole === 'seller') return <Navigate to="/dashboard/seller" replace />;
   if (effectiveRole === 'buyer') return <Navigate to="/dashboard/buyer" replace />;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center animate-fade-in relative">
-      <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+    <div className="min-h-screen pt-32 pb-20 px-6 bg-background relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/5 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent-secondary/5 blur-[150px] rounded-full" />
       </div>
 
-      <div className="mb-2 px-4 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-wider animate-fade-in">
-        Welcome Back
-      </div>
-      <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tighter bg-gradient-to-b from-white to-slate-500 bg-clip-text text-transparent">
-        Select Workspace
-      </h1>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="max-w-7xl mx-auto flex flex-col items-center text-center"
+      >
+        <Badge className="mb-6">Welcome Back</Badge>
+        <h1 className="text-5xl md:text-7xl mb-12 leading-tight">
+          Select <span className="gradient-text">Workspace</span>
+        </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto mt-8">
-        <Link to="/dashboard/seller" className="glass p-10 rounded-3xl border border-indigo-500/30 text-center flex flex-col items-center group hover:border-indigo-500/60 transition-all duration-300">
-           <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-             <PlusCircle className="text-indigo-400" size={32} />
-           </div>
-           <h3 className="text-2xl font-bold mb-3">Seller Dashboard</h3>
-           <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-             Manage your seller listings, analytics, and receive buyer matches.
-           </p>
-           <span className="btn-primary w-full flex items-center justify-center gap-2 py-4">Enter Workspace <ArrowRight size={18} /></span>
-        </Link>
-        <Link to="/dashboard/buyer" className="glass p-10 rounded-3xl border border-emerald-500/30 text-center flex flex-col items-center group hover:border-emerald-500/60 transition-all duration-300">
-           <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-             <PlusCircle className="text-emerald-400" size={32} />
-           </div>
-           <h3 className="text-2xl font-bold mb-3">Buyer Dashboard</h3>
-           <p className="text-slate-400 text-sm mb-8 leading-relaxed max-w-[240px]">
-             Define investment criteria and browse curated seller listings.
-           </p>
-           <span className="btn-primary w-full flex items-center justify-center gap-2 py-4">Enter Workspace <ArrowRight size={18} /></span>
-        </Link>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl mx-auto mt-8">
+          <Link to="/dashboard/seller" className="block">
+            <Card className="p-10 h-full flex flex-col items-center group">
+              <div className="w-20 h-20 bg-accent/10 rounded-2xl mb-8 flex items-center justify-center group-hover:scale-110 transition-transform text-accent">
+                <PlusCircle size={40} />
+              </div>
+              <h3 className="text-2xl font-semibold mb-4">Seller Dashboard</h3>
+              <p className="text-muted-foreground text-sm mb-10 leading-relaxed max-w-[260px]">
+                Manage your seller listings, analytics, and receive buyer matches.
+              </p>
+              <Button className="w-full h-14 group/btn">
+                Enter Workspace
+                <ArrowRight size={20} className="ml-2 transition-transform group-hover/btn:translate-x-1" />
+              </Button>
+            </Card>
+          </Link>
+          
+          <Link to="/dashboard/buyer" className="block">
+            <Card className="p-10 h-full flex flex-col items-center group border-emerald-500/10 hover:border-emerald-500/30">
+              <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl mb-8 flex items-center justify-center group-hover:scale-110 transition-transform text-emerald-600">
+                <PlusCircle size={40} />
+              </div>
+              <h3 className="text-2xl font-semibold mb-4">Buyer Dashboard</h3>
+              <p className="text-muted-foreground text-sm mb-10 leading-relaxed max-w-[260px]">
+                Define investment criteria and browse curated seller listings.
+              </p>
+              <Button className="w-full h-14 group/btn bg-gradient-to-r from-emerald-600 to-teal-500 shadow-emerald-500/20">
+                Enter Workspace
+                <ArrowRight size={20} className="ml-2 transition-transform group-hover/btn:translate-x-1" />
+              </Button>
+            </Card>
+          </Link>
+        </div>
+      </motion.div>
     </div>
   );
 };

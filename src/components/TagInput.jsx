@@ -45,7 +45,7 @@ export default function TagInput({
     <div className="space-y-3">
       <input
         type="text"
-        className={`form-input focus:ring-2 focus:ring-offset-0 focus:outline-none ${isInputHighlighted ? 'form-input-highlight' : 'focus:ring-indigo-500'} transition-colors w-full`}
+        className={`form-input py-4 placeholder:text-xs focus:ring-2 focus:ring-offset-0 focus:outline-none ${isInputHighlighted ? 'form-input-highlight' : 'focus:ring-accent'} transition-colors w-full`}
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
