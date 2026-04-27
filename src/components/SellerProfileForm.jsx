@@ -151,10 +151,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       is_operator_owned: false,
       pref_transaction_type: [],
       financial_history: {
-        'FY-2': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-        'FY-1': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-        'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' },
-        'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '' }
+        'FY-2': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' },
+        'FY-1': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' },
+        'FY0': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' },
+        'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' },
+        'FY1E': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' }
       },
       embedding: null,
       last_embedded_text: '',
@@ -889,49 +890,29 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   <th className="p-2 font-normal text-slate-500 text-left" style={{ width: '180px' }}></th>
                   {['FY-2', 'FY-1', 'FY0'].map(period => (
                     <th key={period} className="px-8 py-2 font-bold text-slate-300 text-right">
-                      <div className="flex flex-col items-end" style={{ gap: '6px' }}>
-                        <span>Fiscal Year {period.replace('FY', '')}</span>
-                        <input
-                          type="date"
-                          style={{ textAlign: 'right' }}
-                          className="text-indigo-400/70 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-indigo-300 transition-colors"
-                          value={formData.financial_history?.[period]?.date || ''}
-                          onChange={(e) => handleFinancialDateChange(period, e.target.value)}
-                          title={`Period end date for ${period}`}
-                        />
-                      </div>
+                      <span>Fiscal Year {period.replace('FY', '')}</span>
                     </th>
                   ))}
                   <th className="px-8 py-2 font-bold text-slate-300 text-right">
-                    <div className="flex flex-col items-end" style={{ gap: '6px' }}>
+                    <div className="flex flex-col items-end" style={{ gap: '4px' }}>
                       {showLtm ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => setShowLtm(false)}
-                            style={{
-                              display: 'flex', alignItems: 'center', gap: '5px',
-                              padding: '0.2rem 0.6rem', borderRadius: '0.4rem',
-                              border: '1px solid rgba(239,68,68,0.3)',
-                              background: 'rgba(239,68,68,0.08)',
-                              color: '#f87171', fontSize: '0.72rem', fontWeight: 600,
-                              cursor: 'pointer', transition: 'all 0.15s',
-                              whiteSpace: 'nowrap', marginLeft: 'auto'
-                            }}
-                            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.18)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.6)'; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)'; }}
-                          >
-                            <span style={{ fontSize: '0.85rem', lineHeight: 1 }}>✕</span> No LTM
-                          </button>
-                          <span>LTM</span>
-                          <input
-                            type="date"
-                            style={{ textAlign: 'right' }}
-                            className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs cursor-pointer"
-                            value={formData.financial_history?.LTM?.date || ''}
-                            onChange={(e) => handleFinancialDateChange('LTM', e.target.value)}
-                          />
-                        </>
+                        <button
+                          type="button"
+                          onClick={() => setShowLtm(false)}
+                          style={{
+                            display: 'flex', alignItems: 'center', gap: '5px',
+                            padding: '0.2rem 0.6rem', borderRadius: '0.4rem',
+                            border: '1px solid rgba(239,68,68,0.3)',
+                            background: 'rgba(239,68,68,0.08)',
+                            color: '#f87171', fontSize: '0.72rem', fontWeight: 600,
+                            cursor: 'pointer', transition: 'all 0.15s',
+                            whiteSpace: 'nowrap', marginBottom: '4px'
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.18)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.6)'; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)'; }}
+                        >
+                          <span style={{ fontSize: '0.85rem', lineHeight: 1 }}>✕</span> No LTM
+                        </button>
                       ) : (
                         <button
                           type="button"
@@ -943,7 +924,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                             background: 'rgba(52,211,153,0.08)',
                             color: '#34d399', fontSize: '0.72rem', fontWeight: 600,
                             cursor: 'pointer', transition: 'all 0.15s',
-                            whiteSpace: 'nowrap', marginLeft: 'auto'
+                            whiteSpace: 'nowrap', marginBottom: '4px'
                           }}
                           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(52,211,153,0.18)'; e.currentTarget.style.borderColor = 'rgba(52,211,153,0.6)'; }}
                           onMouseLeave={e => { e.currentTarget.style.background = 'rgba(52,211,153,0.08)'; e.currentTarget.style.borderColor = 'rgba(52,211,153,0.3)'; }}
@@ -951,7 +932,50 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                           <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>＋</span> Add LTM
                         </button>
                       )}
+                      {showLtm && <span>LTM</span>}
                     </div>
+                  </th>
+                  <th className="px-8 py-2 font-bold text-right" style={{ color: '#a78bfa' }}>
+                    <div className="flex flex-col items-end" style={{ gap: '4px' }}>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.05em', color: '#7c3aed', background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '0.3rem', padding: '0.1rem 0.4rem', marginBottom: '4px' }}>ESTIMATE</span>
+                      <span>Fiscal Year 1</span>
+                    </div>
+                  </th>
+                </tr>
+                <tr>
+                  <th className="p-2"></th>
+                  {['FY-2', 'FY-1', 'FY0'].map(period => (
+                    <th key={`${period}-date`} className="px-8 py-1 text-right">
+                      <input
+                        type="date"
+                        style={{ textAlign: 'right' }}
+                        className="text-indigo-400/70 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-indigo-300 transition-colors"
+                        value={formData.financial_history?.[period]?.date || ''}
+                        onChange={(e) => handleFinancialDateChange(period, e.target.value)}
+                        title={`Period end date for ${period}`}
+                      />
+                    </th>
+                  ))}
+                  <th className="px-8 py-1 text-right">
+                    {showLtm && (
+                      <input
+                        type="date"
+                        style={{ textAlign: 'right' }}
+                        className="text-blue-500 bg-transparent outline-none w-full placeholder-blue-500/50 italic text-xs cursor-pointer"
+                        value={formData.financial_history?.LTM?.date || ''}
+                        onChange={(e) => handleFinancialDateChange('LTM', e.target.value)}
+                      />
+                    )}
+                  </th>
+                  <th className="px-8 py-1 text-right">
+                    <input
+                      type="date"
+                      className="bg-transparent outline-none w-full italic text-xs cursor-pointer"
+                      style={{ textAlign: 'right', color: '#a78bfa', opacity: 0.7 }}
+                      value={formData.financial_history?.['FY1E']?.date || ''}
+                      onChange={(e) => handleFinancialDateChange('FY1E', e.target.value)}
+                      title="Expected fiscal year end date"
+                    />
                   </th>
                 </tr>
               </thead>
@@ -959,7 +983,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- Revenue --- */}
                 <tr>
                   <td className="p-2 pt-4 font-bold text-slate-200">Revenue</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     const rev = formData.financial_history?.[year]?.revenue;
                     return (
                       <td key={year} className="px-4 py-2 pt-4 text-right">
@@ -980,23 +1004,36 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>YoY Growth</td>
-                  {(showLtm ? ['2023', '2024', '2025', 'LTM'] : ['2023', '2024', '2025']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     let yoy = '';
                     const isFocused = focusedField && (
                       (focusedField.year === year && focusedField.field === 'revenue') ||
-                      (year === '2024' && focusedField.year === '2023' && focusedField.field === 'revenue') ||
-                      (year === '2025' && focusedField.year === '2024' && focusedField.field === 'revenue')
+                      (year === 'FY-1' && focusedField.year === 'FY-2' && focusedField.field === 'revenue') ||
+                      (year === 'FY0' && focusedField.year === 'FY-1' && focusedField.field === 'revenue') ||
+                      (year === 'FY1E' && focusedField.year === 'FY0' && focusedField.field === 'revenue')
                     );
 
                     if (!isFocused) {
-                      if (year === 'FY-1' && formData.financial_history?.['FY-2']?.revenue) {
-                        yoy = Math.round(((formData.financial_history['FY-1']?.revenue - formData.financial_history['FY-2']?.revenue) / formData.financial_history['FY-2']?.revenue) * 100);
-                      } else if (year === 'FY0' && formData.financial_history?.['FY-1']?.revenue) {
-                        yoy = Math.round(((formData.financial_history['FY0']?.revenue - formData.financial_history['FY-1']?.revenue) / formData.financial_history['FY-1']?.revenue) * 100);
+                      const currentRev = formData.financial_history?.[year]?.revenue;
+                      if (year === 'FY-1') {
+                        const priorRev = formData.financial_history?.['FY-2']?.revenue;
+                        if (currentRev && priorRev) {
+                          yoy = Math.round(((currentRev - priorRev) / priorRev) * 100);
+                        }
+                      } else if (year === 'FY0') {
+                        const priorRev = formData.financial_history?.['FY-1']?.revenue;
+                        if (currentRev && priorRev) {
+                          yoy = Math.round(((currentRev - priorRev) / priorRev) * 100);
+                        }
+                      } else if (year === 'FY1E') {
+                        const priorRev = formData.financial_history?.['FY0']?.revenue;
+                        if (currentRev && priorRev) {
+                          yoy = Math.round(((currentRev - priorRev) / priorRev) * 100);
+                        }
                       }
                     }
                     return (
-                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: year === 'FY1E' ? '#a78bfa' : '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
                         {yoy !== '' ? `${yoy}%` : ''}
                       </td>
                     );
@@ -1006,7 +1043,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- Gross Profit --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Gross Profit</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     const val = formData.financial_history?.[year]?.gross_profit;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
@@ -1027,7 +1064,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Gross Profit Margin</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     const val = formData.financial_history?.[year]?.gross_profit;
                     const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'gross_profit' || focusedField.field === 'revenue');
@@ -1043,7 +1080,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- EBITDA --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBITDA</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     const val = formData.financial_history?.[year]?.ebitda;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
@@ -1064,7 +1101,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBITDA Margin</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
                     const val = formData.financial_history?.[year]?.ebitda;
                     const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebitda' || focusedField.field === 'revenue');
@@ -1080,8 +1117,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- EBIT --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">EBIT</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
-                    const val = formData.financial_history[year].ebit;
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.ebit;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -1101,9 +1138,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>EBIT Margin</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
-                    const val = formData.financial_history[year].ebit;
-                    const rev = formData.financial_history[year].revenue;
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.ebit;
+                    const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'ebit' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
@@ -1117,8 +1154,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 {/* --- Net Income --- */}
                 <tr>
                   <td className="p-2 pt-6 font-bold text-slate-200">Net Income</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
-                    const val = formData.financial_history[year].net_income;
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.net_income;
                     return (
                       <td key={year} className="px-4 py-2 pt-6 text-right">
                         <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
@@ -1138,14 +1175,51 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </tr>
                 <tr>
                   <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>Net Income Margin</td>
-                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM'] : ['FY-2', 'FY-1', 'FY0']).map(year => {
-                    const val = formData.financial_history[year].net_income;
-                    const rev = formData.financial_history[year].revenue;
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.net_income;
+                    const rev = formData.financial_history?.[year]?.revenue;
                     const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'net_income' || focusedField.field === 'revenue');
                     const margin = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
                     return (
                       <td key={year} style={{ padding: '0.25rem 2rem 1.5rem 2rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
                         {margin !== '' ? `${margin}%` : ''}
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                {/* --- CapEx --- */}
+                <tr>
+                  <td className="p-2 pt-6 font-bold text-slate-200">CapEx</td>
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.capex;
+                    return (
+                      <td key={year} className="px-4 py-2 pt-6 text-right">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(15,23,42,0.5)', border: '1px solid #1e293b', borderRadius: '0.5rem', padding: '0.375rem 0.75rem', justifyContent: 'flex-end' }}>
+                          <span className="text-blue-500 font-medium">$</span>
+                          <input
+                            type="text"
+                            style={{ textAlign: 'right', flexGrow: 1, background: 'transparent', outline: 'none', color: '#ffffff', fontWeight: 'bold', minWidth: 0 }}
+                            value={formatWithCommas(val)}
+                            onChange={(e) => handleFinancialChange(year, 'capex', e.target.value)}
+                            onFocus={() => setFocusedField({ year, field: 'capex' })}
+                            onBlur={() => setFocusedField(null)}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.25rem 0.25rem 1.5rem 1rem', fontSize: '0.75rem', fontStyle: 'italic', color: '#64748b' }}>CapEx % of Revenue</td>
+                  {(showLtm ? ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'] : ['FY-2', 'FY-1', 'FY0', 'FY1E']).map(year => {
+                    const val = formData.financial_history?.[year]?.capex;
+                    const rev = formData.financial_history?.[year]?.revenue;
+                    const isFocused = focusedField && focusedField.year === year && (focusedField.field === 'capex' || focusedField.field === 'revenue');
+                    const pct = (!isFocused && val && rev) ? Math.round((val / rev) * 100) : '';
+                    return (
+                      <td key={year} style={{ paddingBottom: '1.5rem', paddingTop: '0.25rem', paddingLeft: '0.75rem', paddingRight: '0.75rem', textAlign: 'right', color: '#94a3b8', fontSize: '0.875rem', fontStyle: 'italic' }}>
+                        {pct !== '' ? `${pct}%` : ''}
                       </td>
                     );
                   })}
