@@ -32,10 +32,10 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
       }
     };
 
-    if (id) {
+    if (id && orgId) {
       fetchListing();
     }
-  }, [id, navigate]);
+  }, [id, navigate, orgId, isCorporate]);
 
   const formatCurrency = (val) => {
     if (!val && val !== 0) return '--';

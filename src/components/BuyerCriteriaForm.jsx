@@ -416,7 +416,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 0: Criteria Identity */}
         <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
-          <div className="geo-row" style={{ marginBottom: '1.5rem', cursor: 'default' }}>
+          <div className="geo-row group" style={{ marginBottom: '1.5rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Target style={{ color: '#818cf8' }} size={20} />
             </div>
@@ -446,7 +446,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             <DollarSign size={80} />
           </div>
           
-          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+          <div className="geo-row group" style={{ marginBottom: '2rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <TrendingUp style={{ color: '#34d399' }} size={20} />
             </div>
@@ -521,7 +521,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
         {/* Section 2: Geographical Focus */}
         <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', position: 'relative' }}>
-          <div className="geo-row" style={{ marginBottom: '2rem', cursor: 'default' }}>
+          <div className="geo-row group" style={{ marginBottom: '2rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Globe className="geo-globe" size={20} />
             </div>
@@ -547,7 +547,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
                 return (
                   <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
-                    <div className="geo-row">
+                    <div className="geo-row group">
                       <div
                         className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
                         onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
@@ -577,7 +577,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
                           return (
                             <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
-                              <div className="geo-row">
+                              <div className="geo-row group">
                                 <div
                                   className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
                                   onClick={() => handleCountryToggle(country)}
@@ -604,7 +604,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                     const isStateSelected = formData.locations.includes(stateKey);
                                     return (
                                       <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
-                                        <div className="geo-row">
+                                        <div className="geo-row group">
                                           <div
                                             className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
                                             onClick={() => handleStateToggle(country.code, stateName)}
@@ -689,7 +689,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
                     return (
                       <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
-                        <div className="geo-row">
+                        <div className="geo-row group">
                           <div
                             className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
                             onClick={() => handleNaicsSectorToggle(sector)}
@@ -720,7 +720,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                               const isSubSelected = formData.naics_codes.includes(sub.code);
                               return (
                                 <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
-                                  <div className="geo-row">
+                                  <div className="geo-row group">
                                     <div
                                       className={`geo-check-sm ${isSubSelected ? 'checked' : ''}`}
                                       onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}

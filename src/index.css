@@ -1,6 +1,5 @@
-@import "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
 
 @theme {
   --color-background: #FAFAFA;
@@ -116,11 +115,11 @@
 
 /* Geography Tree Styles */
 .geo-tree {
-  @apply space-y-0.5;
+  @apply space-y-0;
 }
 
 .geo-branch {
-  @apply relative pl-5 border-l border-slate-200/60 ml-3 py-0.5;
+  @apply relative pl-5 border-l border-slate-200/60 ml-3 py-0;
 }
 
 .geo-branch-last {
@@ -133,7 +132,7 @@
 }
 
 .geo-row {
-  @apply flex items-center gap-3 py-1.5 relative hover:bg-slate-100/50 rounded-xl px-2.5 -ml-2.5 transition-all duration-200 cursor-pointer group;
+  @apply flex items-center gap-3 py-0.75 relative hover:bg-slate-100/50 rounded-xl px-2.5 -ml-2.5 transition-all duration-200 cursor-pointer;
 }
 
 .geo-row::before {
@@ -192,9 +191,9 @@
 }
 
 .geo-toggle {
-  @apply ml-auto p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition-all duration-200;
+  @apply ml-auto p-1 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition-all duration-200;
 }
 
 .geo-children {
-  @apply mt-0.5;
+  @apply mt-0;
 }

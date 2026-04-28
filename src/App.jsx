@@ -700,7 +700,11 @@ function App() {
             path="/dashboard/buyer/criteria"
             element={
               session ? (
-                (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
                   <BuyerCriteriaList orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
@@ -724,7 +728,11 @@ function App() {
             path="/dashboard/seller"
             element={
               session ? (
-                (profile?.role === 'seller' || profile?.organization?.type === 'seller' || profile?.role === 'corporate') ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : (profile?.role === 'seller' || profile?.organization?.type === 'seller' || profile?.role === 'corporate') ? (
                   <SellerDashboard hasListing={hasListing} profile={profile} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
@@ -738,7 +746,11 @@ function App() {
             path="/dashboard/seller/listings"
             element={
               session ? (
-                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : (profile?.role === 'seller' || profile?.role === 'corporate') ? (
                   <SellerListings orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
@@ -752,7 +764,11 @@ function App() {
             path="/dashboard/seller/listings/:id"
             element={
               session ? (
-                (profile?.role === 'seller' || profile?.role === 'corporate') ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : (profile?.role === 'seller' || profile?.role === 'corporate') ? (
                   <SellerListingOverview orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
@@ -766,7 +782,11 @@ function App() {
             path="/dashboard/buyer"
             element={
               session ? (
-                (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
+                profile === undefined ? (
+                  <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="animate-spin text-indigo-500" size={32} />
+                  </div>
+                ) : (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
                   <BuyerDashboard hasCriteria={hasCriteria} profile={profile} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
