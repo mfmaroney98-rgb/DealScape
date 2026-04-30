@@ -775,10 +775,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             <div className="grid grid-cols-1 gap-3">
               {[
                 { key: 'require_founder_owned', label: 'Founder-Owned' },
-                { key: 'require_female_owned', label: 'Female-Owned' },
-                { key: 'require_minority_owned', label: 'Minority-Owned' },
                 { key: 'require_family_owned', label: 'Family-Owned' },
-                { key: 'require_operator_owned', label: 'Operator-Owned' }
+                { key: 'require_operator_owned', label: 'Operator-Owned' },
+                { key: 'require_female_owned', label: 'Female-Owned' },
+                { key: 'require_minority_owned', label: 'Minority-Owned' }
               ].map(pref => (
                 <label key={pref.key} className="flex items-center gap-3 cursor-pointer group">
                   <input

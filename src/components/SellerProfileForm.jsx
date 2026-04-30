@@ -22,7 +22,8 @@ import {
   AlertCircle,
   Globe,
   Loader2,
-  Sparkles
+  Sparkles,
+  Plus
 } from 'lucide-react';
 
 
@@ -604,8 +605,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           </div>
 
           <div className="space-y-6">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <label className="form-label flex justify-between items-center pr-2">
                   <span className="flex items-center gap-2">
                     <Building2 size={16} className={autoFilledFields.includes('seller_name') ? 'text-highlight' : 'text-slate-400'} />
@@ -627,10 +628,12 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 </div>
               </div>
 
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <label className="form-label flex items-center gap-2">
-                  <FileText size={16} className="text-slate-400" />
-                  Listing Title (Anonymized)
+                  <span className="flex items-center gap-2">
+                    <FileText size={16} className="text-slate-400" />
+                    Listing Title (Anonymized)
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -889,95 +892,98 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <table className="w-full" style={{ tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: '16px 0' }}>
               <thead>
                 <tr>
-                  <th className="p-2 font-normal text-slate-600 text-left" style={{ width: '200px' }}></th>
+                  <th className="p-2 font-normal text-slate-600 text-left" style={{ width: '200px', verticalAlign: 'bottom' }}></th>
                   {['FY-2', 'FY-1', 'FY0'].map(period => (
-                    <th key={period} className="px-4 py-2 font-bold text-slate-500 text-right">
-                      <span>Fiscal Year {period.replace('FY', '')}</span>
+                    <th key={period} className="px-4 py-2 font-bold text-slate-500 text-right" style={{ verticalAlign: 'bottom', position: 'relative' }}>
+                      <div className="flex flex-col items-end" style={{ gap: '4px' }}>
+                        <span>Fiscal Year {period.replace('FY', '')}</span>
+                        <input
+                          type="date"
+                          style={{ textAlign: 'right' }}
+                          className="text-slate-500 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-slate-400 transition-colors"
+                          value={formData.financial_history?.[period]?.date || ''}
+                          onChange={(e) => handleFinancialDateChange(period, e.target.value)}
+                          title={`Period end date for ${period}`}
+                        />
+                      </div>
+                      
+                      {/* --- Sleek Add LTM button in between columns --- */}
+                      {period === 'FY0' && !showLtm && (
+                        <div style={{ position: 'absolute', top: '12px', left: 'calc(100% + 8px)', transform: 'translateX(-50%)', zIndex: 20 }}>
+                          <button
+                            type="button"
+                            onClick={() => setShowLtm(true)}
+                            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 hover:shadow-lg"
+                            style={{
+                              background: 'rgba(52, 211, 153, 0.1)',
+                              border: '1px solid rgba(52, 211, 153, 0.4)',
+                              color: '#059669',
+                              fontSize: '0.62rem',
+                              fontWeight: '800',
+                              letterSpacing: '0.05em',
+                              cursor: 'pointer',
+                              backdropFilter: 'blur(8px)',
+                              whiteSpace: 'nowrap',
+                              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                          >
+                            <Plus size={12} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-300" />
+                            ADD LTM
+                          </button>
+                        </div>
+                      )}
                     </th>
                   ))}
-                  <th className="px-4 py-2 font-bold text-slate-500 text-right">
-                    <div className="flex flex-col items-end" style={{ gap: '4px' }}>
-                      {showLtm ? (
+                  {showLtm && (
+                    <th className="px-4 py-2 font-bold text-slate-500 text-right" style={{ verticalAlign: 'bottom' }}>
+                      <div className="flex flex-col items-end" style={{ gap: '4px' }}>
                         <button
                           type="button"
                           onClick={() => setShowLtm(false)}
+                          className="group flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
                           style={{
-                            display: 'flex', alignItems: 'center', gap: '5px',
-                            padding: '0.2rem 0.6rem', borderRadius: '0.4rem',
-                            border: '1px solid rgba(239,68,68,0.3)',
-                            background: 'rgba(239,68,68,0.08)',
-                            color: '#f87171', fontSize: '0.72rem', fontWeight: 600,
-                            cursor: 'pointer', transition: 'all 0.15s',
-                            whiteSpace: 'nowrap', marginBottom: '4px'
+                            background: 'rgba(239, 68, 68, 0.08)',
+                            border: '1px solid rgba(239, 68, 68, 0.25)',
+                            color: '#f87171',
+                            fontSize: '0.62rem',
+                            fontWeight: '700',
+                            letterSpacing: '0.03em',
+                            cursor: 'pointer',
+                            backdropFilter: 'blur(4px)',
+                            whiteSpace: 'nowrap',
+                            marginBottom: '4px'
                           }}
-                          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.18)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.6)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.3)'; }}
                         >
-                          <span style={{ fontSize: '0.85rem', lineHeight: 1 }}>✕</span> No LTM
+                          <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>✕</span>
+                          REMOVE LTM
                         </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => setShowLtm(true)}
-                          style={{
-                            display: 'flex', alignItems: 'center', gap: '5px',
-                            padding: '0.2rem 0.6rem', borderRadius: '0.4rem',
-                            border: '1px solid rgba(52,211,153,0.3)',
-                            background: 'rgba(52,211,153,0.08)',
-                            color: '#34d399', fontSize: '0.72rem', fontWeight: 600,
-                            cursor: 'pointer', transition: 'all 0.15s',
-                            whiteSpace: 'nowrap', marginBottom: '4px'
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(52,211,153,0.18)'; e.currentTarget.style.borderColor = 'rgba(52,211,153,0.6)'; }}
-                          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(52,211,153,0.08)'; e.currentTarget.style.borderColor = 'rgba(52,211,153,0.3)'; }}
-                        >
-                          <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>＋</span> Add LTM
-                        </button>
-                      )}
-                      {showLtm && <span>LTM</span>}
-                    </div>
-                  </th>
-                  <th className="px-4 py-2 font-bold text-right text-slate-500">
-                    <div className="flex flex-col items-end" style={{ gap: '4px' }}>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.05em', color: '#7c3aed', background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '0.3rem', padding: '0.1rem 0.4rem', marginBottom: '4px' }}>ESTIMATE</span>
-                      <span>Fiscal Year +1</span>
-                    </div>
-                  </th>
-                </tr>
-                <tr>
-                  <th className="p-2"></th>
-                  {['FY-2', 'FY-1', 'FY0'].map(period => (
-                    <th key={`${period}-date`} className="px-4 py-1 text-right">
-                      <input
-                        type="date"
-                        style={{ textAlign: 'right' }}
-                        className="text-slate-500 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-slate-400 transition-colors"
-                        value={formData.financial_history?.[period]?.date || ''}
-                        onChange={(e) => handleFinancialDateChange(period, e.target.value)}
-                        title={`Period end date for ${period}`}
-                      />
+                        <span style={{ letterSpacing: '0.05em' }}>LTM</span>
+                        <input
+                          type="date"
+                          style={{ textAlign: 'right' }}
+                          className="text-slate-500 bg-transparent outline-none w-full placeholder-slate-500/50 italic text-xs cursor-pointer"
+                          value={formData.financial_history?.LTM?.date || ''}
+                          onChange={(e) => handleFinancialDateChange('LTM', e.target.value)}
+                        />
+                      </div>
                     </th>
-                  ))}
-                  <th className="px-4 py-1 text-right">
-                    {showLtm && (
+                  )}
+                  <th className="px-4 py-2 font-bold text-right text-slate-500" style={{ verticalAlign: 'bottom' }}>
+                    <div className="flex flex-col items-end" style={{ gap: '4px' }}>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.05em', color: '#7c3aed', background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '0.3rem', padding: '0.1rem 0.4rem' }}>ESTIMATE</span>
+                      <span>Fiscal Year +1</span>
                       <input
                         type="date"
+                        className="text-slate-500 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-slate-400 transition-colors"
                         style={{ textAlign: 'right' }}
-                        className="text-slate-500 bg-transparent outline-none w-full placeholder-slate-500/50 italic text-xs cursor-pointer"
-                        value={formData.financial_history?.LTM?.date || ''}
-                        onChange={(e) => handleFinancialDateChange('LTM', e.target.value)}
+                        value={formData.financial_history?.['FY1E']?.date || ''}
+                        onChange={(e) => handleFinancialDateChange('FY1E', e.target.value)}
+                        title="Expected fiscal year end date"
                       />
-                    )}
-                  </th>
-                  <th className="px-4 py-1 text-right">
-                    <input
-                      type="date"
-                      className="text-slate-500 bg-transparent outline-none w-full italic text-xs cursor-pointer hover:text-slate-400 transition-colors"
-                      style={{ textAlign: 'right' }}
-                      value={formData.financial_history?.['FY1E']?.date || ''}
-                      onChange={(e) => handleFinancialDateChange('FY1E', e.target.value)}
-                      title="Expected fiscal year end date"
-                    />
+                    </div>
                   </th>
                 </tr>
               </thead>
@@ -1274,10 +1280,10 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               <div className="grid grid-cols-1 gap-4 mt-4">
                 {[
                   { key: 'is_founder_owned', label: 'Founder-Owned' },
-                  { key: 'is_female_owned', label: 'Female-Owned' },
-                  { key: 'is_minority_owned', label: 'Minority-Owned' },
                   { key: 'is_family_owned', label: 'Family-Owned' },
-                  { key: 'is_operator_owned', label: 'Operator-Owned' }
+                  { key: 'is_operator_owned', label: 'Operator-Owned' },
+                  { key: 'is_female_owned', label: 'Female-Owned' },
+                  { key: 'is_minority_owned', label: 'Minority-Owned' }
                 ].map(flag => (
                   <label key={flag.key} className="flex items-center gap-3 cursor-pointer group">
                     <input
