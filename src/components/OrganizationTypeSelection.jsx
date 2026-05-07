@@ -66,14 +66,14 @@ export default function OrganizationTypeSelection({ userId, orgId, onComplete })
             onClick={() => handleSelect('buyer')}
             disabled={loading}
             className={`group relative text-left glass p-8 rounded-[2.5rem] border transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] ${
-              selectedType === 'buyer' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-slate-800 hover:border-emerald-500/50'
+              selectedType === 'buyer' ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'hover:border-emerald-500/50'
             }`}
           >
             <div className="absolute top-6 right-8">
               {selectedType === 'buyer' ? (
                 <CheckCircle2 className="text-emerald-500" size={32} />
               ) : (
-                <div className="w-8 h-8 rounded-full border-2 border-slate-800 group-hover:border-emerald-500/30 transition-colors" />
+                <div className="w-8 h-8 rounded-full group-hover:border-emerald-500/30 transition-colors" />
               )}
             </div>
 
@@ -96,14 +96,14 @@ export default function OrganizationTypeSelection({ userId, orgId, onComplete })
             onClick={() => handleSelect('seller')}
             disabled={loading}
             className={`group relative text-left glass p-8 rounded-[2.5rem] border transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] ${
-              selectedType === 'seller' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'border-slate-800 hover:border-indigo-500/50'
+              selectedType === 'seller' ? 'border-indigo-500 ring-2 ring-indigo-500/20' : 'hover:border-indigo-500/50'
             }`}
           >
             <div className="absolute top-6 right-8">
               {selectedType === 'seller' ? (
                 <CheckCircle2 className="text-indigo-500" size={32} />
               ) : (
-                <div className="w-8 h-8 rounded-full border-2 border-slate-800 group-hover:border-indigo-500/30 transition-colors" />
+                <div className="w-8 h-8 rounded-full group-hover:border-indigo-500/30 transition-colors" />
               )}
             </div>
 

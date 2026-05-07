@@ -66,7 +66,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
             <ArrowLeft size={16} /> Back to Listings
           </Link>
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+          <div className="p-4 rounded-xl bg-red-500/10 text-red-400 text-sm">
             {error || 'Listing not found.'}
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             {/* Left Column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Company Information */}
-              <div className="glass p-6 rounded-2xl border border-slate-800">
+              <div className="glass p-6 rounded-2xl">
                 <h3 className="text-xl font-bold mb-4 text-white">Company Information</h3>
                 <div className="space-y-4">
                   <div>
@@ -179,7 +179,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
               </div>
 
               {/* Buyer Information (Mock) */}
-              <div className="glass p-6 rounded-2xl border border-slate-800">
+              <div className="glass p-6 rounded-2xl">
                 <h3 className="text-xl font-bold mb-4 text-white">Buyer Information</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -205,27 +205,27 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             {/* Middle Column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Files */}
-              <div className="glass p-6 rounded-2xl border border-slate-800">
+              <div className="glass p-6 rounded-2xl">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
                   <FileText className="text-indigo-400" size={20} /> Files
                 </h3>
                 <div className="space-y-6">
                   <div>
                     <h4 className="text-sm font-semibold text-slate-300 mb-2">Teaser</h4>
-                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-slate-700/50">
+                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg">
                       Teaser has not been uploaded
                     </p>
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-slate-300 mb-2">CIM</h4>
-                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-slate-700/50">
+                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg">
                       CIM has not been uploaded
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="glass p-6 rounded-2xl border border-slate-800">
+              <div className="glass p-6 rounded-2xl">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
                   <CheckCircle2 className="text-emerald-400" size={20} /> Listing Status
                 </h3>
@@ -256,36 +256,36 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
               <div className="flex flex-col gap-3">
                 <button 
                   onClick={() => navigate(`/onboarding/seller/edit/${listing.id}`)}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 border border-indigo-500/30 text-indigo-400 font-semibold transition-all">
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 text-indigo-400 font-semibold transition-all">
                   <Edit3 size={18} /> Edit Listing
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-orange-400 font-semibold transition-all">
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 font-semibold transition-all">
                   <EyeOff size={18} /> Hide / Pause Client
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-semibold transition-all">
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold transition-all">
                   <CheckCircle2 size={18} /> Close Deal
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold transition-all">
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold transition-all">
                   <Trash2 size={18} /> Permanently Remove Listing
                 </button>
               </div>
 
               {/* Deal Team */}
-              <div className="glass p-6 rounded-2xl border border-slate-800 mt-2">
+              <div className="glass p-6 rounded-2xl mt-2">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
                   <Users className="text-indigo-400" size={20} /> Deal Team
                 </h3>
                 <div className="space-y-6">
                   <div>
                     <h4 className="text-sm font-semibold text-indigo-300 mb-2">Sell-Side Advisor</h4>
-                    <div className="bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                    <div className="bg-slate-800/30 p-4 rounded-xl">
                       <span className="block text-slate-200 font-medium mb-1">Primary Contact *</span>
                       <span className="block text-sm text-slate-400 break-all">user@example.com</span>
                     </div>
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-indigo-300 mb-2">Other Team Members</h4>
-                    <div className="bg-slate-800/30 p-4 rounded-xl border border-slate-700/50 flex flex-col items-center justify-center py-6 text-center">
+                    <div className="bg-slate-800/30 p-4 rounded-xl flex flex-col items-center justify-center py-6 text-center">
                       <span className="text-sm text-slate-500 italic block mb-2">No other team members assigned</span>
                       <button className="text-xs text-indigo-400 hover:underline">
                         + Add Member
@@ -302,7 +302,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
         {/* Placeholders for other tabs */}
         {activeTab === 'buyers' && (
-          <div className="glass p-12 rounded-2xl border border-slate-800 text-center flex flex-col items-center justify-center min-h-[400px]">
+          <div className="glass p-12 rounded-2xl text-center flex flex-col items-center justify-center min-h-[400px]">
             <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4 flex items-center justify-center">
               <Users className="text-indigo-400" size={32} />
             </div>
@@ -315,7 +315,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
         )}
 
         {activeTab === 'preview' && (
-          <div className="glass p-12 rounded-2xl border border-slate-800 text-center flex flex-col items-center justify-center min-h-[400px]">
+          <div className="glass p-12 rounded-2xl text-center flex flex-col items-center justify-center min-h-[400px]">
              <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
               <FileText className="text-emerald-400" size={32} />
             </div>

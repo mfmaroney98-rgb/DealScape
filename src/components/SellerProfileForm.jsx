@@ -596,7 +596,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 1: Identity & Location */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
               <Building2 className="text-indigo-400" size={20} />
@@ -832,7 +832,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         </div>
 
         {/* Section 2: Business Details */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
               <Tag className="text-amber-400" size={20} />
@@ -876,7 +876,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         </div>
 
         {/* Section 3: Financials */}
-        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
             <TrendingUp size={80} />
           </div>
@@ -1238,7 +1238,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         </div>
 
         {/* Section 4: Metadata & Strategic */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
               <PieChart className="text-purple-400" size={20} />

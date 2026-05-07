@@ -21,8 +21,20 @@ import {
   X,
   Loader2,
   Tag,
-  Briefcase
+  Briefcase,
+  PieChart
 } from 'lucide-react';
+ 
+const KEYWORD_CATEGORIES = [
+  { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
+  { id: 'industry', label: 'Industry / Vertical', example: 'Dental Practice Management, HealthTech' },
+  { id: 'revenue_model', label: 'Revenue Model', example: 'Subscription, Recurring' },
+  { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
+  { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
+  { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
+  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' },
+  { id: 'reason_for_sale', label: 'Reason for Sale', example: 'Owner retirement, Growth capital' }
+];
 
 
 
@@ -85,6 +97,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
               financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
               locations: Array.isArray(data.locations) ? data.locations : [],
               keywords: Array.isArray(data.keywords) ? data.keywords : [],
+              categorized_keywords: data.categorized_keywords || {},
               naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
             }));
           }
@@ -102,11 +115,11 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     organization_id: orgId,
     investment_criteria_name: '',
     financial_criteria: [
-      { id: Date.now(), metric: 'Revenue', min: '', max: '' },
-      { id: Date.now() + 1, metric: 'EBITDA Margin', min: '', max: '' }
+      { id: Date.now(), metric: 'Revenue', min: '', max: '' }
     ],
     locations: [],
     keywords: [],
+    categorized_keywords: {},
     naics_codes: [],
     pref_transaction_type: [],
     require_founder_owned: false,
@@ -402,7 +415,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-6 animate-fade-in">
+    <div className="max-w-[1400px] mx-auto py-12 px-6 animate-fade-in">
       <div className="mb-12 text-center">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4">
           <Target className="text-indigo-400" size={32} />
@@ -415,7 +428,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Section 0: Criteria Identity */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+        <div className="glass p-8 rounded-3xl shadow-xl relative overflow-hidden">
           <div className="geo-row group" style={{ marginBottom: '1.5rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Target style={{ color: '#818cf8' }} size={20} />
@@ -441,7 +454,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         </div>
 
         {/* Section 1: Financial Range */}
-        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
             <DollarSign size={80} />
           </div>
@@ -455,7 +468,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
           <div className="flex flex-col gap-4 mb-4">
             {(formData.financial_criteria || []).map((criteria, index) => (
-              <div key={criteria.id} className="field-group bg-slate-900/50 p-4 rounded-xl border border-slate-800">
+              <div key={criteria.id} className="field-group p-4 rounded-xl">
                 <div className="flex items-center justify-between mb-3">
                   <select
                     className="form-input"
@@ -478,7 +491,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                   </button>
                 </div>
                 
-                <div className="range-row">
+                <div className="range-row flex items-center gap-3">
                   {(() => {
                     const lowerMetric = (criteria.metric || '').toLowerCase();
                     const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
@@ -519,149 +532,172 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           </button>
         </div>
 
-        {/* Section 2: Geographical Focus */}
-        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', border: '1px solid #1e293b', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', position: 'relative' }}>
-          <div className="geo-row group" style={{ marginBottom: '2rem', cursor: 'default' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Globe className="geo-globe" size={20} />
+        {/* Section 2: Strategic Characteristics */}
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
+              <Tag className="text-amber-400" size={20} />
             </div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Geographical Focus</h2>
+            <h2 className="text-xl font-bold">Strategic Characteristics</h2>
           </div>
-
-          <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-            {geoLoading ? (
-              <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
-                Loading geography data...
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {KEYWORD_CATEGORIES.map(cat => (
+              <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
+                <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
+                  {cat.label}
+                </label>
+                <div className="flex-1">
+                  <TagInput
+                    tags={formData.categorized_keywords?.[cat.id] || []}
+                    onChange={(newTags) => {
+                      setFormData(prev => {
+                        const updatedCategorized = {
+                          ...(prev.categorized_keywords || {}),
+                          [cat.id]: newTags
+                        };
+                        return {
+                          ...prev,
+                          categorized_keywords: updatedCategorized,
+                          keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                        };
+                      });
+                    }}
+                    placeholder={`e.g. ${cat.example}`}
+                  />
+                </div>
               </div>
-            ) : geoError ? (
-              <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
-                {geoError}
-              </div>
-            ) : (
-              geoTree.map((continent, coIdx) => {
-                const isLastContinent = coIdx === geoTree.length - 1;
-                const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
-                const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
-                const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
-                const isContExpanded = expandedContinents.has(continent.name);
-
-                return (
-                  <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
-                    <div className="geo-row group">
-                      <div
-                        className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
-                        onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
-                      >
-                        {allContSelected && <CheckCircle2 size={14} />}
-                      </div>
-                      <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
-                        {continent.name}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => toggleContinentExpand(e, continent.name)}
-                        className="geo-toggle"
-                      >
-                        {isContExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      </button>
-                    </div>
-
-                    {isContExpanded && (
-                      <div className="geo-children">
-                        {continent.countries.map((country, cIdx) => {
-                          const isLastCountry = cIdx === continent.countries.length - 1;
-                          const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
-                          const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
-                          const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
-                          const isCtryExpanded = expandedCountries.has(country.code);
-
-                          return (
-                            <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
-                              <div className="geo-row group">
-                                <div
-                                  className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
-                                  onClick={() => handleCountryToggle(country)}
-                                >
-                                  {allCtrySelected && <CheckCircle2 size={12} />}
-                                </div>
-                                <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>
-                                  {country.name}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={(e) => toggleCountryExpand(e, country.code)}
-                                  className="geo-toggle"
-                                >
-                                  {isCtryExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                </button>
-                              </div>
-
-                              {isCtryExpanded && (
-                                <div className="geo-children">
-                                  {country.states.map((stateName, sIdx) => {
-                                    const isLastState = sIdx === country.states.length - 1;
-                                    const stateKey = makeStateKey(country.code, stateName);
-                                    const isStateSelected = formData.locations.includes(stateKey);
-                                    return (
-                                      <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
-                                        <div className="geo-row group">
-                                          <div
-                                            className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
-                                            onClick={() => handleStateToggle(country.code, stateName)}
-                                          >
-                                            {isStateSelected && <CheckCircle2 size={10} />}
-                                          </div>
-                                          <span
-                                            className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
-                                            onClick={() => handleStateToggle(country.code, stateName)}
-                                          >
-                                            {stateName}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-
-            )}
+            ))}
           </div>
         </div>
 
-        {/* Section 3: Industry & Metadata */}
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-xl relative">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-              <Search className="text-amber-400" size={20} />
+        {/* Section 3: Geographical & Industry Focus */}
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
+          <div className="flex items-center gap-6 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <Globe className="text-blue-400" size={20} />
+              </div>
+              <h2 className="text-xl font-bold">Geographical & Industry Focus</h2>
             </div>
-            <h2 className="text-xl font-bold">Sectors & Attributes</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
-            {/* Left: Keyword Tags */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Left Column: Geographies */}
             <div>
-              <label className="form-label flex items-center gap-2">
-                <Tag size={16} className="text-slate-400" />
-                Keywords
+              <label className="form-label flex items-center gap-2 mb-4">
+                <Globe size={16} className="text-slate-400" />
+                Geographical Focus
               </label>
-              <TagInput 
-                tags={formData.keywords}
-                onChange={(newTags) => setFormData(prev => ({ ...prev, keywords: newTags }))}
-                placeholder="e.g. SaaS, Manufacturing, Medical... (press Enter to add)"
-              />
+              <div className="geo-tree" style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                {geoLoading ? (
+                  <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
+                    Loading geography data...
+                  </div>
+                ) : geoError ? (
+                  <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
+                    {geoError}
+                  </div>
+                ) : (
+                  geoTree.map((continent, coIdx) => {
+                    const isLastContinent = coIdx === geoTree.length - 1;
+                    const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
+                    const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
+                    const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
+                    const isContExpanded = expandedContinents.has(continent.name);
+
+                    return (
+                      <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
+                        <div className="geo-row group">
+                          <div
+                            className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
+                            onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
+                          >
+                            {allContSelected && <CheckCircle2 size={14} />}
+                          </div>
+                          <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
+                            {continent.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => toggleContinentExpand(e, continent.name)}
+                            className="geo-toggle"
+                          >
+                            {isContExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </button>
+                        </div>
+
+                        {isContExpanded && (
+                          <div className="geo-children">
+                            {continent.countries.map((country, cIdx) => {
+                              const isLastCountry = cIdx === continent.countries.length - 1;
+                              const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
+                              const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
+                              const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
+                              const isCtryExpanded = expandedCountries.has(country.code);
+
+                              return (
+                                <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
+                                  <div className="geo-row group">
+                                    <div
+                                      className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
+                                      onClick={() => handleCountryToggle(country)}
+                                    >
+                                      {allCtrySelected && <CheckCircle2 size={12} />}
+                                    </div>
+                                    <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>
+                                      {country.name}
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => toggleCountryExpand(e, country.code)}
+                                      className="geo-toggle"
+                                    >
+                                      {isCtryExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                                    </button>
+                                  </div>
+
+                                  {isCtryExpanded && (
+                                    <div className="geo-children">
+                                      {country.states.map((stateName, sIdx) => {
+                                        const isLastState = sIdx === country.states.length - 1;
+                                        const stateKey = makeStateKey(country.code, stateName);
+                                        const isStateSelected = formData.locations.includes(stateKey);
+                                        return (
+                                          <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                            <div className="geo-row group">
+                                              <div
+                                                className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
+                                                onClick={() => handleStateToggle(country.code, stateName)}
+                                              >
+                                                {isStateSelected && <CheckCircle2 size={10} />}
+                                              </div>
+                                              <span
+                                                className={`geo-label-state ${isStateSelected ? 'selected' : ''}`}
+                                                onClick={() => handleStateToggle(country.code, stateName)}
+                                              >
+                                                {stateName}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             </div>
 
-            {/* Right: NAICS Code Tree */}
+            {/* Right Column: Industry Codes */}
             <div>
-              <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+              <label className="form-label flex items-center gap-2 mb-4">
                 <Briefcase size={16} className="text-slate-400" />
                 NAICS Industry Codes
                 {formData.naics_codes.length > 0 && (
@@ -670,7 +706,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                   </span>
                 )}
               </label>
-              <div className="geo-tree" style={{ maxHeight: '320px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+              <div className="geo-tree" style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                 {naicsLoading ? (
                   <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
                     Loading NAICS codes...
@@ -744,53 +780,64 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       </div>
                     );
                   })
-
                 )}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Preferred Transaction Types */}
-          <div className="space-y-4" style={{ marginTop: '2rem' }}>
-            <label className="form-label">Preferred Transaction Types</label>
-            <div className="grid grid-cols-1 gap-2">
-              {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
-                <label key={type} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="pref_transaction_type"
-                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                    checked={formData.pref_transaction_type?.includes(type)}
-                    onChange={() => handlePrefTransactionToggle(type)}
-                  />
-                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{type}</span>
-                </label>
-              ))}
+        {/* Section 4: Strategic Considerations */}
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center">
+              <PieChart className="text-purple-400" size={20} />
             </div>
+            <h2 className="text-xl font-bold">Strategic Considerations</h2>
           </div>
 
-          {/* Other Preferences */}
-          <div className="space-y-4" style={{ marginTop: '2rem' }}>
-            <label className="form-label">Other Preferences</label>
-            <div className="grid grid-cols-1 gap-3">
-              {[
-                { key: 'require_founder_owned', label: 'Founder-Owned' },
-                { key: 'require_family_owned', label: 'Family-Owned' },
-                { key: 'require_operator_owned', label: 'Operator-Owned' },
-                { key: 'require_female_owned', label: 'Female-Owned' },
-                { key: 'require_minority_owned', label: 'Minority-Owned' }
-              ].map(pref => (
-                <label key={pref.key} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    name={pref.key}
-                    className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
-                    checked={formData[pref.key]}
-                    onChange={handleChange}
-                  />
-                  <span className="text-sm text-slate-400 group-hover:text-white transition-colors">{pref.label}</span>
-                </label>
-              ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left: Preferred Transaction Types */}
+            <div>
+              <label className="form-label mb-6">Preferred Transaction Types</label>
+              <div className="grid grid-cols-1 gap-3">
+                {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
+                  <label key={type} className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      name="pref_transaction_type"
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      checked={formData.pref_transaction_type?.includes(type)}
+                      onChange={() => handlePrefTransactionToggle(type)}
+                    />
+                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{type}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Ownership Characteristics (formerly Other Preferences) */}
+            <div>
+              <label className="form-label mb-6">Ownership Characteristics</label>
+              <div className="grid grid-cols-1 gap-4">
+                {[
+                  { key: 'require_founder_owned', label: 'Founder-Owned' },
+                  { key: 'require_family_owned', label: 'Family-Owned' },
+                  { key: 'require_operator_owned', label: 'Operator-Owned' },
+                  { key: 'require_female_owned', label: 'Female-Owned' },
+                  { key: 'require_minority_owned', label: 'Minority-Owned' }
+                ].map(pref => (
+                  <label key={pref.key} className="flex items-center gap-3 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      name={pref.key}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      checked={formData[pref.key]}
+                      onChange={handleChange}
+                    />
+                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{pref.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
         </div>

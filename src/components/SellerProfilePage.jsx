@@ -111,7 +111,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="glass p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-8">
+          <div className="glass p-8 rounded-3xl shadow-2xl space-y-8">
             {/* Organization Identity */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="field-group">

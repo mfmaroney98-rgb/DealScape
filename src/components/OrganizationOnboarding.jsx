@@ -43,7 +43,7 @@ export default function OrganizationOnboarding({ userId, userRole, onComplete })
           </p>
         </div>
 
-        <div className="glass p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+        <div className="glass p-8 rounded-3xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
           
           <form onSubmit={handleSubmit} className="space-y-6">

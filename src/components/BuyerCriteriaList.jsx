@@ -117,7 +117,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
         )}
 
         {criteriaList.length === 0 ? (
-          <div className="glass p-12 rounded-3xl border border-slate-800 text-center flex flex-col items-center">
+          <div className="glass p-12 rounded-3xl text-center flex flex-col items-center">
             <div className="w-20 h-20 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
               <Search className="text-slate-500" size={40} />
             </div>
@@ -130,7 +130,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
         ) : (
           <div className="flex flex-col gap-8">
             {criteriaList.map((criteria) => (
-              <div key={criteria.id} className="glass p-8 rounded-3xl border border-slate-800 hover:border-emerald-500/50 transition-all duration-300">
+              <div key={criteria.id} className="glass p-8 rounded-3xl hover:border-emerald-500/50 transition-all duration-300">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center">
@@ -160,11 +160,11 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       <TrendingUp size={16} className="text-emerald-400" /> Financial Targets
                     </div>
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 rounded-xl bg-slate-900/50 border border-slate-800/50">
+                      <div className="flex justify-between items-center p-3 rounded-xl bg-slate-900/50">
                         <span className="text-xs text-slate-500">Revenue</span>
                         <span className="text-sm font-semibold text-emerald-400">{getFinancialRange(criteria, 'Revenue')}</span>
                       </div>
-                      <div className="flex justify-between items-center p-3 rounded-xl bg-slate-900/50 border border-slate-800/50">
+                      <div className="flex justify-between items-center p-3 rounded-xl bg-slate-900/50">
                         <span className="text-xs text-slate-500">EBITDA</span>
                         <span className="text-sm font-semibold text-emerald-400">{getFinancialRange(criteria, 'EBITDA')}</span>
                       </div>
@@ -176,7 +176,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                     <div className="flex items-center gap-2 text-slate-400 text-sm font-medium">
                       <Search size={16} className="text-emerald-400" /> Geography
                     </div>
-                    <div className="p-3 rounded-xl bg-slate-900/50 border border-slate-800/50 min-h-[80px]">
+                    <div className="p-3 rounded-xl bg-slate-900/50 min-h-[80px]">
                       <p className="text-sm text-slate-300">
                         {criteria.locations?.length > 0 
                           ? `${criteria.locations.length} regions selected`
@@ -198,7 +198,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                     <div className="flex items-center gap-2 text-slate-400 text-sm font-medium">
                       <Tag size={16} className="text-emerald-400" /> Industry Keywords
                     </div>
-                    <div className="p-3 rounded-xl bg-slate-900/50 border border-slate-800/50 min-h-[80px]">
+                    <div className="p-3 rounded-xl bg-slate-900/50 min-h-[80px]">
                       <p className="text-sm text-slate-300 whitespace-pre-line leading-relaxed">
                         {getDisplayKeywords(criteria.keywords)}
                       </p>

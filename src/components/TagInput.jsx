@@ -78,7 +78,7 @@ export default function TagInput({
           return (
             <span 
               key={index} 
-              className={`flex items-center gap-1.5 px-3 py-1 ${isTagHighlighted ? 'tag-highlight' : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'} rounded-lg text-sm font-medium border animate-fade-in transition-colors`}
+              className={`flex items-center gap-1.5 px-3 py-1 ${isTagHighlighted ? 'tag-highlight' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'} rounded-lg text-sm font-medium animate-fade-in transition-colors`}
             >
               {tag}
               <button

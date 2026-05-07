@@ -107,7 +107,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         </div>
 
         {/* Status Tabs */}
-        <div className="flex flex-wrap gap-4 mb-8 p-1 bg-slate-900/50 rounded-2xl border border-slate-800 w-fit">
+        <div className="flex flex-wrap gap-4 mb-8 p-1 bg-slate-900/50 rounded-2xl w-fit">
           {[
             { id: 'Active', icon: TrendingUp, label: 'Active & Offers' },
             { id: 'Draft', icon: FileText, label: 'Drafts' },
@@ -144,7 +144,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         )}
 
         {filteredListings.length === 0 ? (
-          <div className="glass p-12 rounded-3xl border border-slate-800 text-center flex flex-col items-center">
+          <div className="glass p-12 rounded-3xl text-center flex flex-col items-center">
             <div className="w-20 h-20 bg-slate-800/50 rounded-2xl mb-6 flex items-center justify-center">
               <Search className="text-slate-500" size={40} />
             </div>
@@ -159,7 +159,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         ) : (
           <div className="flex flex-col gap-8">
             {filteredListings.map((listing) => (
-              <div key={listing.id} className="glass p-8 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 relative group">
+              <div key={listing.id} className="glass p-8 rounded-3xl hover:border-indigo-500/50 transition-all duration-300 relative group">
                 {listing.status !== 'Active' && (
                   <div className="absolute top-8 right-8 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-xs font-bold uppercase tracking-wider">
                     {listing.status}
