@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
+import { organizationService } from '../services/organizationService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
@@ -59,6 +60,23 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   const [criteriaFiles, setCriteriaFiles] = useState([]);
   const [autoFilledFields, setAutoFilledFields] = useState([]);
   const [autoFilledTags, setAutoFilledTags] = useState([]);
+
+  const [divisions, setDivisions] = useState([]);
+  const [isCreatingDivision, setIsCreatingDivision] = useState(false);
+  const [newDivisionName, setNewDivisionName] = useState('');
+  const [loadingDivisions, setLoadingDivisions] = useState(true);
+
+  useEffect(() => {
+    if (orgId) {
+      organizationService.getDivisions(orgId)
+        .then(data => setDivisions(data || []))
+        .catch(console.error)
+        .finally(() => setLoadingDivisions(false));
+    } else {
+      setLoadingDivisions(false);
+    }
+  }, [orgId]);
+
 
   // Geography data loaded from Supabase
   const [geoTree, setGeoTree] = useState([]);
@@ -138,8 +156,22 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     require_minority_owned: false,
     require_family_owned: false,
     require_operator_owned: false,
-    buyer_type: ''
+    buyer_type: '',
+    division: ''
   });
+
+  const handleCreateDivision = async () => {
+    if (!newDivisionName.trim() || !orgId) return;
+    try {
+      const newDiv = await organizationService.createDivision(orgId, newDivisionName.trim());
+      setDivisions(prev => [...new Set([...prev, newDiv])].sort((a, b) => a.localeCompare(b)));
+      setFormData(prev => ({ ...prev, division: newDiv }));
+      setNewDivisionName('');
+      setIsCreatingDivision(false);
+    } catch (err) {
+      console.error('Failed to create division:', err);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -649,6 +681,64 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             </select>
             <p className="text-xs text-slate-500 mt-2">
               Defaults to your organization type if left blank.
+            </p>
+          </div>
+
+          <div className="field-group" style={{ marginBottom: 0 }}>
+            <label className="form-label mb-2 flex justify-between items-center">
+              <span>Division (Coverage Group, Strategy, or Fund)</span>
+            </label>
+            {isCreatingDivision ? (
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  className="form-input flex-1"
+                  placeholder="e.g. Growth Equity, Healthcare Group..."
+                  value={newDivisionName}
+                  onChange={(e) => setNewDivisionName(e.target.value)}
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={handleCreateDivision}
+                  disabled={!newDivisionName.trim()}
+                  className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-bold transition-colors disabled:opacity-50"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsCreatingDivision(false)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <select
+                  name="division"
+                  className="form-input flex-1 appearance-auto cursor-pointer"
+                  value={formData.division || ''}
+                  onChange={handleChange}
+                  disabled={loadingDivisions}
+                >
+                  <option value="">No Division</option>
+                  {divisions.map(div => (
+                    <option key={div} value={div}>{div}</option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setIsCreatingDivision(true)}
+                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 rounded-xl transition-colors flex items-center gap-1 font-semibold whitespace-nowrap"
+                >
+                  <Plus size={16} /> New
+                </button>
+              </div>
+            )}
+            <p className="text-xs text-slate-500 mt-2">
+              Optional. Separate criteria by specific teams or funds.
             </p>
           </div>
         </div>

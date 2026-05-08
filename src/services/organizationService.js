@@ -58,5 +58,26 @@ export const organizationService = {
 
     if (error) throw error;
     return data;
+  },
+
+  /**
+   * Fetches divisions for an organization.
+   */
+  async getDivisions(orgId) {
+    const org = await this.getOrganization(orgId);
+    return org.divisions || [];
+  },
+
+  /**
+   * Adds a new division to an organization.
+   */
+  async createDivision(orgId, name) {
+    const org = await this.getOrganization(orgId);
+    const divisions = org.divisions || [];
+    if (!divisions.includes(name)) {
+      divisions.push(name);
+      await this.updateOrganization(orgId, { divisions });
+    }
+    return name;
   }
 };

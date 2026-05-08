@@ -141,6 +141,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                         {criteria.investment_criteria_name || 'Untitled Criteria'}
                       </h3>
                       <p className="text-sm text-slate-400">
+                        {criteria.division ? `${criteria.division} • ` : ''}
                         {organization?.type || criteria.buyer_type || 'Unspecified Type'}
                       </p>
                     </div>
