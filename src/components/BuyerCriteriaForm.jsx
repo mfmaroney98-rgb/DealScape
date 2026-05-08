@@ -137,7 +137,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     require_female_owned: false,
     require_minority_owned: false,
     require_family_owned: false,
-    require_operator_owned: false
+    require_operator_owned: false,
+    buyer_type: ''
   });
 
   const handleChange = (e) => {
@@ -615,6 +616,39 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             />
             <p className="text-xs text-slate-500 mt-2">
               Give this specific set of filters a descriptive name for your dashboard.
+            </p>
+          </div>
+
+          <div className="field-group" style={{ marginBottom: 0 }}>
+            <label className="form-label mb-2 flex justify-between items-center">
+              <span>Buyer Type</span>
+            </label>
+            <select
+              name="buyer_type"
+              className="form-input appearance-auto cursor-pointer"
+              value={formData.buyer_type || ''}
+              onChange={handleChange}
+            >
+              <option value="">Use Organization Default</option>
+              <option value="PE Firm">PE Firm</option>
+              <option value="Independent Sponsor / Fundless Sponsor">Independent Sponsor / Fundless Sponsor</option>
+              <option value="Search Fund">Search Fund</option>
+              <option value="Growth Equity Firm">Growth Equity Firm</option>
+              <option value="Venture Capital Firm">Venture Capital Firm</option>
+              <option value="Strategic Acquirer (Public)">Strategic Acquirer (Public)</option>
+              <option value="Strategic Acquirer (Private / PE Owned)">Strategic Acquirer (Private / PE Owned)</option>
+              <option value="Family Office">Family Office</option>
+              <option value="High Net Worth Individual">High Net Worth Individual</option>
+              <option value="Entrepreneur via Acquisition (ETA)">Entrepreneur via Acquisition (ETA)</option>
+              <option value="Mezzanine Fund">Mezzanine Fund</option>
+              <option value="BDC">BDC</option>
+              <option value="Direct Lending Fund">Direct Lending Fund</option>
+              <option value="Distressed Debt Fund">Distressed Debt Fund</option>
+              <option value="Holding Company">Holding Company</option>
+              <option value="Sovereign Wealth Fund">Sovereign Wealth Fund</option>
+            </select>
+            <p className="text-xs text-slate-500 mt-2">
+              Defaults to your organization type if left blank.
             </p>
           </div>
         </div>

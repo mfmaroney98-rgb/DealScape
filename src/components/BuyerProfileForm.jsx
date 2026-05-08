@@ -25,7 +25,7 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
     organization_name: '',
     website_url: '',
     organization_summary: '',
-    buyer_type: ''
+    type: ''
   });
 
   useEffect(() => {
@@ -40,17 +40,17 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
           organization_name: org.organization_name || '',
           website_url: org.website_url || '',
           organization_summary: org.organization_summary || '',
-          buyer_type: org.buyer_type || ''
+          type: org.type || ''
         };
 
         // 3. Auto-import logic: If profile is empty, try to grab from first existing criteria
-        if (!updatedData.website_url && !updatedData.description && !updatedData.buyer_type) {
+        if (!updatedData.website_url && !updatedData.description && !updatedData.type) {
           const criteriaList = await buyerService.getCriteriaList(orgId);
           if (criteriaList && criteriaList.length > 0) {
             const first = criteriaList[0];
             updatedData.website_url = first.buyer_url || '';
             updatedData.organization_summary = first.overview || '';
-            updatedData.buyer_type = first.buyer_type || '';
+            updatedData.type = first.buyer_type || '';
           }
         }
 
@@ -84,7 +84,7 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
         organization_name: formData.organization_name,
         website_url: formData.website_url,
         organization_summary: formData.organization_summary,
-        buyer_type: formData.buyer_type
+        type: formData.type
       });
       
       setSuccess(true);
@@ -179,9 +179,9 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
               </label>
               <div className="relative">
                 <select
-                  name="buyer_type"
+                  name="type"
                   className="form-input appearance-auto cursor-pointer"
-                  value={formData.buyer_type}
+                  value={formData.type}
                   onChange={handleChange}
                   required
                 >
