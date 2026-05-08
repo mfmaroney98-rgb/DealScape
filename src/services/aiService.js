@@ -16,7 +16,8 @@ export const aiService = {
    */
   async extractTextFromPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    // Pass verbosity: 0 to suppress noisy console warnings
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer, verbosity: 0 }).promise;
     let fullText = '';
 
     for (let i = 1; i <= pdf.numPages; i++) {
@@ -97,6 +98,59 @@ EXCLUDE (Do NOT extract these):
 
 Document Text:
 ${text.slice(0, 30000)} // Ensure we don't blow past token limits for huge PDFs
+`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
+      temperature: 0.1,
+    });
+
+    return JSON.parse(response.choices[0].message.content);
+  },
+
+  /**
+   * Parses the text from a buyer investment criteria document and returns structured criteria data.
+   */
+  async parseBuyerCriteriaDocument(text) {
+    const prompt = `
+You are an expert M&A analyst. Extract the following investment criteria details from the provided buyer criteria/mandate text.
+Return the result as a strict JSON object matching exactly this schema:
+
+{
+  "investment_criteria_name": "string or null (a descriptive name for this mandate, e.g. 'Project Apollo - Mid Market Software')",
+  "financial_criteria": [
+    { "metric": "string", "min": "string or null", "max": "string or null" }
+  ],
+  "keywords": {
+    "business_model": ["e.g. B2B SaaS, Managed Services, Asset-light"],
+    "industry": ["e.g. HealthTech, Dental Practice Management, FinTech"],
+    "revenue_model": ["e.g. Subscription, Recurring, Transactional"],
+    "customer_type": ["e.g. Fortune 500, SMB, B2G"],
+    "operational_model": ["e.g. Remote-first, Field-based, 24/7 Operations"],
+    "differentiation": ["e.g. Proprietary IP, High Switch Costs, Sole-source"],
+    "end_market": ["e.g. Independent Clinics, Government Agencies, Pharma"],
+    "reason_for_sale": ["e.g. Owner retirement, Growth capital needed, Spin-off"]
+  },
+  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
+  "require_founder_owned": boolean,
+  "require_female_owned": boolean,
+  "require_minority_owned": boolean,
+  "require_family_owned": boolean,
+  "require_operator_owned": boolean
+}
+
+Important Rules:
+1. For financial_criteria, metrics should be from this list: 'Revenue', 'Revenue Growth (YoY)', 'Revenue CAGR', 'Gross Profit', 'Gross Profit Margin', 'EBITDA', 'EBITDA Growth (YoY)', 'EBITDA Margin', 'EBIT', 'EBIT Margin', 'Net Income', 'Net Margin'.
+2. Extract ALL absolute financial ranges (Min and Max). IMPORTANT: Pay close attention to unit scales (e.g. "in thousands", "K", "M", "B", "Millions"). You MUST expand all financials into their full, un-abbreviated integer values. For example, if the document says "$5.2M" or "5,200 (in thousands)", you must output the integer 5200000. Never output "5.2" for 5 million.
+3. If a value is provided as a percentage (e.g. "20% EBITDA Margin"), extract it as the raw number (e.g. "20").
+4. If a value is genuinely not present, set min/max to null.
+5. Extract 10-16 sharp, discriminating phrases for the keywords categories.
+6. Extract only the JSON, no markdown formatting or extra text.
+
+Document Text:
+${text.slice(0, 30000)}
 `;
 
     const response = await openai.chat.completions.create({

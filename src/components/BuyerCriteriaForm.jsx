@@ -22,8 +22,14 @@ import {
   Loader2,
   Tag,
   Briefcase,
-  PieChart
+  PieChart,
+  UploadCloud,
+  Sparkles,
+  AlertCircle,
+  FileText,
+  Trash2
 } from 'lucide-react';
+import { aiService } from '../services/aiService';
  
 const KEYWORD_CATEGORIES = [
   { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
@@ -48,6 +54,11 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = !!id;
+
+  const [isParsing, setIsParsing] = useState(false);
+  const [criteriaFiles, setCriteriaFiles] = useState([]);
+  const [autoFilledFields, setAutoFilledFields] = useState([]);
+  const [autoFilledTags, setAutoFilledTags] = useState([]);
 
   // Geography data loaded from Supabase
   const [geoTree, setGeoTree] = useState([]);
@@ -186,22 +197,19 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         const oldVal = updated[index][field];
         const oldFormatted = isPct ? displayPercentage(oldVal) : displayCurrency(oldVal);
         
-        // If it's a percentage and they deleted the '%' sign at the end
         if (isPct && oldFormatted.endsWith('%') && value === oldFormatted.slice(0, -1)) {
           rawValue = value.slice(0, -1);
         }
 
         let digits = rawValue.replace(/[^0-9.-]/g, '');
-        
-        // Prevent multiple decimals
         const decimalParts = digits.split('.');
         if (decimalParts.length > 2) {
           digits = decimalParts[0] + '.' + decimalParts.slice(1).join('');
         }
 
-        updated[index] = { ...updated[index], [field]: digits };
+        updated[index] = { ...updated[index], [field]: digits, autoFilled: false };
       } else {
-        updated[index] = { ...updated[index], [field]: value };
+        updated[index] = { ...updated[index], [field]: value, autoFilled: false };
       }
       return { ...prev, financial_criteria: updated };
     });
@@ -347,6 +355,77 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     });
   };
 
+  const handleExtractData = async () => {
+    if (criteriaFiles.length === 0) return;
+    setIsParsing(true);
+    setError(null);
+    try {
+      let combinedText = '';
+      for (const file of criteriaFiles) {
+        combinedText += `\n--- START OF DOCUMENT: ${file.name} ---\n`;
+        combinedText += await aiService.extractTextFromPDF(file);
+        combinedText += `\n--- END OF DOCUMENT: ${file.name} ---\n`;
+      }
+      const parsedData = await aiService.parseBuyerCriteriaDocument(combinedText);
+      // Update form data
+      setFormData(prev => {
+        // Merge financial criteria
+        const existingMetrics = (prev.financial_criteria || []).map(c => c.metric);
+        const newFinancialCriteria = [...(prev.financial_criteria || [])];
+        if (parsedData.financial_criteria) {
+          parsedData.financial_criteria.forEach(fc => {
+            const index = existingMetrics.indexOf(fc.metric);
+            if (index !== -1) {
+              newFinancialCriteria[index] = { ...newFinancialCriteria[index], min: fc.min || '', max: fc.max || '', autoFilled: true };
+            } else {
+              newFinancialCriteria.push({ id: Date.now() + Math.random(), ...fc, autoFilled: true });
+            }
+          });
+        }
+        // Flatten keywords
+        const flattenedKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object')
+          ? Object.values(parsedData.keywords).flat().filter(Boolean)
+          : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
+        return {
+          ...prev,
+          investment_criteria_name: parsedData.investment_criteria_name || prev.investment_criteria_name,
+          financial_criteria: newFinancialCriteria,
+          require_founder_owned: parsedData.require_founder_owned ?? prev.require_founder_owned,
+          require_female_owned: parsedData.require_female_owned ?? prev.require_female_owned,
+          require_minority_owned: parsedData.require_minority_owned ?? prev.require_minority_owned,
+          require_family_owned: parsedData.require_family_owned ?? prev.require_family_owned,
+          require_operator_owned: parsedData.require_operator_owned ?? prev.require_operator_owned,
+          keywords: flattenedKeywords.length ? [...new Set([...prev.keywords, ...flattenedKeywords])] : prev.keywords,
+          categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords
+        };
+      });
+      // Track highlighted fields
+      const updatedFields = [...new Set([...autoFilledFields])];
+      if (parsedData.investment_criteria_name) updatedFields.push('investment_criteria_name');
+      if (parsedData.financial_criteria?.length) updatedFields.push('financial_criteria');
+      if (parsedData.require_founder_owned !== undefined) updatedFields.push('require_founder_owned');
+      if (parsedData.require_female_owned !== undefined) updatedFields.push('require_female_owned');
+      if (parsedData.require_minority_owned !== undefined) updatedFields.push('require_minority_owned');
+      if (parsedData.require_family_owned !== undefined) updatedFields.push('require_family_owned');
+      if (parsedData.require_operator_owned !== undefined) updatedFields.push('require_operator_owned');
+      if (parsedData.keywords) updatedFields.push('keywords');
+      
+      setAutoFilledFields(updatedFields);
+      if (parsedData.keywords) {
+        setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
+      }
+    } catch (err) {
+      console.error('AI Parsing Error:', err);
+      setError(`Extraction failed: ${err.message || err.toString()}`);
+    } finally {
+      setIsParsing(false);
+    }
+  };
+
+  const getInputClass = (name, baseClass = 'form-input') => {
+    return `${baseClass} ${autoFilledFields.includes(name) ? 'form-input-highlight' : ''} transition-colors`;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -401,6 +480,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         });
       }
 
+
       await buyerService.saveCriteria(flattenedData);
       
       if (onComplete) {
@@ -424,6 +504,84 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         <p className="text-slate-400 max-w-lg mx-auto">
           Define your target profile. These settings will help us match you with the best available seller listings.
         </p>
+
+        {/* Document Parsing Upload Area */}
+        <div className="max-w-xl mx-auto mt-10 relative">
+          {isParsing && (
+            <div className="absolute inset-[-1rem] bg-slate-900/80 backdrop-blur-sm z-30 flex flex-col items-center justify-center rounded-2xl">
+              <Loader2 className="text-indigo-500 mb-4 animate-spin" size={32} />
+              <p className="text-indigo-200 font-medium">Extracting criteria via AI...</p>
+            </div>
+          )}
+
+          <div className="glass p-6 rounded-2xl border-dashed border-2 border-slate-700 hover:border-indigo-500/50 transition-colors">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <input
+                type="file"
+                id="criteria-upload"
+                accept=".pdf,.doc,.docx"
+                multiple
+                onChange={(e) => {
+                  const newFiles = Array.from(e.target.files || []);
+                  setCriteriaFiles(prev => [...prev, ...newFiles]);
+                }}
+                className="hidden"
+              />
+              <label htmlFor="criteria-upload" className="cursor-pointer flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center transition-colors">
+                  <UploadCloud size={24} />
+                </div>
+                <p className="font-bold text-white">Upload Investment Criteria</p>
+                <p className="text-xs text-slate-400 max-w-xs">
+                  Upload one or more investment mandates or criteria documents (PDF/Word). We'll automatically fill out the form for you.
+                </p>
+              </label>
+
+              {criteriaFiles.length > 0 && (
+                <div className="w-full max-w-md mt-4 space-y-2">
+                  <div className="flex items-center justify-between px-2 mb-2">
+                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Uploaded Files ({criteriaFiles.length})</span>
+                    <button 
+                      type="button" 
+                      onClick={() => setCriteriaFiles([])}
+                      className="text-xs text-red-400 hover:text-red-300 font-medium"
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                  <div className="max-h-40 overflow-y-auto pr-2 space-y-2">
+                    {criteriaFiles.map((file, idx) => (
+                      <div key={`${file.name}-${idx}`} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-slate-700/50 group animate-fade-in">
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <FileText size={18} className="text-indigo-400 shrink-0" />
+                          <span className="text-sm text-slate-200 truncate">{file.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setCriteriaFiles(prev => prev.filter((_, i) => i !== idx))}
+                          className="text-slate-500 hover:text-red-400 p-1 transition-colors"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {!isParsing && (
+                    <button
+                      type="button"
+                      onClick={handleExtractData}
+                      className="w-full mt-4 btn-primary flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-600 border-none text-white font-bold rounded-xl shadow-lg shadow-amber-500/20 transition-all"
+                    >
+                      <Sparkles size={16} />
+                      Extract with AI ({criteriaFiles.length} {criteriaFiles.length === 1 ? 'file' : 'files'})
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
@@ -437,14 +595,22 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           </div>
 
           <div className="field-group" style={{ marginBottom: 0 }}>
-            <label className="form-label mb-2 block">Investment Criteria Name</label>
+            <label className="form-label mb-2 flex justify-between items-center">
+              <span>Investment Criteria Name</span>
+              {autoFilledFields.includes('investment_criteria_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+            </label>
             <input
               type="text"
               name="investment_criteria_name"
-              className="form-input"
+              className={getInputClass('investment_criteria_name')}
               placeholder="e.g. Mid-Market Software (US/Canada)"
               value={formData.investment_criteria_name || ''}
-              onChange={handleChange}
+              onChange={(e) => {
+                if (autoFilledFields.includes('investment_criteria_name')) {
+                  setAutoFilledFields(prev => prev.filter(f => f !== 'investment_criteria_name'));
+                }
+                handleChange(e);
+              }}
               required
             />
             <p className="text-xs text-slate-500 mt-2">
@@ -499,19 +665,20 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       <>
                         <input 
                           type="text" 
-                          className="form-input flex-1" 
+                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"} 
                           placeholder={isPct ? "% Min" : "$ Min"} 
                           value={isPct ? displayPercentage(criteria.min) : displayCurrency(criteria.min)} 
                           onChange={(e) => handleFinancialCriteriaChange(index, 'min', e.target.value)} 
                         />
-                        <span className="range-separator px-1">To</span>
+                        <span className={`range-separator px-1 ${criteria.autoFilled ? 'text-amber-400' : ''}`}>To</span>
                         <input 
                           type="text" 
-                          className="form-input flex-1" 
+                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"} 
                           placeholder={isPct ? "% Max" : "$ Max"} 
                           value={isPct ? displayPercentage(criteria.max) : displayCurrency(criteria.max)} 
                           onChange={(e) => handleFinancialCriteriaChange(index, 'max', e.target.value)} 
                         />
+                        {criteria.autoFilled && <AlertCircle size={14} className="text-highlight animate-pulse shrink-0" title="Auto-populated from document" />}
                       </>
                     );
                   })()}
@@ -539,6 +706,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
               <Tag className="text-amber-400" size={20} />
             </div>
             <h2 className="text-xl font-bold">Strategic Characteristics</h2>
+            {autoFilledFields.includes('keywords') && <AlertCircle size={18} className="text-highlight animate-pulse ml-2" title="Auto-populated from document" />}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {KEYWORD_CATEGORIES.map(cat => (
@@ -563,6 +731,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       });
                     }}
                     placeholder={`e.g. ${cat.example}`}
+                    isInputHighlighted={autoFilledFields.includes('keywords') && (formData.categorized_keywords?.[cat.id]?.length > 0 || autoFilledTags.some(t => formData.categorized_keywords?.[cat.id]?.includes(t)))}
+                    autoFilledTags={autoFilledTags}
                   />
                 </div>
               </div>
@@ -796,28 +966,38 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Left: Preferred Transaction Types */}
             <div>
-              <label className="form-label mb-6">Preferred Transaction Types</label>
+              <label className="form-label mb-6 flex justify-between items-center">
+                <span>Preferred Transaction Types</span>
+                {autoFilledFields.includes('pref_transaction_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+              </label>
               <div className="grid grid-cols-1 gap-3">
                 {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer group">
                     <input
                       type="checkbox"
                       name="pref_transaction_type"
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes('pref_transaction_type') ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
                       checked={formData.pref_transaction_type?.includes(type)}
-                      onChange={() => handlePrefTransactionToggle(type)}
+                      onChange={() => {
+                        if (autoFilledFields.includes('pref_transaction_type')) {
+                          setAutoFilledFields(prev => prev.filter(f => f !== 'pref_transaction_type'));
+                        }
+                        handlePrefTransactionToggle(type);
+                      }}
                     />
-                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{type}</span>
+                    <span className={`text-sm transition-colors ${autoFilledFields.includes('pref_transaction_type') && formData.pref_transaction_type?.includes(type) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                      {type}
+                    </span>
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Right: Ownership Characteristics (formerly Other Preferences) */}
             <div>
-              <label className="form-label mb-6">Ownership Characteristics</label>
+              <label className="form-label mb-6 flex justify-between items-center">
+                <span>Ownership Characteristics</span>
+              </label>
               <div className="grid grid-cols-1 gap-4">
                 {[
                   { key: 'require_founder_owned', label: 'Founder-Owned' },
@@ -830,11 +1010,19 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     <input
                       type="checkbox"
                       name={pref.key}
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes(pref.key) ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
                       checked={formData[pref.key]}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        if (autoFilledFields.includes(pref.key)) {
+                          setAutoFilledFields(prev => prev.filter(f => f !== pref.key));
+                        }
+                        handleChange(e);
+                      }}
                     />
-                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{pref.label}</span>
+                    <span className={`text-sm transition-colors ${autoFilledFields.includes(pref.key) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                      {pref.label}
+                    </span>
+                    {autoFilledFields.includes(pref.key) && <AlertCircle size={12} className="text-highlight ml-[-4px]" title="Auto-populated from document" />}
                   </label>
                 ))}
               </div>
