@@ -525,11 +525,18 @@ function App() {
   const [profile, setProfile] = useState(undefined); // undefined = loading, null = not found
   const [hasListing, setHasListing] = useState(false);
   const [hasCriteria, setHasCriteria] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // App-level loading (session check)
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+
 
   const loadUserData = useCallback(async (currentSession) => {
-    if (!currentSession) return;
+    if (!currentSession?.user?.id) return;
+    
+    // Prevent redundant loading if already loading or already have this profile
+    setIsProfileLoading(true);
+    
     try {
+      console.log('Loading user data for:', currentSession.user.id);
       const userProfile = await profileService.getProfile(currentSession.user.id);
       
       // Normalize organization data (sometimes Supabase returns an array for joins)
@@ -538,7 +545,6 @@ function App() {
           ? userProfile.organizations[0] 
           : userProfile.organizations;
       } else if (userProfile?.organization_id) {
-        // If organization_id exists but the object is missing, we might need a fallback or re-fetch
         userProfile.organization = null;
       }
 
@@ -547,40 +553,50 @@ function App() {
       if (userProfile?.organization_id) {
         const isCorporate = userProfile.role === 'corporate';
         
-        if (userProfile.role === 'seller' || isCorporate) {
-          const listings = await sellerListingService.getListings(userProfile.organization_id, isCorporate);
-          setHasListing(listings && listings.length > 0);
-        }
+        // Load these in parallel for better performance
+        const [listings, criteriaList] = await Promise.all([
+          (userProfile.role === 'seller' || isCorporate) 
+            ? sellerListingService.getListings(userProfile.organization_id, isCorporate)
+            : Promise.resolve([]),
+          (userProfile.role === 'buyer' || isCorporate)
+            ? buyerService.getCriteriaList(userProfile.organization_id, isCorporate)
+            : Promise.resolve([])
+        ]);
 
-        if (userProfile.role === 'buyer' || isCorporate) {
-          const criteriaList = await buyerService.getCriteriaList(userProfile.organization_id, isCorporate);
-          setHasCriteria(criteriaList && criteriaList.length > 0);
-        }
+        setHasListing(listings && listings.length > 0);
+        setHasCriteria(criteriaList && criteriaList.length > 0);
       }
     } catch (err) {
       console.error('Failed to load user data:', err);
       setProfile(null);
+    } finally {
+      setIsProfileLoading(false);
     }
   }, []);
+
 
   useEffect(() => {
     let mounted = true;
 
     const initAuth = async () => {
       try {
-        // Get initial session
+        // 1. Get initial session immediately
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (mounted) {
-          setSession(currentSession);
-          if (currentSession) {
-            await loadUserData(currentSession);
-          } else {
-            setProfile(null); // No session, so no profile
-          }
+        if (!mounted) return;
+
+        setSession(currentSession);
+        
+        if (currentSession) {
+          // 2. If we have a session, start loading profile data but don't block the app shell
+          // We don't await here because we want setLoading(false) to happen regardless of profile speed
+          loadUserData(currentSession);
+        } else {
+          setProfile(null);
         }
       } catch (err) {
         console.error('Init failed:', err);
+        if (mounted) setProfile(null);
       } finally {
         if (mounted) {
           setLoading(false);
@@ -594,10 +610,18 @@ function App() {
       if (!mounted) return;
       
       console.log('Auth event:', event, !!session);
-      setSession(session);
+      
+      // Avoid redundant state updates if session hasn't changed
+      setSession(prev => {
+        if (prev?.user?.id === session?.user?.id && prev?.access_token === session?.access_token) {
+          return prev;
+        }
+        return session;
+      });
       
       if (session) {
-        await loadUserData(session);
+        // Only reload if user changed or profile is missing
+        loadUserData(session);
       } else {
         setProfile(null);
         setHasListing(false);
@@ -610,6 +634,7 @@ function App() {
       subscription.unsubscribe();
     };
   }, [loadUserData]);
+
 
   if (loading) {
     return (
