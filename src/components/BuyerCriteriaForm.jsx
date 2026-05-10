@@ -61,21 +61,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   const [autoFilledFields, setAutoFilledFields] = useState([]);
   const [autoFilledTags, setAutoFilledTags] = useState([]);
 
-  const [divisions, setDivisions] = useState([]);
-  const [isCreatingDivision, setIsCreatingDivision] = useState(false);
-  const [newDivisionName, setNewDivisionName] = useState('');
-  const [loadingDivisions, setLoadingDivisions] = useState(true);
 
-  useEffect(() => {
-    if (orgId) {
-      organizationService.getDivisions(orgId)
-        .then(data => setDivisions(data || []))
-        .catch(console.error)
-        .finally(() => setLoadingDivisions(false));
-    } else {
-      setLoadingDivisions(false);
-    }
-  }, [orgId]);
 
 
   // Geography data loaded from Supabase
@@ -155,23 +141,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     require_female_owned: false,
     require_minority_owned: false,
     require_family_owned: false,
-    require_operator_owned: false,
-    buyer_type: '',
-    division: ''
+    require_operator_owned: false
   });
 
-  const handleCreateDivision = async () => {
-    if (!newDivisionName.trim() || !orgId) return;
-    try {
-      const newDiv = await organizationService.createDivision(orgId, newDivisionName.trim());
-      setDivisions(prev => [...new Set([...prev, newDiv])].sort((a, b) => a.localeCompare(b)));
-      setFormData(prev => ({ ...prev, division: newDiv }));
-      setNewDivisionName('');
-      setIsCreatingDivision(false);
-    } catch (err) {
-      console.error('Failed to create division:', err);
-    }
-  };
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -648,97 +621,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             />
             <p className="text-xs text-slate-500 mt-2">
               Give this specific set of filters a descriptive name for your dashboard.
-            </p>
-          </div>
-
-          <div className="field-group" style={{ marginBottom: 0 }}>
-            <label className="form-label mb-2 flex justify-between items-center">
-              <span>Buyer Type</span>
-            </label>
-            <select
-              name="buyer_type"
-              className="form-input appearance-auto cursor-pointer"
-              value={formData.buyer_type || ''}
-              onChange={handleChange}
-            >
-              <option value="">Use Organization Default</option>
-              <option value="PE Firm">PE Firm</option>
-              <option value="Independent Sponsor / Fundless Sponsor">Independent Sponsor / Fundless Sponsor</option>
-              <option value="Search Fund">Search Fund</option>
-              <option value="Growth Equity Firm">Growth Equity Firm</option>
-              <option value="Venture Capital Firm">Venture Capital Firm</option>
-              <option value="Strategic Acquirer (Public)">Strategic Acquirer (Public)</option>
-              <option value="Strategic Acquirer (Private / PE Owned)">Strategic Acquirer (Private / PE Owned)</option>
-              <option value="Family Office">Family Office</option>
-              <option value="High Net Worth Individual">High Net Worth Individual</option>
-              <option value="Entrepreneur via Acquisition (ETA)">Entrepreneur via Acquisition (ETA)</option>
-              <option value="Mezzanine Fund">Mezzanine Fund</option>
-              <option value="BDC">BDC</option>
-              <option value="Direct Lending Fund">Direct Lending Fund</option>
-              <option value="Distressed Debt Fund">Distressed Debt Fund</option>
-              <option value="Holding Company">Holding Company</option>
-              <option value="Sovereign Wealth Fund">Sovereign Wealth Fund</option>
-            </select>
-            <p className="text-xs text-slate-500 mt-2">
-              Defaults to your organization type if left blank.
-            </p>
-          </div>
-
-          <div className="field-group" style={{ marginBottom: 0 }}>
-            <label className="form-label mb-2 flex justify-between items-center">
-              <span>Division (Coverage Group, Strategy, or Fund)</span>
-            </label>
-            {isCreatingDivision ? (
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  className="form-input flex-1"
-                  placeholder="e.g. Growth Equity, Healthcare Group..."
-                  value={newDivisionName}
-                  onChange={(e) => setNewDivisionName(e.target.value)}
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={handleCreateDivision}
-                  disabled={!newDivisionName.trim()}
-                  className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-bold transition-colors disabled:opacity-50"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsCreatingDivision(false)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <select
-                  name="division"
-                  className="form-input flex-1 appearance-auto cursor-pointer"
-                  value={formData.division || ''}
-                  onChange={handleChange}
-                  disabled={loadingDivisions}
-                >
-                  <option value="">No Division</option>
-                  {divisions.map(div => (
-                    <option key={div} value={div}>{div}</option>
-                  ))}
-                </select>
-                <button
-                  type="button"
-                  onClick={() => setIsCreatingDivision(true)}
-                  className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-indigo-400 rounded-xl transition-colors flex items-center gap-1 font-semibold whitespace-nowrap"
-                >
-                  <Plus size={16} /> New
-                </button>
-              </div>
-            )}
-            <p className="text-xs text-slate-500 mt-2">
-              Optional. Separate criteria by specific teams or funds.
             </p>
           </div>
         </div>
