@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
-import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag } from 'lucide-react';
+import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles } from 'lucide-react';
 import { organizationService } from '../services/organizationService';
 
 export default function BuyerCriteriaList({ orgId, isCorporate }) {
@@ -146,12 +146,20 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       </p>
                     </div>
                   </div>
-                  <Link 
-                    to={`/onboarding/buyer/edit/${criteria.id}`}
-                    className="px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold border border-slate-700 transition-all"
-                  >
-                    Edit Criteria
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    <Link 
+                      to={`/dashboard/buyer/criteria/${criteria.id}/matches`}
+                      className="px-6 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold transition-all flex items-center gap-2 shadow-sm"
+                    >
+                      <Sparkles size={14} /> View Matches
+                    </Link>
+                    <Link 
+                      to={`/onboarding/buyer/edit/${criteria.id}`}
+                      className="px-6 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold border border-slate-700 transition-all"
+                    >
+                      Edit Criteria
+                    </Link>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

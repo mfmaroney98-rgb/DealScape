@@ -141,7 +141,9 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     require_female_owned: false,
     require_minority_owned: false,
     require_family_owned: false,
-    require_operator_owned: false
+    require_operator_owned: false,
+    embedding: null,
+    last_embedded_text: ''
   });
 
 
@@ -420,6 +422,24 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       if (parsedData.keywords) {
         setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
       }
+
+      // Generate embedding from extracted keywords for semantic matching
+      let keywordContext = '';
+      if (parsedData.keywords && typeof parsedData.keywords === 'object') {
+        keywordContext = Object.entries(parsedData.keywords)
+          .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
+          .filter(s => !s.endsWith(': '))
+          .join('; ');
+      }
+      const textToEmbed = `Investment Criteria: ${parsedData.investment_criteria_name || ''}. Categorized Target Traits: ${keywordContext}`.trim();
+      if (textToEmbed.length > 20) {
+        try {
+          const embedding = await aiService.generateEmbedding(textToEmbed);
+          setFormData(prev => ({ ...prev, embedding, last_embedded_text: textToEmbed }));
+        } catch (err) {
+          console.warn('Failed to generate embedding during extraction:', err);
+        }
+      }
     } catch (err) {
       console.error('AI Parsing Error:', err);
       setError(`Extraction failed: ${err.message || err.toString()}`);
@@ -486,6 +506,23 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         });
       }
 
+
+      // Smart Refresh: Only update embedding if the strategic text has changed
+      const keywordContext = Object.entries(formData.categorized_keywords || {})
+        .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${(tags || []).join(', ')}`)
+        .filter(s => !s.endsWith(': '))
+        .join('; ');
+      const textToEmbed = `Investment Criteria: ${formData.investment_criteria_name || ''}. Categorized Target Traits: ${keywordContext}`.trim();
+
+      if (textToEmbed.length > 20 && textToEmbed !== formData.last_embedded_text) {
+        try {
+          const embedding = await aiService.generateEmbedding(textToEmbed);
+          flattenedData.embedding = embedding;
+          flattenedData.last_embedded_text = textToEmbed;
+        } catch (err) {
+          console.warn('Failed to generate buyer criteria embedding:', err);
+        }
+      }
 
       await buyerService.saveCriteria(flattenedData);
 
