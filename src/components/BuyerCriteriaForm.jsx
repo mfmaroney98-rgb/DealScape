@@ -6,11 +6,11 @@ import TagInput from './TagInput';
 import { fetchNaicsSectors } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import { fetchFinancialMetrics } from '../services/financialMetricsService';
-import { 
-  Target, 
-  Map, 
-  TrendingUp, 
-  CheckCircle2, 
+import {
+  Target,
+  Map,
+  TrendingUp,
+  CheckCircle2,
   ChevronRight,
   ChevronDown,
   ChevronUp,
@@ -31,7 +31,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { aiService } from '../services/aiService';
- 
+
 const KEYWORD_CATEGORIES = [
   { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
   { id: 'industry', label: 'Industry / Vertical', example: 'Dental Practice Management, HealthTech' },
@@ -194,15 +194,15 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     setFormData(prev => {
       const updated = [...(prev.financial_criteria || [])];
       if (!updated[index]) return prev;
-      
+
       if (field === 'min' || field === 'max') {
         const lowerMetric = (updated[index].metric || '').toLowerCase();
         const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
-        
+
         let rawValue = value;
         const oldVal = updated[index][field];
         const oldFormatted = isPct ? displayPercentage(oldVal) : displayCurrency(oldVal);
-        
+
         if (isPct && oldFormatted.endsWith('%') && value === oldFormatted.slice(0, -1)) {
           rawValue = value.slice(0, -1);
         }
@@ -415,7 +415,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       if (parsedData.require_family_owned !== undefined) updatedFields.push('require_family_owned');
       if (parsedData.require_operator_owned !== undefined) updatedFields.push('require_operator_owned');
       if (parsedData.keywords) updatedFields.push('keywords');
-      
+
       setAutoFilledFields(updatedFields);
       if (parsedData.keywords) {
         setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
@@ -455,7 +455,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       };
 
       const flattenedData = { ...formData };
-      
+
       // Initialize all searchable columns to null first
       Object.values(metricMapping).forEach(col => {
         flattenedData[`${col}_min`] = null;
@@ -467,19 +467,19 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         formData.financial_criteria.forEach(fc => {
           const colBase = metricMapping[fc.metric];
           if (colBase) {
-            const isPct = (fc.metric || '').toLowerCase().includes('margin') || 
-                          (fc.metric || '').toLowerCase().includes('growth') || 
-                          (fc.metric || '').toLowerCase().includes('%') || 
-                          (fc.metric || '').toLowerCase().includes('cagr');
-                          
+            const isPct = (fc.metric || '').toLowerCase().includes('margin') ||
+              (fc.metric || '').toLowerCase().includes('growth') ||
+              (fc.metric || '').toLowerCase().includes('%') ||
+              (fc.metric || '').toLowerCase().includes('cagr');
+
             let parsedMin = fc.min === '' || fc.min == null ? null : Number(fc.min);
             let parsedMax = fc.max === '' || fc.max == null ? null : Number(fc.max);
-            
+
             if (isPct) {
               if (parsedMin !== null) parsedMin = parsedMin / 100;
               if (parsedMax !== null) parsedMax = parsedMax / 100;
             }
-            
+
             flattenedData[`${colBase}_min`] = parsedMin;
             flattenedData[`${colBase}_max`] = parsedMax;
           }
@@ -488,7 +488,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
 
       await buyerService.saveCriteria(flattenedData);
-      
+
       if (onComplete) {
         await onComplete();
       }
@@ -508,7 +508,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         </div>
         <h1 className="text-4xl font-black mb-4 tracking-tight">Investment Criteria</h1>
         <p className="text-slate-400 max-w-lg mx-auto">
-          Define your target profile. These settings will help us match you with the best available seller listings.
+          Define your target profile. These settings will help us match you with the best available seller listings. It is recommended to create one investment criteria per industry to maximize matching accuracy.
         </p>
 
         {/* Document Parsing Upload Area */}
@@ -547,8 +547,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 <div className="w-full max-w-md mt-4 space-y-2">
                   <div className="flex items-center justify-between px-2 mb-2">
                     <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Uploaded Files ({criteriaFiles.length})</span>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setCriteriaFiles([])}
                       className="text-xs text-red-400 hover:text-red-300 font-medium"
                     >
@@ -572,7 +572,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       </div>
                     ))}
                   </div>
-                  
+
                   {!isParsing && (
                     <button
                       type="button"
@@ -630,7 +630,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
             <DollarSign size={80} />
           </div>
-          
+
           <div className="geo-row group" style={{ marginBottom: '2rem', cursor: 'default' }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <TrendingUp style={{ color: '#34d399' }} size={20} />
@@ -652,7 +652,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       <option key={name} value={name}>{name}</option>
                     ))}
                   </select>
-                  
+
                   <button
                     type="button"
                     className="p-1 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-red-400 transition-colors"
@@ -662,27 +662,27 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     <X size={18} />
                   </button>
                 </div>
-                
+
                 <div className="range-row flex items-center gap-3">
                   {(() => {
                     const lowerMetric = (criteria.metric || '').toLowerCase();
                     const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
                     return (
                       <>
-                        <input 
-                          type="text" 
-                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"} 
-                          placeholder={isPct ? "% Min" : "$ Min"} 
-                          value={isPct ? displayPercentage(criteria.min) : displayCurrency(criteria.min)} 
-                          onChange={(e) => handleFinancialCriteriaChange(index, 'min', e.target.value)} 
+                        <input
+                          type="text"
+                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"}
+                          placeholder={isPct ? "% Min" : "$ Min"}
+                          value={isPct ? displayPercentage(criteria.min) : displayCurrency(criteria.min)}
+                          onChange={(e) => handleFinancialCriteriaChange(index, 'min', e.target.value)}
                         />
                         <span className={`range-separator px-1 ${criteria.autoFilled ? 'text-amber-400' : ''}`}>To</span>
-                        <input 
-                          type="text" 
-                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"} 
-                          placeholder={isPct ? "% Max" : "$ Max"} 
-                          value={isPct ? displayPercentage(criteria.max) : displayCurrency(criteria.max)} 
-                          onChange={(e) => handleFinancialCriteriaChange(index, 'max', e.target.value)} 
+                        <input
+                          type="text"
+                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"}
+                          placeholder={isPct ? "% Max" : "$ Max"}
+                          value={isPct ? displayPercentage(criteria.max) : displayCurrency(criteria.max)}
+                          onChange={(e) => handleFinancialCriteriaChange(index, 'max', e.target.value)}
                         />
                         {criteria.autoFilled && <AlertCircle size={14} className="text-highlight animate-pulse shrink-0" title="Auto-populated from document" />}
                       </>
@@ -692,11 +692,11 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
               </div>
             ))}
           </div>
-            
+
           <button
-             type="button"
-             className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors mt-2 text-sm font-semibold w-fit px-2"
-             onClick={addFinancialCriteria}
+            type="button"
+            className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors mt-2 text-sm font-semibold w-fit px-2"
+            onClick={addFinancialCriteria}
           >
             <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
               <Plus size={18} />
@@ -1053,8 +1053,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           >
             Cancel
           </button>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="btn-primary-emerald flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-emerald-500/20 group h-auto"
           >

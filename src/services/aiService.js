@@ -45,8 +45,8 @@ Return the result as a strict JSON object matching exactly this schema:
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (Allowed values: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other')",
   "keywords": {
-    "business_model": ["string (1-2 phrases)"],
     "industry": ["string (1-3 phrases)"],
+    "business_model": ["string (1-2 phrases)"],
     "revenue_model": ["string (1-2 phrases)"],
     "customer_type": ["string (1-2 phrases)"],
     "operational_model": ["string (1-2 phrases)"],
@@ -124,8 +124,8 @@ Return the result as a strict JSON object matching exactly this schema:
     { "metric": "string", "min": "string or null", "max": "string or null" }
   ],
   "keywords": {
+    "industry": ["e.g. HealthTech, MedTech, FinTech"],
     "business_model": ["e.g. B2B SaaS, Managed Services, Asset-light"],
-    "industry": ["e.g. HealthTech, Dental Practice Management, FinTech"],
     "revenue_model": ["e.g. Subscription, Recurring, Transactional"],
     "customer_type": ["e.g. Fortune 500, SMB, B2G"],
     "operational_model": ["e.g. Remote-first, Field-based, 24/7 Operations"],
