@@ -17,7 +17,7 @@
         search_ebitda_margin NUMERIC,
         search_revenue_growth_yoy NUMERIC,
         locations TEXT[],
-        keywords TEXT[],
+        keywords TEXT,
         categorized_keywords JSONB,
         pref_transaction_type TEXT[],
         is_founder_owned BOOLEAN,
@@ -64,7 +64,7 @@
             SELECT
                 sl.id AS listing_id,
                 sl.seller_anon_name,
-                sl.status AS seller_status,
+                sl.status::TEXT AS seller_status,
                 sl.search_revenue,
                 sl.search_ebitda,
                 sl.search_ebitda_margin,
@@ -72,7 +72,7 @@
                 sl.locations,
                 sl.keywords,
                 sl.categorized_keywords,
-                sl.pref_transaction_type,
+                sl.pref_transaction_type::TEXT[],
                 sl.is_founder_owned,
                 sl.is_female_owned,
                 sl.is_minority_owned,
@@ -236,18 +236,12 @@
                     -- Transaction type depth: +2 if multiple types overlap
                     CASE WHEN v_buyer.pref_transaction_type IS NOT NULL AND sl.pref_transaction_type IS NOT NULL
                         AND (SELECT COUNT(*) FROM unnest(v_buyer.pref_transaction_type) vt WHERE vt = ANY(sl.pref_transaction_type)) > 1
-                        THEN 2 ELSE 0 END +
-                    -- NAICS depth: +3 if matching at 3-digit subsector
-                    CASE WHEN v_buyer.naics_codes IS NOT NULL AND sl.naics_codes IS NOT NULL
-                        AND EXISTS (
-                            SELECT 1 FROM unnest(v_buyer.naics_codes) bn, unnest(sl.naics_codes) sn
-                            WHERE length(bn) >= 3 AND length(sn) >= 3 AND left(bn, 3) = left(sn, 3)
-                        )
-                        THEN 3 ELSE 0 END
+                        THEN 2 ELSE 0 END
+                    -- Note: NAICS depth bonus omitted; seller_listings does not carry a naics_codes column
                 )::NUMERIC AS bonus_score
 
             FROM seller_listings sl
-            WHERE sl.status = 'Active'
+            WHERE sl.status = 'Active'::listing_status
 
             -- ==========================================
             -- LAYER 1: Hard Filters
@@ -258,15 +252,8 @@
                 OR array_length(v_buyer.pref_transaction_type, 1) IS NULL
                 OR sl.pref_transaction_type && v_buyer.pref_transaction_type
             )
-            -- NAICS code overlap at prefix level (skip if buyer has no codes)
-            AND (
-                v_buyer.naics_codes IS NULL
-                OR array_length(v_buyer.naics_codes, 1) IS NULL
-                OR EXISTS (
-                    SELECT 1 FROM unnest(v_buyer.naics_codes) bn, unnest(sl.naics_codes) sn
-                    WHERE sn LIKE bn || '%' OR bn LIKE sn || '%'
-                )
-            )
+            -- Note: NAICS hard filter omitted; seller_listings does not carry a naics_codes column.
+            -- Industry matching is handled entirely through semantic embedding similarity.
         )
         SELECT
             s.listing_id,
@@ -285,22 +272,22 @@
             s.is_minority_owned,
             s.is_family_owned,
             s.is_operator_owned,
-            ROUND(s.financial_score, 1) AS financial_score,
-            ROUND(s.geography_score, 1) AS geography_score,
-            ROUND(s.semantic_score, 1) AS semantic_score,
-            ROUND(s.bonus_score, 1) AS bonus_score,
+            ROUND(s.financial_score::NUMERIC, 1) AS financial_score,
+            ROUND(s.geography_score::NUMERIC, 1) AS geography_score,
+            ROUND(s.semantic_score::NUMERIC, 1) AS semantic_score,
+            ROUND(s.bonus_score::NUMERIC, 1) AS bonus_score,
             -- Final score: 0.45 * (financial + geography blend) + 0.55 * semantic + bonus
             ROUND(
-                0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
+                (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
                 + 0.55 * s.semantic_score
-                + s.bonus_score
+                + s.bonus_score)::NUMERIC
             , 1) AS total_score,
             -- Tier classification
             CASE
                 WHEN (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.55 * s.semantic_score + s.bonus_score) >= 70 THEN 'Strong'
+                    + 0.55 * s.semantic_score + s.bonus_score)::NUMERIC >= 70 THEN 'Strong'
                 WHEN (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.55 * s.semantic_score + s.bonus_score) >= 40 THEN 'Moderate'
+                    + 0.55 * s.semantic_score + s.bonus_score)::NUMERIC >= 40 THEN 'Moderate'
                 ELSE 'Weak'
             END AS match_tier
         FROM scored s

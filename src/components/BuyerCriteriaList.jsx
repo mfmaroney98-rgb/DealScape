@@ -93,7 +93,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
       </div>
 
       <div className="max-w-6xl mx-auto py-12">
-        <Link to="/dashboard" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
+        <Link to="/dashboard" className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors mb-8">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
         
@@ -137,7 +137,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       <Building2 className="text-emerald-400" size={24} />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-slate-900">
                         {criteria.investment_criteria_name || 'Untitled Criteria'}
                       </h3>
                       <p className="text-sm text-slate-400">
