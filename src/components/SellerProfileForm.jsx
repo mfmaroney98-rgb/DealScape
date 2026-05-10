@@ -29,7 +29,7 @@ import {
 
 
 const KEYWORD_CATEGORIES = [
-  { id: 'industry', label: 'Industry / Vertical', example: 'MedTech, HealthTech' },
+  { id: 'industry', label: 'Industry / Vertical', example: 'Industrials, HealthTech' },
   { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
   { id: 'revenue_model', label: 'Revenue Model', example: 'Subscription, Recurring' },
   { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },

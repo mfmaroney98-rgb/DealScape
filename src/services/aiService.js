@@ -124,7 +124,7 @@ Return the result as a strict JSON object matching exactly this schema:
     { "metric": "string", "min": "string or null", "max": "string or null" }
   ],
   "keywords": {
-    "industry": ["e.g. HealthTech, MedTech, FinTech"],
+    "industry": ["e.g. HealthTech, Industrials, FinTech"],
     "business_model": ["e.g. B2B SaaS, Managed Services, Asset-light"],
     "revenue_model": ["e.g. Subscription, Recurring, Transactional"],
     "customer_type": ["e.g. Fortune 500, SMB, B2G"],
