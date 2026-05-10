@@ -473,6 +473,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       sanitizedData.year_founded = sanitizedData.year_founded === '' || sanitizedData.year_founded === null ? null : String(sanitizedData.year_founded);
       sanitizedData.status = submitStatus;
 
+      // Ensure keywords are saved as a comma-separated string (not array) for the TEXT column
+      if (Array.isArray(sanitizedData.keywords)) {
+        sanitizedData.keywords = sanitizedData.keywords.join(', ');
+      }
+
       // Smart Refresh: Only update embedding if the strategic text has changed
       const keywordContext = Object.entries(formData.categorized_keywords || {})
         .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)

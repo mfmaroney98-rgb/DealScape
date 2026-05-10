@@ -325,18 +325,29 @@ export default function MatchResults({ orgId }) {
                               color="blue"
                             />
                             <ScoreBar
-                              label="Semantic Fit"
-                              score={match.semantic_score || 0}
+                              label="Industry and Keyword Fit"
+                              score={match.industry_fit_score || 0}
                               icon={Sparkles}
                               color="violet"
                             />
                             {match.bonus_score > 0 && (
-                              <ScoreBar
-                                label="Bonus"
-                                score={match.bonus_score}
-                                icon={Shield}
-                                color="amber"
-                              />
+                              <div className="space-y-1">
+                                <ScoreBar
+                                  label="Bonus"
+                                  score={match.bonus_score}
+                                  icon={Shield}
+                                  color="amber"
+                                />
+                                {match.bonus_reasons?.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 ml-6">
+                                    {match.bonus_reasons.map((reason, ri) => (
+                                      <span key={ri} className="text-[9px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 font-bold uppercase tracking-wider">
+                                        {reason}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
                             )}
                             <div className="pt-2 border-t border-slate-200/60">
                               <div className="flex items-center justify-between">
@@ -399,16 +410,20 @@ export default function MatchResults({ orgId }) {
                           </h4>
                           <div className="p-4 bg-slate-50/80 rounded-xl">
                             {(() => {
-                              // keywords is TEXT (not array) — parse into array
-                              const kwList = match.keywords
-                                ? match.keywords.split(',').map(k => k.trim()).filter(Boolean)
+                              // 1. Clean the flat keywords string (Postgres array-to-text format: {"key1","key2"})
+                              const rawKeywords = match.keywords || '';
+                              const cleanKeywords = rawKeywords.replace(/[{}"[\]]/g, '');
+                              const kwList = cleanKeywords
+                                ? cleanKeywords.split(',').map(k => k.trim()).filter(Boolean)
                                 : [];
-                              // Fallback: pull from categorized_keywords JSONB if flat keywords is empty
+
+                              // 2. Fallback: pull from categorized_keywords JSONB if flat keywords is empty or looks like noise
                               const displayKeywords = kwList.length > 0
                                 ? kwList
                                 : (match.categorized_keywords
                                   ? Object.values(match.categorized_keywords).flat().filter(Boolean)
                                   : []);
+                              
                               return displayKeywords.length > 0 ? (
                                 <div className="flex flex-wrap gap-1.5">
                                   {displayKeywords.slice(0, 12).map((kw, i) => (
