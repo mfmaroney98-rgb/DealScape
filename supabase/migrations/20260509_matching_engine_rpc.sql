@@ -224,7 +224,9 @@
                 -- Cosine similarity from pgvector, scaled to 0-100
                 CASE
                     WHEN v_buyer.embedding IS NULL OR sl.embedding IS NULL THEN 0.0
-                    ELSE GREATEST(0, (1.0 - (sl.embedding <=> v_buyer.embedding)) * 100.0)
+                    -- Stretch formula: anything below 0.35 similarity is treated as 0.
+                    -- Above 0.35 is scaled linearly to 0-100.
+                    ELSE GREATEST(0, ((1.0 - (sl.embedding <=> v_buyer.embedding)) - 0.35) / 0.65 * 100.0)
                 END AS industry_fit_score,
 
                 -- ==========================================
@@ -290,18 +292,18 @@
             ROUND(s.industry_fit_score::NUMERIC, 1) AS industry_fit_score,
             ROUND(s.bonus_score::NUMERIC, 1) AS bonus_score,
             s.bonus_reasons,
-            -- Final score: 0.45 * (financial + geography blend) + 0.55 * semantic + bonus
+            -- Final score: 0.30 * (financial + geography blend) + 0.70 * industry_fit + bonus
             ROUND(
-                (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                + 0.55 * s.industry_fit_score
+                (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
+                + 0.70 * s.industry_fit_score
                 + s.bonus_score)::NUMERIC
             , 1) AS total_score,
             -- Tier classification
             CASE
-                WHEN (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.55 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 70 THEN 'Strong'
-                WHEN (0.45 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.55 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 40 THEN 'Moderate'
+                WHEN (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
+                    + 0.70 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 75 THEN 'Strong'
+                WHEN (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
+                    + 0.70 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 45 THEN 'Moderate'
                 ELSE 'Weak'
             END AS match_tier
         FROM scored s
