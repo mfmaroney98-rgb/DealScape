@@ -27,6 +27,7 @@
         is_minority_owned BOOLEAN,
         is_family_owned BOOLEAN,
         is_operator_owned BOOLEAN,
+        owner_transition TEXT,
         financial_score NUMERIC,
         geography_score NUMERIC,
         industry_fit_score NUMERIC,
@@ -81,6 +82,7 @@
                 sl.is_minority_owned,
                 sl.is_family_owned,
                 sl.is_operator_owned,
+                sl.owner_transition,
 
                 -- ==========================================
                 -- LAYER 2a: Financial Range Scoring (0-100)
@@ -287,6 +289,7 @@
             s.is_minority_owned,
             s.is_family_owned,
             s.is_operator_owned,
+            s.owner_transition,
             ROUND(s.financial_score::NUMERIC, 1) AS financial_score,
             ROUND(s.geography_score::NUMERIC, 1) AS geography_score,
             ROUND(s.industry_fit_score::NUMERIC, 1) AS industry_fit_score,

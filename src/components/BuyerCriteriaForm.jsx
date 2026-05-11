@@ -39,8 +39,7 @@ const KEYWORD_CATEGORIES = [
   { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
   { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
   { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
-  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' },
-  { id: 'reason_for_sale', label: 'Reason for Sale', example: 'Owner retirement, Growth capital' }
+  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
 ];
 
 
@@ -427,6 +426,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       let keywordContext = '';
       if (parsedData.keywords && typeof parsedData.keywords === 'object') {
         keywordContext = Object.entries(parsedData.keywords)
+          .filter(([cat]) => cat !== 'reason_for_sale')
           .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
           .filter(s => !s.endsWith(': '))
           .join('; ');
@@ -509,6 +509,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
       // Smart Refresh: Only update embedding if the strategic text has changed
       const keywordContext = Object.entries(formData.categorized_keywords || {})
+        .filter(([cat]) => cat !== 'reason_for_sale')
         .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${(tags || []).join(', ')}`)
         .filter(s => !s.endsWith(': '))
         .join('; ');
@@ -751,6 +752,9 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             <h2 className="text-xl font-bold">Strategic Characteristics</h2>
             {autoFilledFields.includes('keywords') && <AlertCircle size={18} className="text-highlight animate-pulse ml-2" title="Auto-populated from document" />}
           </div>
+          <p className="text-xs text-slate-500 mb-6 -mt-6 ml-[3.25rem]">
+            Focus on one industry or vertical per criteria for the most accurate semantic matches.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {KEYWORD_CATEGORIES.map(cat => (
               <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
@@ -1070,6 +1074,53 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-slate-200">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <label className="form-label flex items-center justify-between mb-4">
+                  <span className="flex items-center gap-2">
+                    <Tag size={16} className={autoFilledFields.includes('keywords') ? 'text-highlight' : 'text-slate-400'} />
+                    Ideal Reason for Sale
+                  </span>
+                  {autoFilledFields.includes('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                </label>
+                <TagInput
+                  tags={formData.categorized_keywords?.reason_for_sale || []}
+                  setTags={(tags) => setFormData(prev => ({
+                    ...prev,
+                    categorized_keywords: {
+                      ...prev.categorized_keywords,
+                      reason_for_sale: tags
+                    }
+                  }))}
+                  placeholder="e.g. Owner retirement, Growth capital, Corporate divestiture..."
+                  highlightedTags={autoFilledTags}
+                />
+              </div>
+              <div>
+                <label className="form-label flex items-center gap-2 mb-4">
+                  <Users size={16} className="text-slate-400" />
+                  Transition Preference
+                </label>
+                <select
+                  name="owner_transition"
+                  className="form-input bg-white"
+                  value={formData.owner_transition || ''}
+                  onChange={handleChange}
+                >
+                  <option value="">Any / Not Specified</option>
+                  <option value="Flexible / open to discussion">Flexible / open to discussion</option>
+                  <option value="Short transition only (0–12 months)">Short transition only (0–12 months)</option>
+                  <option value="1–2 years">1–2 years</option>
+                  <option value="3+ years">3+ years</option>
+                </select>
+              </div>
+            </div>
+            <p className="text-xs text-slate-500 mt-3">
+              Specify the transaction motivations and owner transition periods you are most interested in. This is displayed on your matches but does not affect the semantic score.
+            </p>
           </div>
         </div>
 

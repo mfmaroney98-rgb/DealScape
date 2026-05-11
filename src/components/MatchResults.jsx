@@ -18,7 +18,8 @@ import {
   Shield,
   Zap,
   BarChart3,
-  Award
+  Award,
+  Users
 } from 'lucide-react';
 
 const TIER_CONFIG = {
@@ -420,8 +421,12 @@ export default function MatchResults({ orgId }) {
                               // 2. Fallback: pull from categorized_keywords JSONB if flat keywords is empty or looks like noise
                               const displayKeywords = kwList.length > 0
                                 ? kwList
-                                : (match.categorized_keywords
-                                  ? Object.values(match.categorized_keywords).flat().filter(Boolean)
+                               : (match.categorized_keywords
+                                  ? Object.entries(match.categorized_keywords)
+                                      .filter(([cat]) => cat !== 'reason_for_sale')
+                                      .map(([_, tags]) => tags)
+                                      .flat()
+                                      .filter(Boolean)
                                   : []);
                               
                               return displayKeywords.length > 0 ? (
@@ -459,6 +464,32 @@ export default function MatchResults({ orgId }) {
                               </div>
                             </div>
                           )}
+
+                          {/* Reason for Sale & Transition */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                            {match.categorized_keywords?.reason_for_sale?.length > 0 && (
+                              <div className="space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Reason for Sale</p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {match.categorized_keywords.reason_for_sale.map((reason, i) => (
+                                    <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">
+                                      {reason}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {match.owner_transition && (
+                              <div className="space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Owner Transition</p>
+                                <div className="flex items-center gap-2 text-[10px] font-medium text-slate-700 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full w-fit">
+                                  <Users size={12} className="text-slate-400" />
+                                  {match.owner_transition}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
