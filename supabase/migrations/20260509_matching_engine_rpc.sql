@@ -207,18 +207,13 @@
                 -- ==========================================
                 -- LAYER 2b: Geography Scoring (0-100)
                 -- ==========================================
-                -- Tiered: exact state match=100, same country=50, same continent=50, outside=0
+                -- Tiered: exact location match = 100, same country (different state) = 50, outside country = 0
                 CASE
                     WHEN v_buyer.locations IS NULL OR array_length(v_buyer.locations, 1) IS NULL THEN 100.0
                     WHEN sl.locations IS NOT NULL AND sl.locations && v_buyer.locations THEN 100.0
                     WHEN sl.locations IS NOT NULL AND EXISTS (
                         SELECT 1 FROM unnest(sl.locations) AS sl_loc
                         WHERE split_part(sl_loc, ':', 1) = ANY(v_buyer_countries)
-                    ) THEN 50.0
-                    WHEN sl.locations IS NOT NULL AND v_buyer_continents IS NOT NULL AND EXISTS (
-                        SELECT 1 FROM unnest(sl.locations) AS sl_loc
-                        JOIN global_countries gc ON gc.code = split_part(sl_loc, ':', 1)
-                        WHERE gc.continent = ANY(v_buyer_continents)
                     ) THEN 50.0
                     ELSE 0.0
                 END AS geography_score,
