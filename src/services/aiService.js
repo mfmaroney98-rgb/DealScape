@@ -167,13 +167,33 @@ ${text.slice(0, 30000)}
    * Generates embeddings for semantic search matching.
    */
   async generateEmbedding(text) {
+    if (!text || text.trim().length === 0) return null;
     const response = await openai.embeddings.create({
       model: "text-embedding-3-large",
       input: text,
       encoding_format: "float",
-      dimensions: 1536 // Max allowed by pgvector ivfflat is 2000
+      dimensions: 1536
     });
 
     return response.data[0].embedding;
+  },
+
+  /**
+   * Generates multiple segmented embeddings for granular matching.
+   */
+  async generateSegmentedEmbeddings(keywords) {
+    if (!keywords) return { industryVec: null, modelVec: null, targetVec: null };
+
+    const industryText = (keywords.industry || []).join(', ');
+    const modelText = [...(keywords.business_model || []), ...(keywords.revenue_model || [])].join(', ');
+    const targetText = [...(keywords.customer_type || []), ...(keywords.end_market || [])].join(', ');
+
+    const [industryVec, modelVec, targetVec] = await Promise.all([
+      this.generateEmbedding(industryText),
+      this.generateEmbedding(modelText),
+      this.generateEmbedding(targetText)
+    ]);
+
+    return { industryVec, modelVec, targetVec };
   }
 };

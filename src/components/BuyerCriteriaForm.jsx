@@ -422,22 +422,19 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
       }
 
-      // Generate embedding from extracted keywords for semantic matching
-      let keywordContext = '';
+      // Generate segmented embeddings from extracted keywords for granular matching
       if (parsedData.keywords && typeof parsedData.keywords === 'object') {
-        keywordContext = Object.entries(parsedData.keywords)
-          .filter(([cat]) => cat !== 'reason_for_sale')
-          .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
-          .filter(s => !s.endsWith(': '))
-          .join('; ');
-      }
-      const textToEmbed = `Investment Criteria: ${parsedData.investment_criteria_name || ''}. Categorized Target Traits: ${keywordContext}`.trim();
-      if (textToEmbed.length > 20) {
         try {
-          const embedding = await aiService.generateEmbedding(textToEmbed);
-          setFormData(prev => ({ ...prev, embedding, last_embedded_text: textToEmbed }));
+          const { industryVec, modelVec, targetVec } = await aiService.generateSegmentedEmbeddings(parsedData.keywords);
+          setFormData(prev => ({ 
+            ...prev, 
+            embedding_industry: industryVec,
+            embedding_model: modelVec,
+            embedding_target: targetVec,
+            last_embedded_text: JSON.stringify(parsedData.keywords) 
+          }));
         } catch (err) {
-          console.warn('Failed to generate embedding during extraction:', err);
+          console.warn('Failed to generate segmented embeddings during extraction:', err);
         }
       }
     } catch (err) {
@@ -507,21 +504,17 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       }
 
 
-      // Smart Refresh: Only update embedding if the strategic text has changed
-      const keywordContext = Object.entries(formData.categorized_keywords || {})
-        .filter(([cat]) => cat !== 'reason_for_sale')
-        .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${(tags || []).join(', ')}`)
-        .filter(s => !s.endsWith(': '))
-        .join('; ');
-      const textToEmbed = `Investment Criteria: ${formData.investment_criteria_name || ''}. Categorized Target Traits: ${keywordContext}`.trim();
-
-      if (textToEmbed.length > 20 && textToEmbed !== formData.last_embedded_text) {
+      // Triple-Vector Refresh: Regenerate segmented embeddings if keywords have changed
+      const currentKeywordsJson = JSON.stringify(formData.categorized_keywords || {});
+      if (currentKeywordsJson !== formData.last_embedded_text) {
         try {
-          const embedding = await aiService.generateEmbedding(textToEmbed);
-          flattenedData.embedding = embedding;
-          flattenedData.last_embedded_text = textToEmbed;
+          const { industryVec, modelVec, targetVec } = await aiService.generateSegmentedEmbeddings(formData.categorized_keywords);
+          flattenedData.embedding_industry = industryVec;
+          flattenedData.embedding_model = modelVec;
+          flattenedData.embedding_target = targetVec;
+          flattenedData.last_embedded_text = currentKeywordsJson;
         } catch (err) {
-          console.warn('Failed to generate buyer criteria embedding:', err);
+          console.warn('Failed to generate segmented buyer criteria embeddings:', err);
         }
       }
 

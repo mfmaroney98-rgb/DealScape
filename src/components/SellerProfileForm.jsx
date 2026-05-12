@@ -411,25 +411,19 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         setAutoFilledTags(tagsToHighlight);
       }
 
-      // 4. Generate Enriched Semantic Embedding for Matching
-      let keywordContext = '';
+      // 4. Generate Triple-Vector Segmented Embeddings for Granular Matching
       if (parsedData.keywords && typeof parsedData.keywords === 'object') {
-        keywordContext = Object.entries(parsedData.keywords)
-          .filter(([cat]) => cat !== 'reason_for_sale')
-          .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
-          .filter(s => !s.endsWith(': '))
-          .join('; ');
-      } else if (flattenedKeywords.length) {
-        keywordContext = flattenedKeywords.join(', ');
-      }
-
-      const textToEmbed = `Categorized Business Traits: ${keywordContext}. Executive Summary: ${parsedData.summary || formData.summary || parsedData.seller_anon_name || formData.seller_anon_name}`.trim();
-      if (textToEmbed.length > 20) {
         try {
-          const embedding = await aiService.generateEmbedding(textToEmbed);
-          setFormData(prev => ({ ...prev, embedding, last_embedded_text: textToEmbed }));
+          const { industryVec, modelVec, targetVec } = await aiService.generateSegmentedEmbeddings(parsedData.keywords);
+          setFormData(prev => ({ 
+            ...prev, 
+            embedding_industry: industryVec,
+            embedding_model: modelVec,
+            embedding_target: targetVec,
+            last_embedded_text: JSON.stringify(parsedData.keywords)
+          }));
         } catch (err) {
-          console.warn('Failed to generate embedding during parsing', err);
+          console.warn('Failed to generate segmented embeddings during parsing', err);
         }
       }
 
@@ -478,21 +472,17 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         sanitizedData.keywords = sanitizedData.keywords.join(', ');
       }
 
-      // Smart Refresh: Only update embedding if the strategic text has changed
-      const keywordContext = Object.entries(formData.categorized_keywords || {})
-        .filter(([cat]) => cat !== 'reason_for_sale')
-        .map(([cat, tags]) => `${cat.replace('_', ' ')}: ${tags.join(', ')}`)
-        .filter(s => !s.endsWith(': '))
-        .join('; ');
-      const textToEmbed = `Categorized Business Traits: ${keywordContext}. Executive Summary: ${formData.summary || formData.seller_anon_name}`.trim();
-
-      if (textToEmbed.length > 20 && textToEmbed !== formData.last_embedded_text) {
+      // Triple-Vector Refresh: Regenerate segmented embeddings if keywords have changed
+      const currentKeywordsJson = JSON.stringify(formData.categorized_keywords || {});
+      if (currentKeywordsJson !== formData.last_embedded_text) {
         try {
-          const embedding = await aiService.generateEmbedding(textToEmbed);
-          sanitizedData.embedding = embedding;
-          sanitizedData.last_embedded_text = textToEmbed;
+          const { industryVec, modelVec, targetVec } = await aiService.generateSegmentedEmbeddings(formData.categorized_keywords);
+          sanitizedData.embedding_industry = industryVec;
+          sanitizedData.embedding_model = modelVec;
+          sanitizedData.embedding_target = targetVec;
+          sanitizedData.last_embedded_text = currentKeywordsJson;
         } catch (err) {
-          console.warn('Failed to refresh embedding on submit:', err);
+          console.warn('Failed to refresh segmented embeddings on submit:', err);
         }
       }
 

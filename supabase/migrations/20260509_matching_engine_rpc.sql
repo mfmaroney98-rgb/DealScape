@@ -83,6 +83,9 @@
                 sl.is_family_owned,
                 sl.is_operator_owned,
                 sl.owner_transition,
+                sl.embedding_industry,
+                sl.embedding_model,
+                sl.embedding_target,
 
                 -- ==========================================
                 -- LAYER 2a: Financial Range Scoring (0-100)
@@ -221,41 +224,68 @@
                 END AS geography_score,
 
                 -- ==========================================
-                -- LAYER 3: Semantic Scoring (0-100)
+                -- LAYER 3: Semantic & Keyword Hybrid Scoring (0-100)
                 -- ==========================================
-                -- Cosine similarity from pgvector, scaled to 0-100
-                CASE
-                    WHEN v_buyer.embedding IS NULL OR sl.embedding IS NULL THEN 0.0
-                    -- Stretch formula: anything below 0.35 similarity is treated as 0.
-                    -- Above 0.35 is scaled linearly to 0-100.
-                    ELSE GREATEST(0, ((1.0 - (sl.embedding <=> v_buyer.embedding)) - 0.35) / 0.65 * 100.0)
-                END AS industry_fit_score,
+                -- Triple-Vector Hybrid Matching: Industry (60%), Model (30%), Target (10%)
+                -- Each bucket is a blend of Semantic (70%) and Fuzzy Keyword (30%) scores.
+                (
+                    -- 1. Industry Bucket (60% weight)
+                    (
+                        COALESCE(
+                            (
+                                -- Semantic Component (70%)
+                                (CASE 
+                                    WHEN v_buyer.embedding_industry IS NULL OR sl.embedding_industry IS NULL THEN 100.0 
+                                    ELSE GREATEST(0, ((1.0 - (sl.embedding_industry <=> v_buyer.embedding_industry)) - 0.35) / 0.65 * 100.0) 
+                                END * 0.7) +
+                                -- Fuzzy Keyword Component (30%)
+                                (COALESCE(calculate_fuzzy_overlap(v_buyer.categorized_keywords->'industry', sl.categorized_keywords->'industry'), 100.0) * 0.3)
+                            ), 100.0
+                        ) * 0.60
+                    ) +
+                    -- 2. Model Bucket (30% weight: Business + Revenue Model)
+                    (
+                        COALESCE(
+                            (
+                                -- Semantic Component (70%)
+                                (CASE 
+                                    WHEN v_buyer.embedding_model IS NULL OR sl.embedding_model IS NULL THEN 100.0 
+                                    ELSE GREATEST(0, ((1.0 - (sl.embedding_model <=> v_buyer.embedding_model)) - 0.35) / 0.65 * 100.0) 
+                                END * 0.7) +
+                                -- Fuzzy Keyword Component (30%)
+                                (COALESCE(calculate_fuzzy_overlap(
+                                    (COALESCE(v_buyer.categorized_keywords->'business_model', '[]'::jsonb) || COALESCE(v_buyer.categorized_keywords->'revenue_model', '[]'::jsonb)),
+                                    (COALESCE(sl.categorized_keywords->'business_model', '[]'::jsonb) || COALESCE(sl.categorized_keywords->'revenue_model', '[]'::jsonb))
+                                ), 100.0) * 0.3)
+                            ), 100.0
+                        ) * 0.30
+                    ) +
+                    -- 3. Target Bucket (10% weight: Customer Type + End Market)
+                    (
+                        COALESCE(
+                            (
+                                -- Semantic Component (70%)
+                                (CASE 
+                                    WHEN v_buyer.embedding_target IS NULL OR sl.embedding_target IS NULL THEN 100.0 
+                                    ELSE GREATEST(0, ((1.0 - (sl.embedding_target <=> v_buyer.embedding_target)) - 0.35) / 0.65 * 100.0) 
+                                END * 0.7) +
+                                -- Fuzzy Keyword Component (30%)
+                                (COALESCE(calculate_fuzzy_overlap(
+                                    (COALESCE(v_buyer.categorized_keywords->'customer_type', '[]'::jsonb) || COALESCE(v_buyer.categorized_keywords->'end_market', '[]'::jsonb)),
+                                    (COALESCE(sl.categorized_keywords->'customer_type', '[]'::jsonb) || COALESCE(sl.categorized_keywords->'end_market', '[]'::jsonb))
+                                ), 100.0) * 0.3)
+                            ), 100.0
+                        ) * 0.10
+                    )
+                ) AS industry_fit_score,
 
                 -- ==========================================
                 -- BONUS: Ownership flags + extras
                 -- ==========================================
-                (
-                    CASE WHEN v_buyer.require_founder_owned = true AND sl.is_founder_owned = true THEN 2 ELSE 0 END +
-                    CASE WHEN v_buyer.require_female_owned = true AND sl.is_female_owned = true THEN 2 ELSE 0 END +
-                    CASE WHEN v_buyer.require_minority_owned = true AND sl.is_minority_owned = true THEN 2 ELSE 0 END +
-                    CASE WHEN v_buyer.require_family_owned = true AND sl.is_family_owned = true THEN 2 ELSE 0 END +
-                    CASE WHEN v_buyer.require_operator_owned = true AND sl.is_operator_owned = true THEN 2 ELSE 0 END +
-                    CASE WHEN v_buyer.pref_transaction_type IS NOT NULL AND sl.pref_transaction_type IS NOT NULL
-                        AND (SELECT COUNT(*) FROM unnest(v_buyer.pref_transaction_type) vt WHERE vt = ANY(sl.pref_transaction_type)) > 1
-                        THEN 2 ELSE 0 END
-                )::NUMERIC AS bonus_score,
+                0::NUMERIC AS bonus_score,
 
                 -- BONUS REASONS: Tracking why they got the points
-                ARRAY_REMOVE(ARRAY[
-                    CASE WHEN v_buyer.require_founder_owned = true AND sl.is_founder_owned = true THEN 'Founder-Owned' ELSE NULL END,
-                    CASE WHEN v_buyer.require_female_owned = true AND sl.is_female_owned = true THEN 'Female-Owned' ELSE NULL END,
-                    CASE WHEN v_buyer.require_minority_owned = true AND sl.is_minority_owned = true THEN 'Minority-Owned' ELSE NULL END,
-                    CASE WHEN v_buyer.require_family_owned = true AND sl.is_family_owned = true THEN 'Family-Owned' ELSE NULL END,
-                    CASE WHEN v_buyer.require_operator_owned = true AND sl.is_operator_owned = true THEN 'Operator-Owned' ELSE NULL END,
-                    CASE WHEN v_buyer.pref_transaction_type IS NOT NULL AND sl.pref_transaction_type IS NOT NULL
-                        AND (SELECT COUNT(*) FROM unnest(v_buyer.pref_transaction_type) vt WHERE vt = ANY(sl.pref_transaction_type)) > 1
-                        THEN 'Transaction Depth' ELSE NULL END
-                ], NULL) AS bonus_reasons
+                ARRAY[]::TEXT[] AS bonus_reasons
 
             FROM seller_listings sl
             WHERE sl.status = 'Active'::listing_status
@@ -295,18 +325,17 @@
             ROUND(s.industry_fit_score::NUMERIC, 1) AS industry_fit_score,
             ROUND(s.bonus_score::NUMERIC, 1) AS bonus_score,
             s.bonus_reasons,
-            -- Final score: 0.30 * (financial + geography blend) + 0.70 * industry_fit + bonus
+            -- Final score: 0.30 * (financial + geography blend) + 0.70 * industry_fit
             ROUND(
                 (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                + 0.70 * s.industry_fit_score
-                + s.bonus_score)::NUMERIC
+                + 0.70 * s.industry_fit_score)::NUMERIC
             , 1) AS total_score,
             -- Tier classification
             CASE
                 WHEN (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.70 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 75 THEN 'Strong'
+                    + 0.70 * s.industry_fit_score)::NUMERIC >= 75 THEN 'Strong'
                 WHEN (0.30 * ((COALESCE(NULLIF(s.financial_score, 0), 50) * 0.7) + (s.geography_score * 0.3))
-                    + 0.70 * s.industry_fit_score + s.bonus_score)::NUMERIC >= 45 THEN 'Moderate'
+                    + 0.70 * s.industry_fit_score)::NUMERIC >= 45 THEN 'Moderate'
                 ELSE 'Weak'
             END AS match_tier
         FROM scored s
