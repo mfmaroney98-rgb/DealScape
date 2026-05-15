@@ -34,6 +34,7 @@ export interface SellerListing {
   year_founded?: string;
   employees_count?: number;
   keywords: string[];
+  naics_codes: string[];
   legal_entity?: string;
   ownership_structure?: string;
 

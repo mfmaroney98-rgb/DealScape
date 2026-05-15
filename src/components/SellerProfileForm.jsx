@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
+import { fetchNaicsSectors } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import {
   Building2,
@@ -69,11 +70,24 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [geoLoading, setGeoLoading] = useState(true);
   const [geoError, setGeoError] = useState(null);
 
+  const [expandedNaicsSectors, setExpandedNaicsSectors] = useState(new Set());
+  const [expandedNaicsSubsectors, setExpandedNaicsSubsectors] = useState(new Set());
+
+  // NAICS data loaded from Supabase
+  const [naicsSectors, setNaicsSectors] = useState([]);
+  const [naicsLoading, setNaicsLoading] = useState(true);
+  const [naicsError, setNaicsError] = useState(null);
+
   useEffect(() => {
     fetchGeographyTree()
       .then(data => setGeoTree(data))
       .catch(err => setGeoError(err.message || 'Failed to load geography data'))
       .finally(() => setGeoLoading(false));
+
+    fetchNaicsSectors()
+      .then(data => setNaicsSectors(data))
+      .catch(err => setNaicsError(err.message || 'Failed to load NAICS codes'))
+      .finally(() => setNaicsLoading(false));
 
     // Fetch listing data if editing
     if (isEditing) {
@@ -110,7 +124,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 legal_entity: data.legal_entity || '',
                 ownership_structure: data.ownership_structure || '',
                 pref_transaction_type: Array.isArray(data.pref_transaction_type) ? data.pref_transaction_type : [],
-                financial_history: sanitizedHistory
+                financial_history: sanitizedHistory,
+                naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
               };
             });
           }
@@ -157,6 +172,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         'LTM': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' },
         'FY1E': { date: '', revenue: '', gross_profit: '', ebitda: '', ebit: '', net_income: '', capex: '' }
       },
+      naics_codes: [],
       embedding: null,
       last_embedded_text: '',
       status: 'Draft'
@@ -318,6 +334,94 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (next.has(continentName)) next.delete(continentName);
       else next.add(continentName);
       return next;
+    });
+  };
+
+  // NAICS code toggle handlers
+  const toggleNaicsSectorExpand = (e, sectorCode) => {
+    e.stopPropagation();
+    setExpandedNaicsSectors(prev => {
+      const next = new Set(prev);
+      if (next.has(sectorCode)) next.delete(sectorCode);
+      else next.add(sectorCode);
+      return next;
+    });
+  };
+
+  const toggleNaicsSubsectorExpand = (e, subsectorCode) => {
+    e.stopPropagation();
+    setExpandedNaicsSubsectors(prev => {
+      const next = new Set(prev);
+      if (next.has(subsectorCode)) next.delete(subsectorCode);
+      else next.add(subsectorCode);
+      return next;
+    });
+  };
+
+  const handleNaicsSectorToggle = (sector) => {
+    const allCodes = [
+      sector.code,
+      ...sector.subsectors.map(s => s.code),
+      ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+    ];
+    setFormData(prev => {
+      const allSelected = allCodes.every(c => prev.naics_codes.includes(c));
+      let updated = [...prev.naics_codes];
+      if (allSelected) {
+        updated = updated.filter(c => !allCodes.includes(c));
+      } else {
+        allCodes.forEach(c => { if (!updated.includes(c)) updated.push(c); });
+      }
+      return { ...prev, naics_codes: updated };
+    });
+  };
+
+  const handleNaicsSubsectorToggle = (sectorCode, subsector) => {
+    const subsectorCode = subsector.code;
+    const allSubCodes = [subsectorCode, ...(subsector.industryGroups || []).map(ig => ig.code)];
+    
+    setFormData(prev => {
+      let updated = [...prev.naics_codes];
+      const allSelected = allSubCodes.every(c => updated.includes(c));
+      
+      if (allSelected) {
+        updated = updated.filter(c => !allSubCodes.includes(c));
+        updated = updated.filter(c => c !== sectorCode);
+      } else {
+        allSubCodes.forEach(c => { if (!updated.includes(c)) updated.push(c); });
+        const sector = naicsSectors.find(s => s.code === sectorCode);
+        if (sector) {
+          const allSectorSubCodes = [
+            ...sector.subsectors.map(s => s.code),
+            ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+          ];
+          if (allSectorSubCodes.every(c => updated.includes(c))) {
+            if (!updated.includes(sectorCode)) updated.push(sectorCode);
+          }
+        }
+      }
+      return { ...prev, naics_codes: updated };
+    });
+  };
+
+  const handleNaicsIndustryGroupToggle = (sectorCode, subsectorCode, igCode) => {
+    setFormData(prev => {
+      let updated = [...prev.naics_codes];
+      if (updated.includes(igCode)) {
+        updated = updated.filter(c => c !== igCode);
+        updated = updated.filter(c => c !== subsectorCode && c !== sectorCode);
+      } else {
+        if (!updated.includes(igCode)) updated.push(igCode);
+        const sector = naicsSectors.find(s => s.code === sectorCode);
+        const subsector = sector?.subsectors.find(s => s.code === subsectorCode);
+        if (subsector && (subsector.industryGroups || []).every(ig => updated.includes(ig.code))) {
+          if (!updated.includes(subsectorCode)) updated.push(subsectorCode);
+          if (sector.subsectors.every(s => updated.includes(s.code))) {
+            if (!updated.includes(sectorCode)) updated.push(sectorCode);
+          }
+        }
+      }
+      return { ...prev, naics_codes: updated };
     });
   };
 
@@ -1349,6 +1453,127 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <p className="text-xs text-slate-500 mt-3">
               Describe the motivation for the transaction and the expected owner transition period. This is visible to buyers on their match results but does not affect your semantic score.
             </p>
+          </div>
+        </div>
+
+        {/* Section 5: Industry Classification */}
+        <div className="glass p-8 rounded-3xl shadow-xl relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+              <Briefcase className="text-blue-400" size={20} />
+            </div>
+            <h2 className="text-xl font-bold">Industry Classification</h2>
+            {formData.naics_codes.length > 0 && (
+              <span className="ml-2 text-[0.7rem] bg-blue-500/10 text-blue-400 rounded-full px-2 py-0.5 font-bold">
+                {formData.naics_codes.length} SELECTED
+              </span>
+            )}
+          </div>
+          <p className="text-sm text-slate-500 mb-8 -mt-6">
+            Select the NAICS codes that best describe your business. This helps buyers find your listing when filtering by industry.
+          </p>
+
+          <div className="geo-tree" style={{ maxHeight: '500px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+            {naicsLoading ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+                <Loader2 className="animate-spin mx-auto mb-2" size={24} />
+                Loading industry codes...
+              </div>
+            ) : naicsError ? (
+              <div style={{ padding: '2rem', textAlign: 'center', color: '#f87171' }}>
+                {naicsError}
+              </div>
+            ) : (
+              naicsSectors.map((sector, sIdx) => {
+                const isLastSector = sIdx === naicsSectors.length - 1;
+                const allSubCodes = [
+                  ...sector.subsectors.map(s => s.code),
+                  ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+                ];
+                const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
+                const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
+                const isExpanded = expandedNaicsSectors.has(sector.code);
+
+                return (
+                  <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
+                    <div className="geo-row group">
+                      <div
+                        className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
+                        onClick={() => handleNaicsSectorToggle(sector)}
+                      >
+                        {allSelected && <CheckCircle2 size={12} />}
+                      </div>
+                      <span className="geo-label-semi" style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSectorToggle(sector)}>
+                        <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
+                        {sector.name}
+                      </span>
+                      <button type="button" onClick={(e) => toggleNaicsSectorExpand(e, sector.code)} className="geo-toggle">
+                        {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                    </div>
+
+                    {isExpanded && (
+                      <div className="geo-children">
+                        {sector.subsectors.map((sub, ssIdx) => {
+                          const isLastSub = ssIdx === sector.subsectors.length - 1;
+                          const igCodes = (sub.industryGroups || []).map(ig => ig.code);
+                          const isSubAllSelected = [sub.code, ...igCodes].every(c => formData.naics_codes.includes(c));
+                          const isSubSomeSelected = igCodes.some(c => formData.naics_codes.includes(c)) && !isSubAllSelected;
+                          const isSubExpanded = expandedNaicsSubsectors.has(sub.code);
+
+                          return (
+                            <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
+                              <div className="geo-row group">
+                                <div
+                                  className={`geo-check-sm ${isSubAllSelected ? 'checked' : isSubSomeSelected ? 'partial' : ''}`}
+                                  onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
+                                >
+                                  {isSubAllSelected && <CheckCircle2 size={10} />}
+                                </div>
+                                <span className={`geo-label-state ${isSubAllSelected ? 'selected' : ''}`} style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}>
+                                  <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
+                                  {sub.name}
+                                </span>
+                                {sub.industryGroups?.length > 0 && (
+                                  <button type="button" onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)} className="geo-toggle">
+                                    {isSubExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                                  </button>
+                                )}
+                              </div>
+
+                              {isSubExpanded && sub.industryGroups && (
+                                <div className="geo-children">
+                                  {sub.industryGroups.map((ig, igIdx) => {
+                                    const isLastIg = igIdx === sub.industryGroups.length - 1;
+                                    const isIgSelected = formData.naics_codes.includes(ig.code);
+                                    return (
+                                      <div key={ig.code} className={`geo-branch ${isLastIg ? 'geo-branch-last' : ''}`}>
+                                        <div className="geo-row group">
+                                          <div
+                                            className={`geo-check-sm ${isIgSelected ? 'checked' : ''}`}
+                                            onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
+                                          >
+                                            {isIgSelected && <CheckCircle2 size={8} />}
+                                          </div>
+                                          <span className={`geo-label-state ${isIgSelected ? 'selected' : ''}`} style={{ fontSize: '0.825rem', opacity: 0.9 }} onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}>
+                                            <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{ig.code}</span>
+                                            {ig.name}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 

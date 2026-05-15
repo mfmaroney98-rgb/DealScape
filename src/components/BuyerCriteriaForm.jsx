@@ -76,6 +76,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   }, []);
 
   const [expandedNaicsSectors, setExpandedNaicsSectors] = useState(new Set());
+  const [expandedNaicsSubsectors, setExpandedNaicsSubsectors] = useState(new Set());
 
   // NAICS data loaded from Supabase
   const [naicsSectors, setNaicsSectors] = useState([]);
@@ -250,8 +251,22 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     });
   };
 
+  const toggleNaicsSubsectorExpand = (e, subsectorCode) => {
+    e.stopPropagation();
+    setExpandedNaicsSubsectors(prev => {
+      const next = new Set(prev);
+      if (next.has(subsectorCode)) next.delete(subsectorCode);
+      else next.add(subsectorCode);
+      return next;
+    });
+  };
+
   const handleNaicsSectorToggle = (sector) => {
-    const allCodes = [sector.code, ...sector.subsectors.map(s => s.code)];
+    const allCodes = [
+      sector.code,
+      ...sector.subsectors.map(s => s.code),
+      ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+    ];
     setFormData(prev => {
       const allSelected = allCodes.every(c => prev.naics_codes.includes(c));
       let updated = [...prev.naics_codes];
@@ -264,19 +279,57 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     });
   };
 
-  const handleNaicsSubsectorToggle = (sectorCode, subsectorCode) => {
+  const handleNaicsSubsectorToggle = (sectorCode, subsector) => {
+    const subsectorCode = subsector.code;
+    const allSubCodes = [subsectorCode, ...(subsector.industryGroups || []).map(ig => ig.code)];
+    
     setFormData(prev => {
       let updated = [...prev.naics_codes];
-      if (updated.includes(subsectorCode)) {
-        updated = updated.filter(c => c !== subsectorCode);
-        // Deselect parent sector code if it was selected
+      const allSelected = allSubCodes.every(c => updated.includes(c));
+      
+      if (allSelected) {
+        updated = updated.filter(c => !allSubCodes.includes(c));
+        // Deselect parent sector code
         updated = updated.filter(c => c !== sectorCode);
       } else {
-        if (!updated.includes(subsectorCode)) updated.push(subsectorCode);
+        allSubCodes.forEach(c => { if (!updated.includes(c)) updated.push(c); });
         // Check if all subsectors selected → also select parent
         const sector = naicsSectors.find(s => s.code === sectorCode);
-        if (sector && sector.subsectors.every(s => updated.includes(s.code))) {
-          if (!updated.includes(sectorCode)) updated.push(sectorCode);
+        if (sector) {
+          const allSectorSubCodes = [
+            ...sector.subsectors.map(s => s.code),
+            ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+          ];
+          if (allSectorSubCodes.every(c => updated.includes(c))) {
+            if (!updated.includes(sectorCode)) updated.push(sectorCode);
+          }
+        }
+      }
+      return { ...prev, naics_codes: updated };
+    });
+  };
+
+  const handleNaicsIndustryGroupToggle = (sectorCode, subsectorCode, igCode) => {
+    setFormData(prev => {
+      let updated = [...prev.naics_codes];
+      if (updated.includes(igCode)) {
+        updated = updated.filter(c => c !== igCode);
+        // Deselect parent subsector and sector
+        updated = updated.filter(c => c !== subsectorCode && c !== sectorCode);
+      } else {
+        if (!updated.includes(igCode)) updated.push(igCode);
+        
+        // Check if all industry groups in subsector are selected
+        const sector = naicsSectors.find(s => s.code === sectorCode);
+        const subsector = sector?.subsectors.find(s => s.code === subsectorCode);
+        
+        if (subsector && (subsector.industryGroups || []).every(ig => updated.includes(ig.code))) {
+          if (!updated.includes(subsectorCode)) updated.push(subsectorCode);
+          
+          // Check if all subsectors in sector are selected
+          if (sector.subsectors.every(s => updated.includes(s.code))) {
+            if (!updated.includes(sectorCode)) updated.push(sectorCode);
+          }
         }
       }
       return { ...prev, naics_codes: updated };
@@ -963,25 +1016,67 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                           <div className="geo-children">
                             {sector.subsectors.map((sub, ssIdx) => {
                               const isLastSub = ssIdx === sector.subsectors.length - 1;
-                              const isSubSelected = formData.naics_codes.includes(sub.code);
+                              const igCodes = (sub.industryGroups || []).map(ig => ig.code);
+                              const isSubAllSelected = [sub.code, ...igCodes].every(c => formData.naics_codes.includes(c));
+                              const isSubSomeSelected = igCodes.some(c => formData.naics_codes.includes(c)) && !isSubAllSelected;
+                              const isSubExpanded = expandedNaicsSubsectors.has(sub.code);
+
                               return (
                                 <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
                                   <div className="geo-row group">
                                     <div
-                                      className={`geo-check-sm ${isSubSelected ? 'checked' : ''}`}
-                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
+                                      className={`geo-check-sm ${isSubAllSelected ? 'checked' : isSubSomeSelected ? 'partial' : ''}`}
+                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
                                     >
-                                      {isSubSelected && <CheckCircle2 size={10} />}
+                                      {isSubAllSelected && <CheckCircle2 size={10} />}
                                     </div>
                                     <span
-                                      className={`geo-label-state ${isSubSelected ? 'selected' : ''}`}
+                                      className={`geo-label-state ${isSubAllSelected ? 'selected' : ''}`}
                                       style={{ fontSize: '0.875rem' }}
-                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub.code)}
+                                      onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
                                     >
                                       <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
                                       {sub.name}
                                     </span>
+                                    {sub.industryGroups?.length > 0 && (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)}
+                                        className="geo-toggle"
+                                      >
+                                        {isSubExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                                      </button>
+                                    )}
                                   </div>
+
+                                  {isSubExpanded && sub.industryGroups && (
+                                    <div className="geo-children">
+                                      {sub.industryGroups.map((ig, igIdx) => {
+                                        const isLastIg = igIdx === sub.industryGroups.length - 1;
+                                        const isIgSelected = formData.naics_codes.includes(ig.code);
+                                        return (
+                                          <div key={ig.code} className={`geo-branch ${isLastIg ? 'geo-branch-last' : ''}`}>
+                                            <div className="geo-row group">
+                                              <div
+                                                className={`geo-check-sm ${isIgSelected ? 'checked' : ''}`}
+                                                onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
+                                              >
+                                                {isIgSelected && <CheckCircle2 size={8} />}
+                                              </div>
+                                              <span
+                                                className={`geo-label-state ${isIgSelected ? 'selected' : ''}`}
+                                                style={{ fontSize: '0.825rem', opacity: 0.9 }}
+                                                onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
+                                              >
+                                                <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{ig.code}</span>
+                                                {ig.name}
+                                              </span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
                                 </div>
                               );
                             })}
