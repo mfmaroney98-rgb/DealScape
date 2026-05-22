@@ -64,6 +64,24 @@ export const sellerListingService = {
   },
 
   /**
+   * Updates specific columns of an existing listing without triggering insert-time constraint checks.
+   */
+  async updateListing(id, updates) {
+    const { data, error } = await supabase
+      .from('seller_listings')
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
    * Deletes a seller listing and its associated storage files.
    */
   async deleteListing(listingId) {

@@ -47,13 +47,14 @@ const KEYWORD_CATEGORIES = [
 
 
 export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [expandedContinents, setExpandedContinents] = useState(new Set());
-  const [expandedCountries, setExpandedCountries] = useState(new Set());
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = !!id;
+
+  const [loading, setLoading] = useState(isEditing);
+  const [error, setError] = useState(null);
+  const [expandedContinents, setExpandedContinents] = useState(new Set());
+  const [expandedCountries, setExpandedCountries] = useState(new Set());
 
   const [isParsing, setIsParsing] = useState(false);
   const [criteriaFiles, setCriteriaFiles] = useState([]);
@@ -99,16 +100,23 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       .catch(() => {
         setFinancialMetrics(['Revenue', 'Gross Profit', 'EBITDA', 'EBITDA Margin', 'Net Income']);
       });
+  }, []);
 
+  useEffect(() => {
     if (isEditing) {
+      if (!orgId) {
+        setLoading(true);
+        return;
+      }
       setLoading(true);
-      // isCorporate could be passed down, but for now we assume orgId filter
       buyerService.getCriteriaById(id, orgId)
         .then(data => {
           if (data) {
             setFormData(prev => ({
               ...prev,
               ...data,
+              user_id: data.user_id || userId,
+              organization_id: data.organization_id || orgId,
               financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
               locations: Array.isArray(data.locations) ? data.locations : [],
               keywords: Array.isArray(data.keywords) ? data.keywords : [],
@@ -122,8 +130,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           setError('Failed to load investment criteria data.');
         })
         .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
-  }, [isEditing, id]);
+  }, [isEditing, id, orgId, userId]);
 
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -145,6 +155,16 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     embedding: null,
     last_embedded_text: ''
   });
+
+  // Sync userId and orgId to formData when they become available
+  useEffect(() => {
+    if (userId && !formData.user_id) {
+      setFormData(prev => ({ ...prev, user_id: userId }));
+    }
+    if (orgId && !formData.organization_id) {
+      setFormData(prev => ({ ...prev, organization_id: orgId }));
+    }
+  }, [userId, orgId, formData.user_id, formData.organization_id]);
 
 
 

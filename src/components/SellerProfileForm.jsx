@@ -40,7 +40,11 @@ const KEYWORD_CATEGORIES = [
 ];
 
 export default function SellerProfileForm({ userId, orgId, onComplete }) {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { listingId } = useParams();
+  const isEditing = !!listingId;
+
+  const [loading, setLoading] = useState(isEditing);
   const [error, setError] = useState(null);
   const [isParsing, setIsParsing] = useState(false);
   const [teaserFile, setTeaserFile] = useState(null);
@@ -76,9 +80,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const [focusedField, setFocusedField] = useState(null); // { year, field }
   const [showLtm, setShowLtm] = useState(true);
-  const navigate = useNavigate();
-  const { listingId } = useParams();
-  const isEditing = !!listingId;
 
   // Geography data loaded from Supabase
   const [geoTree, setGeoTree] = useState([]);
@@ -106,8 +107,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
     // Fetch listing data if editing
     if (isEditing) {
+      if (!orgId) {
+        setLoading(true);
+        return;
+      }
       setLoading(true);
-      // isCorporate could be passed down, but for now we assume orgId filter
       sellerListingService.getListingById(listingId, orgId)
         .then(data => {
           if (data) {
@@ -129,6 +133,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               return {
                 ...prev,
                 ...data,
+                user_id: data.user_id || userId,
+                organization_id: data.organization_id || orgId,
                 // Force correct types for known fields
                 seller_name: data.seller_name || '',
                 seller_anon_name: data.seller_anon_name || '',
@@ -153,7 +159,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     } else {
       setLoading(false);
     }
-  }, [listingId, userId, isEditing]);
+  }, [listingId, userId, isEditing, orgId]);
 
   const [formData, setFormData] = useState(() => {
     try {
@@ -197,6 +203,16 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       cim_file_name: null
     }
   });
+
+  // Sync userId and orgId to formData when they become available
+  useEffect(() => {
+    if (userId && !formData.user_id) {
+      setFormData(prev => ({ ...prev, user_id: userId }));
+    }
+    if (orgId && !formData.organization_id) {
+      setFormData(prev => ({ ...prev, organization_id: orgId }));
+    }
+  }, [userId, orgId, formData.user_id, formData.organization_id]);
 
   // Save form draft to sessionStorage automatically
   useEffect(() => {
@@ -657,10 +673,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
       // Save updates back to DB if any
       if (hasUpdates) {
-        await sellerListingService.saveListing({
-          id: savedListing.id,
-          ...fileUpdates
-        });
+        await sellerListingService.updateListing(savedListing.id, fileUpdates);
       }
 
       // Clear draft after successful save
@@ -714,20 +727,20 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           )}
 
           {/* Teaser Upload */}
-          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-800/20 p-6 rounded-2xl border border-slate-800/50">
-            <h4 className="text-sm font-semibold text-slate-300 mb-2">Teaser Document</h4>
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 className="text-sm font-bold text-slate-900 mb-2">Teaser Document</h4>
             {formData.teaser_file_name && !filesToDelete.includes('teaser') ? (
-              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 w-full flex items-center justify-between">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 w-full flex items-center justify-between shadow-sm">
                 <div className="flex items-center gap-2 overflow-hidden mr-2">
-                  <FileText className="text-amber-400 flex-shrink-0" size={20} />
-                  <span className="text-sm text-slate-200 font-semibold truncate" title={formData.teaser_file_name}>
+                  <FileText className="text-amber-600 flex-shrink-0" size={20} />
+                  <span className="text-sm text-slate-900 font-bold truncate" title={formData.teaser_file_name}>
                     {formData.teaser_file_name}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingFile('teaser')}
-                  className="text-xs text-red-400 hover:text-red-300 font-semibold px-2.5 py-1.5 hover:bg-red-500/10 rounded-md transition-colors"
+                  className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors"
                 >
                   Delete
                 </button>
@@ -738,34 +751,34 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   type="file"
                   accept=".pdf"
                   onChange={(e) => setTeaserFile(e.target.files?.[0] || null)}
-                  className="text-sm text-slate-300 cursor-pointer"
+                  className="text-sm text-slate-900 cursor-pointer file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 transition-colors w-full"
                   title="Upload Teaser"
                 />
-                <div className={`mt-2 ${teaserFile ? 'text-amber-400' : 'text-slate-400'}`}>
+                <div className={`mt-2 ${teaserFile ? 'text-amber-600' : 'text-slate-700'}`}>
                   <UploadCloud size={24} />
                 </div>
-                <p className="font-semibold text-white">Upload New Teaser</p>
-                <p className="text-xs text-slate-400">Select a PDF document. We will securely extract the key metrics.</p>
-                {teaserFile && <p className="text-xs text-amber-400 truncate max-w-full font-medium">{teaserFile.name}</p>}
+                <p className="font-bold text-slate-900">Upload New Teaser</p>
+                <p className="text-xs text-slate-800 font-medium">Select a PDF document. We will securely extract the key metrics.</p>
+                {teaserFile && <p className="text-xs text-slate-950 truncate max-w-full font-bold">{teaserFile.name}</p>}
               </div>
             )}
           </div>
 
           {/* CIM Upload */}
-          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-800/20 p-6 rounded-2xl border border-slate-800/50">
-            <h4 className="text-sm font-semibold text-slate-300 mb-2">CIM Document</h4>
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 className="text-sm font-bold text-slate-900 mb-2">CIM Document</h4>
             {formData.cim_file_name && !filesToDelete.includes('cim') ? (
-              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 w-full flex items-center justify-between">
+              <div className="bg-white p-4 rounded-xl border border-slate-200 w-full flex items-center justify-between shadow-sm">
                 <div className="flex items-center gap-2 overflow-hidden mr-2">
-                  <FileText className="text-indigo-400 flex-shrink-0" size={20} />
-                  <span className="text-sm text-slate-200 font-semibold truncate" title={formData.cim_file_name}>
+                  <FileText className="text-indigo-600 flex-shrink-0" size={20} />
+                  <span className="text-sm text-slate-900 font-bold truncate" title={formData.cim_file_name}>
                     {formData.cim_file_name}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleRemoveExistingFile('cim')}
-                  className="text-xs text-red-400 hover:text-red-300 font-semibold px-2.5 py-1.5 hover:bg-red-500/10 rounded-md transition-colors"
+                  className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors"
                 >
                   Delete
                 </button>
@@ -776,15 +789,15 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   type="file"
                   accept=".pdf"
                   onChange={(e) => setCimFile(e.target.files?.[0] || null)}
-                  className="text-sm text-slate-300 cursor-pointer"
+                  className="text-sm text-slate-900 cursor-pointer file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-slate-200 file:text-slate-800 hover:file:bg-slate-300 transition-colors w-full"
                   title="Upload CIM"
                 />
-                <div className={`mt-2 ${cimFile ? 'text-indigo-400' : 'text-slate-400'}`}>
+                <div className={`mt-2 ${cimFile ? 'text-indigo-600' : 'text-slate-700'}`}>
                   <FileText size={24} />
                 </div>
-                <p className="font-semibold text-white">Upload New CIM</p>
-                <p className="text-xs text-slate-400">Select a PDF document. We will securely extract the key metrics.</p>
-                {cimFile && <p className="text-xs text-indigo-400 truncate max-w-full font-medium">{cimFile.name}</p>}
+                <p className="font-bold text-slate-900">Upload New CIM</p>
+                <p className="text-xs text-slate-800 font-medium">Select a PDF document. We will securely extract the key metrics.</p>
+                {cimFile && <p className="text-xs text-slate-950 truncate max-w-full font-bold">{cimFile.name}</p>}
               </div>
             )}
           </div>
