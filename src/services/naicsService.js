@@ -49,3 +49,45 @@ export async function fetchNaicsSectors() {
       }))
   }));
 }
+
+/**
+ * Recursively expands a list of 2, 3, or 4-digit NAICS codes
+ * by adding all their corresponding child codes from the sectorsTree.
+ * This ensures that broad AI-selected codes automatically check all children.
+ */
+export function expandNaicsCodes(codes, sectorsTree) {
+  if (!codes || !Array.isArray(codes) || !sectorsTree || !sectorsTree.length) {
+    return codes || [];
+  }
+
+  const expanded = new Set(codes);
+
+  codes.forEach(code => {
+    const cleanCode = String(code).trim();
+    if (cleanCode.length === 2) {
+      // It's a Sector: find it and add all its subsectors & industry groups
+      const sector = sectorsTree.find(s => s.code === cleanCode);
+      if (sector) {
+        sector.subsectors.forEach(sub => {
+          expanded.add(sub.code);
+          if (sub.industryGroups) {
+            sub.industryGroups.forEach(ig => expanded.add(ig.code));
+          }
+        });
+      }
+    } else if (cleanCode.length === 3) {
+      // It's a Subsector: find it across all sectors
+      for (const sector of sectorsTree) {
+        const sub = sector.subsectors.find(s => s.code === cleanCode);
+        if (sub) {
+          if (sub.industryGroups) {
+            sub.industryGroups.forEach(ig => expanded.add(ig.code));
+          }
+          break; // Found, can stop searching
+        }
+      }
+    }
+  });
+
+  return Array.from(expanded);
+}

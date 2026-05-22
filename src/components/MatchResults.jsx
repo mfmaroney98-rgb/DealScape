@@ -326,8 +326,14 @@ export default function MatchResults({ orgId }) {
                               color="blue"
                             />
                             <ScoreBar
-                              label="Industry and Keyword Fit"
-                              score={match.industry_fit_score || 0}
+                              label="Industry Score"
+                              score={match.industry_score !== null && match.industry_score !== undefined ? match.industry_score : 100}
+                              icon={Building2}
+                              color="emerald"
+                            />
+                            <ScoreBar
+                              label="Semantic Score"
+                              score={match.semantic_score || 0}
                               icon={Sparkles}
                               color="violet"
                             />

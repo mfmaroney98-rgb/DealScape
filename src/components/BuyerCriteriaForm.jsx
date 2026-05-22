@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { organizationService } from '../services/organizationService';
 import TagInput from './TagInput';
-import { fetchNaicsSectors } from '../services/naicsService';
+import { fetchNaicsSectors, expandNaicsCodes } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import { fetchFinancialMetrics } from '../services/financialMetricsService';
 import {
@@ -446,6 +446,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         const flattenedKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object')
           ? Object.values(parsedData.keywords).flat().filter(Boolean)
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
+
+        const rawNaicsCodes = parsedData.naics_codes || [];
+        const expandedNaics = expandNaicsCodes(rawNaicsCodes, naicsSectors);
+
         return {
           ...prev,
           investment_criteria_name: parsedData.investment_criteria_name || prev.investment_criteria_name,
@@ -456,7 +460,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           require_family_owned: parsedData.require_family_owned ?? prev.require_family_owned,
           require_operator_owned: parsedData.require_operator_owned ?? prev.require_operator_owned,
           keywords: flattenedKeywords.length ? [...new Set([...prev.keywords, ...flattenedKeywords])] : prev.keywords,
-          categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords
+          categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords,
+          naics_codes: expandedNaics.length ? [...new Set([...prev.naics_codes, ...expandedNaics])] : prev.naics_codes
         };
       });
       // Track highlighted fields
@@ -468,6 +473,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       if (parsedData.require_minority_owned !== undefined) updatedFields.push('require_minority_owned');
       if (parsedData.require_family_owned !== undefined) updatedFields.push('require_family_owned');
       if (parsedData.require_operator_owned !== undefined) updatedFields.push('require_operator_owned');
+      if (rawNaicsCodes.length) updatedFields.push('naics_codes');
       if (parsedData.keywords) updatedFields.push('keywords');
 
       setAutoFilledFields(updatedFields);

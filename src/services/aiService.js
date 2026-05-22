@@ -44,6 +44,7 @@ Return the result as a strict JSON object matching exactly this schema:
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (Allowed values: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other')",
+  "naics_codes": ["string (up to three 4-digit 2022 NAICS codes matching the business, e.g. '5415')"],
   "keywords": {
     "industry": ["string (1-3 phrases)"],
     "business_model": ["string (1-2 phrases)"],
@@ -76,6 +77,7 @@ Important Rules:
 5. For legal_entity, ONLY use one of the allowed strings: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other'. IMPORTANT: You MUST prioritize the CIM for this field. If the exact entity type is not explicitly mentioned in the CIM, set it to null (even if it appears in the Teaser). IMPORTANT: 'Inc.' is NOT a legal entity for this purpose; if you see 'Inc.', you must determine if it is a C-Corp or S-Corp from the CIM text, or set to null if unclear.
 6. Extract only the JSON, no markdown formatting or extra text.
 7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
+8. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three 4-digit codes that best represent this company.
 
 KEYWORD RULES:
 Extract 10-16 sharp, discriminating phrases (1-4 words each) that capture the following signals. Do not infer or embellish. If a category is missing, return an empty array for that key.
@@ -120,6 +122,7 @@ Return the result as a strict JSON object matching exactly this schema:
 
 {
   "investment_criteria_name": "string or null (a descriptive name for this mandate, e.g. 'Project Apollo - Mid Market Software')",
+  "naics_codes": ["string (up to three 2022 NAICS codes representing target industries. If the mandate is extremely broad, you may return 2-digit or 3-digit parent codes, e.g., '54' or '541'. Otherwise, return specific 4-digit codes, e.g., '5415')"],
   "financial_criteria": [
     { "metric": "string", "min": "string or null", "max": "string or null" }
   ],
@@ -148,6 +151,7 @@ Important Rules:
 4. If a value is genuinely not present, set min/max to null.
 5. Extract 10-16 sharp, discriminating phrases for the keywords categories.
 6. Extract only the JSON, no markdown formatting or extra text.
+7. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three codes that best represent this buyer criteria. If the criteria is extremely broad (e.g. "any technology/software business" or "any manufacturing company"), return the broad 2-digit sector or 3-digit subsector code (e.g., '54' or '541'). Otherwise, return specific 4-digit codes (e.g., '5415').
 
 Document Text:
 ${text.slice(0, 30000)}
@@ -161,6 +165,42 @@ ${text.slice(0, 30000)}
     });
 
     return JSON.parse(response.choices[0].message.content);
+  },
+
+  /**
+   * Convert keywords into up to three 2022 NAICS codes (broad or specific).
+   */
+  async generateNaicsFromKeywords(keywords) {
+    if (!keywords || !keywords.length) return [];
+
+    const prompt = `
+You are an expert M&A analyst and database clerk. Convert the following business/industry keywords into up to three 2022 NAICS codes that best capture the sectors:
+${JSON.stringify(keywords)}
+
+Important Rules:
+1. If the keywords suggest a broad sector, return a 2-digit or 3-digit code (e.g., '54' or '541').
+2. If they suggest a specific industry, return 4-digit codes (e.g., '5415').
+3. Return the result as a strict JSON object matching exactly this schema:
+{
+  "naics_codes": ["string"]
+}
+4. Extract only the JSON, no markdown formatting or extra text.
+`;
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        temperature: 0.1,
+      });
+
+      const data = JSON.parse(response.choices[0].message.content);
+      return data.naics_codes || [];
+    } catch (err) {
+      console.error('Failed to parse NAICS codes from keywords:', err);
+      return [];
+    }
   },
 
   /**

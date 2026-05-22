@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
-import { fetchNaicsSectors } from '../services/naicsService';
+import { fetchNaicsSectors, expandNaicsCodes } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import {
   Building2,
@@ -465,6 +465,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           ? Object.values(parsedData.keywords).flat().filter(Boolean)
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
 
+        const rawNaicsCodes = parsedData.naics_codes || [];
+        const expandedNaics = expandNaicsCodes(rawNaicsCodes, naicsSectors);
+
         return {
           ...prev,
           seller_name: parsedData.seller_name || prev.seller_name,
@@ -482,7 +485,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           keywords: flattenedKeywords.length ? [...new Set([...prev.keywords, ...flattenedKeywords])] : prev.keywords,
           categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords,
           summary: parsedData.summary || (autoFilledFields.includes('summary') ? '' : prev.summary),
-          financial_history: mergedHistory
+          financial_history: mergedHistory,
+          naics_codes: expandedNaics.length ? [...new Set([...prev.naics_codes, ...expandedNaics])] : prev.naics_codes
         };
       });
 
@@ -506,6 +510,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (parsedData.is_operator_owned !== undefined) updatedFields.push('is_operator_owned');
       if (parsedData.financial_history) updatedFields.push('financial_history');
       if (parsedData.summary) updatedFields.push('summary');
+      if (parsedData.naics_codes?.length) updatedFields.push('naics_codes');
 
       setAutoFilledFields(updatedFields);
       if (hasKeywords) {
