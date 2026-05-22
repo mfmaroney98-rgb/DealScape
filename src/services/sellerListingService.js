@@ -64,9 +64,33 @@ export const sellerListingService = {
   },
 
   /**
-   * Deletes a seller listing.
+   * Deletes a seller listing and its associated storage files.
    */
   async deleteListing(listingId) {
+    // 1. Fetch listing to get file paths
+    try {
+      const { data: listing } = await supabase
+        .from('seller_listings')
+        .select('teaser_url, cim_url')
+        .eq('id', listingId)
+        .single();
+
+      if (listing) {
+        const filesToDelete = [];
+        if (listing.teaser_url) filesToDelete.push(listing.teaser_url);
+        if (listing.cim_url) filesToDelete.push(listing.cim_url);
+
+        if (filesToDelete.length > 0) {
+          await supabase.storage
+            .from('listing_documents')
+            .remove(filesToDelete);
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to clean up files during listing deletion:', err);
+    }
+
+    // 2. Delete database entry
     const { error } = await supabase
       .from('seller_listings')
       .delete()
@@ -74,5 +98,47 @@ export const sellerListingService = {
 
     if (error) throw error;
     return true;
+  },
+
+  /**
+   * Uploads a listing document (teaser/cim) to Supabase Storage.
+   */
+  async uploadListingDocument(listingId, file, type) {
+    const fileExt = file.name.split('.').pop();
+    const path = `listings/${listingId}/${type}_${Date.now()}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from('listing_documents')
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
+
+    if (error) throw error;
+    return data.path; // Returns the storage path to store in the DB
+  },
+
+  /**
+   * Deletes a document from Supabase Storage.
+   */
+  async deleteListingDocument(path) {
+    const { error } = await supabase.storage
+      .from('listing_documents')
+      .remove([path]);
+
+    if (error) throw error;
+    return true;
+  },
+
+  /**
+   * Generates a signed URL to download or view a private listing document.
+   */
+  async getSignedUrl(path, expirySeconds = 60) {
+    const { data, error } = await supabase.storage
+      .from('listing_documents')
+      .createSignedUrl(path, expirySeconds);
+
+    if (error) throw error;
+    return data.signedUrl;
   }
 };

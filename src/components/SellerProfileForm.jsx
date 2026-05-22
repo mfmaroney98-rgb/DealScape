@@ -45,6 +45,21 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const [isParsing, setIsParsing] = useState(false);
   const [teaserFile, setTeaserFile] = useState(null);
   const [cimFile, setCimFile] = useState(null);
+  const [filesToDelete, setFilesToDelete] = useState([]);
+  const [filesUrlsToDelete, setFilesUrlsToDelete] = useState([]);
+
+  const handleRemoveExistingFile = (type) => {
+    const oldUrl = formData[`${type}_url`];
+    if (oldUrl) {
+      setFilesUrlsToDelete(prev => [...prev, oldUrl]);
+    }
+    setFilesToDelete(prev => [...prev, type]);
+    setFormData(prev => ({
+      ...prev,
+      [`${type}_url`]: null,
+      [`${type}_file_name`]: null
+    }));
+  };
   const [autoFilledFields, setAutoFilledFields] = useState(() => {
     try {
       const saved = sessionStorage.getItem(`sellerFormFields_${listingId || 'new'}`);
@@ -175,7 +190,11 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       naics_codes: [],
       embedding: null,
       last_embedded_text: '',
-      status: 'Draft'
+      status: 'Draft',
+      teaser_url: null,
+      teaser_file_name: null,
+      cim_url: null,
+      cim_file_name: null
     }
   });
 
@@ -595,7 +614,54 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         }
       }
 
-      await sellerListingService.saveListing(sanitizedData);
+      // 1. Save metadata first to get ID
+      const savedListing = await sellerListingService.saveListing(sanitizedData);
+
+      // 2. Handle file uploads and deletions
+      const fileUpdates = {};
+      let hasUpdates = false;
+
+      if (teaserFile instanceof File) {
+        const path = await sellerListingService.uploadListingDocument(savedListing.id, teaserFile, 'teaser');
+        fileUpdates.teaser_url = path;
+        fileUpdates.teaser_file_name = teaserFile.name;
+        hasUpdates = true;
+      }
+      if (cimFile instanceof File) {
+        const path = await sellerListingService.uploadListingDocument(savedListing.id, cimFile, 'cim');
+        fileUpdates.cim_url = path;
+        fileUpdates.cim_file_name = cimFile.name;
+        hasUpdates = true;
+      }
+
+      // Clean up deleted files from storage
+      for (const oldUrl of filesUrlsToDelete) {
+        try {
+          await sellerListingService.deleteListingDocument(oldUrl);
+        } catch (err) {
+          console.warn('Failed to delete old storage file:', oldUrl, err);
+        }
+      }
+
+      // Apply nulls for deleted fields in DB
+      if (filesToDelete.includes('teaser')) {
+        fileUpdates.teaser_url = null;
+        fileUpdates.teaser_file_name = null;
+        hasUpdates = true;
+      }
+      if (filesToDelete.includes('cim')) {
+        fileUpdates.cim_url = null;
+        fileUpdates.cim_file_name = null;
+        hasUpdates = true;
+      }
+
+      // Save updates back to DB if any
+      if (hasUpdates) {
+        await sellerListingService.saveListing({
+          id: savedListing.id,
+          ...fileUpdates
+        });
+      }
 
       // Clear draft after successful save
       sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
@@ -648,37 +714,79 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           )}
 
           {/* Teaser Upload */}
-          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2">
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => setTeaserFile(e.target.files?.[0] || null)}
-              className="text-sm text-slate-300 cursor-pointer"
-              title="Upload Teaser"
-            />
-            <div className={`mt-2 ${teaserFile ? 'text-amber-400' : 'text-slate-200'}`}>
-              <UploadCloud size={24} />
-            </div>
-            <p className="font-semibold text-white">Upload Teaser</p>
-            <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
-            {teaserFile && <p className="text-xs text-amber-400 truncate max-w-full">{teaserFile.name}</p>}
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-800/20 p-6 rounded-2xl border border-slate-800/50">
+            <h4 className="text-sm font-semibold text-slate-300 mb-2">Teaser Document</h4>
+            {formData.teaser_file_name && !filesToDelete.includes('teaser') ? (
+              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 w-full flex items-center justify-between">
+                <div className="flex items-center gap-2 overflow-hidden mr-2">
+                  <FileText className="text-amber-400 flex-shrink-0" size={20} />
+                  <span className="text-sm text-slate-200 font-semibold truncate" title={formData.teaser_file_name}>
+                    {formData.teaser_file_name}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveExistingFile('teaser')}
+                  className="text-xs text-red-400 hover:text-red-300 font-semibold px-2.5 py-1.5 hover:bg-red-500/10 rounded-md transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-2">
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => setTeaserFile(e.target.files?.[0] || null)}
+                  className="text-sm text-slate-300 cursor-pointer"
+                  title="Upload Teaser"
+                />
+                <div className={`mt-2 ${teaserFile ? 'text-amber-400' : 'text-slate-400'}`}>
+                  <UploadCloud size={24} />
+                </div>
+                <p className="font-semibold text-white">Upload New Teaser</p>
+                <p className="text-xs text-slate-400">Select a PDF document. We will securely extract the key metrics.</p>
+                {teaserFile && <p className="text-xs text-amber-400 truncate max-w-full font-medium">{teaserFile.name}</p>}
+              </div>
+            )}
           </div>
 
           {/* CIM Upload */}
-          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2">
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => setCimFile(e.target.files?.[0] || null)}
-              className="text-sm text-slate-300 cursor-pointer"
-              title="Upload CIM"
-            />
-            <div className={`mt-2 ${cimFile ? 'text-amber-400' : 'text-slate-200'}`}>
-              <FileText size={24} />
-            </div>
-            <p className="font-semibold text-white">Upload CIM</p>
-            <p className="text-sm text-slate-400">Upload a PDF or Word document. We will securely extract the key metrics.</p>
-            {cimFile && <p className="text-xs text-amber-400 truncate max-w-full">{cimFile.name}</p>}
+          <div style={{ flex: 1 }} className="flex flex-col items-start gap-2 bg-slate-800/20 p-6 rounded-2xl border border-slate-800/50">
+            <h4 className="text-sm font-semibold text-slate-300 mb-2">CIM Document</h4>
+            {formData.cim_file_name && !filesToDelete.includes('cim') ? (
+              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 w-full flex items-center justify-between">
+                <div className="flex items-center gap-2 overflow-hidden mr-2">
+                  <FileText className="text-indigo-400 flex-shrink-0" size={20} />
+                  <span className="text-sm text-slate-200 font-semibold truncate" title={formData.cim_file_name}>
+                    {formData.cim_file_name}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveExistingFile('cim')}
+                  className="text-xs text-red-400 hover:text-red-300 font-semibold px-2.5 py-1.5 hover:bg-red-500/10 rounded-md transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-2">
+                <input
+                  type="file"
+                  accept=".pdf"
+                  onChange={(e) => setCimFile(e.target.files?.[0] || null)}
+                  className="text-sm text-slate-300 cursor-pointer"
+                  title="Upload CIM"
+                />
+                <div className={`mt-2 ${cimFile ? 'text-indigo-400' : 'text-slate-400'}`}>
+                  <FileText size={24} />
+                </div>
+                <p className="font-semibold text-white">Upload New CIM</p>
+                <p className="text-xs text-slate-400">Select a PDF document. We will securely extract the key metrics.</p>
+                {cimFile && <p className="text-xs text-indigo-400 truncate max-w-full font-medium">{cimFile.name}</p>}
+              </div>
+            )}
           </div>
         </div>
 

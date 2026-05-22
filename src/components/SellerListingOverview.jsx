@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Loader2, Edit3, EyeOff, XCircle, Trash2, Users, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -12,6 +12,39 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview'); // overview, buyers, preview
+  const [downloadingFile, setDownloadingFile] = useState(null); // 'teaser' or 'cim' or null
+  const [downloadError, setDownloadError] = useState(null);
+
+  const handleDownload = async (type, path) => {
+    if (!path) return;
+    setDownloadingFile(type);
+    setDownloadError(null);
+    try {
+      const signedUrl = await sellerListingService.getSignedUrl(path);
+      window.open(signedUrl, '_blank');
+    } catch (err) {
+      console.error(`Error downloading ${type}:`, err);
+      setDownloadError(`Failed to generate download link for ${type}.`);
+    } finally {
+      setDownloadingFile(null);
+    }
+  };
+
+  const handleDeleteListing = async () => {
+    if (!window.confirm("Are you absolutely sure you want to permanently remove this listing? This will also permanently delete all associated documents and cannot be undone.")) {
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      await sellerListingService.deleteListing(id);
+      navigate('/dashboard/seller/listings');
+    } catch (err) {
+      console.error("Error deleting listing:", err);
+      setError(err.message || 'Failed to delete listing.');
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -209,18 +242,75 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
                   <FileText className="text-indigo-400" size={20} /> Files
                 </h3>
+                {downloadError && (
+                  <div className="p-3 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
+                    <AlertCircle size={14} className="flex-shrink-0" />
+                    <span>{downloadError}</span>
+                  </div>
+                )}
                 <div className="space-y-6">
+                  {/* Teaser */}
                   <div>
                     <h4 className="text-sm font-semibold text-slate-300 mb-2">Teaser</h4>
-                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg">
-                      Teaser has not been uploaded
-                    </p>
+                    {listing.teaser_file_name ? (
+                      <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
+                        <div className="flex items-center gap-2.5 overflow-hidden">
+                          <FileText className="text-amber-400 flex-shrink-0" size={18} />
+                          <span className="text-sm text-slate-200 font-medium truncate" title={listing.teaser_file_name}>
+                            {listing.teaser_file_name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDownload('teaser', listing.teaser_url)}
+                          disabled={downloadingFile !== null}
+                          className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                          title="Download Teaser"
+                        >
+                          {downloadingFile === 'teaser' ? (
+                            <Loader2 className="animate-spin" size={16} />
+                          ) : (
+                            <Download size={16} />
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
+                        Teaser has not been uploaded
+                      </p>
+                    )}
                   </div>
+
+                  {/* CIM */}
                   <div>
                     <h4 className="text-sm font-semibold text-slate-300 mb-2">CIM</h4>
-                    <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg">
-                      CIM has not been uploaded
-                    </p>
+                    {listing.cim_file_name ? (
+                      <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
+                        <div className="flex items-center gap-2.5 overflow-hidden">
+                          <FileText className="text-indigo-400 flex-shrink-0" size={18} />
+                          <span className="text-sm text-slate-200 font-medium truncate" title={listing.cim_file_name}>
+                            {listing.cim_file_name}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDownload('cim', listing.cim_url)}
+                          disabled={downloadingFile !== null}
+                          className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                          title="Download CIM"
+                        >
+                          {downloadingFile === 'cim' ? (
+                            <Loader2 className="animate-spin" size={16} />
+                          ) : (
+                            <Download size={16} />
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
+                        CIM has not been uploaded
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -265,7 +355,10 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold transition-all">
                   <CheckCircle2 size={18} /> Close Deal
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold transition-all">
+                <button 
+                  onClick={handleDeleteListing}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold transition-all"
+                >
                   <Trash2 size={18} /> Permanently Remove Listing
                 </button>
               </div>
