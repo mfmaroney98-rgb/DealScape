@@ -45,6 +45,7 @@ Return the result as a strict JSON object matching exactly this schema:
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (Allowed values: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other')",
   "naics_codes": ["string (up to three 4-digit 2022 NAICS codes matching the business, e.g. '5415')"],
+  "locations": ["string (Format: 'CC:StateName', e.g., 'US:New York' or 'CA:Ontario', representing only the single primary headquarters location of the company. CC must be the 2-letter country code in uppercase, and StateName must be the official full name of the state or province in title case. If the document specifies a city like 'Chicago', you must map it to the state 'US:Illinois')"],
   "keywords": {
     "industry": ["string (1-3 phrases)"],
     "business_model": ["string (1-2 phrases)"],
@@ -78,6 +79,9 @@ Important Rules:
 6. Extract only the JSON, no markdown formatting or extra text.
 7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
 8. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three 4-digit codes that best represent this company.
+9. For locations, extract ONLY the single primary headquarters location (do NOT include additional operating locations or facilities). Format each location strictly as "CC:StateName" (e.g., "US:California" for California, USA, or "CA:Ontario" for Ontario, Canada). You MUST resolve city names to their respective states (e.g., if the company is headquartered in "Houston, Texas", output "US:Texas"). If the headquarters location cannot be found, return an empty array.
+
+
 
 KEYWORD RULES:
 Extract 10-16 sharp, discriminating phrases (1-4 words each) that capture the following signals. Do not infer or embellish. If a category is missing, return an empty array for that key.

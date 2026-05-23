@@ -339,6 +339,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   const makeStateKey = (countryCode, stateName) => `${countryCode}:${stateName}`;
 
   const handleStateToggle = (countryCode, stateName) => {
+    if (autoFilledFields.includes('locations')) {
+      setAutoFilledFields(prev => prev.filter(f => f !== 'locations'));
+    }
     const key = makeStateKey(countryCode, stateName);
     setFormData(prev => ({
       ...prev,
@@ -349,6 +352,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   };
 
   const handleCountryToggle = (country) => {
+    if (autoFilledFields.includes('locations')) {
+      setAutoFilledFields(prev => prev.filter(f => f !== 'locations'));
+    }
     const keys = country.states.map(s => makeStateKey(country.code, s));
     setFormData(prev => {
       const allSelected = keys.every(k => prev.locations.includes(k));
@@ -373,6 +379,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   };
 
   const handleContinentToggle = (continent) => {
+    if (autoFilledFields.includes('locations')) {
+      setAutoFilledFields(prev => prev.filter(f => f !== 'locations'));
+    }
     const allKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
     setFormData(prev => {
       const allSelected = allKeys.length > 0 && allKeys.every(k => prev.locations.includes(k));
@@ -545,7 +554,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords,
           summary: parsedData.summary || (autoFilledFields.includes('summary') ? '' : prev.summary),
           financial_history: mergedHistory,
-          naics_codes: expandedNaics.length ? [...new Set([...prev.naics_codes, ...expandedNaics])] : prev.naics_codes
+          naics_codes: expandedNaics.length ? [...new Set([...prev.naics_codes, ...expandedNaics])] : prev.naics_codes,
+          locations: parsedData.locations?.length ? [...new Set([...prev.locations, ...parsedData.locations])] : prev.locations
         };
       });
 
@@ -570,6 +580,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
       if (parsedData.financial_history) updatedFields.push('financial_history');
       if (parsedData.summary) updatedFields.push('summary');
       if (parsedData.naics_codes?.length) updatedFields.push('naics_codes');
+      if (parsedData.locations?.length) updatedFields.push('locations');
 
       setAutoFilledFields(updatedFields);
       if (hasKeywords) {
@@ -577,6 +588,49 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           ? Object.values(parsedData.keywords).flat().filter(Boolean)
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
         setAutoFilledTags(tagsToHighlight);
+      }
+
+      // Auto-expand NAICS tree for parsed codes
+      if (parsedData.naics_codes && Array.isArray(parsedData.naics_codes)) {
+        setExpandedNaicsSectors(prev => {
+          const next = new Set(prev);
+          parsedData.naics_codes.forEach(code => {
+            if (code.length >= 2) next.add(code.substring(0, 2));
+          });
+          return next;
+        });
+        setExpandedNaicsSubsectors(prev => {
+          const next = new Set(prev);
+          parsedData.naics_codes.forEach(code => {
+            if (code.length >= 3) next.add(code.substring(0, 3));
+          });
+          return next;
+        });
+      }
+
+      // Auto-expand Geography tree for parsed locations
+      if (parsedData.locations && Array.isArray(parsedData.locations)) {
+        setExpandedCountries(prev => {
+          const next = new Set(prev);
+          parsedData.locations.forEach(locKey => {
+            const [cCode] = locKey.split(':');
+            if (cCode) next.add(cCode);
+          });
+          return next;
+        });
+        setExpandedContinents(prev => {
+          const next = new Set(prev);
+          parsedData.locations.forEach(locKey => {
+            const [cCode] = locKey.split(':');
+            if (cCode) {
+              const continent = geoTree.find(cont =>
+                cont.countries.some(ctry => ctry.code === cCode)
+              );
+              if (continent) next.add(continent.name);
+            }
+          });
+          return next;
+        });
       }
 
       // 4. Generate Triple-Vector Segmented Embeddings for Granular Matching
@@ -984,9 +1038,12 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             {/* Business Location & Ownership Structure */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div>
-                <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
-                  <MapPin size={16} className="text-slate-400" />
-                  Business Location
+                <label className="form-label flex items-center justify-between" style={{ marginBottom: '0.75rem' }}>
+                  <span className="flex items-center gap-2">
+                    <MapPin size={16} className={autoFilledFields.includes('locations') ? 'text-highlight' : 'text-slate-400'} />
+                    Business Location
+                  </span>
+                  {autoFilledFields.includes('locations') && <AlertCircle size={14} className="text-highlight animate-pulse" title="Auto-populated from document" />}
                 </label>
                 <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                   {geoLoading ? (
