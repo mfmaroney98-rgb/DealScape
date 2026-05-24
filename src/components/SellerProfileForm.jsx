@@ -1038,116 +1038,15 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
             {/* Business Location & Ownership Structure */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
-              <div>
-                <label className="form-label flex items-center justify-between" style={{ marginBottom: '0.75rem' }}>
-                  <span className="flex items-center gap-2">
-                    <MapPin size={16} className={autoFilledFields.includes('locations') ? 'text-highlight' : 'text-slate-400'} />
-                    Business Location
-                  </span>
-                  {autoFilledFields.includes('locations') && <AlertCircle size={14} className="text-highlight animate-pulse" title="Auto-populated from document" />}
-                </label>
-                <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-                  {geoLoading ? (
-                    <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
-                      Loading geography data...
-                    </div>
-                  ) : geoError ? (
-                    <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
-                      {geoError}
-                    </div>
-                  ) : (
-                    geoTree.map((continent, coIdx) => {
-                      const isLastContinent = coIdx === geoTree.length - 1;
-                      const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
-                      const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
-                      const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
-                      const isContExpanded = expandedContinents.has(continent.name);
-                      return (
-                        <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
-                          <div className="geo-row group">
-                            <button
-                              type="button"
-                              onClick={(e) => toggleContinentExpand(e, continent.name)}
-                              className={`geo-expand-btn ${isContExpanded ? 'expanded' : ''}`}
-                            >
-                              {isContExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
-                            </button>
-                            <div
-                              className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
-                              onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
-                            >
-                              {allContSelected && <CheckCircle2 size={14} />}
-                            </div>
-                            <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
-                              {continent.name}
-                            </span>
-                          </div>
-                          {isContExpanded && (
-                            <div className="geo-children">
-                              {continent.countries.map((country, cIdx) => {
-                                const isLastCountry = cIdx === continent.countries.length - 1;
-                                const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
-                                const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
-                                const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
-                                const isCtryExpanded = expandedCountries.has(country.code);
-                                return (
-                                  <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
-                                    <div className="geo-row group">
-                                      <button
-                                        type="button"
-                                        onClick={(e) => toggleCountryExpand(e, country.code)}
-                                        className={`geo-expand-btn ${isCtryExpanded ? 'expanded' : ''}`}
-                                      >
-                                        {isCtryExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
-                                      </button>
-                                      <div
-                                        className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
-                                        onClick={() => handleCountryToggle(country)}
-                                      >
-                                        {allCtrySelected && <CheckCircle2 size={12} />}
-                                      </div>
-                                      <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
-                                    </div>
-                                    {isCtryExpanded && (
-                                      <div className="geo-children">
-                                        {country.states.map((stateName, sIdx) => {
-                                          const isLastState = sIdx === country.states.length - 1;
-                                          const stateKey = makeStateKey(country.code, stateName);
-                                          const isStateSelected = formData.locations.includes(stateKey);
-                                          return (
-                                            <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
-                                              <div className="geo-row group">
-                                                <div className="geo-expand-spacer" />
-                                                <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>
-                                                  {isStateSelected && <CheckCircle2 size={10} />}
-                                                </div>
-                                                <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>{stateName}</span>
-                                              </div>
-                                            </div>
-                                          );
-                                        })}
-                                      </div>
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })
-
-                  )}
-                </div>
-              </div>
-
               <div className="flex flex-col gap-6">
                 <div>
-                  <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
-                    <Briefcase size={16} className="text-slate-400" />
-                    Ownership Structure
+                  <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
+                    <span className="flex items-center gap-2">
+                      <Briefcase size={16} className="text-slate-400" />
+                      Ownership Structure
+                    </span>
                   </label>
-                  <select name="ownership_structure" className="form-input" style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
+                  <select name="ownership_structure" className={getInputClass('ownership_structure', 'form-input w-full')} style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
                     <option value="">Select Ownership</option>
                     <option value="Private Company">Private Company</option>
                     <option value="Investment Firm Portfolio Company">Investment Firm Portfolio Company</option>
@@ -1156,14 +1055,118 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   </select>
                 </div>
                 <div>
-                  <label className="form-label flex justify-between items-center">
+                  <label className="form-label flex items-center justify-between" style={{ marginBottom: '0.75rem' }}>
+                    <span className="flex items-center gap-2">
+                      <MapPin size={16} className={autoFilledFields.includes('locations') ? 'text-highlight' : 'text-slate-400'} />
+                      Business Location
+                    </span>
+                    {autoFilledFields.includes('locations') && <AlertCircle size={14} className="text-highlight animate-pulse" title="Auto-populated from document" />}
+                  </label>
+                  <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                    {geoLoading ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.875rem' }}>
+                        Loading geography data...
+                      </div>
+                    ) : geoError ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171', fontSize: '0.875rem' }}>
+                        {geoError}
+                      </div>
+                    ) : (
+                      geoTree.map((continent, coIdx) => {
+                        const isLastContinent = coIdx === geoTree.length - 1;
+                        const allContinentKeys = continent.countries.flatMap(c => c.states.map(s => makeStateKey(c.code, s)));
+                        const allContSelected = allContinentKeys.length > 0 && allContinentKeys.every(k => formData.locations.includes(k));
+                        const someContSelected = allContinentKeys.some(k => formData.locations.includes(k)) && !allContSelected;
+                        const isContExpanded = expandedContinents.has(continent.name);
+                        return (
+                          <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
+                            <div className="geo-row group">
+                              <button
+                                type="button"
+                                onClick={(e) => toggleContinentExpand(e, continent.name)}
+                                className={`geo-expand-btn ${isContExpanded ? 'expanded' : ''}`}
+                              >
+                                {isContExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                              </button>
+                              <div
+                                className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
+                                onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
+                              >
+                                {allContSelected && <CheckCircle2 size={14} />}
+                              </div>
+                              <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
+                                {continent.name}
+                              </span>
+                            </div>
+                            {isContExpanded && (
+                              <div className="geo-children">
+                                {continent.countries.map((country, cIdx) => {
+                                  const isLastCountry = cIdx === continent.countries.length - 1;
+                                  const ctryKeys = country.states.map(s => makeStateKey(country.code, s));
+                                  const allCtrySelected = ctryKeys.length > 0 && ctryKeys.every(k => formData.locations.includes(k));
+                                  const someCtrySelected = ctryKeys.some(k => formData.locations.includes(k)) && !allCtrySelected;
+                                  const isCtryExpanded = expandedCountries.has(country.code);
+                                  return (
+                                    <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
+                                      <div className="geo-row group">
+                                        <button
+                                          type="button"
+                                          onClick={(e) => toggleCountryExpand(e, country.code)}
+                                          className={`geo-expand-btn ${isCtryExpanded ? 'expanded' : ''}`}
+                                        >
+                                          {isCtryExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                                        </button>
+                                        <div
+                                          className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
+                                          onClick={() => handleCountryToggle(country)}
+                                        >
+                                          {allCtrySelected && <CheckCircle2 size={12} />}
+                                        </div>
+                                        <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
+                                      </div>
+                                      {isCtryExpanded && (
+                                        <div className="geo-children">
+                                          {country.states.map((stateName, sIdx) => {
+                                            const isLastState = sIdx === country.states.length - 1;
+                                            const stateKey = makeStateKey(country.code, stateName);
+                                            const isStateSelected = formData.locations.includes(stateKey);
+                                            return (
+                                              <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
+                                                <div className="geo-row group">
+                                                  <div className="geo-expand-spacer" />
+                                                  <div className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>
+                                                    {isStateSelected && <CheckCircle2 size={10} />}
+                                                  </div>
+                                                  <span className={`geo-label-state ${isStateSelected ? 'selected' : ''}`} onClick={() => handleStateToggle(country.code, stateName)}>{stateName}</span>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-6">
+                <div>
+                  <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
                     <span className="flex items-center gap-2">
                       <FileText size={16} className={autoFilledFields.includes('legal_entity') ? 'text-highlight' : 'text-slate-400'} />
                       Legal Entity
                     </span>
                     {autoFilledFields.includes('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
                   </label>
-                  <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ appearance: 'auto', marginTop: '0.75rem' }} value={formData.legal_entity} onChange={handleChange}>
+                  <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ width: '100%', appearance: 'auto' }} value={formData.legal_entity} onChange={handleChange}>
                     <option value="">Select Legal Entity</option>
                     <option value="Sole Proprietorship">Sole Proprietorship</option>
                     <option value="LLC">LLC</option>
@@ -1178,6 +1181,136 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     <option value="Nonprofit">Nonprofit</option>
                     <option value="Other">Other</option>
                   </select>
+                </div>
+
+                <div>
+                  <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
+                    <span className="flex items-center gap-2">
+                      <Briefcase size={16} className="text-slate-400" />
+                      Industry Classification (NAICS)
+                      {formData.naics_codes.length > 0 && (
+                        <span className="ml-2 text-[0.7rem] bg-blue-500/10 text-blue-400 rounded-full px-2 py-0.5 font-bold">
+                          {formData.naics_codes.length} SELECTED
+                        </span>
+                      )}
+                    </span>
+                  </label>
+                  <p className="text-xs text-slate-500 mb-3">
+                    Select the NAICS codes that best describe your business.
+                  </p>
+                  <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
+                    {naicsLoading ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: '#94a3b8' }}>
+                        <Loader2 className="animate-spin mx-auto mb-2" size={24} />
+                        Loading industry codes...
+                      </div>
+                    ) : naicsError ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: '#f87171' }}>
+                        {naicsError}
+                      </div>
+                    ) : (
+                      naicsSectors.map((sector, sIdx) => {
+                        const isLastSector = sIdx === naicsSectors.length - 1;
+                        const allSubCodes = [
+                          ...sector.subsectors.map(s => s.code),
+                          ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+                        ];
+                        const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
+                        const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
+                        const isExpanded = expandedNaicsSectors.has(sector.code);
+
+                        return (
+                          <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
+                            <div className="geo-row group">
+                              <button
+                                type="button"
+                                onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
+                                className={`geo-expand-btn ${isExpanded ? 'expanded' : ''}`}
+                              >
+                                {isExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                              </button>
+                              <div
+                                className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
+                                onClick={() => handleNaicsSectorToggle(sector)}
+                              >
+                                {allSelected && <CheckCircle2 size={12} />}
+                              </div>
+                              <span className="geo-label-semi" style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSectorToggle(sector)}>
+                                <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
+                                {sector.name}
+                              </span>
+                            </div>
+
+                            {isExpanded && (
+                              <div className="geo-children">
+                                {sector.subsectors.map((sub, ssIdx) => {
+                                  const isLastSub = ssIdx === sector.subsectors.length - 1;
+                                  const igCodes = (sub.industryGroups || []).map(ig => ig.code);
+                                  const isSubAllSelected = [sub.code, ...igCodes].every(c => formData.naics_codes.includes(c));
+                                  const isSubSomeSelected = igCodes.some(c => formData.naics_codes.includes(c)) && !isSubAllSelected;
+                                  const isSubExpanded = expandedNaicsSubsectors.has(sub.code);
+
+                                  return (
+                                    <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
+                                      <div className="geo-row group">
+                                        {sub.industryGroups?.length > 0 ? (
+                                          <button
+                                            type="button"
+                                            onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)}
+                                            className={`geo-expand-btn ${isSubExpanded ? 'expanded' : ''}`}
+                                          >
+                                            {isSubExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                                          </button>
+                                        ) : (
+                                          <div className="geo-expand-spacer" />
+                                        )}
+                                        <div
+                                          className={`geo-check-sm ${isSubAllSelected ? 'checked' : isSubSomeSelected ? 'partial' : ''}`}
+                                          onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
+                                        >
+                                          {isSubAllSelected && <CheckCircle2 size={10} />}
+                                        </div>
+                                        <span className={`geo-label-state ${isSubAllSelected ? 'selected' : ''}`} style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}>
+                                          <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
+                                          {sub.name}
+                                        </span>
+                                      </div>
+
+                                      {isSubExpanded && sub.industryGroups && (
+                                        <div className="geo-children">
+                                          {sub.industryGroups.map((ig, igIdx) => {
+                                            const isLastIg = igIdx === sub.industryGroups.length - 1;
+                                            const isIgSelected = formData.naics_codes.includes(ig.code);
+                                            return (
+                                              <div key={ig.code} className={`geo-branch ${isLastIg ? 'geo-branch-last' : ''}`}>
+                                                <div className="geo-row group">
+                                                  <div className="geo-expand-spacer" />
+                                                  <div
+                                                    className={`geo-check-sm ${isIgSelected ? 'checked' : ''}`}
+                                                    onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
+                                                  >
+                                                    {isIgSelected && <CheckCircle2 size={8} />}
+                                                  </div>
+                                                  <span className={`geo-label-state ${isIgSelected ? 'selected' : ''}`} style={{ fontSize: '0.825rem', opacity: 0.9 }} onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}>
+                                                    <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{ig.code}</span>
+                                                    {ig.name}
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            );
+                                          })}
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1664,7 +1797,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           <div className="mt-12 pt-8 border-t border-slate-200">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <label className="form-label flex items-center justify-between mb-4">
+                <label className="form-label flex items-center justify-between" style={{ marginBottom: '1rem' }}>
                   <span className="flex items-center gap-2">
                     <Tag size={16} className={autoFilledFields.includes('keywords') ? 'text-highlight' : 'text-slate-400'} />
                     Reason for Sale
@@ -1685,13 +1818,16 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 />
               </div>
               <div>
-                <label className="form-label flex items-center gap-2 mb-4">
-                  <Users size={16} className="text-slate-400" />
-                  Owner Transition Period
+                <label className="form-label flex justify-between items-center" style={{ marginBottom: '1rem' }}>
+                  <span className="flex items-center gap-2">
+                    <Users size={16} className="text-slate-400" />
+                    Owner Transition Period
+                  </span>
                 </label>
                 <select
                   name="owner_transition"
-                  className="form-input bg-white"
+                  className="form-input w-full bg-white"
+                  style={{ width: '100%', appearance: 'auto' }}
                   value={formData.owner_transition || ''}
                   onChange={handleChange}
                 >
@@ -1709,137 +1845,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           </div>
         </div>
 
-        {/* Section 5: Industry Classification */}
-        <div className="glass p-8 rounded-3xl shadow-xl relative">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-              <Briefcase className="text-blue-400" size={20} />
-            </div>
-            <h2 className="text-xl font-bold">Industry Classification</h2>
-            {formData.naics_codes.length > 0 && (
-              <span className="ml-2 text-[0.7rem] bg-blue-500/10 text-blue-400 rounded-full px-2 py-0.5 font-bold">
-                {formData.naics_codes.length} SELECTED
-              </span>
-            )}
-          </div>
-          <p className="text-sm text-slate-500 mb-8 -mt-6">
-            Select the NAICS codes that best describe your business. This helps buyers find your listing when filtering by industry.
-          </p>
 
-          <div className="geo-tree" style={{ maxHeight: '500px', overflowY: 'auto', paddingRight: '0.5rem' }}>
-            {naicsLoading ? (
-              <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
-                <Loader2 className="animate-spin mx-auto mb-2" size={24} />
-                Loading industry codes...
-              </div>
-            ) : naicsError ? (
-              <div style={{ padding: '2rem', textAlign: 'center', color: '#f87171' }}>
-                {naicsError}
-              </div>
-            ) : (
-              naicsSectors.map((sector, sIdx) => {
-                const isLastSector = sIdx === naicsSectors.length - 1;
-                const allSubCodes = [
-                  ...sector.subsectors.map(s => s.code),
-                  ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
-                ];
-                const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
-                const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
-                const isExpanded = expandedNaicsSectors.has(sector.code);
-
-                return (
-                  <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
-                    <div className="geo-row group">
-                      <button
-                        type="button"
-                        onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
-                        className={`geo-expand-btn ${isExpanded ? 'expanded' : ''}`}
-                      >
-                        {isExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
-                      </button>
-                      <div
-                        className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
-                        onClick={() => handleNaicsSectorToggle(sector)}
-                      >
-                        {allSelected && <CheckCircle2 size={12} />}
-                      </div>
-                      <span className="geo-label-semi" style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSectorToggle(sector)}>
-                        <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
-                        {sector.name}
-                      </span>
-                    </div>
-
-                    {isExpanded && (
-                      <div className="geo-children">
-                        {sector.subsectors.map((sub, ssIdx) => {
-                          const isLastSub = ssIdx === sector.subsectors.length - 1;
-                          const igCodes = (sub.industryGroups || []).map(ig => ig.code);
-                          const isSubAllSelected = [sub.code, ...igCodes].every(c => formData.naics_codes.includes(c));
-                          const isSubSomeSelected = igCodes.some(c => formData.naics_codes.includes(c)) && !isSubAllSelected;
-                          const isSubExpanded = expandedNaicsSubsectors.has(sub.code);
-
-                          return (
-                            <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
-                              <div className="geo-row group">
-                                {sub.industryGroups?.length > 0 ? (
-                                  <button
-                                    type="button"
-                                    onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)}
-                                    className={`geo-expand-btn ${isSubExpanded ? 'expanded' : ''}`}
-                                  >
-                                    {isSubExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
-                                  </button>
-                                ) : (
-                                  <div className="geo-expand-spacer" />
-                                )}
-                                <div
-                                  className={`geo-check-sm ${isSubAllSelected ? 'checked' : isSubSomeSelected ? 'partial' : ''}`}
-                                  onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
-                                >
-                                  {isSubAllSelected && <CheckCircle2 size={10} />}
-                                </div>
-                                <span className={`geo-label-state ${isSubAllSelected ? 'selected' : ''}`} style={{ fontSize: '0.875rem' }} onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}>
-                                  <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
-                                  {sub.name}
-                                </span>
-                              </div>
-
-                              {isSubExpanded && sub.industryGroups && (
-                                <div className="geo-children">
-                                  {sub.industryGroups.map((ig, igIdx) => {
-                                    const isLastIg = igIdx === sub.industryGroups.length - 1;
-                                    const isIgSelected = formData.naics_codes.includes(ig.code);
-                                    return (
-                                      <div key={ig.code} className={`geo-branch ${isLastIg ? 'geo-branch-last' : ''}`}>
-                                        <div className="geo-row group">
-                                          <div className="geo-expand-spacer" />
-                                          <div
-                                            className={`geo-check-sm ${isIgSelected ? 'checked' : ''}`}
-                                            onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
-                                          >
-                                            {isIgSelected && <CheckCircle2 size={8} />}
-                                          </div>
-                                          <span className={`geo-label-state ${isIgSelected ? 'selected' : ''}`} style={{ fontSize: '0.825rem', opacity: 0.9 }} onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}>
-                                            <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{ig.code}</span>
-                                            {ig.name}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
 
         {error && (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-2">
