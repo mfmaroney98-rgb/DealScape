@@ -363,6 +363,7 @@ BEGIN
             ELSE 'Weak'
         END AS match_tier
     FROM scored s
+    WHERE s.geography_score > 0
     ORDER BY total_score DESC;
 END;
 $$ LANGUAGE plpgsql STABLE;
