@@ -663,6 +663,32 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     return `${baseClass} transition-colors`;
   };
 
+  const [viewingLoader, setViewingLoader] = useState({ teaser: false, cim: false });
+
+  const handleViewDocument = async (type) => {
+    try {
+      const file = type === 'teaser' ? teaserFile : cimFile;
+      if (file instanceof File) {
+        // Unsaved local file: open using browser object URL
+        const localUrl = URL.createObjectURL(file);
+        window.open(localUrl, '_blank');
+      } else {
+        // Saved file: request secure signed URL from storage
+        const storageUrl = formData[`${type}_url`];
+        if (storageUrl) {
+          setViewingLoader(prev => ({ ...prev, [type]: true }));
+          const signedUrl = await sellerListingService.getSignedUrl(storageUrl);
+          window.open(signedUrl, '_blank');
+        }
+      }
+    } catch (err) {
+      console.error('Failed to view document:', err);
+      setError(`Failed to open document: ${err.message || err.toString()}`);
+    } finally {
+      setViewingLoader(prev => ({ ...prev, [type]: false }));
+    }
+  };
+
   const handleCancel = () => {
     sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
     sessionStorage.removeItem(`sellerFormFields_${listingId || 'new'}`);
@@ -825,13 +851,26 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                       {teaserFile ? teaserFile.name : formData.teaser_file_name}
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleRemoveTeaserFile}
-                    className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    {(teaserFile || formData.teaser_url) && (
+                      <button
+                        type="button"
+                        onClick={() => handleViewDocument('teaser')}
+                        disabled={viewingLoader.teaser}
+                        className="text-xs text-indigo-600 hover:text-indigo-700 font-bold px-2.5 py-1.5 hover:bg-indigo-50 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer"
+                      >
+                        {viewingLoader.teaser && <Loader2 className="animate-spin" size={12} />}
+                        View
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleRemoveTeaserFile}
+                      className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
                 {formData.teaser_file_name && !formData.teaser_url && !teaserFile && (
                   <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-100 p-2 rounded-lg font-medium leading-relaxed">
@@ -877,13 +916,26 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                       {cimFile ? cimFile.name : formData.cim_file_name}
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={handleRemoveCimFile}
-                    className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors"
-                  >
-                    Remove
-                  </button>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    {(cimFile || formData.cim_url) && (
+                      <button
+                        type="button"
+                        onClick={() => handleViewDocument('cim')}
+                        disabled={viewingLoader.cim}
+                        className="text-xs text-indigo-600 hover:text-indigo-700 font-bold px-2.5 py-1.5 hover:bg-indigo-50 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer"
+                      >
+                        {viewingLoader.cim && <Loader2 className="animate-spin" size={12} />}
+                        View
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={handleRemoveCimFile}
+                      className="text-xs text-red-600 hover:text-red-700 font-bold px-2.5 py-1.5 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
                 {formData.cim_file_name && !formData.cim_url && !cimFile && (
                   <p className="text-[11px] text-indigo-700 bg-indigo-50 border border-indigo-100 p-2 rounded-lg font-medium leading-relaxed">
