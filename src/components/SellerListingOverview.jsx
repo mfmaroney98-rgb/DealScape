@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Loader2, Edit3, EyeOff, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -13,7 +13,23 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview'); // overview, buyers, preview
   const [downloadingFile, setDownloadingFile] = useState(null); // 'teaser' or 'cim' or null
+  const [viewingFile, setViewingFile] = useState(null); // 'teaser' or 'cim' or null
   const [downloadError, setDownloadError] = useState(null);
+
+  const handleView = async (type, path) => {
+    if (!path) return;
+    setViewingFile(type);
+    setDownloadError(null);
+    try {
+      const signedUrl = await sellerListingService.getSignedUrl(path);
+      window.open(signedUrl, '_blank');
+    } catch (err) {
+      console.error(`Error viewing ${type}:`, err);
+      setDownloadError(`Failed to generate view link for ${type}.`);
+    } finally {
+      setViewingFile(null);
+    }
+  };
 
   const handleDownload = async (type, path) => {
     if (!path) return;
@@ -21,10 +37,23 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     setDownloadError(null);
     try {
       const signedUrl = await sellerListingService.getSignedUrl(path);
-      window.open(signedUrl, '_blank');
+      
+      // Fetch the file as a blob to trigger a direct local browser download
+      const response = await fetch(signedUrl);
+      if (!response.ok) throw new Error('Network response was not ok');
+      const blob = await response.blob();
+      
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = listing[`${type}_file_name`] || `${type}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
     } catch (err) {
       console.error(`Error downloading ${type}:`, err);
-      setDownloadError(`Failed to generate download link for ${type}.`);
+      setDownloadError(`Failed to download ${type}.`);
     } finally {
       setDownloadingFile(null);
     }
@@ -260,19 +289,34 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             {listing.teaser_file_name}
                           </span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => handleDownload('teaser', listing.teaser_url)}
-                          disabled={downloadingFile !== null}
-                          className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                          title="Download Teaser"
-                        >
-                          {downloadingFile === 'teaser' ? (
-                            <Loader2 className="animate-spin" size={16} />
-                          ) : (
-                            <Download size={16} />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleView('teaser', listing.teaser_url)}
+                            disabled={viewingFile !== null || downloadingFile !== null}
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-700/40 hover:bg-slate-700/60 text-slate-300 hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            title="View Teaser"
+                          >
+                            {viewingFile === 'teaser' ? (
+                              <Loader2 className="animate-spin" size={16} />
+                            ) : (
+                              <Eye size={16} />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDownload('teaser', listing.teaser_url)}
+                            disabled={viewingFile !== null || downloadingFile !== null}
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            title="Download Teaser"
+                          >
+                            {downloadingFile === 'teaser' ? (
+                              <Loader2 className="animate-spin" size={16} />
+                            ) : (
+                              <Download size={16} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
@@ -292,19 +336,34 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             {listing.cim_file_name}
                           </span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => handleDownload('cim', listing.cim_url)}
-                          disabled={downloadingFile !== null}
-                          className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-                          title="Download CIM"
-                        >
-                          {downloadingFile === 'cim' ? (
-                            <Loader2 className="animate-spin" size={16} />
-                          ) : (
-                            <Download size={16} />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleView('cim', listing.cim_url)}
+                            disabled={viewingFile !== null || downloadingFile !== null}
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-700/40 hover:bg-slate-700/60 text-slate-300 hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            title="View CIM"
+                          >
+                            {viewingFile === 'cim' ? (
+                              <Loader2 className="animate-spin" size={16} />
+                            ) : (
+                              <Eye size={16} />
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDownload('cim', listing.cim_url)}
+                            disabled={viewingFile !== null || downloadingFile !== null}
+                            className="flex-shrink-0 flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            title="Download CIM"
+                          >
+                            {downloadingFile === 'cim' ? (
+                              <Loader2 className="animate-spin" size={16} />
+                            ) : (
+                              <Download size={16} />
+                            )}
+                          </button>
+                        </div>
                       </div>
                     ) : (
                       <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
