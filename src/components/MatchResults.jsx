@@ -325,12 +325,14 @@ export default function MatchResults({ orgId }) {
                               icon={Globe}
                               color="blue"
                             />
-                            <ScoreBar
-                              label="Industry Score"
-                              score={match.industry_score !== null && match.industry_score !== undefined ? match.industry_score : 100}
-                              icon={Building2}
-                              color="emerald"
-                            />
+                            {match.industry_score !== null && match.industry_score !== undefined && (
+                              <ScoreBar
+                                label="Industry Score"
+                                score={match.industry_score}
+                                icon={Building2}
+                                color="emerald"
+                              />
+                            )}
                             <ScoreBar
                               label="Semantic Score"
                               score={match.semantic_score || 0}
