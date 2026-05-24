@@ -660,7 +660,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
   };
 
   const getInputClass = (name, baseClass = 'form-input') => {
-    return `${baseClass} ${autoFilledFields.includes(name) ? 'form-input-highlight' : ''} transition-colors`;
+    return `${baseClass} transition-colors`;
   };
 
   const handleCancel = () => {
@@ -948,12 +948,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           <div className="space-y-6">
             <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <label className="form-label flex justify-between items-center pr-2">
-                  <span className="flex items-center gap-2">
-                    <Building2 size={16} className={autoFilledFields.includes('seller_name') ? 'text-highlight' : 'text-slate-400'} />
-                    Company Name or Project Name
-                  </span>
-                  {autoFilledFields.includes('seller_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                <label className="form-label flex items-center gap-2">
+                  <Building2 size={16} className="text-slate-400" />
+                  Company Name or Project Name
                 </label>
                 <input
                   type="text"
@@ -991,12 +988,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
             <div style={{ display: 'flex', flexDirection: 'row', gap: '24px' }}>
               <div style={{ flex: 1 }}>
-                <label className="form-label flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <Users size={16} className={autoFilledFields.includes('employees_count') ? 'text-highlight' : 'text-slate-400'} />
-                    Employee Count
-                  </span>
-                  {autoFilledFields.includes('employees_count') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                <label className="form-label flex items-center gap-2">
+                  <Users size={16} className="text-slate-400" />
+                  Employee Count
                 </label>
                 <div className="relative">
                   <input
@@ -1013,12 +1007,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               </div>
 
               <div style={{ flex: 1 }}>
-                <label className="form-label flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <Building2 size={16} className={autoFilledFields.includes('year_founded') ? 'text-highlight' : 'text-slate-400'} />
-                    Year Founded
-                  </span>
-                  {autoFilledFields.includes('year_founded') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                <label className="form-label flex items-center gap-2">
+                  <Building2 size={16} className="text-slate-400" />
+                  Year Founded
                 </label>
                 <div className="relative">
                   <input
@@ -1055,12 +1046,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                   </select>
                 </div>
                 <div>
-                  <label className="form-label flex items-center justify-between" style={{ marginBottom: '0.75rem' }}>
-                    <span className="flex items-center gap-2">
-                      <MapPin size={16} className={autoFilledFields.includes('locations') ? 'text-highlight' : 'text-slate-400'} />
-                      Business Location
-                    </span>
-                    {autoFilledFields.includes('locations') && <AlertCircle size={14} className="text-highlight animate-pulse" title="Auto-populated from document" />}
+                  <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                    <MapPin size={16} className="text-slate-400" />
+                    Business Location
                   </label>
                   <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                     {geoLoading ? (
@@ -1159,12 +1147,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
               <div className="flex flex-col gap-6">
                 <div>
-                  <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
-                    <span className="flex items-center gap-2">
-                      <FileText size={16} className={autoFilledFields.includes('legal_entity') ? 'text-highlight' : 'text-slate-400'} />
-                      Legal Entity
-                    </span>
-                    {autoFilledFields.includes('legal_entity') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                  <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                    <FileText size={16} className="text-slate-400" />
+                    Legal Entity
                   </label>
                   <select name="legal_entity" className={getInputClass('legal_entity', 'form-input w-full')} style={{ width: '100%', appearance: 'auto' }} value={formData.legal_entity} onChange={handleChange}>
                     <option value="">Select Legal Entity</option>
@@ -1331,9 +1316,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
               <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
                 <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
                   {cat.label}
-                  {autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0 && (
-                    <AlertCircle size={14} className="text-accent animate-pulse" title="Auto-populated" />
-                  )}
                 </label>
                 <div className="flex-1">
                   <TagInput
@@ -1352,8 +1334,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                       });
                     }}
                     placeholder={`e.g. ${cat.example}`}
-                    isInputHighlighted={autoFilledFields.includes('keywords') && formData.categorized_keywords?.[cat.id]?.length > 0}
-                    autoFilledTags={autoFilledTags}
                   />
                 </div>
               </div>
@@ -1734,17 +1714,14 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <label className="form-label flex justify-between">
-                Preferred Transaction Types
-                {autoFilledFields.includes('pref_transaction_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
+              <label className="form-label">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-3 mt-4">
                 {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer group">
                     <input
                       type="checkbox"
                       name="pref_transaction_type"
-                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes('pref_transaction_type') ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
                       checked={formData.pref_transaction_type?.includes(type)}
                       onChange={() => {
                         if (autoFilledFields.includes('pref_transaction_type')) {
@@ -1753,7 +1730,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                         handlePrefTransactionToggle(type);
                       }}
                     />
-                    <span className={`text-sm transition-colors ${autoFilledFields.includes('pref_transaction_type') && formData.pref_transaction_type?.includes(type) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-400 group-hover:text-white'}`}>
+                    <span className="text-sm transition-colors text-slate-400 group-hover:text-white">
                       {type}
                     </span>
                   </label>
@@ -1775,7 +1752,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     <input
                       type="checkbox"
                       name={flag.key}
-                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes(flag.key) ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
                       checked={formData[flag.key]}
                       onChange={(e) => {
                         if (autoFilledFields.includes(flag.key)) {
@@ -1784,10 +1761,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                         handleChange(e);
                       }}
                     />
-                    <span className={`text-sm transition-colors ${autoFilledFields.includes(flag.key) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-400 group-hover:text-white'}`}>
+                    <span className="text-sm transition-colors text-slate-400 group-hover:text-white">
                       {flag.label}
                     </span>
-                    {autoFilledFields.includes(flag.key) && <AlertCircle size={12} className="text-highlight ml-[-4px]" title="Auto-populated from document" />}
                   </label>
                 ))}
               </div>
@@ -1797,12 +1773,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
           <div className="mt-12 pt-8 border-t border-slate-200">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <label className="form-label flex items-center justify-between" style={{ marginBottom: '1rem' }}>
-                  <span className="flex items-center gap-2">
-                    <Tag size={16} className={autoFilledFields.includes('keywords') ? 'text-highlight' : 'text-slate-400'} />
-                    Reason for Sale
-                  </span>
-                  {autoFilledFields.includes('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                <label className="form-label flex items-center gap-2" style={{ marginBottom: '1rem' }}>
+                  <Tag size={16} className="text-slate-400" />
+                  Reason for Sale
                 </label>
                 <TagInput
                   tags={formData.categorized_keywords?.reason_for_sale || []}
@@ -1814,7 +1787,6 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                     }
                   }))}
                   placeholder="e.g. Owner retirement, Growth capital, Corporate divestiture..."
-                  highlightedTags={autoFilledTags}
                 />
               </div>
               <div>

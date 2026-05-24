@@ -526,7 +526,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   };
 
   const getInputClass = (name, baseClass = 'form-input') => {
-    return `${baseClass} ${autoFilledFields.includes(name) ? 'form-input-highlight' : ''} transition-colors`;
+    return `${baseClass} transition-colors`;
   };
 
   const handleSubmit = async (e) => {
@@ -712,10 +712,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           </div>
 
           <div className="field-group" style={{ marginBottom: 0 }}>
-            <label className="form-label mb-2 flex justify-between items-center">
-              <span>Investment Criteria Name</span>
-              {autoFilledFields.includes('investment_criteria_name') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-            </label>
+            <label className="form-label mb-2">Investment Criteria Name</label>
             <input
               type="text"
               name="investment_criteria_name"
@@ -782,20 +779,19 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       <>
                         <input
                           type="text"
-                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"}
+                          className="form-input flex-1"
                           placeholder={isPct ? "% Min" : "$ Min"}
                           value={isPct ? displayPercentage(criteria.min) : displayCurrency(criteria.min)}
                           onChange={(e) => handleFinancialCriteriaChange(index, 'min', e.target.value)}
                         />
-                        <span className={`range-separator px-1 ${criteria.autoFilled ? 'text-amber-400' : ''}`}>To</span>
+                        <span className="range-separator px-1">To</span>
                         <input
                           type="text"
-                          className={criteria.autoFilled ? "form-input flex-1 form-input-highlight" : "form-input flex-1"}
+                          className="form-input flex-1"
                           placeholder={isPct ? "% Max" : "$ Max"}
                           value={isPct ? displayPercentage(criteria.max) : displayCurrency(criteria.max)}
                           onChange={(e) => handleFinancialCriteriaChange(index, 'max', e.target.value)}
                         />
-                        {criteria.autoFilled && <AlertCircle size={14} className="text-highlight animate-pulse shrink-0" title="Auto-populated from document" />}
                       </>
                     );
                   })()}
@@ -823,7 +819,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
               <Tag className="text-amber-400" size={20} />
             </div>
             <h2 className="text-xl font-bold">Strategic Characteristics</h2>
-            {autoFilledFields.includes('keywords') && <AlertCircle size={18} className="text-highlight animate-pulse ml-2" title="Auto-populated from document" />}
           </div>
           <p className="text-xs text-slate-500 mb-6 -mt-6 ml-[3.25rem]">
             Focus on one industry or vertical per criteria for the most accurate semantic matches.
@@ -851,8 +846,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       });
                     }}
                     placeholder={`e.g. ${cat.example}`}
-                    isInputHighlighted={autoFilledFields.includes('keywords') && (formData.categorized_keywords?.[cat.id]?.length > 0 || autoFilledTags.some(t => formData.categorized_keywords?.[cat.id]?.includes(t)))}
-                    autoFilledTags={autoFilledTags}
                   />
                 </div>
               </div>
@@ -1133,17 +1126,14 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <label className="form-label mb-6 flex justify-between items-center">
-                <span>Preferred Transaction Types</span>
-                {autoFilledFields.includes('pref_transaction_type') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
-              </label>
+              <label className="form-label mb-6">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-3">
                 {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer group">
                     <input
                       type="checkbox"
                       name="pref_transaction_type"
-                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes('pref_transaction_type') ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
                       checked={formData.pref_transaction_type?.includes(type)}
                       onChange={() => {
                         if (autoFilledFields.includes('pref_transaction_type')) {
@@ -1152,7 +1142,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                         handlePrefTransactionToggle(type);
                       }}
                     />
-                    <span className={`text-sm transition-colors ${autoFilledFields.includes('pref_transaction_type') && formData.pref_transaction_type?.includes(type) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                    <span className="text-sm transition-colors text-slate-700 group-hover:text-slate-900">
                       {type}
                     </span>
                   </label>
@@ -1161,9 +1151,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             </div>
 
             <div>
-              <label className="form-label mb-6 flex justify-between items-center">
-                <span>Ownership Characteristics</span>
-              </label>
+              <label className="form-label mb-6">Ownership Characteristics</label>
               <div className="grid grid-cols-1 gap-4">
                 {[
                   { key: 'require_founder_owned', label: 'Founder-Owned' },
@@ -1176,7 +1164,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     <input
                       type="checkbox"
                       name={pref.key}
-                      className={`h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 ${autoFilledFields.includes(pref.key) ? 'text-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-indigo-500'}`}
+                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
                       checked={formData[pref.key]}
                       onChange={(e) => {
                         if (autoFilledFields.includes(pref.key)) {
@@ -1185,10 +1173,9 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                         handleChange(e);
                       }}
                     />
-                    <span className={`text-sm transition-colors ${autoFilledFields.includes(pref.key) ? 'text-amber-400 group-hover:text-amber-300' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                    <span className="text-sm transition-colors text-slate-700 group-hover:text-slate-900">
                       {pref.label}
                     </span>
-                    {autoFilledFields.includes(pref.key) && <AlertCircle size={12} className="text-highlight ml-[-4px]" title="Auto-populated from document" />}
                   </label>
                 ))}
               </div>
@@ -1198,12 +1185,9 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
           <div className="mt-12 pt-8 border-t border-slate-200">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <label className="form-label flex items-center justify-between mb-4">
-                  <span className="flex items-center gap-2">
-                    <Tag size={16} className={autoFilledFields.includes('keywords') ? 'text-highlight' : 'text-slate-400'} />
-                    Ideal Reason for Sale
-                  </span>
-                  {autoFilledFields.includes('keywords') && <AlertCircle size={14} className="text-highlight" title="Auto-populated from document" />}
+                <label className="form-label flex items-center gap-2 mb-4">
+                  <Tag size={16} className="text-slate-400" />
+                  Ideal Reason for Sale
                 </label>
                 <TagInput
                   tags={formData.categorized_keywords?.reason_for_sale || []}
@@ -1215,7 +1199,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     }
                   }))}
                   placeholder="e.g. Owner retirement, Growth capital, Corporate divestiture..."
-                  highlightedTags={autoFilledTags}
                 />
               </div>
               <div>
