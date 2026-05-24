@@ -119,25 +119,26 @@
 }
 
 .geo-branch {
-  @apply relative pl-5 border-l border-slate-200/60 ml-3 py-0;
-}
-
-.geo-branch-last {
-  @apply border-l-transparent;
+  @apply relative pl-5 border-l border-slate-300 ml-3 py-0;
 }
 
 .geo-branch-last::before {
   content: '';
-  @apply absolute top-0 -left-[1px] w-[1px] h-4 bg-slate-200/60;
+  @apply absolute left-[-2px] bottom-0 w-[3px] bg-white;
+  top: 16px;
 }
 
 .geo-row {
-  @apply flex items-center gap-3 py-0.75 relative hover:bg-slate-100/50 rounded-xl px-2.5 -ml-2.5 transition-all duration-200 cursor-pointer;
+  @apply flex items-center gap-3 py-0.75 relative hover:bg-slate-100/50 rounded-xl px-2.5 transition-all duration-200 cursor-pointer;
+  margin-left: -40px;
 }
 
 .geo-row::before {
   content: '';
-  @apply absolute top-1/2 -left-2.5 w-2.5 h-[1px] bg-slate-200/60;
+  @apply absolute top-1/2 bg-slate-300;
+  left: 20px;
+  width: 22px;
+  height: 1px;
 }
 
 
@@ -192,6 +193,18 @@
 
 .geo-toggle {
   @apply ml-auto p-1 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 rounded-lg transition-all duration-200;
+}
+
+.geo-expand-btn {
+  @apply shrink-0 w-5 h-5 border border-slate-200 rounded-md bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300 flex items-center justify-center transition-all duration-150 cursor-pointer shadow-sm relative z-10;
+}
+
+.geo-expand-btn.expanded {
+  @apply bg-slate-900 border-slate-900 text-white hover:bg-slate-800 hover:border-slate-800;
+}
+
+.geo-expand-spacer {
+  @apply shrink-0 w-5 h-5;
 }
 
 .geo-children {

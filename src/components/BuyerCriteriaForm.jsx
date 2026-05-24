@@ -19,6 +19,7 @@ import {
   Search,
   Globe,
   Plus,
+  Minus,
   X,
   Loader2,
   Tag,
@@ -897,6 +898,13 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     return (
                       <div key={continent.name} className={`geo-branch ${isLastContinent ? 'geo-branch-last' : ''}`}>
                         <div className="geo-row group">
+                          <button
+                            type="button"
+                            onClick={(e) => toggleContinentExpand(e, continent.name)}
+                            className={`geo-expand-btn ${isContExpanded ? 'expanded' : ''}`}
+                          >
+                            {isContExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                          </button>
                           <div
                             className={`geo-check ${allContSelected ? 'checked' : someContSelected ? 'partial' : ''}`}
                             onClick={(e) => { e.stopPropagation(); handleContinentToggle(continent); }}
@@ -906,13 +914,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                           <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
                             {continent.name}
                           </span>
-                          <button
-                            type="button"
-                            onClick={(e) => toggleContinentExpand(e, continent.name)}
-                            className="geo-toggle"
-                          >
-                            {isContExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                          </button>
                         </div>
 
                         {isContExpanded && (
@@ -927,6 +928,13 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                               return (
                                 <div key={country.code} className={`geo-branch ${isLastCountry ? 'geo-branch-last' : ''}`}>
                                   <div className="geo-row group">
+                                    <button
+                                      type="button"
+                                      onClick={(e) => toggleCountryExpand(e, country.code)}
+                                      className={`geo-expand-btn ${isCtryExpanded ? 'expanded' : ''}`}
+                                    >
+                                      {isCtryExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                                    </button>
                                     <div
                                       className={`geo-check-sm ${allCtrySelected ? 'checked' : someCtrySelected ? 'partial' : ''}`}
                                       onClick={() => handleCountryToggle(country)}
@@ -936,13 +944,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                     <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>
                                       {country.name}
                                     </span>
-                                    <button
-                                      type="button"
-                                      onClick={(e) => toggleCountryExpand(e, country.code)}
-                                      className="geo-toggle"
-                                    >
-                                      {isCtryExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                                    </button>
                                   </div>
 
                                   {isCtryExpanded && (
@@ -954,6 +955,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                         return (
                                           <div key={stateKey} className={`geo-branch ${isLastState ? 'geo-branch-last' : ''}`}>
                                             <div className="geo-row group">
+                                              <div className="geo-expand-spacer" />
                                               <div
                                                 className={`geo-check-sm ${isStateSelected ? 'checked' : ''}`}
                                                 onClick={() => handleStateToggle(country.code, stateName)}
@@ -1015,6 +1017,13 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                     return (
                       <div key={sector.code} className={`geo-branch ${isLastSector ? 'geo-branch-last' : ''}`}>
                         <div className="geo-row group">
+                          <button
+                            type="button"
+                            onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
+                            className={`geo-expand-btn ${isExpanded ? 'expanded' : ''}`}
+                          >
+                            {isExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                          </button>
                           <div
                             className={`geo-check-sm ${allSelected ? 'checked' : someSelected ? 'partial' : ''}`}
                             onClick={() => handleNaicsSectorToggle(sector)}
@@ -1029,13 +1038,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                             <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sector.code}</span>
                             {sector.name}
                           </span>
-                          <button
-                            type="button"
-                            onClick={(e) => toggleNaicsSectorExpand(e, sector.code)}
-                            className="geo-toggle"
-                          >
-                            {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                          </button>
                         </div>
 
                         {isExpanded && (
@@ -1050,6 +1052,17 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                               return (
                                 <div key={sub.code} className={`geo-branch ${isLastSub ? 'geo-branch-last' : ''}`}>
                                   <div className="geo-row group">
+                                    {sub.industryGroups?.length > 0 ? (
+                                      <button
+                                        type="button"
+                                        onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)}
+                                        className={`geo-expand-btn ${isSubExpanded ? 'expanded' : ''}`}
+                                      >
+                                        {isSubExpanded ? <Minus size={10} strokeWidth={3} /> : <Plus size={10} strokeWidth={3} />}
+                                      </button>
+                                    ) : (
+                                      <div className="geo-expand-spacer" />
+                                    )}
                                     <div
                                       className={`geo-check-sm ${isSubAllSelected ? 'checked' : isSubSomeSelected ? 'partial' : ''}`}
                                       onClick={() => handleNaicsSubsectorToggle(sector.code, sub)}
@@ -1064,15 +1077,6 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                       <span style={{ color: 'var(--color-accent)', fontFamily: 'monospace', marginRight: '0.3rem' }}>{sub.code}</span>
                                       {sub.name}
                                     </span>
-                                    {sub.industryGroups?.length > 0 && (
-                                      <button
-                                        type="button"
-                                        onClick={(e) => toggleNaicsSubsectorExpand(e, sub.code)}
-                                        className="geo-toggle"
-                                      >
-                                        {isSubExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                                      </button>
-                                    )}
                                   </div>
 
                                   {isSubExpanded && sub.industryGroups && (
@@ -1083,6 +1087,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                                         return (
                                           <div key={ig.code} className={`geo-branch ${isLastIg ? 'geo-branch-last' : ''}`}>
                                             <div className="geo-row group">
+                                              <div className="geo-expand-spacer" />
                                               <div
                                                 className={`geo-check-sm ${isIgSelected ? 'checked' : ''}`}
                                                 onClick={() => handleNaicsIndustryGroupToggle(sector.code, sub.code, ig.code)}
