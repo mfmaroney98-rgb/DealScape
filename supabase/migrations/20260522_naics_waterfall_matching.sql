@@ -364,6 +364,7 @@ BEGIN
         END AS match_tier
     FROM scored s
     WHERE s.geography_score > 0
+      AND (s.industry_score IS NULL OR s.industry_score > 0)
     ORDER BY total_score DESC;
 END;
 $$ LANGUAGE plpgsql STABLE;
