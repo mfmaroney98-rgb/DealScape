@@ -155,6 +155,19 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 }
               });
 
+              const parsedKeywords = typeof data.keywords === 'string'
+                ? data.keywords.split(',').map(k => k.trim()).filter(Boolean)
+                : (Array.isArray(data.keywords) ? data.keywords : []);
+
+              const hasCategorized = data.categorized_keywords && 
+                Object.values(data.categorized_keywords).flat().filter(Boolean).length > 0;
+
+              const loadedCategorized = hasCategorized
+                ? data.categorized_keywords
+                : (parsedKeywords.length > 0 ? { industry: parsedKeywords } : {});
+
+              const loadedKeywords = Object.values(loadedCategorized).flat().filter(Boolean);
+
               return {
                 ...prev,
                 ...data,
@@ -166,7 +179,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 locations: Array.isArray(data.locations) ? data.locations : [],
                 year_founded: data.year_founded || '',
                 employees_count: data.employees_count || '',
-                keywords: Array.isArray(data.keywords) ? data.keywords : [],
+                keywords: loadedKeywords,
+                categorized_keywords: loadedCategorized,
                 legal_entity: data.legal_entity || '',
                 ownership_structure: data.ownership_structure || '',
                 pref_transaction_type: Array.isArray(data.pref_transaction_type) ? data.pref_transaction_type : [],
