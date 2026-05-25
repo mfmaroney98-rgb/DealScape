@@ -158,5 +158,29 @@ export const sellerListingService = {
 
     if (error) throw error;
     return data.signedUrl;
+  },
+
+  /**
+   * Fetches a listing by ID for buyer-facing display.
+   * Only returns buyer-safe fields — never seller_name (real identity).
+   */
+  async getPublicListingById(id) {
+    if (!id) throw new Error('Listing ID is required');
+
+    const { data, error } = await supabase
+      .from('seller_listings')
+      .select(
+        'id, seller_anon_name, summary, year_founded, employees_count, legal_entity, ' +
+        'ownership_structure, is_founder_owned, is_female_owned, is_minority_owned, ' +
+        'is_family_owned, is_operator_owned, keywords, locations, pref_transaction_type, ' +
+        'financial_history, categorized_keywords, teaser_url, teaser_file_name, ' +
+        'search_revenue, search_ebitda, search_ebitda_margin, search_gross_profit, ' +
+        'search_revenue_growth_yoy, status, created_at'
+      )
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return data;
   }
 };

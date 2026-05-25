@@ -19,7 +19,8 @@ import {
   Zap,
   BarChart3,
   Award,
-  Users
+  Users,
+  ExternalLink
 } from 'lucide-react';
 
 const TIER_CONFIG = {
@@ -296,10 +297,21 @@ export default function MatchResults({ orgId }) {
                       </div>
                     </div>
 
-                    {/* Expand Toggle */}
-                    <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-slate-100">
-                      {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                    </button>
+                    {/* View Listing + Expand */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Link
+                        to={`/dashboard/buyer/criteria/${criteriaId}/matches/${match.listing_id}`}
+                        state={{ match }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-accent text-white text-xs font-semibold hover:bg-accent/90 transition-all shadow-md shadow-accent/20"
+                      >
+                        <ExternalLink size={13} />
+                        View Listing
+                      </Link>
+                      <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-slate-100">
+                        {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Expanded Detail */}
