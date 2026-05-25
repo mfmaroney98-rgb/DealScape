@@ -114,7 +114,6 @@ CREATE TABLE public.seller_listings (
   seller_name text NOT NULL,
   seller_anon_name text,
   employees_count integer,
-  naics_codes_generated ARRAY,
   legal_entity text,
   ownership_structure text,
   is_founder_owned boolean DEFAULT false,
