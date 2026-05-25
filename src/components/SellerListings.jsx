@@ -188,7 +188,7 @@ export default function SellerListings({ orgId, isCorporate }) {
                 {/* Values row */}
                 <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
-                    {listing.legal_entity || listing.seller_name || '--'}
+                    {listing.seller_name || '--'}
                   </div>
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '0.95rem', whiteSpace: 'pre-line', lineHeight: '1.4' }}>
                     {getDisplayKeywords(listing.keywords)}
