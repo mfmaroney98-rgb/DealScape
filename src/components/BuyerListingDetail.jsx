@@ -182,6 +182,16 @@ const TIER_CONFIG = {
   },
 };
 
+const KEYWORD_CATEGORIES = [
+  { id: 'industry', label: 'Industry / Vertical' },
+  { id: 'business_model', label: 'Business Model' },
+  { id: 'revenue_model', label: 'Revenue Model' },
+  { id: 'customer_type', label: 'Customer Type' },
+  { id: 'operational_model', label: 'Operational Model' },
+  { id: 'differentiation', label: 'Differentiation' },
+  { id: 'end_market', label: 'End Market' }
+];
+
 /* ─── Sub-components ──────────────────────────────────────────────────── */
 
 const ScoreBar = ({ label, score, icon: Icon, color = 'accent' }) => {
@@ -418,6 +428,12 @@ export default function BuyerListingDetail({ orgId }) {
     const raw = listing?.keywords || '';
     const clean = raw.replace(/[{}"[\]]/g, '');
     return clean ? clean.split(',').map(k => k.trim()).filter(Boolean) : [];
+  })();
+
+  const hasCategorizedKeywords = (() => {
+    const cats = listing?.categorized_keywords;
+    if (!cats || typeof cats !== 'object') return false;
+    return Object.values(cats).some(arr => Array.isArray(arr) && arr.length > 0);
   })();
 
   const locations = (() => {
@@ -787,7 +803,7 @@ export default function BuyerListingDetail({ orgId }) {
                 <Building2 size={13} className="text-blue-500" />
                 Company Info
               </h3>
-              <div className="space-y-1 mb-4">
+              <div className="space-y-1">
                 {listing.year_founded && <InfoRow label="Year Founded"      value={listing.year_founded} />}
                 {listing.employees_count && <InfoRow label="Employees"      value={listing.employees_count.toLocaleString()} />}
                 {listing.legal_entity && <InfoRow label="Legal Entity"      value={listing.legal_entity} />}
@@ -796,24 +812,6 @@ export default function BuyerListingDetail({ orgId }) {
                   <InfoRow label="Location(s)" value={locations.join(', ')} />
                 )}
               </div>
-              {/* Keywords */}
-              {keywords.length > 0 && (
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
-                    <Tag size={11} /> Keywords
-                  </p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {keywords.slice(0, 16).map((kw, i) => (
-                      <span key={i} className="text-[11px] px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-foreground font-medium">
-                        {kw}
-                      </span>
-                    ))}
-                    {keywords.length > 16 && (
-                      <span className="text-[10px] text-muted-foreground self-center">+{keywords.length - 16} more</span>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Deal Info */}
@@ -869,6 +867,55 @@ export default function BuyerListingDetail({ orgId }) {
 
           </div>
         </div>
+
+        {/* Keywords */}
+        {(hasCategorizedKeywords || keywords.length > 0) && (
+          <div className="glass rounded-3xl p-7 mt-6">
+            {hasCategorizedKeywords ? (
+              <div className="space-y-6">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                  <Tag size={14} className="text-accent" />
+                  Keywords by Category
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {KEYWORD_CATEGORIES.map(cat => {
+                    const tags = listing.categorized_keywords[cat.id] || [];
+                    if (tags.length === 0) return null;
+                    return (
+                      <div key={cat.id} className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/50 flex flex-col justify-start">
+                        <p className="text-[10px] uppercase tracking-wider font-extrabold text-muted-foreground mb-3">{cat.label}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {tags.map((kw, i) => (
+                            <span key={i} className="text-[11px] px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-foreground font-medium">
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2 mb-4">
+                  <Tag size={14} className="text-accent" />
+                  Keywords
+                </h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {keywords.slice(0, 32).map((kw, i) => (
+                    <span key={i} className="text-[11px] px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-foreground font-medium">
+                      {kw}
+                    </span>
+                  ))}
+                  {keywords.length > 32 && (
+                    <span className="text-[10px] text-muted-foreground self-center">+{keywords.length - 32} more</span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
