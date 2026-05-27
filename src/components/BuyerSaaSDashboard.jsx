@@ -23,6 +23,7 @@ import {
   Plus,
   SlidersHorizontal,
   Sparkles,
+  Bookmark,
   DollarSign,
   MapPin,
   Building,
@@ -60,10 +61,12 @@ export default function BuyerSaaSDashboard({ profile }) {
 
   // State Management
   const [criteriaList, setCriteriaList] = useState([]);
-  const [selectedCriteria, setSelectedCriteria] = useState(null);
+  const [selectedCriteriaIds, setSelectedCriteriaIds] = useState(new Set());
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const notificationTimeoutRef = useRef(null);
 
   // Layout states
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -116,8 +119,8 @@ export default function BuyerSaaSDashboard({ profile }) {
         setCriteriaList(criteriaData || []);
 
         if (criteriaData && criteriaData.length > 0) {
-          // Default to the first criteria
-          setSelectedCriteria(criteriaData[0]);
+          // Default to all criteria sets selected
+          setSelectedCriteriaIds(new Set(criteriaData.map(c => c.id)));
         } else {
           setLoading(false);
         }
@@ -131,18 +134,54 @@ export default function BuyerSaaSDashboard({ profile }) {
     if (orgId) initWorkspace();
   }, [orgId, isCorporate]);
 
-  // Load matches when active criteria changes
+  // Load matches when active criteria sets change
   useEffect(() => {
     const fetchMatches = async () => {
-      if (!selectedCriteria) return;
+      if (selectedCriteriaIds.size === 0) {
+        setMatches([]);
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
-        const matchData = await matchingService.getMatchesForCriteria(selectedCriteria.id);
-        setMatches(matchData || []);
+        
+        // Fetch matches for all selected criteria sets in parallel
+        const matchPromises = Array.from(selectedCriteriaIds).map(id =>
+          matchingService.getMatchesForCriteria(id)
+        );
+        const results = await Promise.all(matchPromises);
+        
+        // Merge results, removing duplicate listings and keeping highest score
+        const mergedMap = new Map();
+        results.forEach((matchList, listIdx) => {
+          const criteriaId = Array.from(selectedCriteriaIds)[listIdx];
+          const criteriaObj = criteriaList.find(c => c.id === criteriaId);
+          const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
+
+          matchList.forEach(m => {
+            const existing = mergedMap.get(m.listing_id);
+            const matchedCriteriaNames = existing
+              ? [...new Set([...existing.matchedCriteriaNames, criteriaName])]
+              : [criteriaName];
+
+            if (!existing || m.total_score > existing.total_score) {
+              mergedMap.set(m.listing_id, {
+                ...m,
+                matchedCriteriaNames
+              });
+            } else {
+              existing.matchedCriteriaNames = matchedCriteriaNames;
+            }
+          });
+        });
+
+        const mergedList = Array.from(mergedMap.values());
+        mergedList.sort((a, b) => b.total_score - a.total_score);
+        setMatches(mergedList);
 
         // Prepopulate default mock statuses
         const statuses = {};
-        matchData.forEach((m, idx) => {
+        mergedList.forEach((m, idx) => {
           if (idx === 0) statuses[m.listing_id] = 'Due Diligence';
           else if (idx === 1) statuses[m.listing_id] = 'NDA Signed';
           else if (idx === 2) statuses[m.listing_id] = 'Active Fit';
@@ -157,10 +196,22 @@ export default function BuyerSaaSDashboard({ profile }) {
       }
     };
 
-    fetchMatches();
-  }, [selectedCriteria]);
+    if (criteriaList.length > 0) {
+      fetchMatches();
+    }
+  }, [selectedCriteriaIds, criteriaList]);
 
   // Actions
+  const triggerNotification = (message) => {
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current);
+    }
+    setNotification(message);
+    notificationTimeoutRef.current = setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
+
   const togglePin = (id) => {
     setPinnedDeals(prev => {
       const next = new Set(prev);
@@ -173,8 +224,13 @@ export default function BuyerSaaSDashboard({ profile }) {
   const toggleStar = (id) => {
     setStarredDeals(prev => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+        triggerNotification("Listing Removed from Watchlist");
+      } else {
+        next.add(id);
+        triggerNotification("Listing added to Watchlist.");
+      }
       return next;
     });
   };
@@ -241,7 +297,7 @@ export default function BuyerSaaSDashboard({ profile }) {
       if (activeSmartFilter === 'Strong' && match.match_tier !== 'Strong') return false;
       if (activeSmartFilter === 'Moderate' && match.match_tier !== 'Moderate') return false;
       if (activeSmartFilter === 'Weak' && match.match_tier !== 'Weak') return false;
-      if (activeSmartFilter === 'Shortlisted' && !starredDeals.has(match.listing_id)) return false;
+      if (activeSmartFilter === 'Watchlist' && !starredDeals.has(match.listing_id)) return false;
 
       // 5. Industry filter
       if (filterIndustry !== 'All') {
@@ -373,21 +429,37 @@ export default function BuyerSaaSDashboard({ profile }) {
             </div>
             {criteriaList.map((crit, idx) => {
               const colorClass = COLORS[idx % COLORS.length];
-              const isSelected = selectedCriteria?.id === crit.id;
+              const isChecked = selectedCriteriaIds.has(crit.id);
               return (
-                <button
+                <div
                   key={crit.id}
-                  onClick={() => setSelectedCriteria(crit)}
+                  onClick={() => {
+                    setSelectedCriteriaIds(prev => {
+                      const next = new Set(prev);
+                      if (next.has(crit.id)) {
+                        next.delete(crit.id);
+                      } else {
+                        next.add(crit.id);
+                      }
+                      return next;
+                    });
+                  }}
                   className={clsx(
-                    "w-full flex items-center gap-3 px-4 py-2 text-xs font-medium text-left transition-all hover:bg-slate-800/50",
-                    isSelected ? "bg-slate-800 text-white font-bold" : "text-slate-400"
+                    "w-full flex items-center gap-2.5 px-4 py-1.5 text-xs font-semibold text-left transition-all hover:bg-slate-800/50 cursor-pointer",
+                    isChecked ? "text-white font-bold bg-slate-800/40" : "text-slate-400"
                   )}
                 >
-                  <div className={clsx("w-3.5 h-3.5 rounded shrink-0", colorClass)} />
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    readOnly
+                    className="rounded border-slate-600 bg-transparent text-blue-500 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer"
+                  />
+                  <div className={clsx("w-2 h-2 rounded shrink-0", colorClass)} />
                   {!isSidebarCollapsed && (
-                    <span className="truncate">{crit.investment_criteria_name || 'Untitled Set'}</span>
+                    <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
                   )}
-                </button>
+                </div>
               );
             })}
             {criteriaList.length === 0 && (
@@ -425,18 +497,7 @@ export default function BuyerSaaSDashboard({ profile }) {
 
       {/* -------------------- 2. INNER WHITE SIDEBAR (Worklists Mock) -------------------- */}
       <div className="w-60 bg-[#f8fafc] border-r border-slate-200 flex flex-col h-full shrink-0 select-none">
-        <div className="h-16 px-4 flex items-center justify-between border-b border-slate-200 bg-white">
-          <span className="text-sm font-bold text-slate-800">Matches Pipeline</span>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => navigate('/onboarding/buyer')}
-              className="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
-              title="Add New Criteria"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
-        </div>
+
 
         <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
           {/* Smart Folders */}
@@ -450,7 +511,7 @@ export default function BuyerSaaSDashboard({ profile }) {
               { label: 'Strong Fit', count: strongMatchesCount, bullet: 'bg-emerald-500' },
               { label: 'Moderate Fit', count: moderateMatchesCount, bullet: 'bg-amber-500' },
               { label: 'Weak Fit', count: weakMatchesCount, bullet: 'bg-slate-400' },
-              { label: 'Shortlisted', count: shortlistedCount, icon: Sparkles, iconColor: 'text-amber-500' }
+              { label: 'Watchlist', count: shortlistedCount, icon: Bookmark, iconColor: 'text-blue-500' }
             ].map((sf) => {
               const isSelected = activeSmartFilter === sf.label;
               return (
@@ -541,7 +602,11 @@ export default function BuyerSaaSDashboard({ profile }) {
                 <Target size={14} className="font-bold" />
               </div>
               <h2 className="text-md font-bold text-slate-800">
-                {selectedCriteria?.investment_criteria_name || 'Define Criteria to begin matching'}
+                {selectedCriteriaIds.size === 0
+                  ? 'No Criteria Selected'
+                  : selectedCriteriaIds.size === 1
+                    ? (criteriaList.find(c => selectedCriteriaIds.has(c.id))?.investment_criteria_name || 'Criteria Set')
+                    : `Combined Workspace (${selectedCriteriaIds.size} Criteria Sets)`}
               </h2>
             </div>
 
@@ -722,7 +787,10 @@ export default function BuyerSaaSDashboard({ profile }) {
                 Try widening your filtering parameters, changing the focus folders on the left sidebar, or editing your core Criteria specifications.
               </p>
               <button
-                onClick={() => navigate(`/onboarding/buyer/edit/${selectedCriteria?.id}`)}
+                onClick={() => {
+                  const firstId = Array.from(selectedCriteriaIds)[0];
+                  if (firstId) navigate(`/onboarding/buyer/edit/${firstId}`);
+                }}
                 className="px-4 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-900 rounded-lg transition-colors shadow-sm"
               >
                 Edit Active Criteria
@@ -869,9 +937,9 @@ export default function BuyerSaaSDashboard({ profile }) {
                     onClick={() => toggleStar(selectedMatch.listing_id)}
                     className="p-1 rounded hover:bg-slate-200 transition-all"
                   >
-                    <Sparkles
-                      size={16}
-                      className={starredDeals.has(selectedMatch.listing_id) ? "text-amber-500 fill-amber-500 animate-pulse" : "text-slate-400"}
+                    <Bookmark
+                      size={14}
+                      className={starredDeals.has(selectedMatch.listing_id) ? "text-blue-500 fill-blue-500" : "text-slate-400"}
                     />
                   </button>
                   <button
@@ -893,6 +961,16 @@ export default function BuyerSaaSDashboard({ profile }) {
                     <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                       Founded: {selectedMatch.year_founded || '--'} • Employees: {selectedMatch.employees_count || '--'} • Entity: {selectedMatch.legal_entity || 'Private'}
                     </p>
+                    {selectedMatch.matchedCriteriaNames && selectedMatch.matchedCriteriaNames.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2.5">
+                        <span className="text-[9px] text-slate-400 font-bold self-center mr-1">MATCHED BY:</span>
+                        {selectedMatch.matchedCriteriaNames.map((name, i) => (
+                          <span key={i} className="text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-100 text-blue-600 rounded">
+                            {name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-col items-center justify-center shrink-0">
                     <span className="text-[20px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-xl border border-blue-100 shadow-sm leading-none">
@@ -1143,7 +1221,7 @@ export default function BuyerSaaSDashboard({ profile }) {
               {/* Drawer Footer CTA Actions */}
               <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center gap-3">
                 <Link
-                  to={`/dashboard/buyer/criteria/${selectedCriteria?.id}/matches/${selectedMatch.listing_id}`}
+                  to={`/dashboard/buyer/criteria/${selectedMatch?.criteria_id || Array.from(selectedCriteriaIds)[0]}/matches/${selectedMatch.listing_id}`}
                   state={{ match: selectedMatch }}
                   className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 border border-blue-700 rounded-xl shadow-sm transition-all"
                 >
@@ -1158,6 +1236,20 @@ export default function BuyerSaaSDashboard({ profile }) {
               </div>
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-6 right-6 z-50 bg-[#0b1329] text-white px-5 py-3 rounded-xl border border-[#152347] shadow-2xl flex items-center gap-2.5 max-w-sm select-none"
+          >
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shrink-0" />
+            <span className="text-xs font-bold font-sans tracking-tight">{notification}</span>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -1216,11 +1308,22 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
 
   const currentAssignees = pickAssignees();
 
-  // Flag color based on score priority
-  const getPriorityFlag = () => {
-    if (match.total_score >= 85) return <Flag size={13} className="text-red-500 fill-red-500" title="High Priority" />;
-    if (match.total_score >= 70) return <Flag size={13} className="text-amber-500 fill-amber-500" title="Medium Priority" />;
-    return <Flag size={13} className="text-slate-300 fill-slate-300" title="Standard Fit" />;
+  // Score Pill generator matching screenshot and list colors
+  const getScorePill = (score) => {
+    let bgClass = 'bg-[#f1f5f9] text-[#64748b] border border-[#e2e8f0]';
+    if (score >= 85) {
+      bgClass = 'bg-[#e6f4ea] text-[#0f9d58] border border-[#0f9d58]/10'; // emerald/green
+    } else if (score >= 70) {
+      bgClass = 'bg-[#fffbeb] text-[#d97706] border border-[#fef3c7]'; // amber
+    }
+    return (
+      <span className={clsx(
+        "inline-flex items-center justify-center px-3.5 py-1.5 rounded-full text-xs font-black tracking-tight leading-none shadow-sm select-none border",
+        bgClass
+      )}>
+        {Math.round(score)}
+      </span>
+    );
   };
 
   const locationLabel = match.locations?.length > 0
@@ -1255,9 +1358,10 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
               e.stopPropagation();
               onStar(match.listing_id);
             }}
-            className="text-slate-300 hover:text-amber-500 transition-colors"
+            className="text-slate-400 hover:text-blue-500 transition-colors flex items-center justify-center"
+            title="Save to Watchlist"
           >
-            <Sparkles size={11} className={starred ? "text-amber-500 fill-amber-500 animate-pulse" : "text-slate-300"} />
+            <Bookmark size={15} className={starred ? "text-blue-500 fill-blue-500" : "text-slate-400"} />
           </button>
           <span className="text-xs font-bold text-slate-800 truncate block max-w-[280px]">
             {match.seller_anon_name || 'Untitled Project Target'}
@@ -1265,16 +1369,10 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
         </div>
       </td>
 
-      {/* Flag / Priority column */}
+      {/* Score column */}
       <td className="w-20 text-center" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-center gap-1.5">
-          {getPriorityFlag()}
-          <span className={clsx(
-            "text-[9px] font-bold uppercase",
-            match.total_score >= 85 ? "text-red-500" : match.total_score >= 70 ? "text-amber-600" : "text-slate-400"
-          )}>
-            {match.total_score >= 85 ? 'High' : match.total_score >= 70 ? 'Med' : 'Low'}
-          </span>
+        <div className="flex items-center justify-center">
+          {getScorePill(match.total_score)}
         </div>
       </td>
 
