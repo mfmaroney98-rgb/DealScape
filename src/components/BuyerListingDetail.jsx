@@ -456,10 +456,10 @@ export default function BuyerListingDetail({ orgId }) {
       <div className="min-h-screen p-6 animate-fade-in">
         <div className="max-w-6xl mx-auto py-12">
           <Link
-            to={`/dashboard/buyer/criteria/${criteriaId}/matches`}
+            to="/dashboard/buyer"
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
-            <ArrowLeft size={16} /> Back to Results
+            <ArrowLeft size={16} /> Back to Buyer Dashboard
           </Link>
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
             {error || 'Listing not found.'}
@@ -481,11 +481,11 @@ export default function BuyerListingDetail({ orgId }) {
 
         {/* ── Back nav ── */}
         <Link
-          to={`/dashboard/buyer/criteria/${criteriaId}/matches`}
+          to="/dashboard/buyer"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 group"
         >
           <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
-          Back to Match Results
+          Back to Buyer Dashboard
         </Link>
 
         {/* ── Hero Header ── */}

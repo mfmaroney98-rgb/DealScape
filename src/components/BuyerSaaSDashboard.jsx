@@ -67,6 +67,7 @@ export default function BuyerSaaSDashboard({ profile }) {
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
   const notificationTimeoutRef = useRef(null);
+  const [activeCriteriaKebabId, setActiveCriteriaKebabId] = useState(null);
 
   // Layout states
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -103,6 +104,7 @@ export default function BuyerSaaSDashboard({ profile }) {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setActiveDropdown(null);
+        setActiveCriteriaKebabId(null);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -457,7 +459,35 @@ export default function BuyerSaaSDashboard({ profile }) {
                   />
                   <div className={clsx("w-2 h-2 rounded shrink-0", colorClass)} />
                   {!isSidebarCollapsed && (
-                    <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
+                    <>
+                      <span className="truncate select-none flex-1">{crit.investment_criteria_name || 'Untitled Set'}</span>
+                      <div className="relative shrink-0" onClick={(e) => e.stopPropagation()}>
+                        <button
+                          onClick={() => setActiveCriteriaKebabId(activeCriteriaKebabId === crit.id ? null : crit.id)}
+                          className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-700 transition-colors flex items-center justify-center"
+                          title="Options"
+                        >
+                          <MoreHorizontal size={13} />
+                        </button>
+                        
+                        {activeCriteriaKebabId === crit.id && (
+                          <div 
+                            ref={dropdownRef}
+                            className="absolute right-0 mt-1 w-32 bg-slate-900 border border-slate-750 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
+                          >
+                            <button
+                              onClick={() => {
+                                navigate(`/onboarding/buyer/edit/${crit.id}`);
+                                setActiveCriteriaKebabId(null);
+                              }}
+                              className="w-full px-3 py-1.5 text-left text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+                            >
+                              Edit Criteria
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
               );
