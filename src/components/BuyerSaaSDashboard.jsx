@@ -89,6 +89,13 @@ export default function BuyerSaaSDashboard({ profile }) {
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerTab, setDrawerTab] = useState('details');
+  const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
+
+  useEffect(() => {
+    if (selectedMatch) {
+      setActiveLogicCriteriaId(selectedMatch.criteria_id || '');
+    }
+  }, [selectedMatch]);
 
   // Custom local state for interaction mocks
   const [pinnedDeals, setPinnedDeals] = useState(new Set());
@@ -161,18 +168,35 @@ export default function BuyerSaaSDashboard({ profile }) {
           const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
 
           matchList.forEach(m => {
+            const matchInfo = {
+              criteriaId,
+              criteriaName,
+              matchTier: m.match_tier,
+              totalScore: m.total_score,
+              financialScore: m.financial_score || 0,
+              geographyScore: m.geography_score || 0,
+              industryScore: m.industry_score,
+              semanticScore: m.semantic_score || 0,
+              bonusScore: m.bonus_score || 0,
+              bonusReasons: m.bonus_reasons || []
+            };
+
             const existing = mergedMap.get(m.listing_id);
-            const matchedCriteriaNames = existing
-              ? [...new Set([...existing.matchedCriteriaNames, criteriaName])]
-              : [criteriaName];
+            let matchedCriteriaList = [];
+            if (existing) {
+              const filterExisting = existing.matchedCriteriaList.filter(item => item.criteriaName !== criteriaName);
+              matchedCriteriaList = [...filterExisting, matchInfo];
+            } else {
+              matchedCriteriaList = [matchInfo];
+            }
 
             if (!existing || m.total_score > existing.total_score) {
               mergedMap.set(m.listing_id, {
                 ...m,
-                matchedCriteriaNames
+                matchedCriteriaList
               });
             } else {
-              existing.matchedCriteriaNames = matchedCriteriaNames;
+              existing.matchedCriteriaList = matchedCriteriaList;
             }
           });
         });
@@ -991,16 +1015,35 @@ export default function BuyerSaaSDashboard({ profile }) {
                     <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                       Founded: {selectedMatch.year_founded || '--'} • Employees: {selectedMatch.employees_count || '--'} • Entity: {selectedMatch.legal_entity || 'Private'}
                     </p>
-                    {selectedMatch.matchedCriteriaNames && selectedMatch.matchedCriteriaNames.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-2.5">
-                        <span className="text-[9px] text-slate-400 font-bold self-center mr-1">MATCHED BY:</span>
-                        {selectedMatch.matchedCriteriaNames.map((name, i) => (
-                          <span key={i} className="text-[9px] font-bold px-1.5 py-0.5 bg-blue-50 border border-blue-100 text-blue-600 rounded">
-                            {name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    {selectedMatch.matchedCriteriaList && selectedMatch.matchedCriteriaList.length > 0 && (() => {
+                      const strongs = selectedMatch.matchedCriteriaList.filter(item => item.matchTier === 'Strong');
+                      const mediums = selectedMatch.matchedCriteriaList.filter(item => item.matchTier === 'Moderate');
+                      
+                      return (
+                        <div className="space-y-1.5 mt-2.5 select-none">
+                          {strongs.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 items-center">
+                              <span className="text-[9px] text-emerald-600 font-black tracking-wider uppercase mr-1">★ Strong Fits:</span>
+                              {strongs.map((item, i) => (
+                                <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#e6f4ea] border border-[#0f9d58]/10 text-[#0f9d58] rounded shadow-xs">
+                                  {Math.round(item.totalScore)} {item.criteriaName}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          {mediums.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 items-center">
+                              <span className="text-[9px] text-amber-600 font-black tracking-wider uppercase mr-1">⚡ Medium Fits:</span>
+                              {mediums.map((item, i) => (
+                                <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#fffbeb] border border-[#fef3c7] text-[#d97706] rounded shadow-xs">
+                                  {Math.round(item.totalScore)} {item.criteriaName}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                   <div className="flex flex-col items-center justify-center shrink-0">
                     <span className="text-[20px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-xl border border-blue-100 shadow-sm leading-none">
@@ -1119,54 +1162,103 @@ export default function BuyerSaaSDashboard({ profile }) {
                   </>
                 )}
 
-                {drawerTab === 'scores' && (
-                  <div className="space-y-6">
-                    <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Workspace Match Breakdown</h4>
+                {drawerTab === 'scores' && (() => {
+                  const activeCriteriaMatch = (selectedMatch.matchedCriteriaList || []).find(
+                    item => item.criteriaId === activeLogicCriteriaId
+                  ) || {
+                    totalScore: selectedMatch.total_score,
+                    financialScore: selectedMatch.financial_score || 0,
+                    geographyScore: selectedMatch.geography_score || 0,
+                    industryScore: selectedMatch.industry_score,
+                    semanticScore: selectedMatch.semantic_score || 0,
+                    bonusScore: selectedMatch.bonus_score || 0,
+                    bonusReasons: selectedMatch.bonus_reasons || [],
+                    matchTier: selectedMatch.match_tier
+                  };
 
-                    <div className="space-y-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-200/50">
-                      {[
-                        { label: 'Financial Fit Score', score: selectedMatch.financial_score, desc: 'EBITDA, Revenue matching thresholds', color: 'bg-emerald-500' },
-                        { label: 'Geography Fit Score', score: selectedMatch.geography_score, desc: 'Match of regional boundaries', color: 'bg-blue-500' },
-                        { label: 'Industry overlap Score', score: selectedMatch.industry_score, desc: 'Alignment with standard NAICS descriptors', color: 'bg-indigo-500' },
-                        { label: 'Semantic/Strategic Fit', score: selectedMatch.semantic_score, desc: 'AI keyword semantic context mapping', color: 'bg-purple-500' }
-                      ].map((item) => (
-                        <div key={item.label} className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="text-xs font-bold text-slate-700 block">{item.label}</span>
-                              <span className="text-[10px] text-slate-400 mt-0.5 block leading-none">{item.desc}</span>
-                            </div>
-                            <span className="text-xs font-black text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200">
-                              {Math.round(item.score)}%
-                            </span>
-                          </div>
-                          <div className="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
-                            <div
-                              className={clsx("h-full rounded-full transition-all duration-500", item.color)}
-                              style={{ width: `${Math.min(100, Math.max(0, item.score))}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {selectedMatch.bonus_score > 0 && (
-                      <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
-                        <span className="text-xs font-bold text-amber-800 block flex items-center gap-1.5">
-                          <Sparkles size={14} className="text-amber-500 fill-amber-500" />
-                          Bonus Score Multipliers (+{selectedMatch.bonus_score} pts)
+                  return (
+                    <div className="space-y-5">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Workspace Match Breakdown</h4>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                          {activeCriteriaMatch.matchTier || selectedMatch.match_tier} Fit
                         </span>
-                        <div className="flex flex-wrap gap-1">
-                          {selectedMatch.bonus_reasons?.map((reason, ri) => (
-                            <span key={ri} className="text-[9px] font-bold px-1.5 py-0.5 bg-amber-100 border border-amber-200 text-amber-700 rounded uppercase tracking-wider leading-none">
-                              {reason}
-                            </span>
-                          ))}
+                      </div>
+
+                      {/* Dropdown selector for matched criteria */}
+                      {selectedMatch.matchedCriteriaList && selectedMatch.matchedCriteriaList.length > 1 && (
+                        <div className="space-y-1.5 p-3.5 bg-slate-50 border border-slate-200/65 rounded-2xl">
+                          <label className="text-[9px] font-extrabold text-slate-450 uppercase tracking-wider block leading-none mb-1">
+                            Inspect Criteria Fit Details
+                          </label>
+                          <select
+                            value={activeLogicCriteriaId}
+                            onChange={(e) => setActiveLogicCriteriaId(e.target.value)}
+                            className="w-full text-xs font-semibold bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer shadow-xs"
+                          >
+                            {[...selectedMatch.matchedCriteriaList]
+                              .sort((a, b) => b.totalScore - a.totalScore)
+                              .map((item) => (
+                                <option key={item.criteriaId} value={item.criteriaId}>
+                                  {item.criteriaName} ({Math.round(item.totalScore)} pts - {item.matchTier})
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      )}
+
+                      <div className="space-y-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-200/50">
+                        {[
+                          { label: 'Financial Fit Score', score: activeCriteriaMatch.financialScore, desc: 'EBITDA, Revenue matching thresholds', color: 'bg-emerald-500' },
+                          { label: 'Geography Fit Score', score: activeCriteriaMatch.geographyScore, desc: 'Match of regional boundaries', color: 'bg-blue-500' },
+                          { label: 'Industry overlap Score', score: activeCriteriaMatch.industryScore, desc: 'Alignment with standard NAICS descriptors', color: 'bg-indigo-500' },
+                          { label: 'Semantic/Strategic Fit', score: activeCriteriaMatch.semanticScore, desc: 'AI keyword semantic context mapping', color: 'bg-purple-500' }
+                        ].map((item) => (
+                          <div key={item.label} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-xs font-bold text-slate-700 block">{item.label}</span>
+                                <span className="text-[10px] text-slate-400 mt-0.5 block leading-none">{item.desc}</span>
+                              </div>
+                              <span className="text-xs font-black text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm border border-slate-200">
+                                {Math.round(item.score || 0)}%
+                              </span>
+                            </div>
+                            <div className="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
+                              <div
+                                className={clsx("h-full rounded-full transition-all duration-500", item.color)}
+                                style={{ width: `${Math.min(100, Math.max(0, item.score || 0))}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+
+                        <div className="mt-4 pt-3.5 border-t border-slate-200/60 flex items-center justify-between select-none">
+                          <span className="text-xs font-extrabold text-slate-700">Total Score for this Criteria</span>
+                          <span className="text-xs font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100 shadow-sm leading-none">
+                            {Math.round(activeCriteriaMatch.totalScore || 0)} pts
+                          </span>
                         </div>
                       </div>
-                    )}
-                  </div>
-                )}
+
+                      {activeCriteriaMatch.bonusScore > 0 && (
+                        <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 space-y-2">
+                          <span className="text-xs font-bold text-amber-800 block flex items-center gap-1.5">
+                            <Sparkles size={14} className="text-amber-500 fill-amber-500" />
+                            Bonus Score Multipliers (+{activeCriteriaMatch.bonusScore} pts)
+                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            {activeCriteriaMatch.bonusReasons?.map((reason, ri) => (
+                              <span key={ri} className="text-[9px] font-bold px-1.5 py-0.5 bg-amber-100 border border-amber-200 text-amber-700 rounded uppercase tracking-wider leading-none">
+                                {reason}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {drawerTab === 'docs' && (
                   <div className="space-y-6">
