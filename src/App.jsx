@@ -16,6 +16,7 @@ import SellerProfilePage from './components/SellerProfilePage';
 import OrganizationOnboarding from './components/OrganizationOnboarding';
 import OrganizationTypeSelection from './components/OrganizationTypeSelection';
 import Navbar from './components/Navbar';
+import BuyerSaaSDashboard from './components/BuyerSaaSDashboard';
 import {
   TrendingUp,
   Mail,
@@ -796,7 +797,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerDashboard hasCriteria={hasCriteria} profile={profile} />
+                  <BuyerSaaSDashboard profile={profile} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -870,7 +871,7 @@ function App() {
 const Layout = ({ children, session, organizationName }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const hideNavbarOn = ['/', '/signup'];
+  const hideNavbarOn = ['/', '/signup', '/dashboard/buyer'];
   const shouldShowNavbar = session && !hideNavbarOn.includes(location.pathname);
 
   useEffect(() => {
