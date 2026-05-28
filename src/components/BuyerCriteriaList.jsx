@@ -230,7 +230,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                     </div>
                     <div className="flex items-center gap-3">
                       <Link 
-                        to={`/dashboard/buyer/criteria/${criteria.id}/matches`}
+                        to={`/dashboard/buyer?criteriaId=${criteria.id}`}
                         className="px-5 py-2.5 rounded-xl bg-accent hover:bg-accent/90 text-white text-sm font-semibold transition-all flex items-center gap-2 shadow-sm shadow-accent/20 active:scale-[0.98]"
                       >
                         <Sparkles size={14} /> View Matches

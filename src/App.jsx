@@ -9,7 +9,6 @@ import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
 import SellerListingOverview from './components/SellerListingOverview';
 import BuyerCriteriaList from './components/BuyerCriteriaList';
-import MatchResults from './components/MatchResults';
 import BuyerListingDetail from './components/BuyerListingDetail';
 import BuyerProfileForm from './components/BuyerProfileForm';
 import SellerProfilePage from './components/SellerProfilePage';
@@ -742,24 +741,7 @@ function App() {
               )
             }
           />
-          <Route
-            path="/dashboard/buyer/criteria/:id/matches"
-            element={
-              session ? (
-                profile === undefined ? (
-                  <div className="min-h-screen flex items-center justify-center">
-                    <Loader2 className="animate-spin text-indigo-500" size={32} />
-                  </div>
-                ) : (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
-                  <MatchResults orgId={profile?.organization_id} />
-                ) : (
-                  <Navigate to="/dashboard/seller" replace />
-                )
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
+
           <Route
             path="/dashboard/buyer/criteria/:id/matches/:listingId"
             element={

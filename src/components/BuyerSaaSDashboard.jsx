@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { buyerService } from '../services/buyerService';
 import { matchingService } from '../services/matchingService';
@@ -56,6 +56,7 @@ const COLORS = [
 
 export default function BuyerSaaSDashboard({ profile }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const orgId = profile?.organization_id;
   const isCorporate = profile?.role === 'corporate';
 
@@ -128,8 +129,16 @@ export default function BuyerSaaSDashboard({ profile }) {
         setCriteriaList(criteriaData || []);
 
         if (criteriaData && criteriaData.length > 0) {
-          // Default to all criteria sets selected
-          setSelectedCriteriaIds(new Set(criteriaData.map(c => c.id)));
+          // Check query parameters first
+          const queryParams = new URLSearchParams(location.search);
+          const criteriaIdParam = queryParams.get('criteriaId');
+
+          if (criteriaIdParam && criteriaData.some(c => c.id === criteriaIdParam)) {
+            setSelectedCriteriaIds(new Set([criteriaIdParam]));
+          } else {
+            // Default to all criteria sets selected
+            setSelectedCriteriaIds(new Set(criteriaData.map(c => c.id)));
+          }
         } else {
           setLoading(false);
         }
@@ -142,6 +151,18 @@ export default function BuyerSaaSDashboard({ profile }) {
 
     if (orgId) initWorkspace();
   }, [orgId, isCorporate]);
+
+  // Sync selectedCriteriaIds with criteriaId URL query parameter if it changes dynamically
+  useEffect(() => {
+    if (criteriaList.length > 0) {
+      const queryParams = new URLSearchParams(location.search);
+      const criteriaIdParam = queryParams.get('criteriaId');
+      
+      if (criteriaIdParam && criteriaList.some(c => c.id === criteriaIdParam)) {
+        setSelectedCriteriaIds(new Set([criteriaIdParam]));
+      }
+    }
+  }, [location.search, criteriaList]);
 
   // Load matches when active criteria sets change
   useEffect(() => {
