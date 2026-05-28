@@ -58,6 +58,7 @@ const ScoreBar = ({ label, score, icon: Icon, color = 'accent' }) => {
     accent: { bar: 'bg-accent', text: 'text-accent' },
     emerald: { bar: 'bg-emerald-500', text: 'text-emerald-600' },
     amber: { bar: 'bg-amber-500', text: 'text-amber-600' },
+    orange: { bar: 'bg-[#ff9500]', text: 'text-[#e08400]' },
     blue: { bar: 'bg-blue-500', text: 'text-blue-600' },
     violet: { bar: 'bg-violet-500', text: 'text-violet-600' }
   };
@@ -325,6 +326,20 @@ export default function MatchResults({ orgId }) {
                             Score Breakdown
                           </h4>
                           <div className="space-y-3 p-4 bg-slate-50/80 rounded-xl">
+                            {match.industry_score !== null && match.industry_score !== undefined && (
+                              <ScoreBar
+                                label="Industry Score"
+                                score={match.industry_score}
+                                icon={Building2}
+                                color="orange"
+                              />
+                            )}
+                            <ScoreBar
+                              label="Semantic Score"
+                              score={match.semantic_score || 0}
+                              icon={Sparkles}
+                              color="violet"
+                            />
                             <ScoreBar
                               label="Financial Fit"
                               score={match.financial_score || 0}
@@ -336,20 +351,6 @@ export default function MatchResults({ orgId }) {
                               score={match.geography_score || 0}
                               icon={Globe}
                               color="blue"
-                            />
-                            {match.industry_score !== null && match.industry_score !== undefined && (
-                              <ScoreBar
-                                label="Industry Score"
-                                score={match.industry_score}
-                                icon={Building2}
-                                color="emerald"
-                              />
-                            )}
-                            <ScoreBar
-                              label="Semantic Score"
-                              score={match.semantic_score || 0}
-                              icon={Sparkles}
-                              color="violet"
                             />
                             {match.bonus_score > 0 && (
                               <div className="space-y-1">

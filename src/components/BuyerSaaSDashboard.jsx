@@ -448,78 +448,7 @@ export default function BuyerSaaSDashboard({ profile }) {
             </div>
           ))}
 
-          {/* Rooms (Criteria Sets representing the Deal Room Targets) */}
-          <div className="pt-6">
-            <div className="px-4 pb-2 text-[10px] font-bold tracking-wider text-slate-500 uppercase">
-              {!isSidebarCollapsed ? 'Active Criteria Sets' : 'CRIT'}
-            </div>
-            {criteriaList.map((crit, idx) => {
-              const colorClass = COLORS[idx % COLORS.length];
-              const isChecked = selectedCriteriaIds.has(crit.id);
-              return (
-                <div
-                  key={crit.id}
-                  onClick={() => {
-                    setSelectedCriteriaIds(prev => {
-                      const next = new Set(prev);
-                      if (next.has(crit.id)) {
-                        next.delete(crit.id);
-                      } else {
-                        next.add(crit.id);
-                      }
-                      return next;
-                    });
-                  }}
-                  className={clsx(
-                    "w-full flex items-center gap-2.5 px-4 py-1.5 text-xs font-semibold text-left transition-all hover:bg-slate-800/50 cursor-pointer",
-                    isChecked ? "text-white font-bold bg-slate-800/40" : "text-slate-400"
-                  )}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    readOnly
-                    className="rounded border-slate-600 bg-transparent text-blue-500 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer"
-                  />
-                  <div className={clsx("w-2 h-2 rounded shrink-0", colorClass)} />
-                  {!isSidebarCollapsed && (
-                    <>
-                      <span className="truncate select-none flex-1">{crit.investment_criteria_name || 'Untitled Set'}</span>
-                      <div className="relative shrink-0" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => setActiveCriteriaKebabId(activeCriteriaKebabId === crit.id ? null : crit.id)}
-                          className="p-1 rounded text-slate-400 hover:text-white hover:bg-slate-700 transition-colors flex items-center justify-center"
-                          title="Options"
-                        >
-                          <MoreHorizontal size={13} />
-                        </button>
-                        
-                        {activeCriteriaKebabId === crit.id && (
-                          <div 
-                            ref={dropdownRef}
-                            className="absolute right-0 mt-1 w-32 bg-slate-900 border border-slate-750 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
-                          >
-                            <button
-                              onClick={() => {
-                                navigate(`/onboarding/buyer/edit/${crit.id}`);
-                                setActiveCriteriaKebabId(null);
-                              }}
-                              className="w-full px-3 py-1.5 text-left text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
-                            >
-                              Edit Criteria
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
-              );
-            })}
-            {criteriaList.length === 0 && (
-              <div className="px-4 py-2 text-xs text-slate-500 italic">No criteria created</div>
-            )}
-          </div>
+
         </div>
 
         {/* User Account / Log Out */}
@@ -592,54 +521,85 @@ export default function BuyerSaaSDashboard({ profile }) {
             })}
           </div>
 
-          {/* Core Industries Smart Folders */}
+          {/* Active Criteria Sets Checklist */}
           <div className="space-y-1">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-2 mb-2">
-              Industry Focus
-            </span>
-            {['All', 'SaaS', 'Software', 'AI', 'Automation', 'Healthcare', 'B2B'].map((ind) => {
-              const isSelected = filterIndustry === ind;
+            <div className="flex items-center justify-between px-2 mb-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                Active Criteria Sets
+              </span>
+              <Link
+                to="/onboarding/buyer"
+                className="text-slate-400 hover:text-blue-600 transition-colors flex items-center justify-center p-0.5 rounded hover:bg-slate-200/50"
+                title="New Criteria Set"
+              >
+                <Plus size={13} className="stroke-[3]" />
+              </Link>
+            </div>
+            {criteriaList.map((crit, idx) => {
+              const colorClass = COLORS[idx % COLORS.length];
+              const isChecked = selectedCriteriaIds.has(crit.id);
               return (
-                <button
-                  key={ind}
-                  onClick={() => setFilterIndustry(ind)}
+                <div
+                  key={crit.id}
+                  onClick={() => {
+                    setSelectedCriteriaIds(prev => {
+                      const next = new Set(prev);
+                      if (next.has(crit.id)) {
+                        next.delete(crit.id);
+                      } else {
+                        next.add(crit.id);
+                      }
+                      return next;
+                    });
+                  }}
                   className={clsx(
-                    "w-full flex items-center gap-2 px-2.5 py-1 text-xs font-semibold rounded-lg text-left transition-all",
-                    isSelected
-                      ? "bg-slate-200 text-slate-900"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
+                    "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all hover:bg-slate-100 cursor-pointer",
+                    isChecked ? "bg-slate-200 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-800"
                   )}
                 >
-                  <Building size={12} className={isSelected ? "text-blue-500" : "text-slate-400"} />
-                  <span>{ind === 'All' ? 'All Industries' : ind}</span>
-                </button>
-              );
-            })}
-          </div>
+                  <div className="flex items-center gap-2 truncate">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      readOnly
+                      className="rounded border-slate-355 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer bg-white"
+                    />
+                    <div className={clsx("w-2 h-2 rounded shrink-0 shadow-sm", colorClass)} />
+                    <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
+                  </div>
 
-          {/* Region smart list */}
-          <div className="space-y-1">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-2 mb-2">
-              Geographic Focus
-            </span>
-            {['All', 'US', 'MA', 'NY', 'CA', 'TX', 'NE'].map((reg) => {
-              const isSelected = filterRegion === reg;
-              return (
-                <button
-                  key={reg}
-                  onClick={() => setFilterRegion(reg)}
-                  className={clsx(
-                    "w-full flex items-center gap-2 px-2.5 py-1 text-xs font-semibold rounded-lg text-left transition-all",
-                    isSelected
-                      ? "bg-slate-200 text-slate-900"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-                  )}
-                >
-                  <MapPin size={12} className={isSelected ? "text-blue-500" : "text-slate-400"} />
-                  <span>{reg === 'All' ? 'Global Regions' : reg}</span>
-                </button>
+                  <div className="relative shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => setActiveCriteriaKebabId(activeCriteriaKebabId === crit.id ? null : crit.id)}
+                      className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center"
+                      title="Options"
+                    >
+                      <MoreHorizontal size={13} />
+                    </button>
+                    
+                    {activeCriteriaKebabId === crit.id && (
+                      <div 
+                        ref={dropdownRef}
+                        className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
+                      >
+                        <button
+                          onClick={() => {
+                            navigate(`/onboarding/buyer/edit/${crit.id}`);
+                            setActiveCriteriaKebabId(null);
+                          }}
+                          className="w-full px-3 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                        >
+                          Edit Criteria
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
               );
             })}
+            {criteriaList.length === 0 && (
+              <div className="px-2 py-1 text-xs text-slate-400 italic">No criteria created</div>
+            )}
           </div>
         </div>
       </div>
@@ -1016,8 +976,12 @@ export default function BuyerSaaSDashboard({ profile }) {
                       Founded: {selectedMatch.year_founded || '--'} • Employees: {selectedMatch.employees_count || '--'} • Entity: {selectedMatch.legal_entity || 'Private'}
                     </p>
                     {selectedMatch.matchedCriteriaList && selectedMatch.matchedCriteriaList.length > 0 && (() => {
-                      const strongs = selectedMatch.matchedCriteriaList.filter(item => item.matchTier === 'Strong');
-                      const mediums = selectedMatch.matchedCriteriaList.filter(item => item.matchTier === 'Moderate');
+                      const strongs = selectedMatch.matchedCriteriaList
+                        .filter(item => item.matchTier === 'Strong')
+                        .sort((a, b) => b.totalScore - a.totalScore);
+                      const mediums = selectedMatch.matchedCriteriaList
+                        .filter(item => item.matchTier === 'Moderate')
+                        .sort((a, b) => b.totalScore - a.totalScore);
                       
                       return (
                         <div className="space-y-1.5 mt-2.5 select-none">
@@ -1209,10 +1173,10 @@ export default function BuyerSaaSDashboard({ profile }) {
 
                       <div className="space-y-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-200/50">
                         {[
+                          { label: 'Industry overlap Score', score: activeCriteriaMatch.industryScore, desc: 'Alignment with standard NAICS descriptors', color: 'bg-[#ff9500]' },
+                          { label: 'Semantic/Strategic Fit', score: activeCriteriaMatch.semanticScore, desc: 'AI keyword semantic context mapping', color: 'bg-purple-500' },
                           { label: 'Financial Fit Score', score: activeCriteriaMatch.financialScore, desc: 'EBITDA, Revenue matching thresholds', color: 'bg-emerald-500' },
-                          { label: 'Geography Fit Score', score: activeCriteriaMatch.geographyScore, desc: 'Match of regional boundaries', color: 'bg-blue-500' },
-                          { label: 'Industry overlap Score', score: activeCriteriaMatch.industryScore, desc: 'Alignment with standard NAICS descriptors', color: 'bg-indigo-500' },
-                          { label: 'Semantic/Strategic Fit', score: activeCriteriaMatch.semanticScore, desc: 'AI keyword semantic context mapping', color: 'bg-purple-500' }
+                          { label: 'Geography Fit Score', score: activeCriteriaMatch.geographyScore, desc: 'Match of regional boundaries', color: 'bg-blue-500' }
                         ].map((item) => (
                           <div key={item.label} className="space-y-2">
                             <div className="flex items-center justify-between">

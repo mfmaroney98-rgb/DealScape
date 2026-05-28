@@ -199,6 +199,7 @@ const ScoreBar = ({ label, score, icon: Icon, color = 'accent' }) => {
     accent:  { bar: 'bg-accent',        text: 'text-accent' },
     emerald: { bar: 'bg-emerald-500',   text: 'text-emerald-600' },
     amber:   { bar: 'bg-amber-500',     text: 'text-amber-600' },
+    orange:  { bar: 'bg-[#ff9500]',      text: 'text-[#e08400]' },
     blue:    { bar: 'bg-blue-500',      text: 'text-blue-600' },
     violet:  { bar: 'bg-violet-500',    text: 'text-violet-600' },
   };
@@ -358,6 +359,16 @@ export default function BuyerListingDetail({ orgId }) {
   const [teaserSignedUrl, setTeaserSignedUrl] = useState(null);
   const [downloadingTeaser, setDownloadingTeaser] = useState(false);
   const [fileError, setFileError] = useState(null);
+  const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
+
+  useEffect(() => {
+    if (matchData?.criteria_id) {
+      setActiveLogicCriteriaId(matchData.criteria_id);
+    } else if (matchData?.matchedCriteriaList?.length > 0) {
+      // Fallback to the first criteria ID in the list if general criteria_id is not directly present
+      setActiveLogicCriteriaId(matchData.matchedCriteriaList[0].criteriaId);
+    }
+  }, [matchData]);
 
   useEffect(() => {
     if (!listingId) return;
@@ -517,8 +528,12 @@ export default function BuyerListingDetail({ orgId }) {
               </div>
 
               {matchData?.matchedCriteriaList && matchData.matchedCriteriaList.length > 0 && (() => {
-                const strongs = matchData.matchedCriteriaList.filter(item => item.matchTier === 'Strong');
-                const mediums = matchData.matchedCriteriaList.filter(item => item.matchTier === 'Moderate');
+                const strongs = matchData.matchedCriteriaList
+                  .filter(item => item.matchTier === 'Strong')
+                  .sort((a, b) => b.totalScore - a.totalScore);
+                const mediums = matchData.matchedCriteriaList
+                  .filter(item => item.matchTier === 'Moderate')
+                  .sort((a, b) => b.totalScore - a.totalScore);
                 
                 return (
                   <div className="space-y-1.5 mb-4 select-none">
@@ -774,43 +789,89 @@ export default function BuyerListingDetail({ orgId }) {
           <div className="lg:col-span-4 flex flex-col gap-5">
 
             {/* Match Score Breakdown */}
-            {matchData && (
-              <div className="glass rounded-2xl p-5">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4 flex items-center gap-2">
-                  <BarChart3 size={13} className="text-accent" />
-                  Match Score Breakdown
-                </h3>
-                <div className="space-y-4 p-4 bg-slate-50/70 rounded-xl">
-                  <ScoreBar label="Financial Fit"     score={matchData.financial_score}  icon={DollarSign}  color="emerald" />
-                  <ScoreBar label="Geography"         score={matchData.geography_score}  icon={Globe}       color="blue"    />
-                  {matchData.industry_score != null && (
-                    <ScoreBar label="Industry Score"  score={matchData.industry_score}   icon={Building2}   color="emerald" />
+            {matchData && (() => {
+              const activeCriteriaMatch = (matchData.matchedCriteriaList || []).find(
+                item => item.criteriaId === activeLogicCriteriaId
+              ) || {
+                totalScore: matchData.total_score,
+                financialScore: matchData.financial_score || 0,
+                geographyScore: matchData.geography_score || 0,
+                industryScore: matchData.industry_score,
+                semanticScore: matchData.semantic_score || 0,
+                bonusScore: matchData.bonus_score || 0,
+                bonusReasons: matchData.bonus_reasons || [],
+                matchTier: matchData.match_tier
+              };
+
+              const currentTier = TIER_CONFIG[activeCriteriaMatch.matchTier] || TIER_CONFIG[matchData.match_tier] || TIER_CONFIG.Weak;
+
+              return (
+                <div className="glass rounded-2xl p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <BarChart3 size={13} className="text-accent" />
+                      Match Score Breakdown
+                    </h3>
+                    <span className="text-[9px] font-bold text-slate-450 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                      {activeCriteriaMatch.matchTier || matchData.match_tier} Fit
+                    </span>
+                  </div>
+
+                  {/* Dropdown selector for matched criteria */}
+                  {matchData.matchedCriteriaList && matchData.matchedCriteriaList.length > 1 && (
+                    <div className="mb-4 space-y-1.5 p-3 bg-slate-50 border border-slate-200/60 rounded-2xl">
+                      <label className="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block leading-none mb-1">
+                        Inspect Criteria Fit Details
+                      </label>
+                      <select
+                        value={activeLogicCriteriaId}
+                        onChange={(e) => setActiveLogicCriteriaId(e.target.value)}
+                        className="w-full text-xs font-semibold bg-white border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-700 outline-none focus:border-blue-500 cursor-pointer shadow-xs"
+                      >
+                        {[...matchData.matchedCriteriaList]
+                          .sort((a, b) => b.totalScore - a.totalScore)
+                          .map((item) => (
+                            <option key={item.criteriaId} value={item.criteriaId}>
+                              {item.criteriaName} ({Math.round(item.totalScore)} pts - {item.matchTier})
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   )}
-                  <ScoreBar label="Semantic Score"    score={matchData.semantic_score}   icon={Sparkles}    color="violet"  />
-                  {matchData.bonus_score > 0 && (
-                    <ScoreBar label="Bonus"           score={matchData.bonus_score}      icon={Shield}      color="amber"   />
-                  )}
-                  <div className="pt-2.5 border-t border-slate-200/70">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-foreground">Total Score</span>
-                      <span className={`text-base font-black ${tier.textClass}`}>
-                        {Math.round(matchData.total_score || 0)}
-                      </span>
+
+                  <div className="space-y-4 p-4 bg-slate-50/70 rounded-xl">
+                    {activeCriteriaMatch.industryScore != null && (
+                      <ScoreBar label="Industry Score"  score={activeCriteriaMatch.industryScore}   icon={Building2}   color="orange" />
+                    )}
+                    <ScoreBar label="Semantic Score"    score={activeCriteriaMatch.semanticScore}   icon={Sparkles}    color="violet"  />
+                    <ScoreBar label="Financial Fit"     score={activeCriteriaMatch.financialScore}  icon={DollarSign}  color="emerald" />
+                    <ScoreBar label="Geography"         score={activeCriteriaMatch.geographyScore}  icon={Globe}       color="blue"    />
+                    {activeCriteriaMatch.bonusScore > 0 && (
+                      <ScoreBar label="Bonus"           score={activeCriteriaMatch.bonusScore}      icon={Shield}      color="amber"   />
+                    )}
+                    <div className="pt-2.5 border-t border-slate-200/70">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-foreground">Total Score</span>
+                        <span className={`text-base font-black ${currentTier.textClass}`}>
+                          {Math.round(activeCriteriaMatch.totalScore || 0)}
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Bonus reasons */}
+                  {activeCriteriaMatch.bonusReasons?.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {activeCriteriaMatch.bonusReasons.map((r, i) => (
+                        <span key={i} className="text-[9px] px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-bold uppercase tracking-wider">
+                          {r}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {/* Bonus reasons */}
-                {matchData.bonus_reasons?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-3">
-                    {matchData.bonus_reasons.map((r, i) => (
-                      <span key={i} className="text-[9px] px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-bold uppercase tracking-wider">
-                        {r}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+              );
+            })()}
 
             {/* Financials Snapshot */}
             <div className="glass rounded-2xl p-5">
