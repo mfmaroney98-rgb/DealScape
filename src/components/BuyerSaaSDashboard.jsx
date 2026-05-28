@@ -409,6 +409,7 @@ export default function BuyerSaaSDashboard({ profile }) {
             { label: 'Pipeline', icon: Layers, path: '/dashboard' },
             { label: 'Workspace', icon: Briefcase, active: true },
             { label: 'Buyer Profile', icon: Users, path: '/dashboard/buyer/profile' },
+            { label: 'Manage Criteria', icon: Target, path: '/dashboard/buyer/criteria' },
             { label: 'Settings', icon: Settings },
             { label: 'Notifications', icon: Bell, badge: 3 }
           ].map((item, idx) => (
