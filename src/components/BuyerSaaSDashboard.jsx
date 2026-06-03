@@ -1032,7 +1032,14 @@ export default function BuyerSaaSDashboard({ profile }) {
                     })()}
                   </div>
                   <div className="flex flex-col items-center justify-center shrink-0">
-                    <span className="text-[20px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-xl border border-blue-100 shadow-sm leading-none">
+                    <span className={clsx(
+                      "text-[20px] font-black px-3 py-1.5 rounded-xl border shadow-sm leading-none",
+                      selectedMatch.match_tier === 'Strong'
+                        ? "bg-[#e6f4ea] text-[#0f9d58] border-[#0f9d58]/10"
+                        : selectedMatch.match_tier === 'Moderate'
+                          ? "bg-[#fffbeb] text-[#d97706] border-[#fef3c7]"
+                          : "bg-[#f1f5f9] text-[#64748b] border-[#e2e8f0]"
+                    )}>
                       {Math.round(selectedMatch.total_score)}
                     </span>
                     <span className="text-[9px] font-bold text-slate-400 mt-1 uppercase">Fit Score</span>
@@ -1221,7 +1228,14 @@ export default function BuyerSaaSDashboard({ profile }) {
 
                         <div className="mt-4 pt-3.5 border-t border-slate-200/60 flex items-center justify-between select-none">
                           <span className="text-xs font-extrabold text-slate-700">Total Score for this Criteria</span>
-                          <span className="text-xs font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100 shadow-sm leading-none">
+                          <span className={clsx(
+                            "text-xs font-black px-2.5 py-1.5 rounded-lg border shadow-sm leading-none",
+                            activeCriteriaMatch.matchTier === 'Strong'
+                              ? "bg-[#e6f4ea] text-[#0f9d58] border-[#0f9d58]/10"
+                              : activeCriteriaMatch.matchTier === 'Moderate'
+                                ? "bg-[#fffbeb] text-[#d97706] border-[#fef3c7]"
+                                : "bg-[#f1f5f9] text-[#64748b] border-[#e2e8f0]"
+                          )}>
                             {Math.round(activeCriteriaMatch.totalScore || 0)} pts
                           </span>
                         </div>
@@ -1419,9 +1433,9 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
   // Score Pill generator matching screenshot and list colors
   const getScorePill = (score) => {
     let bgClass = 'bg-[#f1f5f9] text-[#64748b] border border-[#e2e8f0]';
-    if (score >= 85) {
+    if (match.match_tier === 'Strong') {
       bgClass = 'bg-[#e6f4ea] text-[#0f9d58] border border-[#0f9d58]/10'; // emerald/green
-    } else if (score >= 70) {
+    } else if (match.match_tier === 'Moderate') {
       bgClass = 'bg-[#fffbeb] text-[#d97706] border border-[#fef3c7]'; // amber
     }
     return (
