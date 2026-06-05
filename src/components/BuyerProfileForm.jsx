@@ -11,10 +11,14 @@ import {
   Save, 
   Loader2,
   AlertCircle,
-  TrendingUp
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  Plus,
+  Trash2
 } from 'lucide-react';
 
-export default function BuyerProfileForm({ userId, orgId, onComplete }) {
+export default function BuyerProfileForm({ orgId, onComplete }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -25,7 +29,10 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
     organization_name: '',
     website_url: '',
     organization_summary: '',
-    type: ''
+    type: '',
+    aum: '',
+    year_founded: '',
+    funds: []
   });
 
   useEffect(() => {
@@ -40,11 +47,14 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
           organization_name: org.organization_name || '',
           website_url: org.website_url || '',
           organization_summary: org.organization_summary || '',
-          type: org.type || ''
+          type: org.type || '',
+          aum: org.aum != null ? String(org.aum) : '',
+          year_founded: org.year_founded != null ? String(org.year_founded) : '',
+          funds: Array.isArray(org.funds) ? org.funds : []
         };
 
         // 3. Auto-import logic: If profile is empty, try to grab from first existing criteria
-        if (!updatedData.website_url && !updatedData.description && !updatedData.type) {
+        if (!updatedData.website_url && !updatedData.organization_summary && !updatedData.type) {
           const criteriaList = await buyerService.getCriteriaList(orgId);
           if (criteriaList && criteriaList.length > 0) {
             const first = criteriaList[0];
@@ -68,6 +78,41 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
     }
   }, [orgId]);
 
+  const handleAddFund = () => {
+    setFormData(prev => ({
+      ...prev,
+      funds: [...prev.funds, { name: '', size: '' }]
+    }));
+  };
+
+  const handleRemoveFund = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      funds: prev.funds.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleFundChange = (index, field, value) => {
+    setFormData(prev => {
+      const updatedFunds = [...prev.funds];
+      updatedFunds[index] = { ...updatedFunds[index], [field]: value };
+      return { ...prev, funds: updatedFunds };
+    });
+  };
+
+  const formatWithCommas = (value) => {
+    if (!value && value !== 0 && value !== '0') return '';
+    const strVal = value.toString();
+    const parts = strVal.split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join('.');
+  };
+
+  const displayCurrency = (value) => {
+    if (!value && value !== 0 && value !== '0') return '';
+    return '$' + formatWithCommas(value);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -84,7 +129,13 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
         organization_name: formData.organization_name,
         website_url: formData.website_url,
         organization_summary: formData.organization_summary,
-        type: formData.type
+        type: formData.type,
+        aum: formData.aum === '' ? null : Number(formData.aum),
+        year_founded: formData.year_founded === '' ? null : Number(formData.year_founded),
+        funds: formData.funds.map(f => ({
+          name: f.name,
+          size: f.size === '' ? null : Number(f.size)
+        }))
       });
       
       setSuccess(true);
@@ -102,6 +153,7 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
       setSaving(false);
     }
   };
+
 
   if (loading) {
     return (
@@ -171,7 +223,6 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
               </div>
             </div>
 
-            {/* Buyer Type Selection */}
             <div className="field-group">
               <label className="form-label mb-2 flex items-center gap-2">
                 <TrendingUp size={16} className="text-slate-500" />
@@ -206,6 +257,108 @@ export default function BuyerProfileForm({ userId, orgId, onComplete }) {
               </div>
             </div>
 
+            {/* AUM and Year Founded */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <DollarSign size={16} className="text-slate-500" />
+                  Assets Under Management (AUM)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="aum"
+                    className="form-input"
+                    placeholder="$0"
+                    value={displayCurrency(formData.aum)}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/[^0-9]/g, '');
+                      setFormData(prev => ({ ...prev, aum: digits }));
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <Calendar size={16} className="text-slate-500" />
+                  Year Founded
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="year_founded"
+                    className="form-input"
+                    placeholder="e.g. 2010"
+                    value={formData.year_founded}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, '');
+                      setFormData(prev => ({ ...prev, year_founded: val }));
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Funds Section */}
+            <div className="space-y-4 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                  <TrendingUp size={16} className="text-indigo-400" />
+                  Funds Under Management
+                </h3>
+                <button
+                  type="button"
+                  onClick={handleAddFund}
+                  className="flex items-center gap-1 text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  <Plus size={14} /> Add Fund
+                </button>
+              </div>
+
+              {formData.funds.length === 0 ? (
+                <p className="text-xs text-slate-500 italic">No funds added yet. Click "Add Fund" to list your active or historical funds.</p>
+              ) : (
+                <div className="space-y-3">
+                  {formData.funds.map((fund, index) => (
+                    <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-2xl border border-slate-800/85 animate-fade-in">
+                      <div className="flex-1">
+                        <label className="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Fund Name</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          placeholder="e.g. Fund I"
+                          value={fund.name || ''}
+                          onChange={(e) => handleFundChange(index, 'name', e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="w-1/3">
+                        <label className="text-[10px] uppercase tracking-wider text-slate-500 block mb-1">Fund Size</label>
+                        <input
+                          type="text"
+                          className="form-input"
+                          placeholder="$0"
+                          value={displayCurrency(fund.size)}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/[^0-9]/g, '');
+                            handleFundChange(index, 'size', digits);
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFund(index)}
+                        className="p-2 hover:bg-slate-800 rounded-lg text-slate-500 hover:text-red-400 transition-colors mt-5"
+                        title="Remove Fund"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             {/* Organization Description */}
             <div className="field-group">
               <label className="form-label mb-2 flex items-center gap-2">

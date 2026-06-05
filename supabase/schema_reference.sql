@@ -105,6 +105,9 @@ CREATE TABLE public.organizations (
   organization_summary text,
   buyer_type text,
   divisions ARRAY DEFAULT '{}'::text[],
+  aum numeric,
+  year_founded integer,
+  funds jsonb DEFAULT '[]'::jsonb,
   CONSTRAINT organizations_pkey PRIMARY KEY (id)
 );
 
