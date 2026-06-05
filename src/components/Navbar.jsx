@@ -6,12 +6,14 @@ import {
   LogOut,
   User,
   LayoutDashboard,
-  Building2
+  Building2,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 
-export default function Navbar({ organizationName }) {
+export default function Navbar({ organizationName, darkMode, setDarkMode }) {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -48,6 +50,25 @@ export default function Navbar({ organizationName }) {
             </Link>
 
             <div className="h-4 w-px bg-border mx-2 hidden md:block" />
+
+            <motion.button
+              id="dark-mode-toggle"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setDarkMode(!darkMode)}
+              className="relative inline-flex items-center justify-center w-9 h-9 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              <motion.div
+                key={darkMode ? 'moon' : 'sun'}
+                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              </motion.div>
+            </motion.button>
 
             <Button 
               variant="ghost" 

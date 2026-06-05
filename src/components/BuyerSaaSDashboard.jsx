@@ -40,7 +40,9 @@ import {
   Target,
   BarChart2,
   Lock,
-  ArrowRight
+  ArrowRight,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 const COLORS = [
@@ -54,7 +56,7 @@ const COLORS = [
   'bg-rose-500'
 ];
 
-export default function BuyerSaaSDashboard({ profile }) {
+export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const orgId = profile?.organization_id;
@@ -675,6 +677,24 @@ export default function BuyerSaaSDashboard({ profile }) {
                 <Lock size={10} className="text-emerald-500" />
                 SECURE END-TO-END M&A
               </span>
+              <motion.button
+                id="buyer-dark-mode-toggle"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setDarkMode(!darkMode)}
+                className="relative inline-flex items-center justify-center w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+                aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                <motion.div
+                  key={darkMode ? 'moon' : 'sun'}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                >
+                  {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                </motion.div>
+              </motion.button>
             </div>
           </div>
 

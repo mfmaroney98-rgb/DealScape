@@ -528,6 +528,9 @@ function App() {
   const [hasListing, setHasListing] = useState(false);
   const [hasCriteria, setHasCriteria] = useState(false);
   const [loading, setLoading] = useState(true); // App-level loading (session check)
+  const [darkMode, setDarkMode] = useState(() => {
+    try { return localStorage.getItem('dealscape-dark-mode') === 'true'; } catch { return false; }
+  });
   const [isProfileLoading, setIsProfileLoading] = useState(false);
 
 
@@ -651,6 +654,8 @@ function App() {
       <Layout 
         session={session} 
         organizationName={profile?.organization?.organization_name}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
       >
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
@@ -779,7 +784,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerSaaSDashboard profile={profile} />
+                  <BuyerSaaSDashboard profile={profile} darkMode={darkMode} setDarkMode={setDarkMode} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -850,11 +855,20 @@ function App() {
   );
 }
 
-const Layout = ({ children, session, organizationName }) => {
+const Layout = ({ children, session, organizationName, darkMode, setDarkMode }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const hideNavbarOn = ['/', '/signup', '/dashboard/buyer'];
   const shouldShowNavbar = session && !hideNavbarOn.includes(location.pathname);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    try { localStorage.setItem('dealscape-dark-mode', String(darkMode)); } catch {}
+  }, [darkMode]);
 
   useEffect(() => {
     // Explicit global redirection if session is lost on a protected route
@@ -866,7 +880,7 @@ const Layout = ({ children, session, organizationName }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {shouldShowNavbar && <Navbar organizationName={organizationName} />}
+      {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} />}
       <main className="flex-1">
         {children}
       </main>
