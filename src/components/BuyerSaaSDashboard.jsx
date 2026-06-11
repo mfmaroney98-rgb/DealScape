@@ -224,7 +224,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
           });
         });
 
-        const mergedList = Array.from(mergedMap.values());
+        const mergedList = Array.from(mergedMap.values()).filter(m => m.total_score >= 45);
         mergedList.sort((a, b) => b.total_score - a.total_score);
         setMatches(mergedList);
 
@@ -517,7 +517,6 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
               { label: 'All Matches', count: activeMatchesCount, bullet: 'bg-blue-500' },
               { label: 'Strong Fit', count: strongMatchesCount, bullet: 'bg-emerald-500' },
               { label: 'Moderate Fit', count: moderateMatchesCount, bullet: 'bg-amber-500' },
-              { label: 'Weak Fit', count: weakMatchesCount, bullet: 'bg-slate-400' },
               { label: 'Watchlist', count: shortlistedCount, icon: Bookmark, iconColor: 'text-blue-500' }
             ].map((sf) => {
               const isSelected = activeSmartFilter === sf.label;
