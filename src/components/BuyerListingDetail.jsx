@@ -568,7 +568,7 @@ export default function BuyerListingDetail() {
                   <div className="space-y-1.5 mb-4 select-none">
                     {strongs.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 items-center">
-                        <span className="text-[9px] text-emerald-600 font-black tracking-wider uppercase mr-1">★ Strong Fits:</span>
+                        <span className="text-[9px] text-emerald-600 font-black tracking-wider uppercase mr-1">Strong Fits:</span>
                         {strongs.map((item, i) => (
                           <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#e6f4ea] border border-[#0f9d58]/10 text-[#0f9d58] rounded shadow-xs">
                             {Math.round(item.totalScore)} {item.criteriaName}
@@ -578,7 +578,7 @@ export default function BuyerListingDetail() {
                     )}
                     {mediums.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 items-center">
-                        <span className="text-[9px] text-amber-600 font-black tracking-wider uppercase mr-1">⚡ Medium Fits:</span>
+                        <span className="text-[9px] text-amber-600 font-black tracking-wider uppercase mr-1">Medium Fits:</span>
                         {mediums.map((item, i) => (
                           <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#fffbeb] border border-[#fef3c7] text-[#d97706] rounded shadow-xs">
                             {Math.round(item.totalScore)} {item.criteriaName}

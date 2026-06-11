@@ -83,8 +83,6 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterRevenue, setFilterRevenue] = useState(0); // 0 = Any
-  const [filterEbitda, setFilterEbitda] = useState(0); // 0 = Any
   const [filterIndustry, setFilterIndustry] = useState('All');
   const [filterRegion, setFilterRegion] = useState('All');
 
@@ -335,12 +333,6 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
         keywords.includes(searchQuery.toLowerCase());
 
       if (!matchesSearch) return false;
-
-      // 2. Revenue filter
-      if (filterRevenue > 0 && match.search_revenue < filterRevenue) return false;
-
-      // 3. EBITDA filter
-      if (filterEbitda > 0 && match.search_ebitda < filterEbitda) return false;
 
       // 4. Match Tier (Smart Filter inside Inner Sidebar)
       if (activeSmartFilter === 'Strong' && match.match_tier !== 'Strong') return false;
@@ -633,19 +625,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
         <div className="border-b border-slate-200 bg-white select-none shrink-0 z-20 shadow-sm">
           {/* Main Top Header */}
           <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100">
-            {/* Left: Active Criteria Set Title */}
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center shadow-inner">
-                <Target size={14} className="font-bold" />
-              </div>
-              <h2 className="text-md font-bold text-slate-800">
-                {selectedCriteriaIds.size === 0
-                  ? 'No Criteria Selected'
-                  : selectedCriteriaIds.size === 1
-                    ? (criteriaList.find(c => selectedCriteriaIds.has(c.id))?.investment_criteria_name || 'Criteria Set')
-                    : `Combined Workspace (${selectedCriteriaIds.size} Criteria Sets)`}
-              </h2>
-            </div>
+            {/* Left placeholder */}
+            <div />
 
             {/* Center: DealRoom-style requests tab bar */}
             <div className="hidden lg:flex items-center gap-8 h-full">
@@ -697,21 +678,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
             </div>
           </div>
 
-          {/* Sub-tabs header (Overview & Timeline) */}
-          <div className="flex items-center gap-6 px-6 h-10 border-b border-slate-100 bg-[#fbfcfd]">
-            {['Overview', 'Timeline'].map((st) => (
-              <button
-                key={st}
-                onClick={() => setActiveSubTab(st)}
-                className={clsx(
-                  "h-10 text-xs font-semibold relative px-1 border-b-2 transition-all",
-                  activeSubTab === st ? "border-blue-500 text-blue-600 font-bold" : "border-transparent text-slate-400 hover:text-slate-600"
-                )}
-              >
-                {st}
-              </button>
-            ))}
-          </div>
+
         </div>
 
         {/* -------------------- 4. SEARCH & FILTER TOOLBAR (DealRoom Mock) -------------------- */}
@@ -731,73 +698,11 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
 
             {/* Dropdown filters (clicking opens custom flyouts) */}
             <div className="flex items-center gap-1.5 relative" ref={dropdownRef}>
-              {/* Revenue range */}
-              <div className="relative">
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === 'revenue' ? null : 'revenue')}
-                  className={clsx(
-                    "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all shadow-sm",
-                    filterRevenue > 0 ? "border-blue-500 bg-blue-50/30 text-blue-600 font-bold" : "text-slate-600"
-                  )}
-                >
-                  <span>Rev: {filterRevenue > 0 ? `${formatCurrency(filterRevenue)}+` : 'Min Revenue'}</span>
-                  <ChevronDown size={10} className="text-slate-400" />
-                </button>
-                {activeDropdown === 'revenue' && (
-                  <div className="absolute left-0 mt-1 w-44 bg-white border border-slate-200 shadow-xl rounded-lg py-1.5 z-40 animate-fade-in">
-                    {[0, 1000000, 5000000, 10000000, 25000000].map((val) => (
-                      <button
-                        key={val}
-                        onClick={() => {
-                          setFilterRevenue(val);
-                          setActiveDropdown(null);
-                        }}
-                        className="w-full px-4 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                      >
-                        {val === 0 ? 'Any Revenue' : `${formatCurrency(val)}+`}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* EBITDA range */}
-              <div className="relative">
-                <button
-                  onClick={() => setActiveDropdown(activeDropdown === 'ebitda' ? null : 'ebitda')}
-                  className={clsx(
-                    "flex items-center gap-1.5 px-3 py-2 text-xs font-semibold border border-slate-200 rounded-lg bg-white hover:bg-slate-50 transition-all shadow-sm",
-                    filterEbitda > 0 ? "border-blue-500 bg-blue-50/30 text-blue-600 font-bold" : "text-slate-600"
-                  )}
-                >
-                  <span>EBITDA: {filterEbitda > 0 ? `${formatCurrency(filterEbitda)}+` : 'Min EBITDA'}</span>
-                  <ChevronDown size={10} className="text-slate-400" />
-                </button>
-                {activeDropdown === 'ebitda' && (
-                  <div className="absolute left-0 mt-1 w-44 bg-white border border-slate-200 shadow-xl rounded-lg py-1.5 z-40 animate-fade-in">
-                    {[0, 250000, 500000, 1000000, 5000000].map((val) => (
-                      <button
-                        key={val}
-                        onClick={() => {
-                          setFilterEbitda(val);
-                          setActiveDropdown(null);
-                        }}
-                        className="w-full px-4 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                      >
-                        {val === 0 ? 'Any EBITDA' : `${formatCurrency(val)}+`}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
               {/* Reset filter */}
-              {(searchQuery || filterRevenue > 0 || filterEbitda > 0 || filterIndustry !== 'All' || filterRegion !== 'All' || activeSmartFilter !== 'All Matches') && (
+              {(searchQuery || filterIndustry !== 'All' || filterRegion !== 'All' || activeSmartFilter !== 'All Matches') && (
                 <button
                   onClick={() => {
                     setSearchQuery('');
-                    setFilterRevenue(0);
-                    setFilterEbitda(0);
                     setFilterIndustry('All');
                     setFilterRegion('All');
                     setActiveSmartFilter('All Matches');
@@ -859,15 +764,13 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                     <input type="checkbox" className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" readOnly />
                   </th>
                   <th className="w-10 text-center">ID</th>
-                  <th className="pl-4 min-w-[200px]">TARGET NAME & SUMMARY</th>
-                  <th className="w-20 text-center">SCORE</th>
-                  <th className="w-24 text-right">REVENUE</th>
-                  <th className="w-24 text-right">EBITDA</th>
-                  <th className="w-20 text-right">MARGIN</th>
-                  <th className="w-28 pl-4">LOCATIONS</th>
-                  <th className="w-32 pl-4">ASSIGNEES</th>
-                  <th className="w-28 pl-4">STATUS</th>
-                  <th className="w-12 text-center"></th>
+                  <th className="pl-4 w-[360px] min-w-[360px]">TARGET NAME</th>
+                  <th className="w-24 text-center">SCORE</th>
+                  <th className="w-24 text-center">REVENUE</th>
+                  <th className="w-24 text-center">EBITDA</th>
+                  <th className="w-24 text-center">MARGIN</th>
+                  <th className="w-32 text-center">LOCATIONS</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -875,8 +778,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                 {strongMatches.length > 0 && (
                   <>
                     <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={11} className="pl-4">
-                        ★ STRONG MATCHES ({strongMatches.length}) — Highly aligned semantic & financial fit
+                      <td colSpan={9} className="pl-4">
+                        STRONG MATCHES ({strongMatches.length}) — Highly aligned semantic & financial fit
                       </td>
                     </tr>
                     {strongMatches.map((match, idx) => (
@@ -902,8 +805,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                 {moderateMatches.length > 0 && (
                   <>
                     <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={11} className="pl-4">
-                        ⚡ MODERATE MATCHES ({moderateMatches.length}) — High overlap with core parameters
+                      <td colSpan={9} className="pl-4">
+                        MODERATE MATCHES ({moderateMatches.length}) — High overlap with core parameters
                       </td>
                     </tr>
                     {moderateMatches.map((match, idx) => (
@@ -929,7 +832,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                 {weakMatches.length > 0 && (
                   <>
                     <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={11} className="pl-4">
+                      <td colSpan={9} className="pl-4">
                         ☕ WEAK MATCHES ({weakMatches.length}) — Secondary fitting and lower scores
                       </td>
                     </tr>
@@ -1028,7 +931,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                         <div className="space-y-1.5 mt-2.5 select-none">
                           {strongs.length > 0 && (
                             <div className="flex flex-wrap gap-1.5 items-center">
-                              <span className="text-[9px] text-emerald-600 font-black tracking-wider uppercase mr-1">★ Strong Fits:</span>
+                              <span className="text-[9px] text-emerald-600 font-black tracking-wider uppercase mr-1">Strong Fits:</span>
                               {strongs.map((item, i) => (
                                 <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#e6f4ea] border border-[#0f9d58]/10 text-[#0f9d58] rounded shadow-xs">
                                   {Math.round(item.totalScore)} {item.criteriaName}
@@ -1038,7 +941,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                           )}
                           {mediums.length > 0 && (
                             <div className="flex flex-wrap gap-1.5 items-center">
-                              <span className="text-[9px] text-amber-600 font-black tracking-wider uppercase mr-1">⚡ Medium Fits:</span>
+                              <span className="text-[9px] text-amber-600 font-black tracking-wider uppercase mr-1">Medium Fits:</span>
                               {mediums.map((item, i) => (
                                 <span key={i} className="text-[9px] font-black px-2 py-0.5 bg-[#fffbeb] border border-[#fef3c7] text-[#d97706] rounded shadow-xs">
                                   {Math.round(item.totalScore)} {item.criteriaName}
@@ -1473,7 +1376,7 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
 
   return (
     <tr
-      className="border-b border-slate-100 hover:bg-slate-50/50 cursor-pointer h-10 transition-colors"
+      className="border-b border-slate-100 hover:bg-slate-50/50 cursor-pointer h-14 transition-colors"
       onClick={() => onRowClick(match)}
     >
       {/* Checkbox column */}
@@ -1491,7 +1394,7 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
       </td>
 
       {/* Title & info description column */}
-      <td className="pl-4 min-w-[200px]">
+      <td className="pl-4 w-[360px] min-w-[360px]">
         <div className="flex items-center gap-2">
           {/* Star deal */}
           <button
@@ -1504,83 +1407,46 @@ function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowC
           >
             <Bookmark size={15} className={starred ? "text-blue-500 fill-blue-500" : "text-slate-400"} />
           </button>
-          <span className="text-xs font-bold text-slate-800 truncate block max-w-[280px]">
+          <span className="text-xs font-bold text-slate-800 line-clamp-2 max-w-[320px]">
             {match.seller_anon_name || 'Untitled Project Target'}
           </span>
         </div>
       </td>
 
       {/* Score column */}
-      <td className="w-20 text-center" onClick={(e) => e.stopPropagation()}>
+      <td className="w-24 text-center" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-center">
           {getScorePill(match.total_score)}
         </div>
       </td>
 
       {/* Financials - Revenue */}
-      <td className="w-24 text-right text-xs font-bold text-slate-800">
+      <td className="w-24 text-center text-xs font-bold text-slate-800">
         {formatCurrency(match.search_revenue)}
       </td>
 
       {/* Financials - EBITDA */}
-      <td className="w-24 text-right text-xs font-bold text-slate-800">
+      <td className="w-24 text-center text-xs font-bold text-slate-800">
         {formatCurrency(match.search_ebitda)}
       </td>
 
       {/* Financials - EBITDA Margin */}
-      <td className="w-20 text-right text-xs font-bold text-slate-500">
+      <td className="w-24 text-center text-xs font-bold text-slate-500">
         {formatPercentage(match.search_ebitda_margin)}
       </td>
 
       {/* Geography Locations */}
-      <td className="w-28 pl-4">
-        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded shadow-inner">
-          <MapPin size={9} className="inline mr-1 text-blue-500 shrink-0" />
-          {locationLabel}
-        </span>
-      </td>
-
-      {/* Overlapping Avatar Stacks */}
-      <td className="w-32 pl-4" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center -space-x-1.5 overflow-hidden">
-          {currentAssignees.map((as, ai) => (
-            <div
-              key={ai}
-              className={clsx(
-                "w-5 h-5 rounded-full border border-white text-[9px] font-black text-white flex items-center justify-center shadow-sm shrink-0",
-                as.bg
-              )}
-              title={as.name}
-            >
-              {as.init}
-            </div>
-          ))}
-          {match.locations?.length > 1 && (
-            <span className="text-[9px] text-slate-400 font-bold ml-2">+{match.locations.length - 1}</span>
-          )}
+      <td className="w-32 text-center">
+        <div className="flex items-center justify-center">
+          <span className="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded shadow-inner">
+            <MapPin size={9} className="inline mr-1 text-blue-500 shrink-0" />
+            {locationLabel}
+          </span>
         </div>
       </td>
 
-      {/* Status Dot with Text */}
-      <td className="w-28 pl-4">
-        <div className="flex items-center gap-1.5">
-          <div className={clsx("w-2 h-2 rounded-full shadow-sm shrink-0", sb.bg)} />
-          <span className={clsx("text-[10px] font-bold truncate", sb.text)}>{sb.label}</span>
-        </div>
-      </td>
-
-      {/* Reply details or warnings */}
-      <td className="w-12 text-center" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-center gap-2 text-slate-300">
-          <button className="hover:text-slate-600 transition-colors">
-            <Paperclip size={12} />
-          </button>
-          <button className="hover:text-slate-600 transition-colors relative">
-            <MessageSquare size={12} />
-            <span className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-blue-500 rounded-full" />
-          </button>
-        </div>
-      </td>
+      {/* Empty Spacer Column to absorb extra width */}
+      <td></td>
     </tr>
   );
 }
