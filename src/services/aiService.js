@@ -41,6 +41,7 @@ Return the result as a strict JSON object matching exactly this schema:
 {
   "seller_name": "string or null (the actual name of the company, e.g. 'Acme Manufacturing LLC')",
   "seller_anon_name": "string or null (e.g., 'Project Apollo' or 'Project Falcon')",
+  "summary": "string or null (A concise, 2-4 sentence anonymous executive summary written for potential M&A buyers. Highlight the core business model, key value proposition, and primary target market while strictly omitting any real company names or identifying trademarks. E.g., 'A leading developer of cloud-based scheduling software for dental clinics, serving over 500 active practices across the US with a highly predictable, recurring subscription revenue model.')",
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
   "legal_entity": "string or null (Allowed values: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other')",
