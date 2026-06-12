@@ -725,6 +725,21 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         return acc;
       }, {});
 
+      // Compute search_capex_pct (plain column — not DB-generated)
+      const fh = formData.financial_history || {};
+      const ltmCapex = fh['LTM']?.capex !== '' ? Number(fh['LTM']?.capex) : NaN;
+      const ltmRevenue = fh['LTM']?.revenue !== '' ? Number(fh['LTM']?.revenue) : NaN;
+      const fy0Capex = fh['FY0']?.capex !== '' ? Number(fh['FY0']?.capex) : NaN;
+      const fy0Revenue = fh['FY0']?.revenue !== '' ? Number(fh['FY0']?.revenue) : NaN;
+      if (!isNaN(ltmCapex) && !isNaN(ltmRevenue) && ltmRevenue !== 0) {
+        sanitizedData.search_capex_pct = ltmCapex / ltmRevenue;
+      } else if (!isNaN(fy0Capex) && !isNaN(fy0Revenue) && fy0Revenue !== 0) {
+        sanitizedData.search_capex_pct = fy0Capex / fy0Revenue;
+      } else {
+        sanitizedData.search_capex_pct = null;
+      }
+
+
       // Clear phantom file names if they were never uploaded to storage
       if (!teaserFile && !formData.teaser_url) {
         sanitizedData.teaser_file_name = null;

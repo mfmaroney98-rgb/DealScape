@@ -220,7 +220,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
       if (field === 'min' || field === 'max') {
         const lowerMetric = (updated[index].metric || '').toLowerCase();
-        const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
+        const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr') || lowerMetric.includes('capex %');
 
         let rawValue = value;
         const oldVal = updated[index][field];
@@ -548,7 +548,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
         'EBIT': 'search_ebit',
         'EBIT Margin': 'search_ebit_margin',
         'Net Income': 'search_net_income',
-        'Net Margin': 'search_net_margin'
+        'Net Margin': 'search_net_margin',
+        'CapEx % of Revenue': 'search_capex_pct'
       };
 
       const flattenedData = { ...formData };
@@ -567,7 +568,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
             const isPct = (fc.metric || '').toLowerCase().includes('margin') ||
               (fc.metric || '').toLowerCase().includes('growth') ||
               (fc.metric || '').toLowerCase().includes('%') ||
-              (fc.metric || '').toLowerCase().includes('cagr');
+              (fc.metric || '').toLowerCase().includes('cagr') ||
+              (fc.metric || '').toLowerCase().includes('capex %');
 
             let parsedMin = fc.min === '' || fc.min == null ? null : Number(fc.min);
             let parsedMax = fc.max === '' || fc.max == null ? null : Number(fc.max);
@@ -774,7 +776,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 <div className="range-row flex items-center gap-3">
                   {(() => {
                     const lowerMetric = (criteria.metric || '').toLowerCase();
-                    const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr');
+                    const isPct = lowerMetric.includes('margin') || lowerMetric.includes('growth') || lowerMetric.includes('%') || lowerMetric.includes('cagr') || lowerMetric.includes('capex %');
                     return (
                       <>
                         <input
