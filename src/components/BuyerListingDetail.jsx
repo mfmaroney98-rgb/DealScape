@@ -827,6 +827,9 @@ export default function BuyerListingDetail() {
                 geographyScore: matchData.geography_score || 0,
                 industryScore: matchData.industry_score,
                 semanticScore: matchData.semantic_score || 0,
+                aiScore: matchData.ai_score || null,
+                aiReasoning: matchData.ai_reasoning || null,
+                stage1Score: matchData.stage1_score || 0,
                 bonusScore: matchData.bonus_score || 0,
                 bonusReasons: matchData.bonus_reasons || [],
                 matchTier: matchData.match_tier
@@ -868,11 +871,26 @@ export default function BuyerListingDetail() {
                     </div>
                   )}
 
+                  {/* AI Match Reasoning Card */}
+                  {activeCriteriaMatch.aiReasoning && (
+                    <div className="p-4 mb-4 bg-gradient-to-br from-violet-50/80 to-blue-50/60 rounded-xl border border-violet-200/50">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles size={13} className="text-violet-500" />
+                        <span className="text-[10px] font-extrabold text-violet-700 uppercase tracking-wider">AI Match Analysis</span>
+                      </div>
+                      <p className="text-xs text-slate-700 leading-relaxed">
+                        {activeCriteriaMatch.aiReasoning}
+                      </p>
+                    </div>
+                  )}
+
                   <div className="space-y-4 p-4 bg-slate-50/70 rounded-xl">
+                    {activeCriteriaMatch.aiScore != null && (
+                      <ScoreBar label="AI Qualitative Fit"  score={activeCriteriaMatch.aiScore}       icon={Sparkles}    color="violet"  />
+                    )}
                     {activeCriteriaMatch.industryScore != null && (
                       <ScoreBar label="Industry Score"  score={activeCriteriaMatch.industryScore}   icon={Building2}   color="orange" />
                     )}
-                    <ScoreBar label="Semantic Score"    score={activeCriteriaMatch.semanticScore}   icon={Sparkles}    color="violet"  />
                     <ScoreBar label="Financial Fit"     score={activeCriteriaMatch.financialScore}  icon={DollarSign}  color="emerald" />
                     <ScoreBar label="Geography"         score={activeCriteriaMatch.geographyScore}  icon={Globe}       color="blue"    />
                     {activeCriteriaMatch.bonusScore > 0 && (

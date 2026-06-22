@@ -240,5 +240,154 @@ Important Rules:
     ]);
 
     return { industryVec, modelVec, targetVec };
+  },
+
+  /**
+   * Stage 2: Score candidates against buyer criteria using GPT-4o-mini.
+   * Checks cache first, only sends uncached candidates to the LLM.
+   *
+   * @param {Object} buyerCriteria - The buyer criteria record (from buyer_criteria table)
+   * @param {Array} candidates - Stage 1 candidates (from get_stage1_candidates RPC)
+   * @param {string} criteriaId - The buyer criteria UUID (for cache keying)
+   * @returns {Array<{listing_id: string, ai_score: number, ai_reasoning: string}>}
+   */
+  async scoreMatchesWithAI(buyerCriteria, candidates, criteriaId) {
+    const { cacheService } = await import('./cacheService.js');
+
+    if (!candidates || candidates.length === 0) return [];
+
+    const listingIds = candidates.map(c => c.listing_id);
+
+    // 1. Check cache for existing scores
+    const cachedScores = await cacheService.getCachedScores(criteriaId, listingIds);
+    const uncachedCandidates = candidates.filter(c => !cachedScores.has(c.listing_id));
+
+    console.log(`[Stage 2] Cache hit: ${cachedScores.size} of ${candidates.length} candidates`);
+
+    // 2. If all are cached, return immediately
+    if (uncachedCandidates.length === 0) {
+      return candidates.map(c => ({
+        listing_id: c.listing_id,
+        ...cachedScores.get(c.listing_id)
+      }));
+    }
+
+    // 3. Build the batch prompt for uncached candidates
+    const buyerContext = this._buildBuyerContext(buyerCriteria);
+    const candidateEntries = uncachedCandidates.map((c, idx) =>
+      this._buildCandidateEntry(c, idx + 1)
+    ).join('\n');
+
+    const prompt = `You are an M&A matching analyst. Score each seller listing against the buyer's investment criteria on qualitative fit (0-100).
+
+BUYER CRITERIA:
+${buyerContext}
+
+SELLER LISTINGS TO SCORE:
+${candidateEntries}
+
+SCORING INSTRUCTIONS:
+- Score ONLY on qualitative alignment. Do NOT consider financials or geography (already scored separately).
+- Consider: industry overlap, business model fit, customer/end-market alignment, operational compatibility, strategic coherence, and keyword overlap.
+- A score of 80-100 means strong qualitative alignment across most dimensions.
+- A score of 50-79 means partial alignment with some relevant overlap.
+- A score of 0-49 means weak qualitative fit with limited overlap.
+- For each listing, provide a concise 1-2 sentence explanation of why it scored the way it did.
+
+Return ONLY a JSON object in this exact format:
+{ "scores": [{ "id": "listing_uuid", "score": 0-100, "reason": "1-2 sentence explanation" }] }`;
+
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+        temperature: 0,
+      });
+
+      const result = JSON.parse(response.choices[0].message.content);
+      const freshScores = (result.scores || []).map(s => ({
+        listing_id: s.id,
+        ai_score: Math.min(100, Math.max(0, Number(s.score) || 0)),
+        ai_reasoning: s.reason || ''
+      }));
+
+      // 4. Write fresh scores to cache
+      await cacheService.writeCachedScores(criteriaId, freshScores);
+
+      console.log(`[Stage 2] AI scored ${freshScores.length} uncached candidates`);
+
+      // 5. Merge cached + fresh scores
+      const freshMap = new Map(freshScores.map(s => [s.listing_id, s]));
+      return candidates.map(c => {
+        const cached = cachedScores.get(c.listing_id);
+        const fresh = freshMap.get(c.listing_id);
+        return {
+          listing_id: c.listing_id,
+          ai_score: cached?.ai_score ?? fresh?.ai_score ?? 0,
+          ai_reasoning: cached?.ai_reasoning ?? fresh?.ai_reasoning ?? ''
+        };
+      });
+    } catch (err) {
+      console.error('[Stage 2] AI scoring failed:', err);
+      // Fallback: return cached scores where available, zeros elsewhere
+      return candidates.map(c => {
+        const cached = cachedScores.get(c.listing_id);
+        return {
+          listing_id: c.listing_id,
+          ai_score: cached?.ai_score ?? 0,
+          ai_reasoning: cached?.ai_reasoning ?? 'AI analysis unavailable.'
+        };
+      });
+    }
+  },
+
+  /**
+   * Builds the buyer criteria context string for the AI prompt.
+   * @private
+   */
+  _buildBuyerContext(criteria) {
+    const kw = criteria.categorized_keywords || {};
+    const lines = [];
+
+    if (kw.industry?.length) lines.push(`- Target Industries: ${kw.industry.join(', ')}`);
+    if (kw.business_model?.length) lines.push(`- Business Models: ${kw.business_model.join(', ')}`);
+    if (kw.revenue_model?.length) lines.push(`- Revenue Models: ${kw.revenue_model.join(', ')}`);
+    if (kw.customer_type?.length) lines.push(`- Customer Types: ${kw.customer_type.join(', ')}`);
+    if (kw.end_market?.length) lines.push(`- End Markets: ${kw.end_market.join(', ')}`);
+    if (kw.operational_model?.length) lines.push(`- Operational Preferences: ${kw.operational_model.join(', ')}`);
+    if (kw.differentiation?.length) lines.push(`- Differentiation Sought: ${kw.differentiation.join(', ')}`);
+    if (criteria.naics_codes?.length) lines.push(`- NAICS Codes: ${criteria.naics_codes.join(', ')}`);
+
+    return lines.length > 0 ? lines.join('\n') : '- No specific qualitative criteria provided';
+  },
+
+  /**
+   * Builds a single candidate entry string for the AI prompt.
+   * @private
+   */
+  _buildCandidateEntry(candidate, index) {
+    const kw = candidate.categorized_keywords || {};
+    const lines = [`[Listing ${index}]`, `  ID: ${candidate.listing_id}`];
+
+    if (candidate.summary) lines.push(`  Summary: ${candidate.summary}`);
+    if (kw.industry?.length) lines.push(`  Industries: ${kw.industry.join(', ')}`);
+    if (kw.business_model?.length) lines.push(`  Business Models: ${kw.business_model.join(', ')}`);
+    if (kw.revenue_model?.length) lines.push(`  Revenue Models: ${kw.revenue_model.join(', ')}`);
+    if (kw.customer_type?.length) lines.push(`  Customer Types: ${kw.customer_type.join(', ')}`);
+    if (kw.end_market?.length) lines.push(`  End Markets: ${kw.end_market.join(', ')}`);
+    if (kw.operational_model?.length) lines.push(`  Operational Model: ${kw.operational_model.join(', ')}`);
+    if (kw.differentiation?.length) lines.push(`  Differentiation: ${kw.differentiation.join(', ')}`);
+    if (candidate.naics_codes?.length) lines.push(`  NAICS: ${candidate.naics_codes.join(', ')}`);
+
+    const ownershipFlags = [];
+    if (candidate.is_founder_owned) ownershipFlags.push('Founder-owned');
+    if (candidate.is_family_owned) ownershipFlags.push('Family-owned');
+    if (candidate.is_female_owned) ownershipFlags.push('Female-owned');
+    if (candidate.is_minority_owned) ownershipFlags.push('Minority-owned');
+    if (candidate.is_operator_owned) ownershipFlags.push('Operator-led');
+    if (ownershipFlags.length) lines.push(`  Ownership: ${ownershipFlags.join(', ')}`);
+
+    return lines.join('\n');
   }
 };

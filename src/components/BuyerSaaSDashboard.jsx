@@ -67,6 +67,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
   const [selectedCriteriaIds, setSelectedCriteriaIds] = useState(new Set());
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [aiAnalysisLoading, setAiAnalysisLoading] = useState(false);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
   const notificationTimeoutRef = useRef(null);
@@ -172,75 +173,103 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
         setLoading(false);
         return;
       }
+      
+      const criteriaIdsArray = Array.from(selectedCriteriaIds);
+      
       try {
         setLoading(true);
+        setAiAnalysisLoading(false);
         
-        // Fetch matches for all selected criteria sets in parallel
-        const matchPromises = Array.from(selectedCriteriaIds).map(id =>
-          matchingService.getMatchesForCriteria(id)
+        // 1. Run Stage 1 (SQL filter + deterministic scoring)
+        const stage1Promises = criteriaIdsArray.map(id =>
+          matchingService.getStage1Candidates(id)
         );
-        const results = await Promise.all(matchPromises);
+        const stage1Results = await Promise.all(stage1Promises);
         
-        // Merge results, removing duplicate listings and keeping highest score
-        const mergedMap = new Map();
-        results.forEach((matchList, listIdx) => {
-          const criteriaId = Array.from(selectedCriteriaIds)[listIdx];
-          const criteriaObj = criteriaList.find(c => c.id === criteriaId);
-          const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
-
-          matchList.forEach(m => {
-            const matchInfo = {
-              criteriaId,
-              criteriaName,
-              matchTier: m.match_tier,
-              totalScore: m.total_score,
-              financialScore: m.financial_score || 0,
-              geographyScore: m.geography_score || 0,
-              industryScore: m.industry_score,
-              semanticScore: m.semantic_score || 0,
-              bonusScore: m.bonus_score || 0,
-              bonusReasons: m.bonus_reasons || []
-            };
-
-            const existing = mergedMap.get(m.listing_id);
-            let matchedCriteriaList = [];
-            if (existing) {
-              const filterExisting = existing.matchedCriteriaList.filter(item => item.criteriaName !== criteriaName);
-              matchedCriteriaList = [...filterExisting, matchInfo];
-            } else {
-              matchedCriteriaList = [matchInfo];
-            }
-
-            if (!existing || m.total_score > existing.total_score) {
-              mergedMap.set(m.listing_id, {
-                ...m,
-                matchedCriteriaList
-              });
-            } else {
-              existing.matchedCriteriaList = matchedCriteriaList;
-            }
-          });
-        });
-
-        const mergedList = Array.from(mergedMap.values()).filter(m => m.total_score >= 45);
-        mergedList.sort((a, b) => b.total_score - a.total_score);
-        setMatches(mergedList);
-
-        // Prepopulate default mock statuses
+        // Merge and show Stage 1 candidates immediately
+        const stage1Matches = mergeAndSortMatches(stage1Results, criteriaIdsArray);
+        setMatches(stage1Matches);
+        setLoading(false);
+        
+        // Populate default deal statuses for the new matches
         const statuses = {};
-        mergedList.forEach((m, idx) => {
+        stage1Matches.forEach((m, idx) => {
           if (idx === 0) statuses[m.listing_id] = 'Due Diligence';
           else if (idx === 1) statuses[m.listing_id] = 'NDA Signed';
           else if (idx === 2) statuses[m.listing_id] = 'Active Fit';
           else statuses[m.listing_id] = 'New';
         });
         setDealStatuses(prev => ({ ...statuses, ...prev }));
+        
+        // 2. Kick off Stage 2 (AI qualitative fit scoring) in the background
+        setAiAnalysisLoading(true);
+        const stage2Promises = criteriaIdsArray.map(id => {
+          const criteriaObj = criteriaList.find(c => c.id === id);
+          return matchingService.getTwoStageMatches(id, criteriaObj);
+        });
+        
+        const stage2Results = await Promise.all(stage2Promises);
+        const stage2Matches = mergeAndSortMatches(stage2Results, criteriaIdsArray);
+        
+        // Update table with AI-scored results
+        setMatches(stage2Matches);
       } catch (err) {
         console.error('Matches Loading Error:', err);
         setError('Failed to load matching listings.');
       } finally {
         setLoading(false);
+        setAiAnalysisLoading(false);
       }
+    };
+
+    // Merge results from multiple criteria sets, removing duplicate listings and keeping highest score
+    const mergeAndSortMatches = (results, selectedIdsArray) => {
+      const mergedMap = new Map();
+      results.forEach((matchList, listIdx) => {
+        const criteriaId = selectedIdsArray[listIdx];
+        const criteriaObj = criteriaList.find(c => c.id === criteriaId);
+        const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
+
+        matchList.forEach(m => {
+          const matchInfo = {
+            criteriaId,
+            criteriaName,
+            matchTier: m.match_tier,
+            totalScore: m.total_score,
+            financialScore: m.financial_score || 0,
+            geographyScore: m.geography_score || 0,
+            industryScore: m.industry_score,
+            semanticScore: m.semantic_score || 0,
+            aiScore: m.ai_score || null,
+            aiReasoning: m.ai_reasoning || null,
+            stage1Score: m.stage1_score || 0,
+            bonusScore: m.bonus_score || 0,
+            bonusReasons: m.bonus_reasons || []
+          };
+
+          const existing = mergedMap.get(m.listing_id);
+          let matchedCriteriaList = [];
+          if (existing) {
+            const filterExisting = existing.matchedCriteriaList.filter(item => item.criteriaName !== criteriaName);
+            matchedCriteriaList = [...filterExisting, matchInfo];
+          } else {
+            matchedCriteriaList = [matchInfo];
+          }
+
+          if (!existing || m.total_score > existing.total_score) {
+            mergedMap.set(m.listing_id, {
+              ...m,
+              matchedCriteriaList
+            });
+          } else {
+            existing.matchedCriteriaList = matchedCriteriaList;
+          }
+        });
+      });
+
+      const mergedList = Array.from(mergedMap.values());
+      mergedList.sort((a, b) => b.total_score - a.total_score);
+      return mergedList;
     };
 
     if (criteriaList.length > 0) {
@@ -757,6 +786,18 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
               </button>
             </div>
           ) : (
+            <>
+            {/* AI Analysis Progress Indicator */}
+            {aiAnalysisLoading && (
+              <div className="flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-violet-50 to-blue-50 border-b border-violet-200/50">
+                <div className="relative flex items-center justify-center w-4 h-4">
+                  <div className="absolute w-4 h-4 rounded-full border-2 border-violet-300 border-t-violet-600 animate-spin" />
+                </div>
+                <span className="text-[11px] font-semibold text-violet-700 tracking-wide">
+                  AI qualitative analysis in progress — scores will update momentarily...
+                </span>
+              </div>
+            )}
             <table className="w-full text-left border-collapse select-none">
               <thead className="bg-[#fafbfd] border-b border-slate-200 sticky top-0 z-10 shadow-sm">
                 <tr className="text-[10px] font-bold text-slate-400 tracking-wider h-9">
@@ -856,6 +897,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                 )}
               </tbody>
             </table>
+            </>
           )}
         </div>
       </div>
@@ -1086,6 +1128,9 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                     geographyScore: selectedMatch.geography_score || 0,
                     industryScore: selectedMatch.industry_score,
                     semanticScore: selectedMatch.semantic_score || 0,
+                    aiScore: selectedMatch.ai_score || null,
+                    aiReasoning: selectedMatch.ai_reasoning || null,
+                    stage1Score: selectedMatch.stage1_score || 0,
                     bonusScore: selectedMatch.bonus_score || 0,
                     bonusReasons: selectedMatch.bonus_reasons || [],
                     matchTier: selectedMatch.match_tier
@@ -1122,13 +1167,25 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                         </div>
                       )}
 
+                      {activeCriteriaMatch.aiReasoning && (
+                        <div className="p-4 mb-4 bg-gradient-to-br from-violet-50/80 to-blue-50/60 rounded-xl border border-violet-200/50">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Sparkles size={13} className="text-violet-500" />
+                            <span className="text-[10px] font-extrabold text-violet-700 uppercase tracking-wider">AI Match Analysis</span>
+                          </div>
+                          <p className="text-xs text-slate-700 leading-relaxed">
+                            {activeCriteriaMatch.aiReasoning}
+                          </p>
+                        </div>
+                      )}
+
                       <div className="space-y-4 p-4 bg-slate-50/80 rounded-2xl border border-slate-200/50">
                         {[
-                          { label: 'Industry overlap Score', score: activeCriteriaMatch.industryScore, desc: 'Alignment with standard NAICS descriptors', color: 'bg-[#ff9500]' },
-                          { label: 'Semantic/Strategic Fit', score: activeCriteriaMatch.semanticScore, desc: 'AI keyword semantic context mapping', color: 'bg-purple-500' },
+                          activeCriteriaMatch.aiScore != null && { label: 'AI Qualitative Fit', score: activeCriteriaMatch.aiScore, desc: 'AI qualitative alignment on business details', color: 'bg-violet-500' },
+                          activeCriteriaMatch.industryScore != null && { label: 'Industry overlap Score', score: activeCriteriaMatch.industryScore, desc: 'Alignment with standard NAICS descriptors', color: 'bg-[#ff9500]' },
                           { label: 'Financial Fit Score', score: activeCriteriaMatch.financialScore, desc: 'EBITDA, Revenue matching thresholds', color: 'bg-emerald-500' },
                           { label: 'Geography Fit Score', score: activeCriteriaMatch.geographyScore, desc: 'Match of regional boundaries', color: 'bg-blue-500' }
-                        ].map((item) => (
+                        ].filter(Boolean).map((item) => (
                           <div key={item.label} className="space-y-2">
                             <div className="flex items-center justify-between">
                               <div>
@@ -1141,8 +1198,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
                             </div>
                             <div className="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
                               <div
-                                className={clsx("h-full rounded-full transition-all duration-500", item.color)}
-                                style={{ width: `${Math.min(100, Math.max(0, item.score || 0))}%` }}
+                                  className={clsx("h-full rounded-full transition-all duration-500", item.color)}
+                                  style={{ width: `${Math.min(100, Math.max(0, item.score || 0))}%` }}
                               />
                             </div>
                           </div>
