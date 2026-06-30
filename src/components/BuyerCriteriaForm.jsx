@@ -167,6 +167,23 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     }
   }, [userId, orgId, formData.user_id, formData.organization_id]);
 
+  const [naicsExpandedOnLoad, setNaicsExpandedOnLoad] = useState(false);
+
+  useEffect(() => {
+    if (!loading && naicsSectors.length > 0 && !naicsExpandedOnLoad) {
+      if (formData.naics_codes.length > 0) {
+        const expanded = expandNaicsCodes(formData.naics_codes, naicsSectors);
+        if (expanded.length !== formData.naics_codes.length) {
+          setFormData(prev => ({
+            ...prev,
+            naics_codes: expanded
+          }));
+        }
+      }
+      setNaicsExpandedOnLoad(true);
+    }
+  }, [loading, naicsSectors, formData.naics_codes, naicsExpandedOnLoad]);
+
 
 
   const handleChange = (e) => {
@@ -500,6 +517,24 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
       setAutoFilledFields(updatedFields);
       if (parsedData.keywords) {
         setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
+      }
+
+      // Auto-expand NAICS tree for parsed codes
+      if (rawNaicsCodes && Array.isArray(rawNaicsCodes)) {
+        setExpandedNaicsSectors(prev => {
+          const next = new Set(prev);
+          rawNaicsCodes.forEach(code => {
+            if (code.length >= 2) next.add(code.substring(0, 2));
+          });
+          return next;
+        });
+        setExpandedNaicsSubsectors(prev => {
+          const next = new Set(prev);
+          rawNaicsCodes.forEach(code => {
+            if (code.length >= 3) next.add(code.substring(0, 3));
+          });
+          return next;
+        });
       }
 
       // Generate segmented embeddings from extracted keywords for granular matching
@@ -1004,7 +1039,10 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 ) : (
                   naicsSectors.map((sector, sIdx) => {
                     const isLastSector = sIdx === naicsSectors.length - 1;
-                    const allSubCodes = sector.subsectors.map(s => s.code);
+                    const allSubCodes = [
+                      ...sector.subsectors.map(s => s.code),
+                      ...sector.subsectors.flatMap(s => (s.industryGroups || []).map(ig => ig.code))
+                    ];
                     const allSelected = [sector.code, ...allSubCodes].every(c => formData.naics_codes.includes(c));
                     const someSelected = allSubCodes.some(c => formData.naics_codes.includes(c)) && !allSelected;
                     const isExpanded = expandedNaicsSectors.has(sector.code);
@@ -1167,7 +1205,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                       type="checkbox"
                       name={pref.key}
                       className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
-                      checked={formData[pref.key]}
+                      checked={!!formData[pref.key]}
                       onChange={(e) => {
                         if (autoFilledFields.includes(pref.key)) {
                           setAutoFilledFields(prev => prev.filter(f => f !== pref.key));

@@ -262,6 +262,23 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     }
   }, [formData, autoFilledFields, autoFilledTags, listingId, loading, isParsing]);
 
+  const [naicsExpandedOnLoad, setNaicsExpandedOnLoad] = useState(false);
+
+  useEffect(() => {
+    if (!loading && naicsSectors.length > 0 && !naicsExpandedOnLoad) {
+      if (formData.naics_codes.length > 0) {
+        const expanded = expandNaicsCodes(formData.naics_codes, naicsSectors);
+        if (expanded.length !== formData.naics_codes.length) {
+          setFormData(prev => ({
+            ...prev,
+            naics_codes: expanded
+          }));
+        }
+      }
+      setNaicsExpandedOnLoad(true);
+    }
+  }, [loading, naicsSectors, formData.naics_codes, naicsExpandedOnLoad]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -1834,7 +1851,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                       type="checkbox"
                       name={flag.key}
                       className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
-                      checked={formData[flag.key]}
+                      checked={!!formData[flag.key]}
                       onChange={(e) => {
                         if (autoFilledFields.includes(flag.key)) {
                           setAutoFilledFields(prev => prev.filter(f => f !== flag.key));

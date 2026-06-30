@@ -154,9 +154,9 @@ Important Rules:
 2. Extract ALL absolute financial ranges (Min and Max). IMPORTANT: Pay close attention to unit scales (e.g. "in thousands", "K", "M", "B", "Millions"). You MUST expand all financials into their full, un-abbreviated integer values. For example, if the document says "$5.2M" or "5,200 (in thousands)", you must output the integer 5200000. Never output "5.2" for 5 million.
 3. If a value is provided as a percentage (e.g. "20% EBITDA Margin"), extract it as the raw number (e.g. "20").
 4. If a value is genuinely not present, set min/max to null.
-5. Extract 10-16 sharp, discriminating phrases for the keywords categories.
+5. Extract 10-16 sharp, discriminating phrases for the keywords categories. For the "industry" keywords specifically, you MUST extract EVERY single listed sector, sub-sector, sub-industry, niche, or specific sub-bullet point mentioned in the document. For example, if a main category like "Value-added Distribution" has sub-bullets like "Assembly, kitting, or configuration" and "Consumable and branded products", you MUST extract the parent category AND all of the sub-bullet points as separate entries in the industry array. Do not omit, summarize, or compress these focus areas.
 6. Extract only the JSON, no markdown formatting or extra text.
-7. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three codes that best represent this buyer criteria. If the criteria is extremely broad (e.g. "any technology/software business" or "any manufacturing company"), return the broad 2-digit sector or 3-digit subsector code (e.g., '54' or '541'). Otherwise, return specific 4-digit codes (e.g., '5415').
+7. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three codes that best represent this buyer criteria (including all extracted sub-industries and sub-bullets). If the criteria is extremely broad (e.g. "any technology/software business" or "any manufacturing company"), return the broad 2-digit sector or 3-digit subsector code (e.g., '54' or '541'). Otherwise, return specific 4-digit codes (e.g., '5415').
 
 Document Text:
 ${text.slice(0, 30000)}
