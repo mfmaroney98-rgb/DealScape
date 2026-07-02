@@ -1231,13 +1231,17 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 </label>
                 <TagInput
                   tags={formData.categorized_keywords?.reason_for_sale || []}
-                  setTags={(tags) => setFormData(prev => ({
-                    ...prev,
-                    categorized_keywords: {
-                      ...prev.categorized_keywords,
+                  onChange={(tags) => setFormData(prev => {
+                    const updatedCategorized = {
+                      ...(prev.categorized_keywords || {}),
                       reason_for_sale: tags
-                    }
-                  }))}
+                    };
+                    return {
+                      ...prev,
+                      categorized_keywords: updatedCategorized,
+                      keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                    };
+                  })}
                   placeholder="e.g. Owner retirement, Growth capital, Corporate divestiture..."
                 />
               </div>
