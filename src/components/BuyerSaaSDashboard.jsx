@@ -68,6 +68,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [aiAnalysisLoading, setAiAnalysisLoading] = useState(false);
+  const [aiScoresActivated, setAiScoresActivated] = useState(false);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
   const notificationTimeoutRef = useRef(null);
@@ -165,6 +166,56 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
     }
   }, [location.search, criteriaList]);
 
+  // Merge results from multiple criteria sets, removing duplicate listings and keeping highest score
+  const mergeAndSortMatches = (results, selectedIdsArray) => {
+    const mergedMap = new Map();
+    results.forEach((matchList, listIdx) => {
+      const criteriaId = selectedIdsArray[listIdx];
+      const criteriaObj = criteriaList.find(c => c.id === criteriaId);
+      const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
+
+      matchList.forEach(m => {
+        const matchInfo = {
+          criteriaId,
+          criteriaName,
+          matchTier: m.match_tier,
+          totalScore: m.total_score,
+          financialScore: m.financial_score || 0,
+          geographyScore: m.geography_score || 0,
+          industryScore: m.industry_score,
+          semanticScore: m.semantic_score || 0,
+          aiScore: m.ai_score || null,
+          aiReasoning: m.ai_reasoning || null,
+          stage1Score: m.stage1_score || 0,
+          bonusScore: m.bonus_score || 0,
+          bonusReasons: m.bonus_reasons || []
+        };
+
+        const existing = mergedMap.get(m.listing_id);
+        let matchedCriteriaList = [];
+        if (existing) {
+          const filterExisting = existing.matchedCriteriaList.filter(item => item.criteriaName !== criteriaName);
+          matchedCriteriaList = [...filterExisting, matchInfo];
+        } else {
+          matchedCriteriaList = [matchInfo];
+        }
+
+        if (!existing || m.total_score > existing.total_score) {
+          mergedMap.set(m.listing_id, {
+            ...m,
+            matchedCriteriaList
+          });
+        } else {
+          existing.matchedCriteriaList = matchedCriteriaList;
+        }
+      });
+    });
+
+    const mergedList = Array.from(mergedMap.values());
+    mergedList.sort((a, b) => b.total_score - a.total_score);
+    return mergedList;
+  };
+
   // Load matches when active criteria sets change
   useEffect(() => {
     const fetchMatches = async () => {
@@ -179,6 +230,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
       try {
         setLoading(true);
         setAiAnalysisLoading(false);
+        setAiScoresActivated(false);
         
         // 1. Run Stage 1 (SQL filter + deterministic scoring)
         const stage1Promises = criteriaIdsArray.map(id =>
@@ -201,81 +253,44 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
         });
         setDealStatuses(prev => ({ ...statuses, ...prev }));
         
-        // 2. Kick off Stage 2 (AI qualitative fit scoring) in the background
-        setAiAnalysisLoading(true);
-        const stage2Promises = criteriaIdsArray.map(id => {
-          const criteriaObj = criteriaList.find(c => c.id === id);
-          return matchingService.getTwoStageMatches(id, criteriaObj);
-        });
-        
-        const stage2Results = await Promise.all(stage2Promises);
-        const stage2Matches = mergeAndSortMatches(stage2Results, criteriaIdsArray);
-        
-        // Update table with AI-scored results
-        setMatches(stage2Matches);
       } catch (err) {
         console.error('Matches Loading Error:', err);
         setError('Failed to load matching listings.');
       } finally {
         setLoading(false);
-        setAiAnalysisLoading(false);
       }
-    };
-
-    // Merge results from multiple criteria sets, removing duplicate listings and keeping highest score
-    const mergeAndSortMatches = (results, selectedIdsArray) => {
-      const mergedMap = new Map();
-      results.forEach((matchList, listIdx) => {
-        const criteriaId = selectedIdsArray[listIdx];
-        const criteriaObj = criteriaList.find(c => c.id === criteriaId);
-        const criteriaName = criteriaObj?.investment_criteria_name || 'Criteria Set';
-
-        matchList.forEach(m => {
-          const matchInfo = {
-            criteriaId,
-            criteriaName,
-            matchTier: m.match_tier,
-            totalScore: m.total_score,
-            financialScore: m.financial_score || 0,
-            geographyScore: m.geography_score || 0,
-            industryScore: m.industry_score,
-            semanticScore: m.semantic_score || 0,
-            aiScore: m.ai_score || null,
-            aiReasoning: m.ai_reasoning || null,
-            stage1Score: m.stage1_score || 0,
-            bonusScore: m.bonus_score || 0,
-            bonusReasons: m.bonus_reasons || []
-          };
-
-          const existing = mergedMap.get(m.listing_id);
-          let matchedCriteriaList = [];
-          if (existing) {
-            const filterExisting = existing.matchedCriteriaList.filter(item => item.criteriaName !== criteriaName);
-            matchedCriteriaList = [...filterExisting, matchInfo];
-          } else {
-            matchedCriteriaList = [matchInfo];
-          }
-
-          if (!existing || m.total_score > existing.total_score) {
-            mergedMap.set(m.listing_id, {
-              ...m,
-              matchedCriteriaList
-            });
-          } else {
-            existing.matchedCriteriaList = matchedCriteriaList;
-          }
-        });
-      });
-
-      const mergedList = Array.from(mergedMap.values());
-      mergedList.sort((a, b) => b.total_score - a.total_score);
-      return mergedList;
     };
 
     if (criteriaList.length > 0) {
       fetchMatches();
     }
   }, [selectedCriteriaIds, criteriaList]);
+
+  // Manually trigger Stage 2 (AI qualitative fit scoring)
+  const handleActivateAIScores = async () => {
+    if (selectedCriteriaIds.size === 0) return;
+    const criteriaIdsArray = Array.from(selectedCriteriaIds);
+    try {
+      setAiAnalysisLoading(true);
+      const stage2Promises = criteriaIdsArray.map(id => {
+        const criteriaObj = criteriaList.find(c => c.id === id);
+        return matchingService.getTwoStageMatches(id, criteriaObj);
+      });
+      
+      const stage2Results = await Promise.all(stage2Promises);
+      const stage2Matches = mergeAndSortMatches(stage2Results, criteriaIdsArray);
+      
+      // Update table with AI-scored results
+      setMatches(stage2Matches);
+      setAiScoresActivated(true);
+      triggerNotification("AI Score update complete.");
+    } catch (err) {
+      console.error('AI Score calculation error:', err);
+      setError('Failed to calculate AI scores.');
+    } finally {
+      setAiAnalysisLoading(false);
+    }
+  };
 
   // Actions
   const triggerNotification = (message) => {
@@ -746,6 +761,25 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
 
           {/* New request styled CTA Button in blue */}
           <div className="flex items-center gap-2">
+            {selectedCriteriaIds.size > 0 && (
+              <button
+                onClick={handleActivateAIScores}
+                disabled={aiAnalysisLoading}
+                className={clsx(
+                  "flex items-center gap-1.5 px-4 py-2 text-xs font-bold border rounded-lg shadow-sm transition-all leading-none",
+                  aiScoresActivated
+                    ? "bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100"
+                    : "bg-violet-600 hover:bg-violet-700 text-white border-violet-700 shadow-violet-500/10"
+                )}
+              >
+                <Sparkles size={14} className={clsx(aiAnalysisLoading && "animate-pulse")} />
+                {aiAnalysisLoading
+                  ? "Updating AI Scores..."
+                  : aiScoresActivated
+                    ? "AI Scores Active (Recalculate)"
+                    : "Activate AI Score Update"}
+              </button>
+            )}
             <button
               onClick={() => navigate('/onboarding/buyer')}
               className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 border border-blue-700 rounded-lg shadow-sm shadow-blue-500/10 transition-all leading-none"
