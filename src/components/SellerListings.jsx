@@ -59,16 +59,16 @@ export default function SellerListings({ orgId, isCorporate }) {
 
   const getDisplayKeywords = (keywords) => {
     if (!keywords) return '--';
-    
+
     let kwArray = [];
     if (Array.isArray(keywords)) {
       kwArray = keywords;
     } else if (typeof keywords === 'string') {
       kwArray = keywords.replace(/[{}"[\]]/g, '').split(',').map(k => k.trim()).filter(Boolean);
     }
-    
+
     if (!kwArray || kwArray.length === 0) return '--';
-    
+
     const displaySize = 3;
     const display = kwArray.slice(0, displaySize).join('\n');
     return kwArray.length > displaySize ? `${display}\n...` : display;
@@ -92,7 +92,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         <Link to="/dashboard" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        
+
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>
             <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-500/10 rounded-xl mb-4">
@@ -107,7 +107,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         </div>
 
         {/* Status Tabs */}
-        <div className="flex flex-wrap gap-4 mb-8 p-1 bg-slate-900/50 rounded-2xl w-fit">
+        <div className="flex flex-wrap gap-2 mb-8 p-1.5 bg-slate-100 dark:bg-slate-950 rounded-2xl w-fit border border-slate-200/60 dark:border-slate-800/60">
           {[
             { id: 'Active', icon: TrendingUp, label: 'Active & Offers' },
             { id: 'Draft', icon: FileText, label: 'Drafts' },
@@ -117,16 +117,18 @@ export default function SellerListings({ orgId, isCorporate }) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all cursor-pointer ${
                 activeTab === tab.id 
-                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                ? 'bg-indigo-700 dark:bg-indigo-600 text-white shadow-lg shadow-indigo-500/10' 
+                : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-900/60'
               }`}
             >
               <tab.icon size={18} />
               {tab.label}
-              <span className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
-                activeTab === tab.id ? 'bg-indigo-500 text-white' : 'bg-slate-800 text-slate-500'
+              <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors ${
+                activeTab === tab.id 
+                  ? 'bg-white/20 text-white' 
+                  : 'bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
               }`}>
                 {tab.id === 'Active' ? listings.filter(l => l.status === 'Active' || l.status === 'Under Offer').length :
                  tab.id === 'Draft' ? listings.filter(l => l.status === 'Draft').length :
@@ -165,10 +167,10 @@ export default function SellerListings({ orgId, isCorporate }) {
                     {listing.status}
                   </div>
                 )}
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
                   <h3 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
-                    <Link 
+                    <Link
                       to={listing.status === 'Draft' ? `/onboarding/seller/edit/${listing.id}` : `/dashboard/seller/listings/${listing.id}`}
                       className="text-indigo-400 hover:text-indigo-300 hover:underline transition-all"
                     >
@@ -176,7 +178,7 @@ export default function SellerListings({ orgId, isCorporate }) {
                     </Link>
                   </h3>
                 </div>
-                
+
                 {/* Headings row */}
                 <div className="flex flex-row w-full mb-2">
                   <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Company Name</div>

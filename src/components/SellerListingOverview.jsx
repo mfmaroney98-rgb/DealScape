@@ -7,7 +7,7 @@ import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileTex
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,12 +37,12 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     setDownloadError(null);
     try {
       const signedUrl = await sellerListingService.getSignedUrl(path);
-      
+
       // Fetch the file as a blob to trigger a direct local browser download
       const response = await fetch(signedUrl);
       if (!response.ok) throw new Error('Network response was not ok');
       const blob = await response.blob();
-      
+
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;
@@ -63,7 +63,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     if (!window.confirm("Are you absolutely sure you want to permanently remove this listing? This will also permanently delete all associated documents and cannot be undone.")) {
       return;
     }
-    
+
     setLoading(true);
     try {
       await sellerListingService.deleteListing(id);
@@ -152,33 +152,30 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
         {/* Tab Navigation */}
         <div className="flex gap-4 mb-8 border-b border-slate-700/50 pb-4 overflow-x-auto">
-          <button 
+          <button
             onClick={() => setActiveTab('overview')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
-              activeTab === 'overview' 
-                ? 'bg-indigo-500 text-white' 
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'overview'
+                ? 'bg-indigo-500 text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-            }`}
+              }`}
           >
             Listing Overview
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('buyers')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
-              activeTab === 'buyers' 
-                ? 'bg-indigo-500 text-white' 
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'buyers'
+                ? 'bg-indigo-500 text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-            }`}
+              }`}
           >
             Buyers
           </button>
-          <button 
+          <button
             onClick={() => setActiveTab('preview')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
-              activeTab === 'preview' 
-                ? 'bg-indigo-500 text-white' 
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'preview'
+                ? 'bg-indigo-500 text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-            }`}
+              }`}
           >
             View Like a Buyer
           </button>
@@ -187,7 +184,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
         {/* Tab Content */}
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
             {/* Left Column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Company Information */}
@@ -403,7 +400,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Actions */}
               <div className="flex flex-col gap-3">
-                <button 
+                <button
                   onClick={() => navigate(`/onboarding/seller/edit/${listing.id}`)}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 text-indigo-400 font-semibold transition-all">
                   <Edit3 size={18} /> Edit Listing
@@ -414,7 +411,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold transition-all">
                   <CheckCircle2 size={18} /> Close Deal
                 </button>
-                <button 
+                <button
                   onClick={handleDeleteListing}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold transition-all"
                 >
@@ -468,7 +465,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
         {activeTab === 'preview' && (
           <div className="glass p-12 rounded-2xl text-center flex flex-col items-center justify-center min-h-[400px]">
-             <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
+            <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
               <FileText className="text-emerald-400" size={32} />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">Buyer Preview Mode</h2>
