@@ -45,7 +45,7 @@ export default function TagInput({
     <div className="space-y-3">
       <input
         type="text"
-        className="form-input py-4 placeholder:text-xs focus:ring-2 focus:ring-offset-0 focus:ring-accent focus:outline-none transition-colors w-full"
+        className="form-input py-3 h-[46px] placeholder:text-xs focus:ring-2 focus:ring-offset-0 focus:ring-accent focus:outline-none transition-colors w-full"
         value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}

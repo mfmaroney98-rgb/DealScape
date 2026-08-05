@@ -869,9 +869,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
         <h1 className="text-4xl font-black mb-4 tracking-tight">
           {isEditing ? 'Update Your Listing' : 'Create Your Listing'}
         </h1>
-        <div style={{ color: 'red', fontSize: '10px' }}>
-          Debug Fields: {JSON.stringify(autoFilledFields)} | Tags: {JSON.stringify(autoFilledTags)}
-        </div>
+
         <p className="text-slate-400 max-w-lg mx-auto mb-8">
           Provide the key details of your business to attract the right investors. All company names are kept private until mutual interest is confirmed.
         </p>
@@ -1066,10 +1064,8 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
               <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <label className="form-label flex items-center gap-2">
-                  <span className="flex items-center gap-2">
-                    <FileText size={16} className="text-slate-400" />
-                    Listing Title (Anonymized)
-                  </span>
+                  <FileText size={16} className="text-slate-400" />
+                  Listing Title (Anonymized)
                 </label>
                 <input
                   type="text"
@@ -1129,11 +1125,9 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', alignItems: 'start' }}>
               <div className="flex flex-col gap-6">
                 <div>
-                  <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
-                    <span className="flex items-center gap-2">
-                      <Briefcase size={16} className="text-slate-400" />
-                      Ownership Structure
-                    </span>
+                  <label className="form-label flex items-center gap-2" style={{ marginBottom: '0.75rem' }}>
+                    <Briefcase size={16} className="text-slate-400" />
+                    Ownership Structure
                   </label>
                   <select name="ownership_structure" className={getInputClass('ownership_structure', 'form-input w-full')} style={{ width: '100%', appearance: 'auto' }} value={formData.ownership_structure} onChange={handleChange}>
                     <option value="">Select Ownership</option>
@@ -1892,16 +1886,14 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                 />
               </div>
               <div>
-                <label className="form-label flex justify-between items-center" style={{ marginBottom: '1rem' }}>
-                  <span className="flex items-center gap-2">
-                    <Users size={16} className="text-slate-400" />
-                    Owner Transition Period
-                  </span>
+                <label className="form-label flex items-center gap-2" style={{ marginBottom: '1rem' }}>
+                  <Users size={16} className="text-slate-400" />
+                  Owner Transition Period
                 </label>
                 <select
                   name="owner_transition"
-                  className="form-input w-full bg-white"
-                  style={{ width: '100%', appearance: 'auto' }}
+                  className="form-input w-full bg-white py-3 h-[46px]"
+                  style={{ width: '100%', appearance: 'auto', height: '46px' }}
                   value={formData.owner_transition || ''}
                   onChange={handleChange}
                 >

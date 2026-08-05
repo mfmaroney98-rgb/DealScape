@@ -195,6 +195,14 @@
   .form-label {
     @apply block text-sm font-medium text-muted-foreground mb-2;
   }
+
+  .form-label.flex {
+    display: flex;
+  }
+
+  .form-label.inline-flex {
+    display: inline-flex;
+  }
 }
 
 /* Custom animations */

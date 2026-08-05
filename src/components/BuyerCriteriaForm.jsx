@@ -1252,7 +1252,8 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
                 </label>
                 <select
                   name="owner_transition"
-                  className="form-input bg-white"
+                  className="form-input bg-white py-3 h-[46px]"
+                  style={{ height: '46px' }}
                   value={formData.owner_transition || ''}
                   onChange={handleChange}
                 >
