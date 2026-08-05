@@ -125,10 +125,10 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     return (
       <div className="min-h-screen p-6 animate-fade-in">
         <div className="max-w-6xl mx-auto py-12">
-          <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
+          <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-8">
             <ArrowLeft size={16} /> Back to Listings
           </Link>
-          <div className="p-4 rounded-xl bg-red-500/10 text-red-400 text-sm">
+          <div className="p-4 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm">
             {error || 'Listing not found.'}
           </div>
         </div>
@@ -144,37 +144,37 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
       <div className="max-w-7xl mx-auto py-12">
         <div className="flex items-center justify-between mb-8">
-          <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+          <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
             <ArrowLeft size={16} /> Back to Listings
           </Link>
-          <h1 className="text-3xl font-bold text-white">{listing.seller_anon_name || "Unnamed Listing"}</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{listing.seller_anon_name || "Unnamed Listing"}</h1>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-4 mb-8 border-b border-slate-700/50 pb-4 overflow-x-auto">
+        <div className="flex gap-4 mb-8 border-b border-slate-200 dark:border-slate-700/50 pb-4 overflow-x-auto">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'overview'
-                ? 'bg-indigo-500 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'overview'
+                ? 'bg-indigo-600 text-white'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             Listing Overview
           </button>
           <button
             onClick={() => setActiveTab('buyers')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'buyers'
-                ? 'bg-indigo-500 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'buyers'
+                ? 'bg-indigo-600 text-white'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             Buyers
           </button>
           <button
             onClick={() => setActiveTab('preview')}
-            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${activeTab === 'preview'
-                ? 'bg-indigo-500 text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+            className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'preview'
+                ? 'bg-indigo-600 text-white'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             View Like a Buyer
@@ -188,49 +188,49 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             {/* Left Column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Company Information */}
-              <div className="glass p-6 rounded-2xl">
-                <h3 className="text-xl font-bold mb-4 text-white">Company Information</h3>
+              <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
+                <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Company Information</h3>
                 <div className="space-y-4">
                   <div>
-                    <span className="text-sm text-slate-400 block mb-1">Company Name</span>
-                    <span className="text-slate-200 font-medium">{listing.seller_name || '--'}</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Company Name</span>
+                    <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.seller_name || '--'}</span>
                   </div>
                   {listing.year_founded && (
                     <div>
-                      <span className="text-sm text-slate-400 block mb-1">Year Founded</span>
-                      <span className="text-slate-200 font-medium">{listing.year_founded}</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Year Founded</span>
+                      <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.year_founded}</span>
                     </div>
                   )}
                   <div>
-                    <span className="text-sm text-slate-400 block mb-1">Keywords / Industry</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Keywords / Industry</span>
                     <div className="flex flex-wrap gap-2 mt-1">
                       {(Array.isArray(listing.keywords) && listing.keywords.length > 0) ? (
                         listing.keywords.map(kw => (
-                          <span key={kw} className="px-2 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs rounded-md">
+                          <span key={kw} className="px-2 py-1 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs rounded-md">
                             {kw}
                           </span>
                         ))
                       ) : <span className="text-slate-500 text-sm italic">Not specified</span>}
                     </div>
                   </div>
-                  <div className="pt-4 border-t border-slate-700/50">
-                    <h4 className="text-sm font-semibold text-slate-300 mb-3">Latest Financials</h4>
+                  <div className="pt-4 border-t border-slate-200 dark:border-slate-700/50">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Latest Financials</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <span className="text-xs text-slate-400 block">Revenue</span>
-                        <span className="text-sm text-white font-medium">{getLatestFinancial(listing.financial_history, 'revenue')}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 block">Revenue</span>
+                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'revenue')}</span>
                       </div>
                       <div>
-                        <span className="text-xs text-slate-400 block">EBITDA</span>
-                        <span className="text-sm text-white font-medium">{getLatestFinancial(listing.financial_history, 'ebitda')}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 block">EBITDA</span>
+                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'ebitda')}</span>
                       </div>
                       <div>
-                        <span className="text-xs text-slate-400 block">Gross Profit</span>
-                        <span className="text-sm text-white font-medium">{getLatestFinancial(listing.financial_history, 'gross_profit')}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 block">Gross Profit</span>
+                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'gross_profit')}</span>
                       </div>
                       <div>
-                        <span className="text-xs text-slate-400 block">Net Income</span>
-                        <span className="text-sm text-white font-medium">{getLatestFinancial(listing.financial_history, 'net_income')}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 block">Net Income</span>
+                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'net_income')}</span>
                       </div>
                     </div>
                   </div>
@@ -238,24 +238,24 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
               </div>
 
               {/* Buyer Information (Mock) */}
-              <div className="glass p-6 rounded-2xl">
-                <h3 className="text-xl font-bold mb-4 text-white">Buyer Information</h3>
+              <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
+                <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Buyer Information</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-400"># Ideal Matches</span>
-                    <span className="text-lg font-bold text-emerald-400">0</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400"># Ideal Matches</span>
+                    <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">0</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-400"># NDAs Requested</span>
-                    <span className="text-lg font-bold text-indigo-400">0</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400"># NDAs Requested</span>
+                    <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">0</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-400"># NDAs Requested but Not Sent</span>
-                    <span className="text-lg font-bold text-orange-400">0</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400"># NDAs Requested but Not Sent</span>
+                    <span className="text-lg font-bold text-orange-600 dark:text-orange-400">0</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-400"># NDAs Sent</span>
-                    <span className="text-lg font-bold text-blue-400">0</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400"># NDAs Sent</span>
+                    <span className="text-lg font-bold text-blue-600 dark:text-blue-400">0</span>
                   </div>
                 </div>
               </div>
@@ -264,12 +264,12 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             {/* Middle Column */}
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Files */}
-              <div className="glass p-6 rounded-2xl">
-                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-                  <FileText className="text-indigo-400" size={20} /> Files
+              <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
+                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                  <FileText className="text-indigo-600 dark:text-indigo-400" size={20} /> Files
                 </h3>
                 {downloadError && (
-                  <div className="p-3 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-2">
+                  <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2">
                     <AlertCircle size={14} className="flex-shrink-0" />
                     <span>{downloadError}</span>
                   </div>
@@ -277,12 +277,12 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <div className="space-y-6">
                   {/* Teaser */}
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-300 mb-2">Teaser</h4>
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Teaser</h4>
                     {listing.teaser_file_name ? (
-                      <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
+                      <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-slate-300 dark:hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
                         <div className="flex items-center gap-2.5 overflow-hidden">
-                          <FileText className="text-amber-400 flex-shrink-0" size={18} />
-                          <span className="text-sm text-slate-200 font-medium truncate" title={listing.teaser_file_name}>
+                          <FileText className="text-amber-500 dark:text-amber-400 flex-shrink-0" size={18} />
+                          <span className="text-sm text-slate-900 dark:text-slate-200 font-medium truncate" title={listing.teaser_file_name}>
                             {listing.teaser_file_name}
                           </span>
                         </div>
@@ -291,7 +291,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             type="button"
                             onClick={() => handleView('teaser', listing.teaser_url)}
                             disabled={viewingFile !== null || downloadingFile !== null}
-                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-700/40 hover:bg-slate-700/60 text-slate-300 hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-200/50 dark:bg-slate-700/40 hover:bg-slate-200 dark:hover:bg-slate-700/60 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             title="View Teaser"
                           >
                             {viewingFile === 'teaser' ? (
@@ -304,7 +304,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             type="button"
                             onClick={() => handleDownload('teaser', listing.teaser_url)}
                             disabled={viewingFile !== null || downloadingFile !== null}
-                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 hover:text-indigo-800 dark:hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             title="Download Teaser"
                           >
                             {downloadingFile === 'teaser' ? (
@@ -316,7 +316,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
+                      <p className="text-sm text-slate-500 italic bg-slate-50 dark:bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-200 dark:border-slate-800/60">
                         Teaser has not been uploaded
                       </p>
                     )}
@@ -324,12 +324,12 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
                   {/* CIM */}
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-300 mb-2">CIM</h4>
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">CIM</h4>
                     {listing.cim_file_name ? (
-                      <div className="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
+                      <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700/40 hover:border-slate-300 dark:hover:border-slate-600/40 transition-colors flex items-center justify-between gap-3 group">
                         <div className="flex items-center gap-2.5 overflow-hidden">
-                          <FileText className="text-indigo-400 flex-shrink-0" size={18} />
-                          <span className="text-sm text-slate-200 font-medium truncate" title={listing.cim_file_name}>
+                          <FileText className="text-indigo-600 dark:text-indigo-400 flex-shrink-0" size={18} />
+                          <span className="text-sm text-slate-900 dark:text-slate-200 font-medium truncate" title={listing.cim_file_name}>
                             {listing.cim_file_name}
                           </span>
                         </div>
@@ -338,7 +338,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             type="button"
                             onClick={() => handleView('cim', listing.cim_url)}
                             disabled={viewingFile !== null || downloadingFile !== null}
-                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-700/40 hover:bg-slate-700/60 text-slate-300 hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-slate-200/50 dark:bg-slate-700/40 hover:bg-slate-200 dark:hover:bg-slate-700/60 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             title="View CIM"
                           >
                             {viewingFile === 'cim' ? (
@@ -351,7 +351,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                             type="button"
                             onClick={() => handleDownload('cim', listing.cim_url)}
                             disabled={viewingFile !== null || downloadingFile !== null}
-                            className="flex-shrink-0 flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            className="flex-shrink-0 flex-shrink-0 flex items-center justify-center p-2 rounded-lg bg-indigo-50 dark:bg-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 hover:text-indigo-800 dark:hover:text-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                             title="Download CIM"
                           >
                             {downloadingFile === 'cim' ? (
@@ -363,7 +363,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                         </div>
                       </div>
                     ) : (
-                      <p className="text-sm text-slate-500 italic bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-850/60">
+                      <p className="text-sm text-slate-500 italic bg-slate-50 dark:bg-slate-800/30 p-3 rounded-lg border border-dashed border-slate-200 dark:border-slate-800/60">
                         CIM has not been uploaded
                       </p>
                     )}
@@ -371,25 +371,25 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 </div>
               </div>
 
-              <div className="glass p-6 rounded-2xl">
-                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-                  <CheckCircle2 className="text-emerald-400" size={20} /> Listing Status
+              <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
+                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                  <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" size={20} /> Listing Status
                 </h3>
                 <div className="space-y-5">
                   <div>
-                    <span className="text-sm text-slate-400 block mb-1">Current Status</span>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Current Status</span>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
                       In Process
                     </span>
                   </div>
                   <div>
-                    <span className="text-sm text-slate-400 block mb-1">Date Uploaded to Dealer</span>
-                    <span className="text-slate-200 font-medium">
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Date Uploaded to DealScape</span>
+                    <span className="text-slate-900 dark:text-slate-200 font-medium">
                       {new Date(listing.created_at).toLocaleDateString()}
                     </span>
                   </div>
                   <div>
-                    <span className="text-sm text-slate-400 block mb-1">Date Closed</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Date Closed</span>
                     <span className="text-slate-500 italic">--</span>
                   </div>
                 </div>
@@ -402,41 +402,41 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => navigate(`/onboarding/seller/edit/${listing.id}`)}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 shadow-lg shadow-indigo-500/5 text-indigo-400 font-semibold transition-all">
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-50 border border-indigo-200/40 dark:bg-indigo-950/30 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 font-semibold transition-all hover:bg-indigo-100 dark:hover:bg-indigo-900/40 cursor-pointer shadow-sm">
                   <Edit3 size={18} /> Edit Listing
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 font-semibold transition-all">
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-50 border border-orange-200/40 dark:bg-orange-950/30 dark:border-orange-500/30 text-orange-700 dark:text-orange-300 font-semibold transition-all hover:bg-orange-100 dark:hover:bg-orange-900/40 cursor-pointer shadow-sm">
                   <EyeOff size={18} /> Hide / Pause Client
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 font-semibold transition-all">
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-50 border border-emerald-200/40 dark:bg-emerald-950/30 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-semibold transition-all hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer shadow-sm">
                   <CheckCircle2 size={18} /> Close Deal
                 </button>
                 <button
                   onClick={handleDeleteListing}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 font-semibold transition-all"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-50 border border-red-200/40 dark:bg-red-950/30 dark:border-red-500/30 text-red-700 dark:text-red-300 font-semibold transition-all hover:bg-red-100 dark:hover:bg-red-900/40 cursor-pointer shadow-sm"
                 >
                   <Trash2 size={18} /> Permanently Remove Listing
                 </button>
               </div>
 
               {/* Deal Team */}
-              <div className="glass p-6 rounded-2xl mt-2">
-                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-                  <Users className="text-indigo-400" size={20} /> Deal Team
+              <div className="p-6 rounded-2xl mt-2 border border-slate-200/60 dark:border-slate-700/40">
+                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                  <Users className="text-indigo-600 dark:text-indigo-400" size={20} /> Deal Team
                 </h3>
                 <div className="space-y-6">
                   <div>
-                    <h4 className="text-sm font-semibold text-indigo-300 mb-2">Sell-Side Advisor</h4>
-                    <div className="bg-slate-800/30 p-4 rounded-xl">
-                      <span className="block text-slate-200 font-medium mb-1">Primary Contact *</span>
-                      <span className="block text-sm text-slate-400 break-all">user@example.com</span>
+                    <h4 className="text-sm font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Sell-Side Advisor</h4>
+                    <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl">
+                      <span className="block text-slate-900 dark:text-slate-200 font-medium mb-1">Primary Contact *</span>
+                      <span className="block text-sm text-slate-500 dark:text-slate-400 break-all">user@example.com</span>
                     </div>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-indigo-300 mb-2">Other Team Members</h4>
-                    <div className="bg-slate-800/30 p-4 rounded-xl flex flex-col items-center justify-center py-6 text-center">
+                    <h4 className="text-sm font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Other Team Members</h4>
+                    <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl flex flex-col items-center justify-center py-6 text-center">
                       <span className="text-sm text-slate-500 italic block mb-2">No other team members assigned</span>
-                      <button className="text-xs text-indigo-400 hover:underline">
+                      <button className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">
                         + Add Member
                       </button>
                     </div>
@@ -451,28 +451,28 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
         {/* Placeholders for other tabs */}
         {activeTab === 'buyers' && (
-          <div className="glass p-12 rounded-2xl text-center flex flex-col items-center justify-center min-h-[400px]">
-            <div className="w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4 flex items-center justify-center">
-              <Users className="text-indigo-400" size={32} />
+          <div className="p-12 rounded-2xl border border-slate-200/60 dark:border-slate-700/40 text-center flex flex-col items-center justify-center min-h-[400px]">
+            <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl mb-4 flex items-center justify-center">
+              <Users className="text-indigo-600 dark:text-indigo-400" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Buyer Matches</h2>
-            <p className="text-slate-400 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Buyer Matches</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
               This section will display all relevant buyers based on the score between their investment criteria and this seller listing.
             </p>
-            <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-sm font-medium border border-slate-700">Coming Soon</span>
+            <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium border border-slate-200 dark:border-slate-700">Coming Soon</span>
           </div>
         )}
 
         {activeTab === 'preview' && (
-          <div className="glass p-12 rounded-2xl text-center flex flex-col items-center justify-center min-h-[400px]">
-            <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
-              <FileText className="text-emerald-400" size={32} />
+          <div className="p-12 rounded-2xl border border-slate-200/60 dark:border-slate-700/40 text-center flex flex-col items-center justify-center min-h-[400px]">
+            <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
+              <FileText className="text-emerald-600 dark:text-emerald-400" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Buyer Preview Mode</h2>
-            <p className="text-slate-400 max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Buyer Preview Mode</h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
               This section will allow you to preview this listing exactly as it appears to buyers on the platform.
             </p>
-            <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 text-sm font-medium border border-slate-700">Coming Soon</span>
+            <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium border border-slate-200 dark:border-slate-700">Coming Soon</span>
           </div>
         )}
       </div>
