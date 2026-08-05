@@ -60,7 +60,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   };
 
   const handleDeleteListing = async () => {
-    if (!window.confirm("Are you absolutely sure you want to permanently remove this listing? This will also permanently delete all associated documents and cannot be undone.")) {
+    if (!window.confirm("Are you sure you want to withdraw this listing? You will still be able to access it under the 'Withdrawn' tab on your listings page.")) {
       return;
     }
 
@@ -69,8 +69,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
       await sellerListingService.deleteListing(id);
       navigate('/dashboard/seller/listings');
     } catch (err) {
-      console.error("Error deleting listing:", err);
-      setError(err.message || 'Failed to delete listing.');
+      console.error("Error withdrawing listing:", err);
+      setError(err.message || 'Failed to withdraw listing.');
       setLoading(false);
     }
   };
@@ -415,7 +415,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                   onClick={handleDeleteListing}
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-50 border border-red-200/40 dark:bg-red-950/30 dark:border-red-500/30 text-red-700 dark:text-red-300 font-semibold transition-all hover:bg-red-100 dark:hover:bg-red-900/40 cursor-pointer shadow-sm"
                 >
-                  <Trash2 size={18} /> Permanently Remove Listing
+                  <Archive size={18} /> Withdraw Listing
                 </button>
               </div>
 

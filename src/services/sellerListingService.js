@@ -85,33 +85,10 @@ export const sellerListingService = {
    * Deletes a seller listing and its associated storage files.
    */
   async deleteListing(listingId) {
-    // 1. Fetch listing to get file paths
-    try {
-      const { data: listing } = await supabase
-        .from('seller_listings')
-        .select('teaser_url, cim_url')
-        .eq('id', listingId)
-        .single();
-
-      if (listing) {
-        const filesToDelete = [];
-        if (listing.teaser_url) filesToDelete.push(listing.teaser_url);
-        if (listing.cim_url) filesToDelete.push(listing.cim_url);
-
-        if (filesToDelete.length > 0) {
-          await supabase.storage
-            .from('listing_documents')
-            .remove(filesToDelete);
-        }
-      }
-    } catch (err) {
-      console.warn('Failed to clean up files during listing deletion:', err);
-    }
-
-    // 2. Delete database entry
+    // Soft delete: update status to 'Withdrawn'
     const { error } = await supabase
       .from('seller_listings')
-      .delete()
+      .update({ status: 'Withdrawn' })
       .eq('id', listingId);
 
     if (error) throw error;
