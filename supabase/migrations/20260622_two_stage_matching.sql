@@ -31,6 +31,7 @@ CREATE INDEX IF NOT EXISTS idx_ai_match_cache_buyer_criteria_id ON public.ai_mat
 CREATE INDEX IF NOT EXISTS idx_ai_match_cache_listing_id ON public.ai_match_cache(listing_id);
 
 -- Create Stage 1 candidate retrieval function
+DROP FUNCTION IF EXISTS public.get_stage1_candidates(uuid, integer);
 CREATE OR REPLACE FUNCTION public.get_stage1_candidates(
     p_criteria_id uuid,
     p_limit integer DEFAULT 50
@@ -38,6 +39,7 @@ CREATE OR REPLACE FUNCTION public.get_stage1_candidates(
 RETURNS TABLE (
     listing_id uuid,
     seller_anon_name text,
+    summary text,
     seller_status text,
     search_revenue numeric,
     search_ebitda numeric,
@@ -84,6 +86,7 @@ BEGIN
         SELECT
             sl.id AS v_listing_id,
             sl.seller_anon_name,
+            sl.summary,
             sl.status::text AS v_seller_status,
             sl.search_revenue,
             sl.search_ebitda,
@@ -241,6 +244,7 @@ BEGIN
     SELECT
         c.v_listing_id AS listing_id,
         c.seller_anon_name,
+        c.summary,
         c.v_seller_status AS seller_status,
         c.search_revenue,
         c.search_ebitda,
