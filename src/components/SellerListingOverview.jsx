@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -201,18 +201,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                       <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.year_founded}</span>
                     </div>
                   )}
-                  <div>
-                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Keywords / Industry</span>
-                    <div className="flex flex-wrap gap-2 mt-1">
-                      {(Array.isArray(listing.keywords) && listing.keywords.length > 0) ? (
-                        listing.keywords.map(kw => (
-                          <span key={kw} className="px-2 py-1 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs rounded-md">
-                            {kw}
-                          </span>
-                        ))
-                      ) : <span className="text-slate-500 text-sm italic">Not specified</span>}
-                    </div>
-                  </div>
+
                   <div className="pt-4 border-t border-slate-200 dark:border-slate-700/50">
                     <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Latest Financials</h4>
                     <div className="grid grid-cols-2 gap-4">
@@ -408,8 +397,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-50 border border-orange-200/40 dark:bg-orange-950/30 dark:border-orange-500/30 text-orange-700 dark:text-orange-300 font-semibold transition-all hover:bg-orange-100 dark:hover:bg-orange-900/40 cursor-pointer shadow-sm">
                   <EyeOff size={18} /> Hide / Pause Client
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-50 border border-emerald-200/40 dark:bg-emerald-950/30 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-semibold transition-all hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer shadow-sm">
-                  <CheckCircle2 size={18} /> Close Deal
+                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-100 border border-close-deal dark:bg-blue-950/30 dark:border-blue-500/30 text-blue-800 dark:text-blue-300 font-semibold transition-all hover:bg-blue-200/70 dark:hover:bg-blue-900/40 cursor-pointer shadow-sm">
+                  <Handshake size={18} /> Close Deal
                 </button>
                 <button
                   onClick={handleDeleteListing}

@@ -1174,7 +1174,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                               >
                                 {allContSelected && <CheckCircle2 size={14} />}
                               </div>
-                              <span className="geo-label-bold" onClick={() => handleContinentToggle(continent)}>
+                              <span className="geo-label-semi" onClick={() => handleContinentToggle(continent)}>
                                 {continent.name}
                               </span>
                             </div>
@@ -1202,7 +1202,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
                                         >
                                           {allCtrySelected && <CheckCircle2 size={12} />}
                                         </div>
-                                        <span className="geo-label-semi" onClick={() => handleCountryToggle(country)}>{country.name}</span>
+                                        <span className="geo-label-state" onClick={() => handleCountryToggle(country)}>{country.name}</span>
                                       </div>
                                       {isCtryExpanded && (
                                         <div className="geo-children">
