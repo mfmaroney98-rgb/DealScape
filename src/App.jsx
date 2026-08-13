@@ -4,6 +4,7 @@ import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
 import { sellerListingService } from './services/sellerListingService';
 import { buyerService } from './services/buyerService';
+import { organizationService } from './services/organizationService';
 import SellerProfileForm from './components/SellerProfileForm';
 import BuyerCriteriaForm from './components/BuyerCriteriaForm';
 import SellerListings from './components/SellerListings';
@@ -532,6 +533,8 @@ function App() {
     try { return localStorage.getItem('dealscape-dark-mode') === 'true'; } catch { return false; }
   });
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [impersonatedOrg, setImpersonatedOrg] = useState(null); // { id, organization_name, type }
+  const [organizations, setOrganizations] = useState([]);
 
 
   const loadUserData = useCallback(async (currentSession) => {
@@ -640,6 +643,39 @@ function App() {
     };
   }, [loadUserData]);
 
+  useEffect(() => {
+    if (profile?.role === 'corporate') {
+      const fetchBuyerOrgs = async () => {
+        try {
+          const orgs = await organizationService.getBuyerOrganizations();
+          setOrganizations(orgs || []);
+        } catch (err) {
+          console.error('Failed to load organizations for corporate view-as console:', err);
+        }
+      };
+      fetchBuyerOrgs();
+    } else {
+      setImpersonatedOrg(null);
+      setOrganizations([]);
+    }
+  }, [profile]);
+
+  const activeOrgId = impersonatedOrg ? impersonatedOrg.id : profile?.organization_id;
+  const activeIsCorporate = impersonatedOrg ? false : (profile?.role === 'corporate');
+  const effectiveProfile = impersonatedOrg
+    ? {
+        ...profile,
+        organization_id: impersonatedOrg.id,
+        organization: {
+          ...profile?.organization,
+          id: impersonatedOrg.id,
+          organization_name: impersonatedOrg.organization_name,
+          type: impersonatedOrg.type || 'buyer'
+        },
+        role: 'buyer'
+      }
+    : profile;
+
 
   if (loading) {
     return (
@@ -651,9 +687,48 @@ function App() {
 
   return (
     <Router>
+      {profile?.role === 'corporate' && (
+        <div className="bg-slate-900 border-b border-slate-800 text-white text-xs py-2 px-6 flex items-center justify-between z-[9999] relative">
+          <div className="flex items-center gap-2 font-bold tracking-wide">
+            <span className="bg-blue-600 text-[10px] px-2 py-0.5 rounded font-black text-white">ADMIN</span>
+            <span className="text-slate-300">Corporate View-As Console</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-slate-400 font-semibold">Active PE Firm Context:</span>
+            <select
+              value={impersonatedOrg?.id || ''}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (!val) {
+                  setImpersonatedOrg(null);
+                } else {
+                  const match = organizations.find(o => o.id === val);
+                  if (match) setImpersonatedOrg(match);
+                }
+              }}
+              className="bg-slate-800 border border-slate-700 text-white text-xs font-bold rounded px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+            >
+              <option value="">Default View (All Organizations)</option>
+              {organizations.map((org) => (
+                <option key={org.id} value={org.id}>
+                  {org.organization_name}
+                </option>
+              ))}
+            </select>
+            {impersonatedOrg && (
+              <button
+                onClick={() => setImpersonatedOrg(null)}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded transition-colors text-[10px] cursor-pointer"
+              >
+                Clear Context
+              </button>
+            )}
+          </div>
+        </div>
+      )}
       <Layout 
         session={session} 
-        organizationName={profile?.organization?.organization_name}
+        organizationName={impersonatedOrg ? impersonatedOrg.organization_name : profile?.organization?.organization_name}
         darkMode={darkMode}
         setDarkMode={setDarkMode}
       >
@@ -706,27 +781,27 @@ function App() {
           />
           <Route
             path="/onboarding/seller"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/seller/edit/:listingId"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/seller/profile"
-            element={session ? <SellerProfilePage userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <SellerProfilePage userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer/edit/:id"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/buyer/profile"
-            element={session ? <BuyerProfileForm userId={session.user.id} orgId={profile?.organization_id} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <BuyerProfileForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/buyer/criteria"
@@ -737,7 +812,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerCriteriaList orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
+                  <BuyerCriteriaList orgId={activeOrgId} isCorporate={activeIsCorporate} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -756,7 +831,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerListingDetail orgId={profile?.organization_id} />
+                  <BuyerListingDetail orgId={activeOrgId} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -769,7 +844,7 @@ function App() {
             path="/dashboard"
             element={
               session ? (
-                <RootDashboardDispatcher profile={profile} />
+                <RootDashboardDispatcher profile={effectiveProfile} />
               ) : (
                 <Navigate to="/" />
               )
@@ -784,7 +859,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerSaaSDashboard profile={profile} darkMode={darkMode} setDarkMode={setDarkMode} />
+                  <BuyerSaaSDashboard profile={effectiveProfile} darkMode={darkMode} setDarkMode={setDarkMode} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -802,7 +877,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'seller' || profile?.organization?.type === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerDashboard hasListing={hasListing} profile={profile} />
+                  <SellerDashboard hasListing={hasListing} profile={effectiveProfile} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )
@@ -820,7 +895,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerListings orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
+                  <SellerListings orgId={activeOrgId} isCorporate={activeIsCorporate} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )
@@ -838,7 +913,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'seller' || profile?.role === 'corporate') ? (
-                  <SellerListingOverview orgId={profile?.organization_id} isCorporate={profile?.role === 'corporate'} />
+                  <SellerListingOverview orgId={activeOrgId} isCorporate={activeIsCorporate} />
                 ) : (
                   <Navigate to="/dashboard/buyer" replace />
                 )

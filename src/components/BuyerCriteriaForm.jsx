@@ -118,6 +118,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
               ...data,
               user_id: data.user_id || userId,
               organization_id: data.organization_id || orgId,
+              company_name: data.company_name || prev.company_name,
               financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
               locations: Array.isArray(data.locations) ? data.locations : [],
               keywords: Array.isArray(data.keywords) ? data.keywords : [],
@@ -139,6 +140,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
   const [formData, setFormData] = useState({
     user_id: userId,
     organization_id: orgId,
+    company_name: '',
     investment_criteria_name: '',
     financial_criteria: [
       { id: Date.now(), metric: 'Revenue', min: '', max: '' }
@@ -165,7 +167,16 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     if (orgId && !formData.organization_id) {
       setFormData(prev => ({ ...prev, organization_id: orgId }));
     }
-  }, [userId, orgId, formData.user_id, formData.organization_id]);
+    if (orgId && !formData.company_name) {
+      organizationService.getOrganization(orgId)
+        .then(org => {
+          if (org) {
+            setFormData(prev => ({ ...prev, company_name: org.organization_name }));
+          }
+        })
+        .catch(err => console.error('Failed to load organization name for criteria form:', err));
+    }
+  }, [userId, orgId, formData.user_id, formData.organization_id, formData.company_name]);
 
   const [naicsExpandedOnLoad, setNaicsExpandedOnLoad] = useState(false);
 

@@ -79,5 +79,19 @@ export const organizationService = {
       await this.updateOrganization(orgId, { divisions });
     }
     return name;
+  },
+
+  /**
+   * Fetches all organizations of type 'buyer'.
+   */
+  async getBuyerOrganizations() {
+    const { data, error } = await supabase
+      .from('organizations')
+      .select('id, organization_name, type')
+      .eq('type', 'buyer')
+      .order('organization_name', { ascending: true });
+
+    if (error) throw error;
+    return data;
   }
 };
