@@ -22,7 +22,7 @@ CREATE TABLE public.buyer_criteria (
   updated_at timestamp with time zone NOT NULL DEFAULT timezone('utc'::text, now()),
   investment_criteria_name text,
   require_operator_owned boolean,
-  company_name text,
+  organization_name text,
   naics_codes ARRAY DEFAULT '{}'::text[],
   financial_criteria jsonb DEFAULT '[]'::jsonb,
   organization_id uuid,

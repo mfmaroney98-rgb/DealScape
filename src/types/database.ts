@@ -85,6 +85,7 @@ export interface BuyerCriteria {
 
   // Identity
   investment_criteria_name?: string;
+  organization_name?: string;
 
   // Preferred Ranges
   financial_criteria?: Array<{
