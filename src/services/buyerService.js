@@ -12,6 +12,7 @@ export const buyerService = {
     let query = supabase
       .from('buyer_criteria')
       .select('*')
+      .eq('archived', false)
       .order('created_at', { ascending: false });
 
     if (!isCorporate) {
@@ -32,7 +33,8 @@ export const buyerService = {
     let query = supabase
       .from('buyer_criteria')
       .select('*')
-      .eq('id', id);
+      .eq('id', id)
+      .eq('archived', false);
 
     if (!isCorporate) {
       if (!orgId) throw new Error('Organization ID is required');
@@ -68,7 +70,10 @@ export const buyerService = {
   async deleteCriteria(criteriaId) {
     const { error } = await supabase
       .from('buyer_criteria')
-      .delete()
+      .update({
+        archived: true,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', criteriaId);
 
     if (error) throw error;

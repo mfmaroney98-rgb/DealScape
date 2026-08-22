@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
-import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles } from 'lucide-react';
+import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles, Trash2, MoreVertical } from 'lucide-react';
 import { organizationService } from '../services/organizationService';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BuyerCriteriaList({ orgId, isCorporate }) {
   const [criteriaList, setCriteriaList] = useState([]);
@@ -11,6 +12,49 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const [criteriaToDelete, setCriteriaToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+  const [activeDropdownId, setActiveDropdownId] = useState(null);
+
+  const toggleDropdown = (id, e) => {
+    e.stopPropagation();
+    setActiveDropdownId(prev => prev === id ? null : id);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = () => {
+      setActiveDropdownId(null);
+    };
+    window.addEventListener('click', handleOutsideClick);
+    return () => window.removeEventListener('click', handleOutsideClick);
+  }, []);
+
+  const handleDeleteClick = (criteria) => {
+    setCriteriaToDelete(criteria);
+    setDeleteError(null);
+  };
+
+  const handleCancelDelete = () => {
+    setCriteriaToDelete(null);
+    setDeleteError(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!criteriaToDelete) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      await buyerService.deleteCriteria(criteriaToDelete.id);
+      setCriteriaList(prev => prev.filter(c => c.id !== criteriaToDelete.id));
+      setCriteriaToDelete(null);
+    } catch (err) {
+      setDeleteError(err.message || 'Failed to delete criteria. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchCriteria = async () => {
@@ -241,6 +285,31 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       >
                         Edit Criteria
                       </Link>
+                      <div className="relative">
+                        <button
+                          type="button"
+                          onClick={(e) => toggleDropdown(criteria.id, e)}
+                          className="p-2.5 rounded-xl border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center active:scale-[0.98] cursor-pointer"
+                          title="More Options"
+                        >
+                          <MoreVertical size={18} />
+                        </button>
+                        
+                        {activeDropdownId === criteria.id && (
+                          <div className="absolute right-0 mt-2 w-48 rounded-2xl glass border border-border/50 shadow-2xl py-1.5 z-10 animate-fade-in">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                handleDeleteClick(criteria);
+                                setActiveDropdownId(null);
+                              }}
+                              className="w-full px-4 py-2.5 text-left text-sm font-semibold text-red-500 hover:bg-red-500/10 dark:hover:bg-red-500/20 transition-colors flex items-center gap-2 cursor-pointer"
+                            >
+                              <Trash2 size={14} /> Delete Criteria
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -340,6 +409,72 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
           </div>
         )}
       </div>
+
+      <AnimatePresence>
+        {criteriaToDelete && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCancelDelete}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            
+            {/* Dialog Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              transition={{ type: 'spring', duration: 0.4 }}
+              className="glass max-w-md w-full p-8 rounded-3xl border-border/50 shadow-2xl relative z-10"
+            >
+              <div className="w-14 h-14 bg-red-500/10 dark:bg-red-500/20 rounded-2xl flex items-center justify-center text-red-500 mb-6">
+                <Trash2 size={28} />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-foreground">
+                Delete Criteria Set
+              </h3>
+              <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                Are you sure you want to delete <span className="font-semibold text-foreground">"{criteriaToDelete.investment_criteria_name || 'Untitled Criteria'}"</span>? 
+                This criteria set will be archived and hidden from your active dashboard.
+              </p>
+
+              {deleteError && (
+                <div className="p-4 mb-6 rounded-xl bg-red-500/5 border border-red-500/10 text-red-600 text-xs font-semibold">
+                  {deleteError}
+                </div>
+              )}
+
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={handleCancelDelete}
+                  disabled={isDeleting}
+                  className="flex-1 btn-secondary py-3 px-5 text-sm h-auto cursor-pointer disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  disabled={isDeleting}
+                  className="flex-1 py-3 px-5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold transition-all text-sm flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer disabled:opacity-50 shadow-sm shadow-red-500/20"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 className="animate-spin" size={16} /> Deleting...
+                    </>
+                  ) : (
+                    'Delete'
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
