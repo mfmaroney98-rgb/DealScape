@@ -303,8 +303,8 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
             {/* Funds Section */}
             <div className="space-y-4 pt-4 border-t border-slate-800">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
-                  <TrendingUp size={16} className="text-indigo-400" />
+                <h3 className="form-label flex items-center gap-2 mb-0">
+                  <TrendingUp size={16} className="text-slate-500" />
                   Funds Under Management
                 </h3>
                 <button
