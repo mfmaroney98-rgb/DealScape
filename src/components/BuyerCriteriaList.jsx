@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
-import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles, Trash2, MoreVertical } from 'lucide-react';
+import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles, Trash2, MoreVertical, Copy } from 'lucide-react';
 import { organizationService } from '../services/organizationService';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -53,6 +53,59 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
       setDeleteError(err.message || 'Failed to delete criteria. Please try again.');
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const generateDuplicateName = (originalName) => {
+    if (!originalName) return 'Untitled Criteria (Copy)';
+    
+    const match = originalName.match(/^(.*?)\s*\(Copy(?: \d+)?\)$/);
+    const baseName = match ? match[1] : originalName;
+    
+    const existingNames = criteriaList.map(c => c.investment_criteria_name || '');
+    
+    const firstCopyName = `${baseName} (Copy)`;
+    if (!existingNames.includes(firstCopyName)) {
+      return firstCopyName;
+    }
+    
+    let maxNum = 1;
+    const escapedBaseName = baseName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`^${escapedBaseName}\\s*\\(Copy (\\d+)\\)$`);
+    
+    existingNames.forEach(name => {
+      const m = name.match(pattern);
+      if (m) {
+        const num = parseInt(m[1], 10);
+        if (num > maxNum) {
+          maxNum = num;
+        }
+      }
+    });
+    
+    return `${baseName} (Copy ${maxNum + 1})`;
+  };
+
+  const handleDuplicateClick = async (criteria) => {
+    try {
+      const newName = generateDuplicateName(criteria.investment_criteria_name);
+      
+      const {
+        id,
+        created_at,
+        updated_at,
+        ...restOfCriteria
+      } = criteria;
+      
+      const newCriteria = {
+        ...restOfCriteria,
+        investment_criteria_name: newName,
+      };
+
+      const savedCriteria = await buyerService.saveCriteria(newCriteria);
+      setCriteriaList(prev => [savedCriteria, ...prev]);
+    } catch (err) {
+      setError(err.message || 'Failed to duplicate criteria.');
     }
   };
 
@@ -296,7 +349,18 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                         </button>
                         
                         {activeDropdownId === criteria.id && (
-                          <div className="absolute right-0 mt-2 w-48 rounded-2xl glass border border-border/50 shadow-2xl py-1.5 z-10 animate-fade-in">
+                          <div className="absolute right-0 mt-2 w-52 rounded-2xl glass border border-border/50 shadow-2xl py-1.5 z-10 animate-fade-in">
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                setActiveDropdownId(null);
+                                await handleDuplicateClick(criteria);
+                              }}
+                              className="w-full px-4 py-2.5 text-left text-sm font-semibold text-foreground hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer"
+                            >
+                              <Copy size={14} className="text-muted-foreground" /> Duplicate Criteria
+                            </button>
+                            <div className="border-t border-border/50 my-1"></div>
                             <button
                               type="button"
                               onClick={() => {
