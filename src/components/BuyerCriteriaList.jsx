@@ -80,7 +80,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
     };
 
     fetchCriteria();
-  }, [navigate]);
+  }, [navigate, orgId, isCorporate]);
 
   const formatCurrency = (val) => {
     if (!val && val !== 0) return '--';
