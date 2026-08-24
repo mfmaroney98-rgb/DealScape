@@ -13,11 +13,16 @@ import {
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 
-export default function Navbar({ organizationName, darkMode, setDarkMode }) {
+export default function Navbar({ organizationName, darkMode, setDarkMode, onSignOut }) {
   const navigate = useNavigate();
 
-  const handleSignOut = () => {
-    supabase.auth.signOut();
+  const handleSignOut = async () => {
+    if (onSignOut) {
+      await onSignOut();
+    } else {
+      await supabase.auth.signOut();
+    }
+    navigate('/');
   };
 
   return (

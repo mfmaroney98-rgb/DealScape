@@ -676,6 +676,19 @@ function App() {
       }
     : profile;
 
+  const handleSignOut = useCallback(async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error('Sign out error:', err);
+    } finally {
+      setSession(null);
+      setProfile(null);
+      setHasListing(false);
+      setHasCriteria(false);
+      setImpersonatedOrg(null);
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -731,6 +744,7 @@ function App() {
         organizationName={impersonatedOrg ? impersonatedOrg.organization_name : profile?.organization?.organization_name}
         darkMode={darkMode}
         setDarkMode={setDarkMode}
+        onSignOut={handleSignOut}
       >
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
@@ -859,7 +873,7 @@ function App() {
                     <Loader2 className="animate-spin text-indigo-500" size={32} />
                   </div>
                 ) : (profile?.role === 'buyer' || profile?.organization?.type === 'buyer' || profile?.role === 'corporate') ? (
-                  <BuyerSaaSDashboard profile={effectiveProfile} darkMode={darkMode} setDarkMode={setDarkMode} />
+                  <BuyerSaaSDashboard profile={effectiveProfile} darkMode={darkMode} setDarkMode={setDarkMode} onSignOut={handleSignOut} />
                 ) : (
                   <Navigate to="/dashboard/seller" replace />
                 )
@@ -930,7 +944,7 @@ function App() {
   );
 }
 
-const Layout = ({ children, session, organizationName, darkMode, setDarkMode }) => {
+const Layout = ({ children, session, organizationName, darkMode, setDarkMode, onSignOut }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const hideNavbarOn = ['/', '/signup', '/dashboard/buyer'];
@@ -955,7 +969,7 @@ const Layout = ({ children, session, organizationName, darkMode, setDarkMode }) 
 
   return (
     <div className="flex flex-col min-h-screen">
-      {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} />}
+      {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} onSignOut={onSignOut} />}
       <main className="flex-1">
         {children}
       </main>

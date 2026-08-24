@@ -56,7 +56,7 @@ const COLORS = [
   'bg-rose-500'
 ];
 
-export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
+export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onSignOut }) {
   const navigate = useNavigate();
   const location = useLocation();
   const orgId = profile?.organization_id;
@@ -339,8 +339,13 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode }) {
   };
 
   // Log out action
-  const handleSignOut = () => {
-    supabase.auth.signOut();
+  const handleSignOut = async () => {
+    if (onSignOut) {
+      await onSignOut();
+    } else {
+      await supabase.auth.signOut();
+    }
+    navigate('/');
   };
 
   // Helper formatting functions

@@ -51,7 +51,7 @@ export default function OrganizationTypeSelection({ userId, orgId, onComplete })
   };
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 animate-fade-in">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 pt-24 animate-fade-in">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-black mb-4 tracking-tight">Organization Type</h1>

@@ -31,7 +31,7 @@ export default function OrganizationOnboarding({ userId, userRole, onComplete })
   };
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 animate-fade-in">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center p-6 pt-24 animate-fade-in">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <div className="w-20 h-20 bg-indigo-500/10 rounded-3xl mb-6 flex items-center justify-center mx-auto">
