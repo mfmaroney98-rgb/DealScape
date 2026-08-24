@@ -40,7 +40,7 @@ const KEYWORD_CATEGORIES = [
   { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
 ];
 
-export default function SellerProfileForm({ userId, orgId, onComplete }) {
+export default function SellerProfileForm({ userId, orgId, isCorporate = false, onComplete }) {
   const navigate = useNavigate();
   const { listingId } = useParams();
   const isEditing = !!listingId;
@@ -132,12 +132,12 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
 
     // Fetch listing data if editing
     if (isEditing) {
-      if (!orgId) {
+      if (!orgId && !isCorporate) {
         setLoading(true);
         return;
       }
       setLoading(true);
-      sellerListingService.getListingById(listingId, orgId)
+      sellerListingService.getListingById(listingId, orgId, isCorporate)
         .then(data => {
           if (data) {
             setFormData(prev => {
@@ -198,7 +198,7 @@ export default function SellerProfileForm({ userId, orgId, onComplete }) {
     } else {
       setLoading(false);
     }
-  }, [listingId, userId, isEditing, orgId]);
+  }, [listingId, userId, isEditing, orgId, isCorporate]);
 
   const [formData, setFormData] = useState(() => {
     try {

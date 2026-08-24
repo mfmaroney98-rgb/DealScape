@@ -781,11 +781,11 @@ function App() {
           />
           <Route
             path="/onboarding/seller"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} isCorporate={activeIsCorporate} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/seller/edit/:listingId"
-            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <SellerProfileForm userId={session.user.id} orgId={activeOrgId} isCorporate={activeIsCorporate} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/seller/profile"
@@ -793,11 +793,11 @@ function App() {
           />
           <Route
             path="/onboarding/buyer"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} isCorporate={activeIsCorporate} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/onboarding/buyer/edit/:id"
-            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
+            element={session ? <BuyerCriteriaForm userId={session.user.id} orgId={activeOrgId} isCorporate={activeIsCorporate} onComplete={() => loadUserData(session)} /> : <Navigate to="/" />}
           />
           <Route
             path="/dashboard/buyer/profile"

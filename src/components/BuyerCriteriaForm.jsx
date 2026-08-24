@@ -47,7 +47,7 @@ const KEYWORD_CATEGORIES = [
 
 
 
-export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
+export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, onComplete }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditing = !!id;
@@ -105,12 +105,12 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
 
   useEffect(() => {
     if (isEditing) {
-      if (!orgId) {
+      if (!orgId && !isCorporate) {
         setLoading(true);
         return;
       }
       setLoading(true);
-      buyerService.getCriteriaById(id, orgId)
+      buyerService.getCriteriaById(id, orgId, isCorporate)
         .then(data => {
           if (data) {
             setFormData(prev => ({
@@ -135,7 +135,7 @@ export default function BuyerCriteriaForm({ userId, orgId, onComplete }) {
     } else {
       setLoading(false);
     }
-  }, [isEditing, id, orgId, userId]);
+  }, [isEditing, id, orgId, userId, isCorporate]);
 
   const [formData, setFormData] = useState({
     user_id: userId,
