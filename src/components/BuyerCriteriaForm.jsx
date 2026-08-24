@@ -113,18 +113,30 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
       buyerService.getCriteriaById(id, orgId, isCorporate)
         .then(data => {
           if (data) {
-            setFormData(prev => ({
-              ...prev,
-              ...data,
-              user_id: data.user_id || userId,
-              organization_id: data.organization_id || orgId,
-              organization_name: data.organization_name || prev.organization_name,
-              financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
-              locations: Array.isArray(data.locations) ? data.locations : [],
-              keywords: Array.isArray(data.keywords) ? data.keywords : [],
-              categorized_keywords: data.categorized_keywords || {},
-              naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
-            }));
+            setFormData(prev => {
+              const loadedCategorized = data.categorized_keywords || {};
+              const loadedReasonForSale = Array.isArray(data.reason_for_sale)
+                ? data.reason_for_sale
+                : (loadedCategorized.reason_for_sale || []);
+              
+              if (!loadedCategorized.reason_for_sale && Array.isArray(data.reason_for_sale)) {
+                loadedCategorized.reason_for_sale = data.reason_for_sale;
+              }
+
+              return {
+                ...prev,
+                ...data,
+                user_id: data.user_id || userId,
+                organization_id: data.organization_id || orgId,
+                organization_name: data.organization_name || prev.organization_name,
+                financial_criteria: Array.isArray(data.financial_criteria) ? data.financial_criteria : prev.financial_criteria,
+                locations: Array.isArray(data.locations) ? data.locations : [],
+                keywords: Array.isArray(data.keywords) ? data.keywords : [],
+                categorized_keywords: loadedCategorized,
+                reason_for_sale: loadedReasonForSale,
+                naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
+              };
+            });
           }
         })
         .catch(err => {
@@ -155,6 +167,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
     require_minority_owned: false,
     require_family_owned: false,
     require_operator_owned: false,
+    reason_for_sale: [],
     embedding: null,
     last_embedded_text: ''
   });
@@ -476,6 +489,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
         combinedText += `\n--- END OF DOCUMENT: ${file.name} ---\n`;
       }
       const parsedData = await aiService.parseBuyerCriteriaDocument(combinedText);
+      const rawNaicsCodes = parsedData.naics_codes || [];
       // Update form data
       setFormData(prev => {
         // Merge financial criteria
@@ -496,8 +510,10 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
           ? Object.values(parsedData.keywords).flat().filter(Boolean)
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
 
-        const rawNaicsCodes = parsedData.naics_codes || [];
         const expandedNaics = expandNaicsCodes(rawNaicsCodes, naicsSectors);
+
+        const loadedCategorized = (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords;
+        const extractedReasonForSale = loadedCategorized?.reason_for_sale || [];
 
         return {
           ...prev,
@@ -509,7 +525,8 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
           require_family_owned: parsedData.require_family_owned ?? prev.require_family_owned,
           require_operator_owned: parsedData.require_operator_owned ?? prev.require_operator_owned,
           keywords: flattenedKeywords.length ? [...new Set([...prev.keywords, ...flattenedKeywords])] : prev.keywords,
-          categorized_keywords: (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords,
+          categorized_keywords: loadedCategorized,
+          reason_for_sale: extractedReasonForSale,
           naics_codes: expandedNaics.length ? [...new Set([...prev.naics_codes, ...expandedNaics])] : prev.naics_codes
         };
       });
@@ -646,6 +663,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
         }
       }
 
+      flattenedData.reason_for_sale = formData.reason_for_sale || formData.categorized_keywords?.reason_for_sale || [];
       await buyerService.saveCriteria(flattenedData);
 
       if (onComplete) {
@@ -1241,7 +1259,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
                   Ideal Reason for Sale
                 </label>
                 <TagInput
-                  tags={formData.categorized_keywords?.reason_for_sale || []}
+                  tags={formData.categorized_keywords?.reason_for_sale || formData.reason_for_sale || []}
                   onChange={(tags) => setFormData(prev => {
                     const updatedCategorized = {
                       ...(prev.categorized_keywords || {}),
@@ -1250,6 +1268,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
                     return {
                       ...prev,
                       categorized_keywords: updatedCategorized,
+                      reason_for_sale: tags,
                       keywords: Object.values(updatedCategorized).flat().filter(Boolean)
                     };
                   })}
