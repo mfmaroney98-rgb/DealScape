@@ -547,9 +547,9 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
       <div className="w-60 bg-[#f8fafc] border-r border-slate-200 flex flex-col h-full shrink-0 select-none">
 
 
-        <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
+        <div className="flex-1 flex flex-col min-h-0 py-4 px-3 space-y-6">
           {/* Smart Folders */}
-          <div className="space-y-1">
+          <div className="space-y-1 shrink-0">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-2 mb-2">
               Pipeline Smart Folders
             </span>
@@ -586,8 +586,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
           </div>
 
           {/* Active Criteria Sets Checklist */}
-          <div className="space-y-1">
-            <div className="flex items-center justify-between px-2 mb-2">
+          <div className="flex-1 flex flex-col min-h-0 space-y-1">
+            <div className="flex items-center justify-between px-2 mb-2 shrink-0">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
                 Active Criteria Sets
               </span>
@@ -599,71 +599,73 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                 <Plus size={13} className="stroke-[3]" />
               </Link>
             </div>
-            {criteriaList.map((crit, idx) => {
-              const colorClass = COLORS[idx % COLORS.length];
-              const isChecked = selectedCriteriaIds.has(crit.id);
-              return (
-                <div
-                  key={crit.id}
-                  onClick={() => {
-                    setSelectedCriteriaIds(prev => {
-                      const next = new Set(prev);
-                      if (next.has(crit.id)) {
-                        next.delete(crit.id);
-                      } else {
-                        next.add(crit.id);
-                      }
-                      return next;
-                    });
-                  }}
-                  className={clsx(
-                    "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all hover:bg-slate-100 cursor-pointer",
-                    isChecked ? "bg-slate-200 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-800"
-                  )}
-                >
-                  <div className="flex items-center gap-2 truncate">
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      readOnly
-                      className="rounded border-slate-355 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer bg-white"
-                    />
-                    <div className={clsx("w-2 h-2 rounded shrink-0 shadow-sm", colorClass)} />
-                    <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
-                  </div>
-
-                  <div className="relative shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
-                    <button
-                      onClick={() => setActiveCriteriaKebabId(activeCriteriaKebabId === crit.id ? null : crit.id)}
-                      className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center"
-                      title="Options"
-                    >
-                      <MoreHorizontal size={13} />
-                    </button>
-                    
-                    {activeCriteriaKebabId === crit.id && (
-                      <div 
-                        ref={dropdownRef}
-                        className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
-                      >
-                        <button
-                          onClick={() => {
-                            navigate(`/onboarding/buyer/edit/${crit.id}`);
-                            setActiveCriteriaKebabId(null);
-                          }}
-                          className="w-full px-3 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                        >
-                          Edit Criteria
-                        </button>
-                      </div>
+            <div className="flex-1 overflow-y-auto space-y-1 pr-1">
+              {criteriaList.map((crit, idx) => {
+                const colorClass = COLORS[idx % COLORS.length];
+                const isChecked = selectedCriteriaIds.has(crit.id);
+                return (
+                  <div
+                    key={crit.id}
+                    onClick={() => {
+                      setSelectedCriteriaIds(prev => {
+                        const next = new Set(prev);
+                        if (next.has(crit.id)) {
+                          next.delete(crit.id);
+                        } else {
+                          next.add(crit.id);
+                        }
+                        return next;
+                      });
+                    }}
+                    className={clsx(
+                      "w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-semibold rounded-lg transition-all hover:bg-slate-100 cursor-pointer",
+                      isChecked ? "bg-slate-200 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-800"
                     )}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        readOnly
+                        className="rounded border-slate-355 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer bg-white"
+                      />
+                      <div className={clsx("w-2 h-2 rounded shrink-0 shadow-sm", colorClass)} />
+                      <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
+                    </div>
+
+                    <div className="relative shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
+                      <button
+                        onClick={() => setActiveCriteriaKebabId(activeCriteriaKebabId === crit.id ? null : crit.id)}
+                        className="p-1 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors flex items-center justify-center"
+                        title="Options"
+                      >
+                        <MoreHorizontal size={13} />
+                      </button>
+                      
+                      {activeCriteriaKebabId === crit.id && (
+                        <div 
+                          ref={dropdownRef}
+                          className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
+                        >
+                          <button
+                            onClick={() => {
+                              navigate(`/onboarding/buyer/edit/${crit.id}`);
+                              setActiveCriteriaKebabId(null);
+                            }}
+                            className="w-full px-3 py-1.5 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            Edit Criteria
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-            {criteriaList.length === 0 && (
-              <div className="px-2 py-1 text-xs text-slate-400 italic">No criteria created</div>
-            )}
+                );
+              })}
+              {criteriaList.length === 0 && (
+                <div className="px-2 py-1 text-xs text-slate-400 italic">No criteria created</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
