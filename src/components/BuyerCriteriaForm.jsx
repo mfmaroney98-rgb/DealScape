@@ -1050,11 +1050,6 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
               <label className="form-label flex items-center gap-2 mb-4">
                 <Briefcase size={16} className="text-slate-400" />
                 NAICS Industry Codes
-                {formData.naics_codes.length > 0 && (
-                  <span style={{ marginLeft: '0.5rem', fontSize: '0.7rem', background: 'rgba(99,102,241,0.15)', color: '#818cf8', borderRadius: 999, padding: '2px 8px', fontWeight: 600 }}>
-                    {formData.naics_codes.length} selected
-                  </span>
-                )}
               </label>
               <div className="geo-tree" style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                 {naicsLoading ? (

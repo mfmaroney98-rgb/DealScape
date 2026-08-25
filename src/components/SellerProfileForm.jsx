@@ -1265,11 +1265,6 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
                     <span className="flex items-center gap-2">
                       <Briefcase size={16} className="text-slate-400" />
                       Industry Classification (NAICS)
-                      {formData.naics_codes.length > 0 && (
-                        <span className="ml-2 text-[0.7rem] bg-blue-500/10 text-blue-400 rounded-full px-2 py-0.5 font-bold">
-                          {formData.naics_codes.length} SELECTED
-                        </span>
-                      )}
                     </span>
                   </label>
                   <p className="text-xs text-slate-500 mb-3">
