@@ -57,7 +57,7 @@ Return the result as a strict JSON object matching exactly this schema:
     "end_market": ["string (1-2 phrases)"],
     "reason_for_sale": ["string (1-2 phrases)"]
   },
-  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
+  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring", "Management Buyout"] or empty array,
   "is_founder_owned": boolean,
   "is_female_owned": boolean,
   "is_minority_owned": boolean,
@@ -141,7 +141,7 @@ Return the result as a strict JSON object matching exactly this schema:
     "end_market": ["e.g. Independent Clinics, Government Agencies, Pharma"],
     "reason_for_sale": ["e.g. Owner retirement, Growth capital needed, Spin-off"]
   },
-  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring"] or empty array,
+  "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Acquisition of Minority Stake", "Equity Raise", "Debt Raise", "Divestiture", "Recapitalization", "Restructuring", "Management Buyout"] or empty array,
   "require_founder_owned": boolean,
   "require_female_owned": boolean,
   "require_minority_owned": boolean,

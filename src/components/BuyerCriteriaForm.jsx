@@ -1197,7 +1197,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
             <div>
               <label className="form-label mb-6">Preferred Transaction Types</label>
               <div className="grid grid-cols-1 gap-3">
-                {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring'].map(type => (
+                {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring', 'Management Buyout'].map(type => (
                   <label key={type} className="flex items-center gap-3 cursor-pointer group">
                     <input
                       type="checkbox"

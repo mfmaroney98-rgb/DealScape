@@ -3,10 +3,12 @@ export type UserRole = 'buyer' | 'seller' | 'admin' | 'corporate';
 export type TransactionType =
   | 'Total Sale'
   | 'Acquisition of Majority Stake'
+  | 'Acquisition of Minority Stake'
   | 'Debt Raise'
   | 'Minority Equity Raise'
   | 'Mezzanine Financing'
-  | 'Divestiture / Carve-out';
+  | 'Divestiture / Carve-out'
+  | 'Management Buyout';
 
 export interface UserProfile {
   id: string; // UUID from auth.users
