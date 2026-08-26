@@ -703,7 +703,11 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
         await onComplete();
       }
 
-      navigate('/dashboard');
+      if (isEditing) {
+        navigate(-1);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.message);
       setLoading(false);
