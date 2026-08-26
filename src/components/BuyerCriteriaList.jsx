@@ -152,9 +152,12 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
     const isPct = metricName.includes('Margin') || metricName.includes('Growth') || metricName.includes('%');
     const formatter = isPct ? formatPercentage : formatCurrency;
     
-    if (match.min && match.max) return `${formatter(match.min)} - ${formatter(match.max)}`;
-    if (match.min) return `>${formatter(match.min)}`;
-    if (match.max) return `<${formatter(match.max)}`;
+    const hasMin = match.min !== '' && match.min != null && Number(match.min) !== 0;
+    const hasMax = match.max !== '' && match.max != null;
+
+    if (hasMin && hasMax) return `${formatter(match.min)} - ${formatter(match.max)}`;
+    if (hasMin) return `>${formatter(match.min)}`;
+    if (hasMax) return `<${formatter(match.max)}`;
     return '--';
   };
 
