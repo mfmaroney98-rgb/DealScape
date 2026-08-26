@@ -150,7 +150,7 @@ Return the result as a strict JSON object matching exactly this schema:
 }
 
 Important Rules:
-1. For financial_criteria, metrics should be from this list: 'Revenue', 'Revenue Growth (YoY)', 'Revenue CAGR', 'Gross Profit', 'Gross Profit Margin', 'EBITDA', 'EBITDA Growth (YoY)', 'EBITDA Margin', 'EBIT', 'EBIT Margin', 'Net Income', 'Net Margin'.
+1. For financial_criteria, metrics should be from this list: 'Revenue', 'Revenue Growth (YoY)', 'Revenue CAGR', 'Gross Profit', 'Gross Profit Margin', 'EBITDA', 'EBITDA Growth (YoY)', 'EBITDA Margin', 'EBIT', 'EBIT Margin', 'Net Income', 'Net Margin', 'Enterprise Value', 'Equity Value'.
 2. Extract ALL absolute financial ranges (Min and Max). IMPORTANT: Pay close attention to unit scales (e.g. "in thousands", "K", "M", "B", "Millions"). You MUST expand all financials into their full, un-abbreviated integer values. For example, if the document says "$5.2M" or "5,200 (in thousands)", you must output the integer 5200000. Never output "5.2" for 5 million.
 3. If a value is provided as a percentage (e.g. "20% EBITDA Margin"), extract it as the raw number (e.g. "20").
 4. If a value is genuinely not present, set min/max to null.

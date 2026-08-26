@@ -89,6 +89,12 @@ export interface BuyerCriteria {
   investment_criteria_name?: string;
   organization_name?: string;
 
+  // Deal Size Targets
+  search_enterprise_value_min?: number | null;
+  search_enterprise_value_max?: number | null;
+  search_equity_value_min?: number | null;
+  search_equity_value_max?: number | null;
+
   // Preferred Ranges
   financial_criteria?: Array<{
     id: number;

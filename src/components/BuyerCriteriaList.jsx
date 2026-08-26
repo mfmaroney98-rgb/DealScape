@@ -385,10 +385,46 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       </div>
                       <div className="space-y-2.5">
                         {(() => {
-                          const activeFinancials = criteria.financial_criteria?.filter(fc => 
+                          const activeFinancials = [];
+                          
+                          if (criteria.search_enterprise_value_min || criteria.search_enterprise_value_max) {
+                            activeFinancials.push({
+                              id: 'ev',
+                              metric: 'Enterprise Value',
+                              customDisplay: true,
+                              value: (() => {
+                                const min = criteria.search_enterprise_value_min;
+                                const max = criteria.search_enterprise_value_max;
+                                if (min && max) return `${formatCurrency(min)} - ${formatCurrency(max)}`;
+                                if (min) return `>${formatCurrency(min)}`;
+                                if (max) return `<${formatCurrency(max)}`;
+                                return '--';
+                              })()
+                            });
+                          }
+                          
+                          if (criteria.search_equity_value_min || criteria.search_equity_value_max) {
+                            activeFinancials.push({
+                              id: 'equity',
+                              metric: 'Equity Value',
+                              customDisplay: true,
+                              value: (() => {
+                                const min = criteria.search_equity_value_min;
+                                const max = criteria.search_equity_value_max;
+                                if (min && max) return `${formatCurrency(min)} - ${formatCurrency(max)}`;
+                                if (min) return `>${formatCurrency(min)}`;
+                                if (max) return `<${formatCurrency(max)}`;
+                                return '--';
+                              })()
+                            });
+                          }
+
+                          const otherFinancials = criteria.financial_criteria?.filter(fc => 
                             (fc.min !== '' && fc.min !== null && fc.min !== undefined) || 
                             (fc.max !== '' && fc.max !== null && fc.max !== undefined)
                           ) || [];
+                          
+                          activeFinancials.push(...otherFinancials);
                           
                           if (activeFinancials.length === 0) {
                             return (
@@ -402,7 +438,9 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                           return activeFinancials.map((fc, idx) => (
                             <div key={fc.id || idx} className="flex justify-between items-center p-4 rounded-2xl bg-muted/80 border border-border/40 shadow-xs">
                               <span className="text-xs font-medium text-muted-foreground">{fc.metric}</span>
-                              <span className="text-sm font-bold text-foreground">{getFinancialRange(criteria, fc.metric)}</span>
+                              <span className="text-sm font-bold text-foreground">
+                                {fc.customDisplay ? fc.value : getFinancialRange(criteria, fc.metric)}
+                              </span>
                             </div>
                           ));
                         })()}

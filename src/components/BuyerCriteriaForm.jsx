@@ -157,6 +157,10 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
     financial_criteria: [
       { id: Date.now(), metric: 'Revenue', min: '', max: '' }
     ],
+    search_enterprise_value_min: '',
+    search_enterprise_value_max: '',
+    search_equity_value_min: '',
+    search_equity_value_max: '',
     locations: [],
     keywords: [],
     categorized_keywords: {},
@@ -491,17 +495,35 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
       const parsedData = await aiService.parseBuyerCriteriaDocument(combinedText);
       const rawNaicsCodes = parsedData.naics_codes || [];
       // Update form data
+      // Update form data
+      let hasEv = false;
+      let hasEq = false;
+      let parsedEvMin = '';
+      let parsedEvMax = '';
+      let parsedEqMin = '';
+      let parsedEqMax = '';
+
       setFormData(prev => {
         // Merge financial criteria
         const existingMetrics = (prev.financial_criteria || []).map(c => c.metric);
         const newFinancialCriteria = [...(prev.financial_criteria || [])];
         if (parsedData.financial_criteria) {
           parsedData.financial_criteria.forEach(fc => {
-            const index = existingMetrics.indexOf(fc.metric);
-            if (index !== -1) {
-              newFinancialCriteria[index] = { ...newFinancialCriteria[index], min: fc.min || '', max: fc.max || '', autoFilled: true };
+            if (fc.metric === 'Enterprise Value') {
+              parsedEvMin = fc.min || '';
+              parsedEvMax = fc.max || '';
+              hasEv = true;
+            } else if (fc.metric === 'Equity Value') {
+              parsedEqMin = fc.min || '';
+              parsedEqMax = fc.max || '';
+              hasEq = true;
             } else {
-              newFinancialCriteria.push({ id: Date.now() + Math.random(), ...fc, autoFilled: true });
+              const index = existingMetrics.indexOf(fc.metric);
+              if (index !== -1) {
+                newFinancialCriteria[index] = { ...newFinancialCriteria[index], min: fc.min || '', max: fc.max || '', autoFilled: true };
+              } else {
+                newFinancialCriteria.push({ id: Date.now() + Math.random(), ...fc, autoFilled: true });
+              }
             }
           });
         }
@@ -519,6 +541,10 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
           ...prev,
           investment_criteria_name: parsedData.investment_criteria_name || prev.investment_criteria_name,
           financial_criteria: newFinancialCriteria,
+          search_enterprise_value_min: hasEv ? parsedEvMin : prev.search_enterprise_value_min,
+          search_enterprise_value_max: hasEv ? parsedEvMax : prev.search_enterprise_value_max,
+          search_equity_value_min: hasEq ? parsedEqMin : prev.search_equity_value_min,
+          search_equity_value_max: hasEq ? parsedEqMax : prev.search_equity_value_max,
           require_founder_owned: parsedData.require_founder_owned ?? prev.require_founder_owned,
           require_female_owned: parsedData.require_female_owned ?? prev.require_female_owned,
           require_minority_owned: parsedData.require_minority_owned ?? prev.require_minority_owned,
@@ -534,6 +560,8 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
       const updatedFields = [...new Set([...autoFilledFields])];
       if (parsedData.investment_criteria_name) updatedFields.push('investment_criteria_name');
       if (parsedData.financial_criteria?.length) updatedFields.push('financial_criteria');
+      if (hasEv) updatedFields.push('search_enterprise_value');
+      if (hasEq) updatedFields.push('search_equity_value');
       if (parsedData.require_founder_owned !== undefined) updatedFields.push('require_founder_owned');
       if (parsedData.require_female_owned !== undefined) updatedFields.push('require_female_owned');
       if (parsedData.require_minority_owned !== undefined) updatedFields.push('require_minority_owned');
@@ -662,6 +690,11 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
           console.warn('Failed to generate segmented buyer criteria embeddings:', err);
         }
       }
+
+      flattenedData.search_enterprise_value_min = formData.search_enterprise_value_min === '' || formData.search_enterprise_value_min == null ? null : Number(formData.search_enterprise_value_min);
+      flattenedData.search_enterprise_value_max = formData.search_enterprise_value_max === '' || formData.search_enterprise_value_max == null ? null : Number(formData.search_enterprise_value_max);
+      flattenedData.search_equity_value_min = formData.search_equity_value_min === '' || formData.search_equity_value_min == null ? null : Number(formData.search_equity_value_min);
+      flattenedData.search_equity_value_max = formData.search_equity_value_max === '' || formData.search_equity_value_max == null ? null : Number(formData.search_equity_value_max);
 
       flattenedData.reason_for_sale = formData.reason_for_sale || formData.categorized_keywords?.reason_for_sale || [];
       await buyerService.saveCriteria(flattenedData);
@@ -796,6 +829,86 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
             <p className="text-xs text-slate-500 mt-2">
               Give this specific set of filters a descriptive name for your dashboard.
             </p>
+          </div>
+        </div>
+
+        {/* Section: Deal Size */}
+        <div className="glass" style={{ padding: '2rem', borderRadius: '1.5rem', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem', opacity: 0.1 }}>
+            <Briefcase size={80} />
+          </div>
+
+          <div className="geo-row group" style={{ marginBottom: '2rem', cursor: 'default' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(99,102,241,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Briefcase style={{ color: '#818cf8' }} size={20} />
+            </div>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Deal Size</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Enterprise Value */}
+            <div className="field-group p-4 bg-slate-900/10 border border-slate-700/50 rounded-2xl">
+              <label className="form-label mb-2 block font-semibold text-slate-300">Enterprise Value</label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="text"
+                  className="form-input flex-1"
+                  placeholder="$ Min"
+                  value={displayCurrency(formData.search_enterprise_value_min)}
+                  onChange={(e) => {
+                    if (autoFilledFields.includes('search_enterprise_value')) {
+                      setAutoFilledFields(prev => prev.filter(f => f !== 'search_enterprise_value'));
+                    }
+                    handleCurrencyChange('search_enterprise_value_min', e.target.value);
+                  }}
+                />
+                <span className="text-slate-400 font-medium px-1">To</span>
+                <input
+                  type="text"
+                  className="form-input flex-1"
+                  placeholder="$ Max"
+                  value={displayCurrency(formData.search_enterprise_value_max)}
+                  onChange={(e) => {
+                    if (autoFilledFields.includes('search_enterprise_value')) {
+                      setAutoFilledFields(prev => prev.filter(f => f !== 'search_enterprise_value'));
+                    }
+                    handleCurrencyChange('search_enterprise_value_max', e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Equity Value */}
+            <div className="field-group p-4 bg-slate-900/10 border border-slate-700/50 rounded-2xl">
+              <label className="form-label mb-2 block font-semibold text-slate-300">Equity Value (or investment size / check)</label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="text"
+                  className="form-input flex-1"
+                  placeholder="$ Min"
+                  value={displayCurrency(formData.search_equity_value_min)}
+                  onChange={(e) => {
+                    if (autoFilledFields.includes('search_equity_value')) {
+                      setAutoFilledFields(prev => prev.filter(f => f !== 'search_equity_value'));
+                    }
+                    handleCurrencyChange('search_equity_value_min', e.target.value);
+                  }}
+                />
+                <span className="text-slate-400 font-medium px-1">To</span>
+                <input
+                  type="text"
+                  className="form-input flex-1"
+                  placeholder="$ Max"
+                  value={displayCurrency(formData.search_equity_value_max)}
+                  onChange={(e) => {
+                    if (autoFilledFields.includes('search_equity_value')) {
+                      setAutoFilledFields(prev => prev.filter(f => f !== 'search_equity_value'));
+                    }
+                    handleCurrencyChange('search_equity_value_max', e.target.value);
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
