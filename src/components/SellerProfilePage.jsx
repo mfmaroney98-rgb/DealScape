@@ -9,7 +9,9 @@ import {
   ArrowLeft, 
   Save, 
   Loader2,
-  AlertCircle
+  AlertCircle,
+  MapPin,
+  Map
 } from 'lucide-react';
 
 export default function SellerProfilePage({ userId, orgId, onComplete }) {
@@ -22,7 +24,9 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
   const [formData, setFormData] = useState({
     organization_name: '',
     website_url: '',
-    organization_summary: ''
+    organization_summary: '',
+    headquarters: '',
+    other_locations: ''
   });
 
   useEffect(() => {
@@ -34,7 +38,9 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         setFormData({
           organization_name: org.organization_name || '',
           website_url: org.website_url || '',
-          organization_summary: org.organization_summary || ''
+          organization_summary: org.organization_summary || '',
+          headquarters: org.headquarters || '',
+          other_locations: Array.isArray(org.other_locations) ? org.other_locations.join(', ') : ''
         });
       } catch (err) {
         console.error('Failed to load profile:', err);
@@ -64,7 +70,9 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
       await organizationService.updateOrganization(orgId, {
         organization_name: formData.organization_name,
         website_url: formData.website_url,
-        organization_summary: formData.organization_summary
+        organization_summary: formData.organization_summary,
+        headquarters: formData.headquarters,
+        other_locations: formData.other_locations.split(',').map(l => l.trim()).filter(Boolean)
       });
       
       setSuccess(true);
@@ -144,6 +152,43 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
                     className="form-input"
                     placeholder="https://www.example.com"
                     value={formData.website_url}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Headquarters and Other Locations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <MapPin size={16} className="text-slate-500" />
+                  Headquarters
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="headquarters"
+                    className="form-input"
+                    placeholder="e.g. New York, NY"
+                    value={formData.headquarters}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <Map size={16} className="text-slate-500" />
+                  Other Locations (comma-separated)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="other_locations"
+                    className="form-input"
+                    placeholder="e.g. Chicago, IL, San Francisco, CA"
+                    value={formData.other_locations}
                     onChange={handleChange}
                   />
                 </div>

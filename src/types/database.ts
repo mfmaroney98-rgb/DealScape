@@ -76,6 +76,9 @@ export interface Organization {
   website_url?: string;
   organization_summary?: string;
   buyer_type?: string;
+  divisions?: string[];
+  headquarters?: string;
+  other_locations?: string[];
   created_at?: string;
   updated_at?: string;
 }

@@ -15,7 +15,9 @@ import {
   Calendar,
   DollarSign,
   Plus,
-  Trash2
+  Trash2,
+  MapPin,
+  Map
 } from 'lucide-react';
 
 export default function BuyerProfileForm({ orgId, onComplete }) {
@@ -32,7 +34,9 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
     type: '',
     aum: '',
     year_founded: '',
-    funds: []
+    funds: [],
+    headquarters: '',
+    other_locations: ''
   });
 
   useEffect(() => {
@@ -50,7 +54,9 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
           type: org.type || '',
           aum: org.aum != null ? String(org.aum) : '',
           year_founded: org.year_founded != null ? String(org.year_founded) : '',
-          funds: Array.isArray(org.funds) ? org.funds : []
+          funds: Array.isArray(org.funds) ? org.funds : [],
+          headquarters: org.headquarters || '',
+          other_locations: Array.isArray(org.other_locations) ? org.other_locations.join(', ') : ''
         };
 
         // 3. Auto-import logic: If profile is empty, try to grab from first existing criteria
@@ -135,7 +141,9 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
         funds: formData.funds.map(f => ({
           name: f.name,
           size: f.size === '' ? null : Number(f.size)
-        }))
+        })),
+        headquarters: formData.headquarters,
+        other_locations: formData.other_locations.split(',').map(l => l.trim()).filter(Boolean)
       });
       
       setSuccess(true);
@@ -217,6 +225,43 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
                     className="form-input"
                     placeholder="https://www.example.com"
                     value={formData.website_url}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Headquarters and Other Locations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <MapPin size={16} className="text-slate-500" />
+                  Headquarters
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="headquarters"
+                    className="form-input"
+                    placeholder="e.g. New York, NY"
+                    value={formData.headquarters}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div className="field-group">
+                <label className="form-label mb-2 flex items-center gap-2">
+                  <Map size={16} className="text-slate-500" />
+                  Other Locations (comma-separated)
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="other_locations"
+                    className="form-input"
+                    placeholder="e.g. Chicago, IL, San Francisco, CA"
+                    value={formData.other_locations}
                     onChange={handleChange}
                   />
                 </div>
