@@ -1,14 +1,31 @@
 export type UserRole = 'buyer' | 'seller' | 'admin' | 'corporate';
 
 export type TransactionType =
+  // M&A & Buyouts
   | 'Total Sale'
   | 'Acquisition of Majority Stake'
+  | 'Management Buyout'
+  | 'Merger'
+  | 'Divestiture'
+  | 'Asset Sale'
+  // Equity & Venture Capital
   | 'Acquisition of Minority Stake'
-  | 'Debt Raise'
   | 'Minority Equity Raise'
+  | 'SAFE / Convertible Note'
+  | 'Angel / Pre-Seed Round'
+  | 'Seed Round'
+  | 'Series A'
+  | 'Series B'
+  | 'Series C & Beyond'
+  // Debt & Specialty Finance
+  | 'Debt Raise'
   | 'Mezzanine Financing'
-  | 'Divestiture / Carve-out'
-  | 'Management Buyout';
+  | 'Bridge Loan'
+  // Corporate Actions & Special Situations
+  | 'Recapitalization'
+  | 'Restructuring'
+  | 'Distressed Sale'
+  | 'Joint Venture / Strategic Alliance';
 
 export interface UserProfile {
   id: string; // UUID from auth.users

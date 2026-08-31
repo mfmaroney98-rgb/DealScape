@@ -43,6 +43,38 @@ const KEYWORD_CATEGORIES = [
   { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
 ];
 
+const TRANSACTION_GROUPS = {
+  'M&A & Buyouts': [
+    'Total Sale',
+    'Acquisition of Majority Stake',
+    'Management Buyout',
+    'Merger',
+    'Divestiture',
+    'Asset Sale'
+  ],
+  'Equity & Venture Capital': [
+    'Acquisition of Minority Stake',
+    'Minority Equity Raise',
+    'SAFE / Convertible Note',
+    'Angel / Pre-Seed Round',
+    'Seed Round',
+    'Series A',
+    'Series B',
+    'Series C & Beyond'
+  ],
+  'Debt & Specialty Finance': [
+    'Debt Raise',
+    'Mezzanine Financing',
+    'Bridge Loan'
+  ],
+  'Corporate Actions & Special Situations': [
+    'Recapitalization',
+    'Restructuring',
+    'Distressed Sale',
+    'Joint Venture / Strategic Alliance'
+  ]
+};
+
 
 
 
@@ -1307,26 +1339,33 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <label className="form-label mb-6">Preferred Transaction Types</label>
-              <div className="grid grid-cols-1 gap-3">
-                {['Total Sale', 'Acquisition of Majority Stake', 'Acquisition of Minority Stake', 'Equity Raise', 'Debt Raise', 'Divestiture', 'Recapitalization', 'Restructuring', 'Management Buyout'].map(type => (
-                  <label key={type} className="flex items-center gap-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      name="pref_transaction_type"
-                      className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
-                      checked={formData.pref_transaction_type?.includes(type)}
-                      onChange={() => {
-                        if (autoFilledFields.includes('pref_transaction_type')) {
-                          setAutoFilledFields(prev => prev.filter(f => f !== 'pref_transaction_type'));
-                        }
-                        handlePrefTransactionToggle(type);
-                      }}
-                    />
-                    <span className="text-sm transition-colors text-slate-700 group-hover:text-slate-900">
-                      {type}
-                    </span>
-                  </label>
+              <label className="form-label mb-4">Preferred Transaction Types</label>
+              <div className="space-y-6">
+                {Object.entries(TRANSACTION_GROUPS).map(([groupName, types]) => (
+                  <div key={groupName}>
+                    <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{groupName}</h4>
+                    <div className="grid grid-cols-1 gap-2 pl-2">
+                      {types.map(type => (
+                        <label key={type} className="flex items-center gap-3 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            name="pref_transaction_type"
+                            className="h-5 w-5 rounded border-slate-700 bg-slate-900 focus:ring-indigo-500 text-indigo-500"
+                            checked={formData.pref_transaction_type?.includes(type)}
+                            onChange={() => {
+                              if (autoFilledFields.includes('pref_transaction_type')) {
+                                setAutoFilledFields(prev => prev.filter(f => f !== 'pref_transaction_type'));
+                              }
+                              handlePrefTransactionToggle(type);
+                            }}
+                          />
+                          <span className="text-sm transition-colors text-slate-700 group-hover:text-slate-900">
+                            {type}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
