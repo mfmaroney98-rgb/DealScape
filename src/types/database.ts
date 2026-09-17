@@ -99,6 +99,8 @@ export interface Organization {
   aum?: number;
   year_founded?: number;
   funds?: Array<{ name: string; size: number | null }>;
+  overview_document_url?: string;
+  overview_file_name?: string;
   created_at?: string;
   updated_at?: string;
 }

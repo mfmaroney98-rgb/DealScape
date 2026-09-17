@@ -10,7 +10,7 @@ export const profileService = {
   async getProfile(userId) {
     const { data, error } = await supabase
       .from('user_profiles')
-      .select('*, organizations(id, organization_name, type, buyer_type, website_url, organization_summary, headquarters, other_locations, aum, year_founded)')
+      .select('*, organizations(id, organization_name, type, buyer_type, website_url, organization_summary, headquarters, other_locations, aum, year_founded, overview_document_url, overview_file_name)')
       .eq('id', userId)
       .single();
 

@@ -17,7 +17,8 @@ import {
   Plus,
   Trash2,
   MapPin,
-  Map
+  Map,
+  ExternalLink
 } from 'lucide-react';
 
 export default function BuyerProfileForm({ orgId, onComplete }) {
@@ -56,7 +57,9 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
           year_founded: org.year_founded != null ? String(org.year_founded) : '',
           funds: Array.isArray(org.funds) ? org.funds : [],
           headquarters: org.headquarters || '',
-          other_locations: Array.isArray(org.other_locations) ? org.other_locations.join(', ') : ''
+          other_locations: Array.isArray(org.other_locations) ? org.other_locations.join(', ') : '',
+          overview_document_url: org.overview_document_url || '',
+          overview_file_name: org.overview_file_name || ''
         };
 
         // 3. Auto-import logic: If profile is empty, try to grab from first existing criteria
@@ -424,6 +427,31 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
               <p className="text-xs text-slate-500 mt-2">
                 This overview will be shared with sellers when you express interest in a listing.
               </p>
+
+              {formData.overview_document_url && (
+                <div className="mt-4 p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/70 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                      <FileText size={20} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-slate-200">
+                        {formData.overview_file_name || 'Firm Overview Document'}
+                      </p>
+                      <p className="text-xs text-slate-400">Archived firm overview PDF</p>
+                    </div>
+                  </div>
+                  <a
+                    href={formData.overview_document_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1.5"
+                  >
+                    <ExternalLink size={14} />
+                    <span>View PDF</span>
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 
