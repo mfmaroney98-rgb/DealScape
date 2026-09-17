@@ -244,7 +244,7 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
                     type="text"
                     name="headquarters"
                     className="form-input"
-                    placeholder="e.g. New York, NY"
+                    placeholder="e.g. New York, NY, USA or London, UK"
                     value={formData.headquarters}
                     onChange={handleChange}
                   />
@@ -261,7 +261,7 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
                     type="text"
                     name="other_locations"
                     className="form-input"
-                    placeholder="e.g. Chicago, IL, San Francisco, CA"
+                    placeholder="e.g. Chicago, IL, USA, London, UK"
                     value={formData.other_locations}
                     onChange={handleChange}
                   />
