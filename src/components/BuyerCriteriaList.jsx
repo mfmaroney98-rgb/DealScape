@@ -324,7 +324,7 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                         </h3>
                         <p className="text-sm text-muted-foreground font-medium mt-0.5">
                           {criteria.division ? `${criteria.division} • ` : ''}
-                          {organization?.type || criteria.buyer_type || 'Unspecified Type'}
+                          {organization?.buyer_type || criteria.buyer_type || (organization?.type !== 'buyer' ? organization?.type : '') || 'Unspecified Type'}
                         </p>
                       </div>
                     </div>

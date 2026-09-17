@@ -96,6 +96,9 @@ export interface Organization {
   divisions?: string[];
   headquarters?: string;
   other_locations?: string[];
+  aum?: number;
+  year_founded?: number;
+  funds?: Array<{ name: string; size: number | null }>;
   created_at?: string;
   updated_at?: string;
 }

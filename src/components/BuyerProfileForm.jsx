@@ -31,7 +31,7 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
     organization_name: '',
     website_url: '',
     organization_summary: '',
-    type: '',
+    buyer_type: '',
     aum: '',
     year_founded: '',
     funds: [],
@@ -51,7 +51,7 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
           organization_name: org.organization_name || '',
           website_url: org.website_url || '',
           organization_summary: org.organization_summary || '',
-          type: org.type || '',
+          buyer_type: org.buyer_type || (org.type !== 'buyer' && org.type !== 'seller' ? org.type : '') || '',
           aum: org.aum != null ? String(org.aum) : '',
           year_founded: org.year_founded != null ? String(org.year_founded) : '',
           funds: Array.isArray(org.funds) ? org.funds : [],
@@ -60,13 +60,13 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
         };
 
         // 3. Auto-import logic: If profile is empty, try to grab from first existing criteria
-        if (!updatedData.website_url && !updatedData.organization_summary && !updatedData.type) {
+        if (!updatedData.website_url && !updatedData.organization_summary && !updatedData.buyer_type) {
           const criteriaList = await buyerService.getCriteriaList(orgId);
           if (criteriaList && criteriaList.length > 0) {
             const first = criteriaList[0];
             updatedData.website_url = first.buyer_url || '';
             updatedData.organization_summary = first.overview || '';
-            updatedData.type = first.buyer_type || '';
+            updatedData.buyer_type = first.buyer_type || '';
           }
         }
 
@@ -135,7 +135,8 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
         organization_name: formData.organization_name,
         website_url: formData.website_url,
         organization_summary: formData.organization_summary,
-        type: formData.type,
+        type: 'buyer',
+        buyer_type: formData.buyer_type,
         aum: formData.aum === '' ? null : Number(formData.aum),
         year_founded: formData.year_founded === '' ? null : Number(formData.year_founded),
         funds: formData.funds.map(f => ({
@@ -275,9 +276,9 @@ export default function BuyerProfileForm({ orgId, onComplete }) {
               </label>
               <div className="relative">
                 <select
-                  name="type"
+                  name="buyer_type"
                   className="form-input appearance-auto cursor-pointer"
-                  value={formData.type}
+                  value={formData.buyer_type}
                   onChange={handleChange}
                   required
                 >

@@ -87,7 +87,7 @@ export const organizationService = {
   async getBuyerOrganizations() {
     const { data, error } = await supabase
       .from('organizations')
-      .select('id, organization_name, type')
+      .select('id, organization_name, type, buyer_type')
       .eq('type', 'buyer')
       .order('organization_name', { ascending: true });
 

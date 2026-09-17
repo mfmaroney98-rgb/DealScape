@@ -670,7 +670,8 @@ function App() {
           ...profile?.organization,
           id: impersonatedOrg.id,
           organization_name: impersonatedOrg.organization_name,
-          type: impersonatedOrg.type || 'buyer'
+          type: impersonatedOrg.type || 'buyer',
+          buyer_type: impersonatedOrg.buyer_type
         },
         role: 'buyer'
       }
