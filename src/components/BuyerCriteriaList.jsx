@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { supabase } from '../lib/supabase';
-import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles, Trash2, MoreVertical, Copy } from 'lucide-react';
+import { Target, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, Building2, Tag, Sparkles, Trash2, MoreVertical, Copy, FileText, ExternalLink } from 'lucide-react';
 import { organizationService } from '../services/organizationService';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -136,12 +136,12 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
   }, [navigate, orgId, isCorporate]);
 
   const formatCurrency = (val) => {
-    if (!val && val !== 0) return '--';
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
     return '$' + Number(val).toLocaleString('en-US');
   };
 
   const formatPercentage = (val) => {
-    if (!val && val !== 0) return '--';
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
     return Number(val).toLocaleString('en-US') + '%';
   };
 
@@ -152,8 +152,8 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
     const isPct = metricName.includes('Margin') || metricName.includes('Growth') || metricName.includes('%');
     const formatter = isPct ? formatPercentage : formatCurrency;
     
-    const hasMin = match.min !== '' && match.min != null && Number(match.min) !== 0;
-    const hasMax = match.max !== '' && match.max != null;
+    const hasMin = match.min !== '' && match.min != null && !isNaN(Number(match.min)) && Number(match.min) !== 0;
+    const hasMax = match.max !== '' && match.max != null && !isNaN(Number(match.max));
 
     if (hasMin && hasMax) return `${formatter(match.min)} - ${formatter(match.max)}`;
     if (hasMin) return `>${formatter(match.min)}`;
@@ -341,6 +341,19 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                       >
                         Edit Criteria
                       </Link>
+                      {criteria.overview_document_url && (
+                        <a 
+                          href={criteria.overview_document_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-secondary px-4 py-2.5 h-auto text-sm flex items-center gap-1.5 text-accent border-accent/20 hover:border-accent/40 bg-accent/5 hover:bg-accent/10 transition-colors"
+                          title={criteria.overview_file_name || "Criteria Overview PDF"}
+                        >
+                          <FileText size={15} />
+                          <span>Overview PDF</span>
+                          <ExternalLink size={13} className="opacity-70" />
+                        </a>
+                      )}
                       <div className="relative">
                         <button
                           type="button"
@@ -423,8 +436,8 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
                           }
 
                           const otherFinancials = criteria.financial_criteria?.filter(fc => 
-                            (fc.min !== '' && fc.min !== null && fc.min !== undefined) || 
-                            (fc.max !== '' && fc.max !== null && fc.max !== undefined)
+                            (fc.min !== '' && fc.min !== null && fc.min !== undefined && !isNaN(Number(fc.min))) || 
+                            (fc.max !== '' && fc.max !== null && fc.max !== undefined && !isNaN(Number(fc.max)))
                           ) || [];
                           
                           activeFinancials.push(...otherFinancials);

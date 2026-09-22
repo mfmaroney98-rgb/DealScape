@@ -78,5 +78,31 @@ export const buyerService = {
 
     if (error) throw error;
     return true;
+  },
+
+  /**
+   * Uploads a criteria overview document to Supabase Storage (organization_documents bucket).
+   */
+  async uploadCriteriaDocument(criteriaId, file) {
+    const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const storagePath = `criteria/${criteriaId || 'temp'}/${Date.now()}_${cleanFileName}`;
+
+    const { error } = await supabase.storage
+      .from('organization_documents')
+      .upload(storagePath, file, {
+        contentType: file.type || 'application/pdf',
+        upsert: true
+      });
+
+    if (error) throw error;
+
+    const { data: publicUrlData } = supabase.storage
+      .from('organization_documents')
+      .getPublicUrl(storagePath);
+
+    return {
+      url: publicUrlData?.publicUrl || '',
+      fileName: file.name
+    };
   }
 };

@@ -35,7 +35,7 @@ import {
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
 
 const formatCurrency = (val) => {
-  if (val == null || val === '') return '--';
+  if (val == null || val === '' || isNaN(Number(val))) return '--';
   const n = Number(val);
   if (Math.abs(n) >= 1e9) return '$' + (n / 1e9).toFixed(1) + 'B';
   if (Math.abs(n) >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M';
@@ -44,7 +44,7 @@ const formatCurrency = (val) => {
 };
 
 const formatPercent = (val) => {
-  if (val == null || val === '') return '--';
+  if (val == null || val === '' || isNaN(Number(val))) return '--';
   return (Number(val) * 100).toFixed(1) + '%';
 };
 

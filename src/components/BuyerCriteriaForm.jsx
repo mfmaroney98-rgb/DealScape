@@ -29,7 +29,8 @@ import {
   Sparkles,
   AlertCircle,
   FileText,
-  Trash2
+  Trash2,
+  ExternalLink
 } from 'lucide-react';
 import { aiService } from '../services/aiService';
 
@@ -91,6 +92,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
 
   const [isParsing, setIsParsing] = useState(false);
   const [criteriaFiles, setCriteriaFiles] = useState([]);
+  const [pendingPdfFile, setPendingPdfFile] = useState(null);
   const [autoFilledFields, setAutoFilledFields] = useState([]);
   const [autoFilledTags, setAutoFilledTags] = useState([]);
 
@@ -166,7 +168,9 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
                 keywords: Array.isArray(data.keywords) ? data.keywords : [],
                 categorized_keywords: loadedCategorized,
                 reason_for_sale: loadedReasonForSale,
-                naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : []
+                naics_codes: Array.isArray(data.naics_codes) ? data.naics_codes : [],
+                overview_document_url: data.overview_document_url || '',
+                overview_file_name: data.overview_file_name || ''
               };
             });
           }
@@ -205,7 +209,9 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
     require_operator_owned: false,
     reason_for_sale: [],
     embedding: null,
-    last_embedded_text: ''
+    last_embedded_text: '',
+    overview_document_url: '',
+    overview_file_name: ''
   });
 
   // Sync userId and orgId to formData when they become available
@@ -729,6 +735,26 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
       flattenedData.search_equity_value_max = formData.search_equity_value_max === '' || formData.search_equity_value_max == null ? null : Number(formData.search_equity_value_max);
 
       flattenedData.reason_for_sale = formData.reason_for_sale || formData.categorized_keywords?.reason_for_sale || [];
+
+      // Upload criteria overview document if a new PDF file is pending
+      let finalOverviewUrl = formData.overview_document_url || null;
+      let finalOverviewFileName = formData.overview_file_name || null;
+
+      if (pendingPdfFile) {
+        try {
+          const uploadRes = await buyerService.uploadCriteriaDocument(id, pendingPdfFile);
+          if (uploadRes && uploadRes.url) {
+            finalOverviewUrl = uploadRes.url;
+            finalOverviewFileName = uploadRes.fileName;
+          }
+        } catch (uploadErr) {
+          console.warn('Failed to upload criteria overview document:', uploadErr);
+        }
+      }
+
+      flattenedData.overview_document_url = finalOverviewUrl;
+      flattenedData.overview_file_name = finalOverviewFileName;
+
       await buyerService.saveCriteria(flattenedData);
 
       if (onComplete) {
@@ -776,6 +802,10 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
                 onChange={(e) => {
                   const newFiles = Array.from(e.target.files || []);
                   setCriteriaFiles(prev => [...prev, ...newFiles]);
+                  const firstPdf = newFiles.find(f => f.name.toLowerCase().endsWith('.pdf'));
+                  if (firstPdf && !pendingPdfFile && !formData.overview_document_url) {
+                    setPendingPdfFile(firstPdf);
+                  }
                 }}
                 className="hidden"
               />
@@ -865,6 +895,101 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
             <p className="text-xs text-slate-500 mt-2">
               Give this specific set of filters a descriptive name for your dashboard.
             </p>
+          </div>
+
+          {/* Criteria Overview PDF Attachment */}
+          <div className="mt-6 pt-6 border-t border-slate-700/50">
+            <label className="form-label mb-2 block font-semibold text-slate-300">
+              Criteria Overview PDF
+            </label>
+            <p className="text-xs text-slate-400 mb-3">
+              Attach an overview document or thesis PDF specifically for this industry or transaction type.
+            </p>
+
+            {formData.overview_document_url ? (
+              <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700/70 flex items-center justify-between animate-fade-in">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 shrink-0">
+                    <FileText size={20} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-200 truncate">
+                      {formData.overview_file_name || 'Criteria Overview Document'}
+                    </p>
+                    <p className="text-xs text-slate-400">Attached criteria overview PDF</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href={formData.overview_document_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1.5"
+                  >
+                    <ExternalLink size={14} />
+                    <span>View PDF</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, overview_document_url: '', overview_file_name: '' }));
+                      setPendingPdfFile(null);
+                    }}
+                    className="text-slate-400 hover:text-red-400 p-1.5 transition-colors rounded-lg hover:bg-red-500/10"
+                    title="Remove document"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            ) : pendingPdfFile ? (
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between animate-fade-in">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400 shrink-0">
+                    <FileText size={20} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-amber-200 truncate">
+                      {pendingPdfFile.name}
+                    </p>
+                    <p className="text-xs text-amber-400/80">Pending upload — will be saved with this criteria</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPendingPdfFile(null)}
+                  className="text-slate-400 hover:text-red-400 p-1.5 transition-colors rounded-lg hover:bg-red-500/10"
+                  title="Cancel attachment"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 flex-wrap">
+                <input
+                  type="file"
+                  id="single-criteria-overview-upload"
+                  accept=".pdf"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setPendingPdfFile(file);
+                    }
+                  }}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="single-criteria-overview-upload"
+                  className="btn-secondary text-xs px-3.5 py-2 flex items-center gap-2 cursor-pointer hover:border-indigo-500/50 transition-colors"
+                >
+                  <UploadCloud size={15} className="text-indigo-400" />
+                  <span>Attach Overview PDF</span>
+                </label>
+                <span className="text-xs text-slate-500">
+                  Upload an overview PDF specifically for this criteria.
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

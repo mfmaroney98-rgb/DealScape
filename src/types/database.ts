@@ -141,6 +141,10 @@ export interface BuyerCriteria {
   require_family_owned?: boolean;
   require_operator_owned?: boolean;
 
+  // Criteria Overview Document
+  overview_document_url?: string;
+  overview_file_name?: string;
+
   created_at: string;
   updated_at: string;
 }

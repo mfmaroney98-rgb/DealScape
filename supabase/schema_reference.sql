@@ -58,6 +58,8 @@ CREATE TABLE public.buyer_criteria (
   last_embedded_text text,
   division text,
   embedding USER-DEFINED, -- vector
+  overview_document_url text,
+  overview_file_name text,
   CONSTRAINT buyer_criteria_pkey PRIMARY KEY (id),
   CONSTRAINT buyer_criteria_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.user_profiles(id),
   CONSTRAINT buyer_criteria_organization_id_fkey FOREIGN KEY (organization_id) REFERENCES public.organizations(id)

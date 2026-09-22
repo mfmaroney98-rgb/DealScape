@@ -350,16 +350,18 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
 
   // Helper formatting functions
   const formatCurrency = (val) => {
-    if (!val && val !== 0) return '--';
-    if (Math.abs(val) >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'B';
-    if (Math.abs(val) >= 1e6) return '$' + (val / 1e6).toFixed(1) + 'M';
-    if (Math.abs(val) >= 1e3) return '$' + (val / 1e3).toFixed(0) + 'K';
-    return '$' + Number(val).toLocaleString('en-US');
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
+    const num = Number(val);
+    if (Math.abs(num) >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+    if (Math.abs(num) >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+    if (Math.abs(num) >= 1e3) return '$' + (num / 1e3).toFixed(0) + 'K';
+    return '$' + num.toLocaleString('en-US');
   };
 
   const formatPercentage = (val) => {
-    if (!val && val !== 0) return '--';
-    return (val * 100).toFixed(1) + '%';
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
+    const num = Number(val);
+    return (num * 100).toFixed(1) + '%';
   };
 
   // Parsing helper for array keywords
@@ -1401,16 +1403,18 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
 // -------------------- DENSE COMPACT TABLE ROW COMPONENT --------------------
 function MatchRow({ match, index, starred, pinned, status, onStar, onPin, onRowClick }) {
   const formatCurrency = (val) => {
-    if (!val && val !== 0) return '--';
-    if (Math.abs(val) >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'B';
-    if (Math.abs(val) >= 1e6) return '$' + (val / 1e6).toFixed(1) + 'M';
-    if (Math.abs(val) >= 1e3) return '$' + (val / 1e3).toFixed(0) + 'K';
-    return '$' + Number(val).toLocaleString('en-US');
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
+    const num = Number(val);
+    if (Math.abs(num) >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+    if (Math.abs(num) >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+    if (Math.abs(num) >= 1e3) return '$' + (num / 1e3).toFixed(0) + 'K';
+    return '$' + num.toLocaleString('en-US');
   };
 
   const formatPercentage = (val) => {
-    if (!val && val !== 0) return '--';
-    return (val * 100).toFixed(0) + '%';
+    if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
+    const num = Number(val);
+    return (num * 100).toFixed(0) + '%';
   };
 
   // Status DOT styles matching the DealRoom mockup
