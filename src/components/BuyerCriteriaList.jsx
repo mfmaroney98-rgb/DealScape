@@ -137,7 +137,11 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
 
   const formatCurrency = (val) => {
     if (val === null || val === undefined || val === '' || isNaN(Number(val))) return '--';
-    return '$' + Number(val).toLocaleString('en-US');
+    const num = Number(val);
+    if (num < 0) {
+      return '-$' + Math.abs(num).toLocaleString('en-US');
+    }
+    return '$' + num.toLocaleString('en-US');
   };
 
   const formatPercentage = (val) => {

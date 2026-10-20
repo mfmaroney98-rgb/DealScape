@@ -269,9 +269,13 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
     return parts.join('.');
   };
 
-  // Display value for currency fields: "$1,234,567" or "" if empty
+  // Display value for currency fields: "$1,234,567", "-$1,234,567", or "" if empty
   const displayCurrency = (value) => {
     if (!value && value !== 0 && value !== '0') return '';
+    const num = Number(value);
+    if (!isNaN(num) && num < 0) {
+      return '-$' + formatWithCommas(Math.abs(num));
+    }
     return '$' + formatWithCommas(value);
   };
 
