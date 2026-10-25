@@ -674,65 +674,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
 
       {/* -------------------- MAIN WORKSPACE AREA -------------------- */}
       <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 bg-white relative">
-        {/* -------------------- 3. TOP TAB BAR & SUB BAR (Mocking DealRoom Top Headers) -------------------- */}
-        <div className="border-b border-slate-200 bg-white select-none shrink-0 z-20 shadow-sm">
-          {/* Main Top Header */}
-          <div className="flex items-center justify-between px-6 h-16 border-b border-slate-100">
-            {/* Left placeholder */}
-            <div />
 
-            {/* Center: DealRoom-style requests tab bar */}
-            <div className="hidden lg:flex items-center gap-8 h-full">
-              {[
-                { label: 'Requests', active: activeTab === 'Requests' },
-                { label: 'Findings', active: activeTab === 'Findings' },
-                { label: 'Data Room', active: activeTab === 'Data Room' },
-                { label: 'Permissions', active: activeTab === 'Permissions' },
-                { label: 'Synergies', active: activeTab === 'Synergies' },
-                { label: 'Settings', active: activeTab === 'Settings' }
-              ].map((tab) => (
-                <button
-                  key={tab.label}
-                  onClick={() => setActiveTab(tab.label)}
-                  className={clsx(
-                    "h-16 relative text-xs font-semibold px-2 border-b-2 transition-all duration-200",
-                    tab.active ? "border-blue-500 text-blue-600 font-bold" : "border-transparent text-slate-400 hover:text-slate-600"
-                  )}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Right details */}
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-bold text-slate-400 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                <Lock size={10} className="text-emerald-500" />
-                SECURE END-TO-END M&A
-              </span>
-              <motion.button
-                id="buyer-dark-mode-toggle"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setDarkMode(!darkMode)}
-                className="relative inline-flex items-center justify-center w-9 h-9 rounded-xl text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
-                aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-              >
-                <motion.div
-                  key={darkMode ? 'moon' : 'sun'}
-                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                >
-                  {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-                </motion.div>
-              </motion.button>
-            </div>
-          </div>
-
-
-        </div>
 
         {/* -------------------- 4. SEARCH & FILTER TOOLBAR (DealRoom Mock) -------------------- */}
         <div className="p-3 border-b border-slate-200 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3 select-none shrink-0 z-10">
