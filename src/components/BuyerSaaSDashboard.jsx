@@ -126,8 +126,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
     const initWorkspace = async () => {
       try {
         setLoading(true);
-        // Fetch all criteria sets for this buyer
-        const criteriaData = await buyerService.getCriteriaList(orgId, isCorporate);
+        // Fetch criteria sets for this buyer / active organization
+        const criteriaData = await buyerService.getCriteriaList(orgId, false);
         setCriteriaList(criteriaData || []);
 
         if (criteriaData && criteriaData.length > 0) {

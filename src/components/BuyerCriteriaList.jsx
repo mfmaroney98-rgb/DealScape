@@ -119,8 +119,8 @@ export default function BuyerCriteriaList({ orgId, isCorporate }) {
         }
 
         const [criteriaData, orgData] = await Promise.all([
-          buyerService.getCriteriaList(orgId, isCorporate),
-          !isCorporate && orgId ? organizationService.getOrganization(orgId) : Promise.resolve(null)
+          buyerService.getCriteriaList(orgId, false),
+          orgId ? organizationService.getOrganization(orgId) : Promise.resolve(null)
         ]);
 
         setCriteriaList(criteriaData || []);

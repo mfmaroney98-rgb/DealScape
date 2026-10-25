@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from './lib/supabase';
 import { profileService } from './services/profileService';
@@ -28,7 +28,10 @@ import {
   PlusCircle,
   CheckCircle2,
   Users,
-  ShieldCheck
+  ShieldCheck,
+  Search,
+  ChevronDown,
+  X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './components/ui/Button';
@@ -520,6 +523,123 @@ const RootDashboardDispatcher = ({ profile }) => {
     </div>
   );
 };
+const CorporateViewAsSelector = ({ organizations, selectedOrg, onSelectOrg }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [search, setSearch] = useState('');
+  const dropdownRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  const filteredOrgs = useMemo(() => {
+    if (!search.trim()) return organizations;
+    const q = search.toLowerCase();
+    return organizations.filter(o => o.organization_name?.toLowerCase().includes(q));
+  }, [organizations, search]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen]);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-slate-800 hover:bg-slate-750 border border-slate-700 hover:border-slate-600 text-white text-xs font-semibold rounded px-3 py-1 flex items-center gap-2 cursor-pointer transition-colors max-w-[280px]"
+      >
+        <span className="truncate">
+          {selectedOrg ? selectedOrg.organization_name : 'DealScape Corporate (Default)'}
+        </span>
+        <ChevronDown size={14} className={clsx("text-slate-400 transition-transform shrink-0", isOpen && "rotate-180")} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-1.5 w-80 bg-slate-900 border border-slate-700/80 shadow-2xl rounded-lg py-2 z-[10000] animate-in fade-in zoom-in-95 duration-100">
+          <div className="px-2 pb-2 border-b border-slate-800">
+            <div className="relative flex items-center">
+              <Search size={14} className="absolute left-2.5 text-slate-400 pointer-events-none" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search buyers / PE firms..."
+                className="w-full bg-slate-800 border border-slate-700 rounded pl-8 pr-7 py-1.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch('')}
+                  className="absolute right-2 text-slate-400 hover:text-white"
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="max-h-64 overflow-y-auto pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                onSelectOrg(null);
+                setIsOpen(false);
+                setSearch('');
+              }}
+              className={clsx(
+                "w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition-colors cursor-pointer",
+                !selectedOrg ? "bg-blue-600/20 text-blue-400 font-bold" : "text-slate-200 hover:bg-slate-800"
+              )}
+            >
+              <span>DealScape Corporate (Default)</span>
+              {!selectedOrg && <span className="text-[10px] bg-blue-600 text-white px-1.5 py-0.2 rounded font-bold">Active</span>}
+            </button>
+
+            {filteredOrgs.length === 0 ? (
+              <div className="px-3 py-3 text-xs text-slate-400 text-center italic">
+                No matching buyers found
+              </div>
+            ) : (
+              filteredOrgs.map((org) => {
+                const isSelected = selectedOrg?.id === org.id;
+                return (
+                  <button
+                    key={org.id}
+                    type="button"
+                    onClick={() => {
+                      onSelectOrg(org);
+                      setIsOpen(false);
+                      setSearch('');
+                    }}
+                    className={clsx(
+                      "w-full text-left px-3 py-1.5 text-xs flex items-center justify-between transition-colors cursor-pointer",
+                      isSelected ? "bg-blue-600/20 text-blue-400 font-bold" : "text-slate-200 hover:bg-slate-800"
+                    )}
+                  >
+                    <span className="truncate pr-2">{org.organization_name}</span>
+                    {isSelected && <span className="text-[10px] bg-blue-600 text-white px-1.5 py-0.2 rounded font-bold shrink-0">Active</span>}
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 /* --- Main App --- */
 
@@ -561,13 +681,13 @@ function App() {
       if (userProfile?.organization_id) {
         const isCorporate = userProfile.role === 'corporate';
         
-        // Load these in parallel for better performance
+        // Load checks scoped strictly to the user's assigned organization
         const [listings, criteriaList] = await Promise.all([
           (userProfile.role === 'seller' || isCorporate) 
-            ? sellerListingService.getListings(userProfile.organization_id, isCorporate)
+            ? sellerListingService.getListings(userProfile.organization_id, false)
             : Promise.resolve([]),
           (userProfile.role === 'buyer' || isCorporate)
-            ? buyerService.getCriteriaList(userProfile.organization_id, isCorporate)
+            ? buyerService.getCriteriaList(userProfile.organization_id, false)
             : Promise.resolve([])
         ]);
 
@@ -709,26 +829,11 @@ function App() {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-slate-400 font-semibold">Active PE Firm Context:</span>
-            <select
-              value={impersonatedOrg?.id || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (!val) {
-                  setImpersonatedOrg(null);
-                } else {
-                  const match = organizations.find(o => o.id === val);
-                  if (match) setImpersonatedOrg(match);
-                }
-              }}
-              className="bg-slate-800 border border-slate-700 text-white text-xs font-bold rounded px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-            >
-              <option value="">Default View (All Organizations)</option>
-              {organizations.map((org) => (
-                <option key={org.id} value={org.id}>
-                  {org.organization_name}
-                </option>
-              ))}
-            </select>
+            <CorporateViewAsSelector
+              organizations={organizations}
+              selectedOrg={impersonatedOrg}
+              onSelectOrg={(org) => setImpersonatedOrg(org)}
+            />
             {impersonatedOrg && (
               <button
                 onClick={() => setImpersonatedOrg(null)}

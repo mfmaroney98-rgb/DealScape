@@ -5,17 +5,17 @@ import { supabase } from '../lib/supabase';
  */
 export const buyerService = {
   /**
-   * Fetches all search criteria for a specific organization.
-   * If isCorporate is true, it fetches all criteria.
+   * Fetches search criteria for a specific organization.
+   * If fetchAllOrgs is true, it fetches across all organizations.
    */
-  async getCriteriaList(orgId, isCorporate = false) {
+  async getCriteriaList(orgId, fetchAllOrgs = false) {
     let query = supabase
       .from('buyer_criteria')
       .select('*')
       .eq('archived', false)
       .order('created_at', { ascending: false });
 
-    if (!isCorporate) {
+    if (!fetchAllOrgs) {
       if (!orgId) return [];
       query = query.eq('organization_id', orgId);
     }
