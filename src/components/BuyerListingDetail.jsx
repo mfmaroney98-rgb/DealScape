@@ -6,7 +6,7 @@ import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
-import { fetchNaicsSectors } from '../services/naicsService';
+import { fetchNaicsMap, getNaicsName } from '../services/naicsService';
 import {
   ArrowLeft,
   Loader2,
@@ -46,25 +46,6 @@ const formatCurrency = (val) => {
 const formatPercent = (val) => {
   if (val == null || val === '' || isNaN(Number(val))) return '--';
   return (Number(val) * 100).toFixed(1) + '%';
-};
-
-const getNaicsName = (code, tree) => {
-  if (!tree || !code) return null;
-  const sector = tree.find(s => s.code === code);
-  if (sector) return sector.name;
-
-  for (const s of tree) {
-    const sub = s.subsectors.find(sub => sub.code === code);
-    if (sub) return sub.name;
-
-    for (const subsector of s.subsectors) {
-      if (subsector.industryGroups) {
-        const ig = subsector.industryGroups.find(ig => ig.code === code);
-        if (ig) return ig.name;
-      }
-    }
-  }
-  return null;
 };
 
 const PERIOD_ORDER = ['FY-2', 'FY-1', 'FY0', 'LTM', 'FY1E'];
@@ -382,12 +363,12 @@ export default function BuyerListingDetail() {
   const [downloadingTeaser, setDownloadingTeaser] = useState(false);
   const [fileError, setFileError] = useState(null);
   const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
-  const [naicsSectors, setNaicsSectors] = useState([]);
+  const [naicsMap, setNaicsMap] = useState(null);
 
   useEffect(() => {
-    fetchNaicsSectors()
-      .then(data => setNaicsSectors(data))
-      .catch(err => console.error('Failed to load NAICS sectors:', err));
+    fetchNaicsMap()
+      .then(map => setNaicsMap(map))
+      .catch(err => console.error('Failed to load NAICS from database:', err));
   }, []);
 
   useEffect(() => {
@@ -929,14 +910,12 @@ export default function BuyerListingDetail() {
               {listing.naics_codes && listing.naics_codes.length > 0 ? (
                 <div className="space-y-2">
                   {listing.naics_codes.map((code) => {
-                    const name = getNaicsName(code, naicsSectors);
+                    const name = getNaicsName(code, naicsMap);
                     return (
-                      <div key={code} className="p-3 bg-slate-50/50 border border-slate-100 rounded-xl flex flex-col gap-1 hover:bg-slate-100/50 transition-colors">
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black px-2 py-0.5 bg-[#ff9500]/10 border border-[#ff9500]/30 text-[#e08400] rounded">
-                            {code}
-                          </span>
-                        </div>
+                      <div key={code} className="p-3 bg-slate-50/50 border border-slate-100 rounded-xl flex items-start gap-2.5 hover:bg-slate-100/50 transition-colors">
+                        <span className="text-[10px] font-black px-2 py-0.5 bg-[#ff9500]/10 border border-[#ff9500]/30 text-[#e08400] rounded shrink-0 mt-0.5">
+                          {code}
+                        </span>
                         {name && (
                           <span className="text-xs font-semibold text-slate-700 leading-snug">
                             {name}

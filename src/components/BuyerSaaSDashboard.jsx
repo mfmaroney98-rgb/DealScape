@@ -159,7 +159,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
     if (criteriaList.length > 0) {
       const queryParams = new URLSearchParams(location.search);
       const criteriaIdParam = queryParams.get('criteriaId');
-      
+
       if (criteriaIdParam && criteriaList.some(c => c.id === criteriaIdParam)) {
         setSelectedCriteriaIds(new Set([criteriaIdParam]));
       }
@@ -224,25 +224,25 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
         setLoading(false);
         return;
       }
-      
+
       const criteriaIdsArray = Array.from(selectedCriteriaIds);
-      
+
       try {
         setLoading(true);
         setAiAnalysisLoading(false);
         setAiScoresActivated(false);
-        
+
         // 1. Run Stage 1 (SQL filter + deterministic scoring)
         const stage1Promises = criteriaIdsArray.map(id =>
           matchingService.getStage1Candidates(id)
         );
         const stage1Results = await Promise.all(stage1Promises);
-        
+
         // Merge and show Stage 1 candidates immediately
         const stage1Matches = mergeAndSortMatches(stage1Results, criteriaIdsArray);
         setMatches(stage1Matches);
         setLoading(false);
-        
+
         // Populate default deal statuses for the new matches
         const statuses = {};
         stage1Matches.forEach((m, idx) => {
@@ -252,7 +252,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
           else statuses[m.listing_id] = 'New';
         });
         setDealStatuses(prev => ({ ...statuses, ...prev }));
-        
+
       } catch (err) {
         console.error('Matches Loading Error:', err);
         setError('Failed to load matching listings.');
@@ -276,10 +276,10 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
         const criteriaObj = criteriaList.find(c => c.id === id);
         return matchingService.getTwoStageMatches(id, criteriaObj);
       });
-      
+
       const stage2Results = await Promise.all(stage2Promises);
       const stage2Matches = mergeAndSortMatches(stage2Results, criteriaIdsArray);
-      
+
       // Update table with AI-scored results
       setMatches(stage2Matches);
       setAiScoresActivated(true);
@@ -643,9 +643,9 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                       >
                         <MoreHorizontal size={13} />
                       </button>
-                      
+
                       {activeCriteriaKebabId === crit.id && (
-                        <div 
+                        <div
                           ref={dropdownRef}
                           className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-xl rounded-lg py-1 z-40 animate-fade-in"
                         >
@@ -772,116 +772,116 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
             </div>
           ) : (
             <>
-            {/* AI Analysis Progress Indicator */}
-            {aiAnalysisLoading && (
-              <div className="flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-violet-50 to-blue-50 border-b border-violet-200/50">
-                <div className="relative flex items-center justify-center w-4 h-4">
-                  <div className="absolute w-4 h-4 rounded-full border-2 border-violet-300 border-t-violet-600 animate-spin" />
+              {/* AI Analysis Progress Indicator */}
+              {aiAnalysisLoading && (
+                <div className="flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r from-violet-50 to-blue-50 border-b border-violet-200/50">
+                  <div className="relative flex items-center justify-center w-4 h-4">
+                    <div className="absolute w-4 h-4 rounded-full border-2 border-violet-300 border-t-violet-600 animate-spin" />
+                  </div>
+                  <span className="text-[11px] font-semibold text-violet-700 tracking-wide">
+                    AI qualitative analysis in progress — scores will update momentarily...
+                  </span>
                 </div>
-                <span className="text-[11px] font-semibold text-violet-700 tracking-wide">
-                  AI qualitative analysis in progress — scores will update momentarily...
-                </span>
-              </div>
-            )}
-            <table className="w-full text-left border-collapse select-none">
-              <thead className="bg-[#fafbfd] border-b border-slate-200 sticky top-0 z-10 shadow-sm">
-                <tr className="text-[10px] font-bold text-slate-400 tracking-wider h-9">
-                  <th className="w-10 text-center pl-2">
-                    <input type="checkbox" className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" readOnly />
-                  </th>
-                  <th className="w-10 text-center">ID</th>
-                  <th className="pl-4 w-[360px] min-w-[360px]">TARGET NAME</th>
-                  <th className="w-24 text-center">SCORE</th>
-                  <th className="w-24 text-center">REVENUE</th>
-                  <th className="w-24 text-center">EBITDA</th>
-                  <th className="w-24 text-center">MARGIN</th>
-                  <th className="w-32 text-center">LOCATIONS</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* 1. STRONG MATCHES HEADER BLOCK */}
-                {strongMatches.length > 0 && (
-                  <>
-                    <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={9} className="pl-4">
-                        STRONG MATCHES ({strongMatches.length}) — Highly aligned semantic & financial fit
-                      </td>
-                    </tr>
-                    {strongMatches.map((match, idx) => (
-                      <MatchRow
-                        key={match.listing_id}
-                        match={match}
-                        index={idx + 1}
-                        starred={starredDeals.has(match.listing_id)}
-                        pinned={pinnedDeals.has(match.listing_id)}
-                        status={dealStatuses[match.listing_id] || 'New'}
-                        onStar={toggleStar}
-                        onPin={togglePin}
-                        onRowClick={(m) => {
-                          setSelectedMatch(m);
-                          setIsDrawerOpen(true);
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
+              )}
+              <table className="w-full text-left border-collapse select-none">
+                <thead className="bg-[#fafbfd] border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+                  <tr className="text-[10px] font-bold text-slate-400 tracking-wider h-9">
+                    <th className="w-10 text-center pl-2">
+                      <input type="checkbox" className="rounded border-slate-300 text-blue-600 focus:ring-blue-500" readOnly />
+                    </th>
+                    <th className="w-10 text-center">ID</th>
+                    <th className="pl-4 w-[360px] min-w-[360px]">TARGET NAME</th>
+                    <th className="w-24 text-center">SCORE</th>
+                    <th className="w-24 text-center">REVENUE</th>
+                    <th className="w-24 text-center">EBITDA</th>
+                    <th className="w-24 text-center">MARGIN</th>
+                    <th className="w-32 text-center">LOCATIONS</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* 1. STRONG MATCHES HEADER BLOCK */}
+                  {strongMatches.length > 0 && (
+                    <>
+                      <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
+                        <td colSpan={9} className="pl-4">
+                          STRONG MATCHES ({strongMatches.length}) — Highly aligned semantic & financial fit
+                        </td>
+                      </tr>
+                      {strongMatches.map((match, idx) => (
+                        <MatchRow
+                          key={match.listing_id}
+                          match={match}
+                          index={idx + 1}
+                          starred={starredDeals.has(match.listing_id)}
+                          pinned={pinnedDeals.has(match.listing_id)}
+                          status={dealStatuses[match.listing_id] || 'New'}
+                          onStar={toggleStar}
+                          onPin={togglePin}
+                          onRowClick={(m) => {
+                            setSelectedMatch(m);
+                            setIsDrawerOpen(true);
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
 
-                {/* 2. MODERATE MATCHES HEADER BLOCK */}
-                {moderateMatches.length > 0 && (
-                  <>
-                    <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={9} className="pl-4">
-                        MODERATE MATCHES ({moderateMatches.length}) — High overlap with core parameters
-                      </td>
-                    </tr>
-                    {moderateMatches.map((match, idx) => (
-                      <MatchRow
-                        key={match.listing_id}
-                        match={match}
-                        index={strongMatches.length + idx + 1}
-                        starred={starredDeals.has(match.listing_id)}
-                        pinned={pinnedDeals.has(match.listing_id)}
-                        status={dealStatuses[match.listing_id] || 'New'}
-                        onStar={toggleStar}
-                        onPin={togglePin}
-                        onRowClick={(m) => {
-                          setSelectedMatch(m);
-                          setIsDrawerOpen(true);
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
+                  {/* 2. MODERATE MATCHES HEADER BLOCK */}
+                  {moderateMatches.length > 0 && (
+                    <>
+                      <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
+                        <td colSpan={9} className="pl-4">
+                          MODERATE MATCHES ({moderateMatches.length}) — High overlap with core parameters
+                        </td>
+                      </tr>
+                      {moderateMatches.map((match, idx) => (
+                        <MatchRow
+                          key={match.listing_id}
+                          match={match}
+                          index={strongMatches.length + idx + 1}
+                          starred={starredDeals.has(match.listing_id)}
+                          pinned={pinnedDeals.has(match.listing_id)}
+                          status={dealStatuses[match.listing_id] || 'New'}
+                          onStar={toggleStar}
+                          onPin={togglePin}
+                          onRowClick={(m) => {
+                            setSelectedMatch(m);
+                            setIsDrawerOpen(true);
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
 
-                {/* 3. WEAK MATCHES HEADER BLOCK */}
-                {weakMatches.length > 0 && (
-                  <>
-                    <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
-                      <td colSpan={9} className="pl-4">
-                        ☕ WEAK MATCHES ({weakMatches.length}) — Secondary fitting and lower scores
-                      </td>
-                    </tr>
-                    {weakMatches.map((match, idx) => (
-                      <MatchRow
-                        key={match.listing_id}
-                        match={match}
-                        index={strongMatches.length + moderateMatches.length + idx + 1}
-                        starred={starredDeals.has(match.listing_id)}
-                        pinned={pinnedDeals.has(match.listing_id)}
-                        status={dealStatuses[match.listing_id] || 'New'}
-                        onStar={toggleStar}
-                        onPin={togglePin}
-                        onRowClick={(m) => {
-                          setSelectedMatch(m);
-                          setIsDrawerOpen(true);
-                        }}
-                      />
-                    ))}
-                  </>
-                )}
-              </tbody>
-            </table>
+                  {/* 3. WEAK MATCHES HEADER BLOCK */}
+                  {weakMatches.length > 0 && (
+                    <>
+                      <tr className="bg-slate-100 border-y border-slate-200/80 text-[10px] font-bold text-slate-500 h-8">
+                        <td colSpan={9} className="pl-4">
+                          ☕ WEAK MATCHES ({weakMatches.length}) — Secondary fitting and lower scores
+                        </td>
+                      </tr>
+                      {weakMatches.map((match, idx) => (
+                        <MatchRow
+                          key={match.listing_id}
+                          match={match}
+                          index={strongMatches.length + moderateMatches.length + idx + 1}
+                          starred={starredDeals.has(match.listing_id)}
+                          pinned={pinnedDeals.has(match.listing_id)}
+                          status={dealStatuses[match.listing_id] || 'New'}
+                          onStar={toggleStar}
+                          onPin={togglePin}
+                          onRowClick={(m) => {
+                            setSelectedMatch(m);
+                            setIsDrawerOpen(true);
+                          }}
+                        />
+                      ))}
+                    </>
+                  )}
+                </tbody>
+              </table>
             </>
           )}
         </div>
@@ -953,7 +953,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                       const mediums = selectedMatch.matchedCriteriaList
                         .filter(item => item.matchTier === 'Moderate')
                         .sort((a, b) => b.totalScore - a.totalScore);
-                      
+
                       return (
                         <div className="space-y-1.5 mt-2.5 select-none">
                           {strongs.length > 0 && (
@@ -1183,8 +1183,8 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                             </div>
                             <div className="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
                               <div
-                                  className={clsx("h-full rounded-full transition-all duration-500", item.color)}
-                                  style={{ width: `${Math.min(100, Math.max(0, item.score || 0))}%` }}
+                                className={clsx("h-full rounded-full transition-all duration-500", item.color)}
+                                style={{ width: `${Math.min(100, Math.max(0, item.score || 0))}%` }}
                               />
                             </div>
                           </div>

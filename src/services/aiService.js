@@ -79,7 +79,7 @@ Important Rules:
 5. For legal_entity, ONLY use one of the allowed strings: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other'. IMPORTANT: You MUST prioritize the CIM for this field. If the exact entity type is not explicitly mentioned in the CIM, set it to null (even if it appears in the Teaser). IMPORTANT: 'Inc.' is NOT a legal entity for this purpose; if you see 'Inc.', you must determine if it is a C-Corp or S-Corp from the CIM text, or set to null if unclear.
 6. Extract only the JSON, no markdown formatting or extra text.
 7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
-8. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three 4-digit codes that best represent this company.
+8. Under "naics_codes", use strictly the official 2022 NAICS classification to determine up to three 4-digit codes that best represent this company. NEVER use deprecated 2017 codes (e.g., use '5132' for Software Publishers, NOT '5112'; use '4581' for Clothing Retail, NOT '4481'; use '4491' for Furniture Retail, NOT '4421'; use '5161' for Broadcasting, NOT '5151'). Only return valid numeric 4-digit strings.
 9. For locations, extract ONLY the single primary headquarters location (do NOT include additional operating locations or facilities). Format each location strictly as "CC:StateName" (e.g., "US:California" for California, USA, or "CA:Ontario" for Ontario, Canada). You MUST resolve city names to their respective states (e.g., if the company is headquartered in "Houston, Texas", output "US:Texas"). If the headquarters location cannot be found, return an empty array.
 10. For pref_transaction_type, you MUST ONLY output values from this exact list: ["Total Sale", "Acquisition of Majority Stake", "Management Buyout", "Merger", "Divestiture", "Asset Sale", "Acquisition of Minority Stake", "Minority Equity Raise", "SAFE / Convertible Note", "Angel / Pre-Seed Round", "Seed Round", "Series A", "Series B", "Series C & Beyond", "Debt Raise", "Mezzanine Financing", "Bridge Loan", "Recapitalization", "Restructuring", "Distressed Sale", "Joint Venture / Strategic Alliance"].
     Mapping guidelines:
@@ -161,7 +161,7 @@ Important Rules:
 4. If a value is genuinely not present, set min/max to null.
 5. Extract 10-16 sharp, discriminating phrases for the keywords categories. For the "industry" keywords specifically, you MUST extract EVERY single listed sector, sub-sector, sub-industry, niche, or specific sub-bullet point mentioned in the document. For example, if a main category like "Value-added Distribution" has sub-bullets like "Assembly, kitting, or configuration" and "Consumable and branded products", you MUST extract the parent category AND all of the sub-bullet points as separate entries in the industry array. Do not omit, summarize, or compress these focus areas.
 6. Extract only the JSON, no markdown formatting or extra text.
-7. Under "naics_codes", use your native knowledge of the 2022 NAICS classification to determine up to three codes that best represent this buyer criteria (including all extracted sub-industries and sub-bullets). If the criteria is extremely broad (e.g. "any technology/software business" or "any manufacturing company"), return the broad 2-digit sector or 3-digit subsector code (e.g., '54' or '541'). Otherwise, return specific 4-digit codes (e.g., '5415').
+7. Under "naics_codes", use strictly the official 2022 NAICS classification to determine up to three codes that best represent this buyer criteria (including all extracted sub-industries and sub-bullets). If the criteria is extremely broad (e.g. "any technology/software business" or "any manufacturing company"), return the broad 2-digit sector or 3-digit subsector code (e.g., '54', '513', or '31-33'). Otherwise, return specific 4-digit codes (e.g., '5132', '5415'). NEVER use deprecated 2017 codes (e.g., use '5132' for Software, NOT '5112'; use '513' for Publishing, NOT '511'; use '516' for Broadcasting, NOT '515'; use '449' for Furniture/Electronics Retail, NOT '442'/'443'; use '458' for Apparel Retail, NOT '448'). Only return standard 2-to-4 digit numerical strings, never plain text words or names.
 8. For pref_transaction_type, you MUST ONLY output values from this exact list: ["Total Sale", "Acquisition of Majority Stake", "Management Buyout", "Merger", "Divestiture", "Asset Sale", "Acquisition of Minority Stake", "Minority Equity Raise", "SAFE / Convertible Note", "Angel / Pre-Seed Round", "Seed Round", "Series A", "Series B", "Series C & Beyond", "Debt Raise", "Mezzanine Financing", "Bridge Loan", "Recapitalization", "Restructuring", "Distressed Sale", "Joint Venture / Strategic Alliance"].
    Mapping guidelines:
    - Prefer specific rounds: If the text mentions a "Series A", output "Series A" (do NOT select generic "Minority Equity Raise").
@@ -192,10 +192,11 @@ ${text.slice(0, 30000)}
 You are an expert M&A analyst and database clerk. Convert the following business/industry keywords into up to three 2022 NAICS codes that best capture the sectors:
 ${JSON.stringify(keywords)}
 
-Important Rules:
-1. If the keywords suggest a broad sector, return a 2-digit or 3-digit code (e.g., '54' or '541').
-2. If they suggest a specific industry, return 4-digit codes (e.g., '5415').
-3. Return the result as a strict JSON object matching exactly this schema:
+1. Strictly use official 2022 NAICS codes. NEVER use deprecated 2017 codes (e.g., use '5132' for Software, NOT '5112'; use '513' for Publishing, NOT '511'; use '516' for Broadcasting, NOT '515'; use '449' for Furniture/Electronics Retail, NOT '442'/'443'; use '458' for Apparel Retail, NOT '448').
+2. If the keywords suggest a broad sector, return a 2-digit or 3-digit code (e.g., '54', '513', or '31-33').
+3. If they suggest a specific industry, return 4-digit codes (e.g., '5415', '5132').
+4. Return only standard numeric codes, never text words.
+5. Return the result as a strict JSON object matching exactly this schema:
 {
   "naics_codes": ["string"]
 }
