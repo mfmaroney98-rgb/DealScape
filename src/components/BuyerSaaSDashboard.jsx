@@ -423,7 +423,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
   const shortlistedCount = starredDeals.size;
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-white text-slate-900 font-sans">
+    <div className="fixed inset-x-0 top-[calc(5rem+var(--console-h,0px))] bottom-0 flex overflow-hidden bg-white text-slate-900 font-sans">
       {/* -------------------- 1. LEFT-MOST DARK SIDEBAR (DealRoom Mock) -------------------- */}
       <div
         className={clsx(
@@ -470,7 +470,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
         </div>
 
         {/* Main Nav Items */}
-        <div className="flex-1 overflow-y-auto py-4 space-y-1">
+        <div className="flex-1 overflow-y-hidden py-4 space-y-1">
           {[
             { label: 'Pipeline', icon: Layers, path: '/dashboard' },
             { label: 'Workspace', icon: Briefcase, active: true },
@@ -601,7 +601,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                 <Plus size={13} className="stroke-[3]" />
               </Link>
             </div>
-            <div className="flex-1 overflow-y-auto space-y-1 pr-1">
+            <div className="flex-1 overflow-y-hidden space-y-1 pr-1">
               {criteriaList.map((crit, idx) => {
                 const colorClass = COLORS[idx % COLORS.length];
                 const isChecked = selectedCriteriaIds.has(crit.id);
@@ -673,7 +673,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
       </div>
 
       {/* -------------------- MAIN WORKSPACE AREA -------------------- */}
-      <div className="flex-1 flex flex-col h-full min-w-0 bg-white relative">
+      <div className="flex-1 flex flex-col h-full min-h-0 min-w-0 bg-white relative">
         {/* -------------------- 3. TOP TAB BAR & SUB BAR (Mocking DealRoom Top Headers) -------------------- */}
         <div className="border-b border-slate-200 bg-white select-none shrink-0 z-20 shadow-sm">
           {/* Main Top Header */}
@@ -799,7 +799,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
         </div>
 
         {/* -------------------- 5. DENSE ROW TABLE GRID VIEW (Grouped Section Headers) -------------------- */}
-        <div className="flex-1 overflow-auto bg-white">
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden bg-white">
           {loading ? (
             <div className="h-full flex flex-col items-center justify-center gap-4 text-slate-400 select-none">
               <motion.div

@@ -821,8 +821,9 @@ function App() {
 
   return (
     <Router>
+      <div style={{ '--console-h': profile?.role === 'corporate' ? '2.5rem' : '0rem', paddingTop: 'var(--console-h)' }}>
       {profile?.role === 'corporate' && (
-        <div className="bg-slate-900 border-b border-slate-800 text-white text-xs py-2 px-6 flex items-center justify-between z-[9999] relative">
+        <div className="fixed top-0 inset-x-0 h-10 bg-slate-900 border-b border-slate-800 text-white text-xs px-6 flex items-center justify-between z-[9999]">
           <div className="flex items-center gap-2 font-bold tracking-wide">
             <span className="bg-blue-600 text-[10px] px-2 py-0.5 rounded font-black text-white">ADMIN</span>
             <span className="text-slate-300">Corporate View-As Console</span>
@@ -1046,6 +1047,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>
+      </div>
     </Router>
   );
 }
@@ -1053,7 +1055,7 @@ function App() {
 const Layout = ({ children, session, organizationName, darkMode, setDarkMode, onSignOut }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const hideNavbarOn = ['/', '/signup', '/dashboard/buyer'];
+  const hideNavbarOn = ['/', '/signup'];
   const shouldShowNavbar = session && !hideNavbarOn.includes(location.pathname);
 
   useEffect(() => {
@@ -1076,7 +1078,7 @@ const Layout = ({ children, session, organizationName, darkMode, setDarkMode, on
   return (
     <div className="flex flex-col min-h-screen">
       {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} onSignOut={onSignOut} />}
-      <main className="flex-1">
+      <main className={clsx("flex-1", shouldShowNavbar && "pt-20")}>
         {children}
       </main>
     </div>

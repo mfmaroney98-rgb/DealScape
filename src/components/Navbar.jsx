@@ -26,7 +26,7 @@ export default function Navbar({ organizationName, darkMode, setDarkMode, onSign
   };
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-border px-6 h-20 flex items-center">
+    <nav className="fixed top-[var(--console-h,0px)] z-50 w-full bg-white/80 backdrop-blur-md border-b border-border px-6 h-20 flex items-center">
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link
           to="/dashboard"
