@@ -1922,7 +1922,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
               <div>
                 <label className="form-label flex items-center gap-2" style={{ marginBottom: '1rem' }}>
                   <Users size={16} className="text-slate-400" />
-                  Owner Transition Period
+                  Owner / Management Transition Period
                 </label>
                 <select
                   name="owner_transition"
@@ -1940,7 +1940,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
               </div>
             </div>
             <p className="text-xs text-slate-500 mt-3">
-              Describe the motivation for the transaction and the expected owner transition period. This is visible to buyers on their match results but does not affect your semantic score.
+              Describe the motivation for the transaction and the expected owner / management transition period. This is visible to buyers on their match results but does not affect your semantic score.
             </p>
           </div>
         </div>

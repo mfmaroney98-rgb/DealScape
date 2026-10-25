@@ -1558,7 +1558,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
               <div>
                 <label className="form-label flex items-center gap-2 mb-4">
                   <Users size={16} className="text-slate-400" />
-                  Transition Preference
+                  Owner / Management Transition Preference
                 </label>
                 <select
                   name="owner_transition"
@@ -1576,7 +1576,7 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
               </div>
             </div>
             <p className="text-xs text-slate-500 mt-3">
-              Specify the transaction motivations and owner transition periods you are most interested in. This is displayed on your matches but does not affect the semantic score.
+              Specify the transaction motivations and owner / management transition periods you are most interested in. This is displayed on your matches but does not affect the semantic score.
             </p>
           </div>
         </div>

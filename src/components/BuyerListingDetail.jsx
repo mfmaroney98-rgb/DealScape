@@ -56,7 +56,7 @@ const getNaicsName = (code, tree) => {
   for (const s of tree) {
     const sub = s.subsectors.find(sub => sub.code === code);
     if (sub) return sub.name;
-    
+
     for (const subsector of s.subsectors) {
       if (subsector.industryGroups) {
         const ig = subsector.industryGroups.find(ig => ig.code === code);
@@ -216,12 +216,12 @@ const KEYWORD_CATEGORIES = [
 
 const ScoreBar = ({ label, score, icon: Icon, color = 'accent' }) => {
   const colorMap = {
-    accent:  { bar: 'bg-accent',        text: 'text-accent' },
-    emerald: { bar: 'bg-emerald-500',   text: 'text-emerald-600' },
-    amber:   { bar: 'bg-amber-500',     text: 'text-amber-600' },
-    orange:  { bar: 'bg-[#ff9500]',      text: 'text-[#e08400]' },
-    blue:    { bar: 'bg-blue-500',      text: 'text-blue-600' },
-    violet:  { bar: 'bg-violet-500',    text: 'text-violet-600' },
+    accent: { bar: 'bg-accent', text: 'text-accent' },
+    emerald: { bar: 'bg-emerald-500', text: 'text-emerald-600' },
+    amber: { bar: 'bg-amber-500', text: 'text-amber-600' },
+    orange: { bar: 'bg-[#ff9500]', text: 'text-[#e08400]' },
+    blue: { bar: 'bg-blue-500', text: 'text-blue-600' },
+    violet: { bar: 'bg-violet-500', text: 'text-violet-600' },
   };
   const c = colorMap[color] || colorMap.accent;
   const pct = Math.min(100, Math.max(0, score || 0));
@@ -563,7 +563,7 @@ export default function BuyerListingDetail() {
                 const mediums = matchData.matchedCriteriaList
                   .filter(item => item.matchTier === 'Moderate')
                   .sort((a, b) => b.totalScore - a.totalScore);
-                
+
                 return (
                   <div className="space-y-1.5 mb-4 select-none">
                     {strongs.length > 0 && (
@@ -886,15 +886,15 @@ export default function BuyerListingDetail() {
 
                   <div className="space-y-4 p-4 bg-slate-50/70 rounded-xl">
                     {activeCriteriaMatch.aiScore != null && (
-                      <ScoreBar label="AI Qualitative Fit"  score={activeCriteriaMatch.aiScore}       icon={Sparkles}    color="violet"  />
+                      <ScoreBar label="AI Qualitative Fit" score={activeCriteriaMatch.aiScore} icon={Sparkles} color="violet" />
                     )}
                     {activeCriteriaMatch.industryScore != null && (
-                      <ScoreBar label="Industry Score"  score={activeCriteriaMatch.industryScore}   icon={Building2}   color="orange" />
+                      <ScoreBar label="Industry Score" score={activeCriteriaMatch.industryScore} icon={Building2} color="orange" />
                     )}
-                    <ScoreBar label="Financial Fit"     score={activeCriteriaMatch.financialScore}  icon={DollarSign}  color="emerald" />
-                    <ScoreBar label="Geography"         score={activeCriteriaMatch.geographyScore}  icon={Globe}       color="blue"    />
+                    <ScoreBar label="Financial Fit" score={activeCriteriaMatch.financialScore} icon={DollarSign} color="emerald" />
+                    <ScoreBar label="Geography" score={activeCriteriaMatch.geographyScore} icon={Globe} color="blue" />
                     {activeCriteriaMatch.bonusScore > 0 && (
-                      <ScoreBar label="Bonus"           score={activeCriteriaMatch.bonusScore}      icon={Shield}      color="amber"   />
+                      <ScoreBar label="Bonus" score={activeCriteriaMatch.bonusScore} icon={Shield} color="amber" />
                     )}
                     <div className="pt-2.5 border-t border-slate-200/70">
                       <div className="flex items-center justify-between">
@@ -958,10 +958,10 @@ export default function BuyerListingDetail() {
                 Company Info
               </h3>
               <div className="space-y-1">
-                {listing.year_founded && <InfoRow label="Year Founded"      value={listing.year_founded} />}
-                {listing.employees_count && <InfoRow label="Employees"      value={listing.employees_count.toLocaleString()} />}
-                {listing.legal_entity && <InfoRow label="Legal Entity"      value={listing.legal_entity} />}
-                {listing.ownership_structure && <InfoRow label="Ownership"  value={listing.ownership_structure} />}
+                {listing.year_founded && <InfoRow label="Year Founded" value={listing.year_founded} />}
+                {listing.employees_count && <InfoRow label="Employees" value={listing.employees_count.toLocaleString()} />}
+                {listing.legal_entity && <InfoRow label="Legal Entity" value={listing.legal_entity} />}
+                {listing.ownership_structure && <InfoRow label="Ownership" value={listing.ownership_structure} />}
                 {locations.length > 0 && (
                   <InfoRow label="Location(s)" value={locations.join(', ')} />
                 )}
@@ -1003,16 +1003,16 @@ export default function BuyerListingDetail() {
                   </div>
                 )}
 
-                {/* Owner transition */}
+                {/* Owner / management transition period */}
                 {matchData?.owner_transition && (
-                  <InfoRow label="Owner Transition" value={matchData.owner_transition} />
+                  <InfoRow label="Owner / Management Transition Period" value={matchData.owner_transition} />
                 )}
 
                 {/* Ownership flags */}
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  <OwnershipFlag show={listing.is_founder_owned}  label="Founder-Owned"  />
-                  <OwnershipFlag show={listing.is_family_owned}   label="Family-Owned"   />
-                  <OwnershipFlag show={listing.is_female_owned}   label="Female-Owned"   />
+                  <OwnershipFlag show={listing.is_founder_owned} label="Founder-Owned" />
+                  <OwnershipFlag show={listing.is_family_owned} label="Family-Owned" />
+                  <OwnershipFlag show={listing.is_female_owned} label="Female-Owned" />
                   <OwnershipFlag show={listing.is_minority_owned} label="Minority-Owned" />
                   <OwnershipFlag show={listing.is_operator_owned} label="Operator-Owned" />
                 </div>
