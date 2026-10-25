@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-background: var(--ds-background, #FAFAFA);
   --color-foreground: var(--ds-foreground, #0F172A);

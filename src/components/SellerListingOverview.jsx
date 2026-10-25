@@ -189,7 +189,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Company Information */}
               <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Company Information</h3>
+                <h3 className="text-xl font-bold mb-4 text-indigo-400 dark:text-white">Company Information</h3>
                 <div className="space-y-4">
                   <div>
                     <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Company Name</span>
@@ -207,19 +207,19 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <span className="text-xs text-slate-500 dark:text-slate-400 block">Revenue</span>
-                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'revenue')}</span>
+                        <span className="text-sm text-indigo-400 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'revenue')}</span>
                       </div>
                       <div>
                         <span className="text-xs text-slate-500 dark:text-slate-400 block">EBITDA</span>
-                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'ebitda')}</span>
+                        <span className="text-sm text-indigo-400 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'ebitda')}</span>
                       </div>
                       <div>
                         <span className="text-xs text-slate-500 dark:text-slate-400 block">Gross Profit</span>
-                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'gross_profit')}</span>
+                        <span className="text-sm text-indigo-400 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'gross_profit')}</span>
                       </div>
                       <div>
                         <span className="text-xs text-slate-500 dark:text-slate-400 block">Net Income</span>
-                        <span className="text-sm text-slate-900 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'net_income')}</span>
+                        <span className="text-sm text-indigo-400 dark:text-white font-medium">{getLatestFinancial(listing.financial_history, 'net_income')}</span>
                       </div>
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
               {/* Buyer Information (Mock) */}
               <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Buyer Information</h3>
+                <h3 className="text-xl font-bold mb-4 text-indigo-400 dark:text-white">Buyer Information</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-slate-500 dark:text-slate-400"># Ideal Matches</span>
@@ -254,7 +254,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             <div className="lg:col-span-4 flex flex-col gap-6">
               {/* Files */}
               <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold mb-6 text-indigo-400 dark:text-white flex items-center gap-2">
                   <FileText className="text-indigo-600 dark:text-indigo-400" size={20} /> Files
                 </h3>
                 {downloadError && (
@@ -361,7 +361,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
               </div>
 
               <div className="p-6 rounded-2xl border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold mb-6 text-indigo-400 dark:text-white flex items-center gap-2">
                   <CheckCircle2 className="text-emerald-600 dark:text-emerald-400" size={20} /> Listing Status
                 </h3>
                 <div className="space-y-5">
@@ -410,7 +410,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
               {/* Deal Team */}
               <div className="p-6 rounded-2xl mt-2 border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold mb-6 text-indigo-400 dark:text-white flex items-center gap-2">
                   <Users className="text-indigo-600 dark:text-indigo-400" size={20} /> Deal Team
                 </h3>
                 <div className="space-y-6">
@@ -444,7 +444,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl mb-4 flex items-center justify-center">
               <Users className="text-indigo-600 dark:text-indigo-400" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Buyer Matches</h2>
+            <h2 className="text-2xl font-bold text-indigo-400 dark:text-white mb-2">Buyer Matches</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
               This section will display all relevant buyers based on the score between their investment criteria and this seller listing.
             </p>
@@ -457,7 +457,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
             <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
               <FileText className="text-emerald-600 dark:text-emerald-400" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Buyer Preview Mode</h2>
+            <h2 className="text-2xl font-bold text-indigo-400 dark:text-white mb-2">Buyer Preview Mode</h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
               This section will allow you to preview this listing exactly as it appears to buyers on the platform.
             </p>
