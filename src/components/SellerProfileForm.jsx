@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
-import { fetchNaicsSectors, expandNaicsCodes } from '../services/naicsService';
+import { fetchNaicsSectors, expandNaicsCodes, normalizeTo2022Naics, getSectorCodeForNaics } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import {
   Building2,
@@ -598,7 +598,8 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
 
         const rawNaicsCodes = parsedData.naics_codes || [];
-        const expandedNaics = expandNaicsCodes(rawNaicsCodes, naicsSectors);
+        const normalizedNaics = normalizeTo2022Naics(rawNaicsCodes, naicsSectors);
+        const expandedNaics = expandNaicsCodes(normalizedNaics, naicsSectors);
 
         return {
           ...prev,
@@ -654,18 +655,20 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         setAutoFilledTags(tagsToHighlight);
       }
 
-      // Auto-expand NAICS tree for parsed codes
+      // Auto-expand NAICS tree for parsed codes (aligned with 2022 classification)
       if (parsedData.naics_codes && Array.isArray(parsedData.naics_codes)) {
+        const normalizedForExpand = normalizeTo2022Naics(parsedData.naics_codes, naicsSectors);
         setExpandedNaicsSectors(prev => {
           const next = new Set(prev);
-          parsedData.naics_codes.forEach(code => {
-            if (code.length >= 2) next.add(code.substring(0, 2));
+          normalizedForExpand.forEach(code => {
+            const sec = getSectorCodeForNaics(code);
+            if (sec) next.add(sec);
           });
           return next;
         });
         setExpandedNaicsSubsectors(prev => {
           const next = new Set(prev);
-          parsedData.naics_codes.forEach(code => {
+          normalizedForExpand.forEach(code => {
             if (code.length >= 3) next.add(code.substring(0, 3));
           });
           return next;
@@ -1296,11 +1299,11 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
                   <label className="form-label flex justify-between items-center" style={{ marginBottom: '0.75rem' }}>
                     <span className="flex items-center gap-2">
                       <Briefcase size={16} className="text-slate-400" />
-                      Industry Classification (NAICS)
+                      Industry Classification (2022 NAICS)
                     </span>
                   </label>
                   <p className="text-xs text-slate-500 mb-3">
-                    Select the NAICS codes that best describe your business.
+                    Select the official 2022 NAICS codes that best describe your business.
                   </p>
                   <div className="geo-tree" style={{ maxHeight: '360px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                     {naicsLoading ? (

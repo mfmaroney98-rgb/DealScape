@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { buyerService } from '../services/buyerService';
 import { organizationService } from '../services/organizationService';
 import TagInput from './TagInput';
-import { fetchNaicsSectors, expandNaicsCodes } from '../services/naicsService';
+import { fetchNaicsSectors, expandNaicsCodes, normalizeTo2022Naics, getSectorCodeForNaics } from '../services/naicsService';
 import { fetchGeographyTree } from '../services/geographyService';
 import { fetchFinancialMetrics } from '../services/financialMetricsService';
 import {
@@ -574,7 +574,9 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
           ? Object.values(parsedData.keywords).flat().filter(Boolean)
           : (Array.isArray(parsedData.keywords) ? parsedData.keywords : []);
 
-        const expandedNaics = expandNaicsCodes(rawNaicsCodes, naicsSectors);
+        const rawNaicsCodes = parsedData.naics_codes || [];
+        const normalizedNaics = normalizeTo2022Naics(rawNaicsCodes, naicsSectors);
+        const expandedNaics = expandNaicsCodes(normalizedNaics, naicsSectors);
 
         const loadedCategorized = (parsedData.keywords && typeof parsedData.keywords === 'object') ? parsedData.keywords : prev.categorized_keywords;
         const extractedReasonForSale = loadedCategorized?.reason_for_sale || [];
@@ -617,18 +619,20 @@ export default function BuyerCriteriaForm({ userId, orgId, isCorporate = false, 
         setAutoFilledTags(Object.values(parsedData.keywords).flat().filter(Boolean));
       }
 
-      // Auto-expand NAICS tree for parsed codes
+      // Auto-expand NAICS tree for parsed codes (aligned with 2022 classification)
       if (rawNaicsCodes && Array.isArray(rawNaicsCodes)) {
+        const normalizedForExpand = normalizeTo2022Naics(rawNaicsCodes, naicsSectors);
         setExpandedNaicsSectors(prev => {
           const next = new Set(prev);
-          rawNaicsCodes.forEach(code => {
-            if (code.length >= 2) next.add(code.substring(0, 2));
+          normalizedForExpand.forEach(code => {
+            const sec = getSectorCodeForNaics(code);
+            if (sec) next.add(sec);
           });
           return next;
         });
         setExpandedNaicsSubsectors(prev => {
           const next = new Set(prev);
-          rawNaicsCodes.forEach(code => {
+          normalizedForExpand.forEach(code => {
             if (code.length >= 3) next.add(code.substring(0, 3));
           });
           return next;

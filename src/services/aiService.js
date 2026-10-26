@@ -189,18 +189,19 @@ ${text.slice(0, 30000)}
     if (!keywords || !keywords.length) return [];
 
     const prompt = `
-You are an expert M&A analyst and database clerk. Convert the following business/industry keywords into up to three 2022 NAICS codes that best capture the sectors:
-${JSON.stringify(keywords)}
+You are an expert M&A analyst and database clerk. Determine up to three official 2022 NAICS codes that best describe this company's industry and operations based on the provided business profile:
+${typeof keywords === 'string' ? keywords : JSON.stringify(keywords, null, 2)}
 
+Important Rules:
 1. Strictly use official 2022 NAICS codes. NEVER use deprecated 2017 codes (e.g., use '5132' for Software, NOT '5112'; use '513' for Publishing, NOT '511'; use '516' for Broadcasting, NOT '515'; use '449' for Furniture/Electronics Retail, NOT '442'/'443'; use '458' for Apparel Retail, NOT '448').
-2. If the keywords suggest a broad sector, return a 2-digit or 3-digit code (e.g., '54', '513', or '31-33').
-3. If they suggest a specific industry, return 4-digit codes (e.g., '5415', '5132').
+2. If the company is broad, return 2-digit or 3-digit codes (e.g., '54', '513', or '31-33').
+3. If specific, prefer exact 4-digit codes (e.g., '5415', '5132', '4581').
 4. Return only standard numeric codes, never text words.
 5. Return the result as a strict JSON object matching exactly this schema:
 {
   "naics_codes": ["string"]
 }
-4. Extract only the JSON, no markdown formatting or extra text.
+6. Extract only the JSON, no markdown formatting or extra text.
 `;
 
     try {
