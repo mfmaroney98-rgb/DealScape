@@ -1050,19 +1050,22 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         </div>
 
         {/* Extract Button */}
-        {(teaserFile || cimFile) && (
-          <div className="flex justify-center mb-10 max-w-4xl mx-auto">
-            <button
-              type="button"
-              onClick={handleExtractData}
-              disabled={isParsing}
-              className="btn-primary flex items-center gap-3 px-8 py-4 bg-amber-500 hover:bg-amber-600 border-none text-white font-bold rounded-2xl shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Sparkles size={20} className={isParsing ? "animate-spin" : ""} />
-              {isParsing ? 'Extracting Data...' : 'Extract Data with AI'}
-            </button>
-          </div>
-        )}
+        <div className="flex justify-center mb-10 max-w-4xl mx-auto">
+          <button
+            type="button"
+            onClick={handleExtractData}
+            disabled={isParsing || (!teaserFile && !cimFile)}
+            className={`flex items-center gap-3 px-8 py-4 font-bold rounded-2xl transition-all duration-200 ${
+              teaserFile || cimFile
+                ? "bg-amber-500 hover:bg-amber-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                : "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60 shadow-none"
+            }`}
+            title={teaserFile || cimFile ? "Extract metrics and details with AI" : "Please upload a Teaser or CIM PDF above to extract with AI"}
+          >
+            <Sparkles size={20} className={isParsing ? "animate-spin text-white" : (teaserFile || cimFile) ? "text-white" : "text-slate-500"} />
+            {isParsing ? 'Extracting Data...' : 'Extract with AI'}
+          </button>
+        </div>
 
       </div>
 
