@@ -24,6 +24,7 @@ import {
   Globe,
   Loader2,
   Sparkles,
+  RotateCcw,
   Plus,
   Minus
 } from 'lucide-react';
@@ -133,6 +134,12 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
       return saved ? JSON.parse(saved) : [];
     } catch { return []; }
   });
+  const [hasExtracted, setHasExtracted] = useState(() => {
+    try {
+      return sessionStorage.getItem(`sellerExtracted_${listingId || 'new'}`) === 'true';
+    } catch { return false; }
+  });
+  const [showReExtractModal, setShowReExtractModal] = useState(false);
   const [expandedContinents, setExpandedContinents] = useState(new Set());
   const [expandedCountries, setExpandedCountries] = useState(new Set());
   const [focusedField, setFocusedField] = useState(null); // { year, field }
@@ -557,8 +564,29 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
     });
   };
 
+  const getDocumentBlob = async (type) => {
+    const file = type === 'teaser' ? teaserFile : cimFile;
+    if (file instanceof File) return file;
+
+    const storageUrl = formData[`${type}_url`];
+    if (storageUrl && !filesToDelete.includes(type)) {
+      const signedUrl = await sellerListingService.getSignedUrl(storageUrl);
+      const res = await fetch(signedUrl);
+      if (!res.ok) {
+        throw new Error(`Failed to download ${type} document (${res.status})`);
+      }
+      return await res.blob();
+    }
+    return null;
+  };
+
+  const hasUploadedTeaser = Boolean(teaserFile || (formData.teaser_file_name && !filesToDelete.includes('teaser')));
+  const hasUploadedCim = Boolean(cimFile || (formData.cim_file_name && !filesToDelete.includes('cim')));
+  const hasUploadedDocument = hasUploadedTeaser || hasUploadedCim;
+  const hasAiRun = hasExtracted || autoFilledFields.length > 0 || isEditing || Boolean(formData.seller_name || formData.summary);
+
   const handleExtractData = async () => {
-    if (!teaserFile && !cimFile) return;
+    if (!hasUploadedDocument) return;
 
     setIsParsing(true);
     setError(null);
@@ -566,12 +594,19 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
     try {
       let combinedText = '';
 
-      // 1. Extract text from uploaded PDFs
-      if (teaserFile) {
-        combinedText += '--- START OF TEASER DOCUMENT ---\n' + await aiService.extractTextFromPDF(teaserFile) + '\n--- END OF TEASER DOCUMENT ---\n\n';
+      // 1. Extract text from uploaded local PDFs or stored PDFs
+      const teaserBlob = await getDocumentBlob('teaser');
+      const cimBlob = await getDocumentBlob('cim');
+
+      if (!teaserBlob && !cimBlob) {
+        throw new Error('No uploaded PDF document found to extract.');
       }
-      if (cimFile) {
-        combinedText += '--- START OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n' + await aiService.extractTextFromPDF(cimFile) + '\n--- END OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n\n';
+
+      if (teaserBlob) {
+        combinedText += '--- START OF TEASER DOCUMENT ---\n' + await aiService.extractTextFromPDF(teaserBlob) + '\n--- END OF TEASER DOCUMENT ---\n\n';
+      }
+      if (cimBlob) {
+        combinedText += '--- START OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n' + await aiService.extractTextFromPDF(cimBlob) + '\n--- END OF CONFIDENTIAL INFORMATION MEMORANDUM (CIM) ---\n\n';
       }
 
       // 2. Extract structured data via OpenAI
@@ -716,12 +751,26 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         }
       }
 
+      setHasExtracted(true);
+      try {
+        sessionStorage.setItem(`sellerExtracted_${listingId || 'new'}`, 'true');
+      } catch { }
+
     } catch (err) {
       console.error('AI Parsing Error:', err);
       // Display the actual technical error to the user for debugging
       setError(`Extraction failed: ${err.message || err.toString()}`);
     } finally {
       setIsParsing(false);
+    }
+  };
+
+  const handleExtractClick = () => {
+    if (!hasUploadedDocument) return;
+    if (hasAiRun) {
+      setShowReExtractModal(true);
+    } else {
+      handleExtractData();
     }
   };
 
@@ -874,6 +923,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
       sessionStorage.removeItem(`sellerFormData_${listingId || 'new'}`);
       sessionStorage.removeItem(`sellerFormFields_${listingId || 'new'}`);
       sessionStorage.removeItem(`sellerFormTags_${listingId || 'new'}`);
+      sessionStorage.removeItem(`sellerExtracted_${listingId || 'new'}`);
 
       if (onComplete) {
         await onComplete();
@@ -1053,17 +1103,35 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         <div className="flex justify-center mb-10 max-w-4xl mx-auto">
           <button
             type="button"
-            onClick={handleExtractData}
-            disabled={isParsing || (!teaserFile && !cimFile)}
+            onClick={handleExtractClick}
+            disabled={isParsing || !hasUploadedDocument}
             className={`flex items-center gap-3 px-8 py-4 font-bold rounded-2xl transition-all duration-200 ${
-              teaserFile || cimFile
-                ? "bg-amber-500 hover:bg-amber-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                : "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60 shadow-none"
+              !hasUploadedDocument
+                ? "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60 shadow-none"
+                : hasAiRun
+                  ? "bg-slate-900/90 hover:bg-slate-800 text-amber-400 border border-amber-500/40 hover:border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  : "bg-amber-500 hover:bg-amber-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             }`}
-            title={teaserFile || cimFile ? "Extract metrics and details with AI" : "Please upload a Teaser or CIM PDF above to extract with AI"}
+            title={
+              !hasUploadedDocument
+                ? "Please upload a Teaser or CIM PDF above to extract with AI"
+                : hasAiRun
+                  ? "Re-run AI extraction from uploaded documents (will reset extracted fields)"
+                  : "Extract metrics and details with AI"
+            }
           >
-            <Sparkles size={20} className={isParsing ? "animate-spin text-white" : (teaserFile || cimFile) ? "text-white" : "text-slate-500"} />
-            {isParsing ? 'Extracting Data...' : 'Extract with AI'}
+            {isParsing ? (
+              <Loader2 size={20} className="animate-spin text-current" />
+            ) : hasAiRun ? (
+              <RotateCcw size={20} className="text-amber-400" />
+            ) : (
+              <Sparkles size={20} className="text-white" />
+            )}
+            {isParsing
+              ? 'Extracting Data...'
+              : hasAiRun
+                ? 'Re-run AI Extraction'
+                : 'Extract with AI'}
           </button>
         </div>
 
@@ -1992,6 +2060,52 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
           </button>
         </div>
       </form>
+
+      {/* Re-run AI Extraction Confirmation Modal */}
+      {showReExtractModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowReExtractModal(false)}
+        >
+          <div 
+            className="max-w-md w-full p-8 rounded-3xl border border-amber-500/30 shadow-2xl relative z-10 bg-white dark:bg-slate-900"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-14 h-14 bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 rounded-2xl flex items-center justify-center text-amber-500 dark:text-amber-400 mb-6 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
+              <AlertCircle size={28} />
+            </div>
+            
+            <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">
+              Re-run AI Extraction?
+            </h3>
+            
+            <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">
+              AI extraction has already been run for this listing. Re-running it will reset and overwrite the current extracted data. Are you sure you want to proceed?
+            </p>
+
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => setShowReExtractModal(false)}
+                className="flex-1 py-3 px-5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold transition-all text-sm cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReExtractModal(false);
+                  handleExtractData();
+                }}
+                className="flex-1 py-3 px-5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-semibold transition-all text-sm flex items-center justify-center gap-2 active:scale-[0.98] cursor-pointer shadow-lg shadow-amber-500/25"
+              >
+                <Sparkles size={16} />
+                Yes, Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
