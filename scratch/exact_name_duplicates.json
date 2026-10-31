@@ -1,0 +1,502 @@
+[
+  {
+    "o1": {
+      "id": "7dbfab89-b31a-4868-aa55-da6fb20c2643",
+      "name": "Granite Capital Partners, L.L.C.",
+      "website": null,
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:42:03.947Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "aa5b7488-3652-459b-abd9-112872e82145",
+      "name": "Granite Capital Partners, LLC",
+      "website": "www.granitecappartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:42:35.457Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": null,
+    "dom2": "granitecappartners.com"
+  },
+  {
+    "o1": {
+      "id": "e19464ac-6450-450d-b464-1530315c56ed",
+      "name": "Agility Equity Partners",
+      "website": "https://www.agilityep.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T03:33:16.006Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "884f34d0-ebf5-4554-84d7-5e8dcdf696f4",
+      "name": "Agility Equity Partners, LLC",
+      "website": "www.agilityep.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:15:29.662Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "agilityep.com",
+    "dom2": "agilityep.com"
+  },
+  {
+    "o1": {
+      "id": "ad2dfc6c-a4d1-4c06-8dfa-015a4afb7122",
+      "name": "Stonehenge Partners",
+      "website": "https://stonehengepartners.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-22T17:48:03.182Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "36eab266-78d9-40b7-9d36-54095be5517d",
+      "name": "Stonehenge Partners, Inc.",
+      "website": "www.stonehengepartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:25:20.250Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "stonehengepartners.com",
+    "dom2": "stonehengepartners.com"
+  },
+  {
+    "o1": {
+      "id": "992b1226-056d-4df8-8ae9-4469dbad2405",
+      "name": "Woodside Capital Partners",
+      "website": null,
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:59:23.819Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "07e5e1a5-409d-4438-841a-e42ed5ec604e",
+      "name": "Woodside Capital Partners, LLC",
+      "website": "woodsidecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:59:34.448Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": null,
+    "dom2": "woodsidecp.com"
+  },
+  {
+    "o1": {
+      "id": "02087585-6cb2-4300-9dd7-e82ed8e753ca",
+      "name": "1315 Capital",
+      "website": "www.1315capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:19.946Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "a65808cc-ba2c-4f16-ae81-d4311a5094bc",
+      "name": "1315 Capital, LLC",
+      "website": "www.1315capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:46:51.533Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "1315capital.com",
+    "dom2": "1315capital.com"
+  },
+  {
+    "o1": {
+      "id": "6c6f33d1-a950-441e-8aa8-c5f2c8e6a756",
+      "name": "3 Boomerang Capital",
+      "website": "www.3boomerang.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:22.758Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "92df5da2-e6f9-406d-b202-814b4c482e45",
+      "name": "3 Boomerang Capital, LP",
+      "website": "www.3boomerang.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:31.039Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "3boomerang.com",
+    "dom2": "3boomerang.com"
+  },
+  {
+    "o1": {
+      "id": "478b83af-49d2-4e8b-9569-883d9af53c1a",
+      "name": "3 Rivers Capital",
+      "website": "https://3riverscap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T03:49:04.896Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "1af144a8-c771-4bba-96d3-7508395c9bc6",
+      "name": "3 Rivers Capital, LLC",
+      "website": "www.3riverscap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:38.626Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "3riverscap.com",
+    "dom2": "3riverscap.com"
+  },
+  {
+    "o1": {
+      "id": "48676ae1-0f18-47af-ada8-af10e2a9f034",
+      "name": "424 Capital",
+      "website": "www.424capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:30.854Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "27a81447-020a-4ad7-a786-d0104b3219dd",
+      "name": "424 Capital, LLC",
+      "website": "www.424capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:51:00.738Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "424capital.com",
+    "dom2": "424capital.com"
+  },
+  {
+    "o1": {
+      "id": "99d1fe24-4ff1-47e9-b22d-4112ab2047e9",
+      "name": "4x4 Capital",
+      "website": "4x4capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:37.542Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "73c47025-7da3-41b4-90ca-a3b4a3c6d34a",
+      "name": "4x4 Capital, LLC",
+      "website": "4x4capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:51:15.764Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "4x4capital.com",
+    "dom2": "4x4capital.com"
+  },
+  {
+    "o1": {
+      "id": "7cd9cd29-01d1-4a77-bcbe-b8c0f80d29ea",
+      "name": "Acceleration Resources",
+      "website": "www.accelres.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:08.478Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "0505aae1-5515-4997-b543-e55412401db5",
+      "name": "Acceleration Resources, LLC",
+      "website": "www.accelres.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:56:43.381Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "accelres.com",
+    "dom2": "accelres.com"
+  },
+  {
+    "o1": {
+      "id": "2b347b15-ba7b-4e81-98dd-65d9e57a30b0",
+      "name": "Align Capital Partners",
+      "website": "https://aligncp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-22T03:26:15.316Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "54905390-63e4-417a-88d9-81d8e8a85974",
+      "name": "Align Capital Partners, LP",
+      "website": "www.aligncp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:19:43.594Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "aligncp.com",
+    "dom2": "aligncp.com"
+  },
+  {
+    "o1": {
+      "id": "5aa7be6c-0f7f-4d36-ad94-054e029c890a",
+      "name": "Blue Point Capital Partners",
+      "website": "https://www.bluepointcapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-22T17:41:32.612Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "ec289ae1-2966-4f47-8fe2-9b10c5ecb847",
+      "name": "Blue Point Capital Partners, LLC",
+      "website": "www.bluepointcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:06:21.900Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "bluepointcapital.com",
+    "dom2": "bluepointcapital.com"
+  },
+  {
+    "o1": {
+      "id": "86d625f7-ea4d-4a7a-921b-4eea0ed4245a",
+      "name": "Council capital",
+      "website": "https://councilcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:46:47.037Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "0c1f5335-7305-4a87-a7a0-84120a82d15b",
+      "name": "Council Capital",
+      "website": "www.councilcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:40:35.389Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "councilcapital.com",
+    "dom2": "councilcapital.com"
+  },
+  {
+    "o1": {
+      "id": "ad71b201-413b-466e-b488-09df06835ffd",
+      "name": "Enhanced Capital Partners, Inc.",
+      "website": "www.enhancedcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:09:44.842Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "8619bd66-ecc1-4db5-926d-262094a61251",
+      "name": "Enhanced Capital Partners, LLC",
+      "website": "www.enhancedcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:23.251Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "enhancedcapital.com",
+    "dom2": "enhancedcapital.com"
+  },
+  {
+    "o1": {
+      "id": "a4bd2221-517e-42a8-a16e-83ea581b6b62",
+      "name": "Gen Cap America",
+      "website": "https://gencapamerica.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:28:22.787Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "b0bebd95-d3a0-4d37-9dfa-ccf676331bcf",
+      "name": "Gen Cap America, Inc.",
+      "website": "www.gencapamerica.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:26:20.213Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "gencapamerica.com",
+    "dom2": "gencapamerica.com"
+  },
+  {
+    "o1": {
+      "id": "7eca8001-b908-4b1b-bc05-db7ff3fc99e5",
+      "name": "LFM Capital",
+      "website": "https://www.lfmcapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T16:45:55.776Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "5d483668-66d7-43c9-a3e9-73fe17d58e50",
+      "name": "LFM Capital, LLC",
+      "website": "www.lfmcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:20:10.403Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "lfmcapital.com",
+    "dom2": "lfmcapital.com"
+  },
+  {
+    "o1": {
+      "id": "57218108-de3b-4339-bbc6-998bcf66bb11",
+      "name": "Petra Capital Partners",
+      "website": "https://petracapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:28:24.854Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "f68f23d6-d47d-4a8a-b1e0-9808970461fd",
+      "name": "Petra Capital Partners, LLC",
+      "website": "www.petracapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T20:57:28.027Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "petracapital.com",
+    "dom2": "petracapital.com"
+  },
+  {
+    "o1": {
+      "id": "462ff96c-67e2-4def-be8a-8b4299f7fe22",
+      "name": "Seidler Kutsenda Management Company LLC",
+      "website": "www.sepfunds.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:47:29.337Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "d60fac0f-c536-4679-933e-f7d95d5a11fd",
+      "name": "Seidler Kutsenda Management Company, LLC",
+      "website": "sepfunds.com/#what-we-do",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:47:35.730Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "sepfunds.com",
+    "dom2": "sepfunds.com"
+  },
+  {
+    "o1": {
+      "id": "4351ae1d-a319-4f94-86db-29cd6b139111",
+      "name": "Shore Capital Partners",
+      "website": "https://www.shorecp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:22:05.354Z",
+      "criteria_count": 5,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "89350ce0-8708-4a56-9fa3-8050dc7a9415",
+      "name": "Shore Capital Partners, LLC",
+      "website": "www.shorecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:53:10.218Z",
+      "criteria_count": 5,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "shorecp.com",
+    "dom2": "shorecp.com"
+  },
+  {
+    "o1": {
+      "id": "543cf917-5e9e-44f6-8fa8-cf94b3ed1cfd",
+      "name": "TCG Capital Management, L.P.",
+      "website": "www.tcg.co",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T06:41:30.463Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "355ea89d-7be0-4c78-a0c8-719f803c0e2f",
+      "name": "TCG Capital Management, LP",
+      "website": "www.tcg.co",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T06:41:36.897Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Legal Suffix / Punctuation Variation",
+    "dom1": "tcg.co",
+    "dom2": "tcg.co"
+  }
+]

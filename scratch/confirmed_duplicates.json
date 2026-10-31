@@ -1,0 +1,940 @@
+[
+  {
+    "org1": {
+      "id": "02087585-6cb2-4300-9dd7-e82ed8e753ca",
+      "organization_name": "1315 Capital",
+      "website_url": "www.1315capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:19.946Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "a65808cc-ba2c-4f16-ae81-d4311a5094bc",
+      "organization_name": "1315 Capital, LLC",
+      "website_url": "www.1315capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:46:51.533Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "1315capital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "1315 Capital - Healthcare Growth Equity"
+    ],
+    "criteria2": [
+      "1315 Capital, LLC - Healthcare Growth Equity"
+    ]
+  },
+  {
+    "org1": {
+      "id": "284e1f87-b52f-48a7-9871-3b64bf78d1af",
+      "organization_name": "154 Partners Investment Management",
+      "website_url": "154partners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:33.573Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "b46771a6-b323-4bca-b13f-678ff0a327f8",
+      "organization_name": "154 Partners Investment Management LLC",
+      "website_url": "154partners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:47:16.023Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "154partners.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "154 Partners Investment Management - Sports & Live Events",
+      "154 Partners Investment Management - Services"
+    ],
+    "criteria2": [
+      "154 Partners Investment Management LLC - Sports & Live Events",
+      "154 Partners Investment Management LLC - Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "75f19376-fa90-4e55-9764-2b07877b109f",
+      "organization_name": "1kx Management",
+      "website_url": "www.1kx.capital",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:49.782Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "ceb27481-6573-4880-98e0-beae58932d9d",
+      "organization_name": "1kx Management Ltd.",
+      "website_url": "www.1kx.capital",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-20T19:48:06.847Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "1kx.capital",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "1kx Management - Blockchain Technology"
+    ],
+    "criteria2": [
+      "1kx Management Ltd. - Blockchain and Web3 Investments"
+    ]
+  },
+  {
+    "org1": {
+      "id": "d5b044ee-136e-427c-b82f-32767623a69e",
+      "organization_name": "26North Partners",
+      "website_url": "www.26n.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:06.949Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "eee33e92-b0da-4f27-9f33-87c12a338e16",
+      "organization_name": "26North Partners LP",
+      "website_url": "www.26n.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:15.269Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "26n.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "26North Partners - Private Equity - Industrials & Services",
+      "26North Partners - Private Equity - Financial Institutions",
+      "26North Partners - Private Equity - Tech, Media & Telecom"
+    ],
+    "criteria2": [
+      "26North Partners LP - General Buyout"
+    ]
+  },
+  {
+    "org1": {
+      "id": "6c6f33d1-a950-441e-8aa8-c5f2c8e6a756",
+      "organization_name": "3 Boomerang Capital",
+      "website_url": "www.3boomerang.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:22.758Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "92df5da2-e6f9-406d-b202-814b4c482e45",
+      "organization_name": "3 Boomerang Capital, LP",
+      "website_url": "www.3boomerang.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:31.039Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "3boomerang.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "3 Boomerang Capital - Healthcare"
+    ],
+    "criteria2": [
+      "3 Boomerang Capital, LP - Healthcare Focus"
+    ]
+  },
+  {
+    "org1": {
+      "id": "478b83af-49d2-4e8b-9569-883d9af53c1a",
+      "organization_name": "3 Rivers Capital",
+      "website_url": "https://3riverscap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T03:49:04.896Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "1af144a8-c771-4bba-96d3-7508395c9bc6",
+      "organization_name": "3 Rivers Capital, LLC",
+      "website_url": "www.3riverscap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:38.626Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "3riverscap.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "3 Rivers Capital - Better-For-You (BFY) Food Supply Chain",
+      "3 Rivers Capital - IT Services",
+      "3 Rivers Capital - Healthcare Services",
+      "3 Rivers Capital - Infrastructure & Facilities Services"
+    ],
+    "criteria2": [
+      "3 Rivers Capital, LLC - Niche Manufacturing and Specialty Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "48676ae1-0f18-47af-ada8-af10e2a9f034",
+      "organization_name": "424 Capital",
+      "website_url": "www.424capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:30.854Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "27a81447-020a-4ad7-a786-d0104b3219dd",
+      "organization_name": "424 Capital, LLC",
+      "website_url": "www.424capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:51:00.738Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "424capital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "424 Capital - Healthcare and Energy Transition"
+    ],
+    "criteria2": [
+      "424 Capital, LLC - Healthcare and Energy Transition"
+    ]
+  },
+  {
+    "org1": {
+      "id": "99d1fe24-4ff1-47e9-b22d-4112ab2047e9",
+      "organization_name": "4x4 Capital",
+      "website_url": "4x4capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:37.542Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "73c47025-7da3-41b4-90ca-a3b4a3c6d34a",
+      "organization_name": "4x4 Capital, LLC",
+      "website_url": "4x4capital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:51:15.764Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "4x4capital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "4x4 Capital - Consumer Goods/Services"
+    ],
+    "criteria2": [
+      "4x4 Capital, LLC - Consumer Goods/Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "faefc853-bbe2-4de2-b7d0-fdca7f2b55a7",
+      "organization_name": "57 Stars",
+      "website_url": "www.57stars.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:55.688Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "d65ee266-36bb-46c3-963d-21b1b3987c58",
+      "organization_name": "57 Stars LLC",
+      "website_url": "www.57stars.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:52:26.108Z",
+      "profiles": "0",
+      "criteria_count": "5",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "57stars.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "57 Stars - Global Growth Sectors"
+    ],
+    "criteria2": [
+      "57 Stars LLC - Healthcare",
+      "57 Stars LLC - Fintech & Financial Services",
+      "57 Stars LLC - Environmental Sustainability",
+      "57 Stars LLC - Tech-Enablement Enterprise",
+      "57 Stars LLC - Tech-Enablement Consumer"
+    ]
+  },
+  {
+    "org1": {
+      "id": "fe13b3c5-64d1-4d4e-a94d-82eba2bbb4f9",
+      "organization_name": "Accel-KKR",
+      "website_url": "www.accel-kkr.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:01.589Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "97cab8fa-4312-4ab0-891c-b6c899ad9f18",
+      "organization_name": "Accel-KKR LLC",
+      "website_url": "www.accel-kkr.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:56:35.686Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "accel-kkr.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Accel-KKR - Software and Tech-Enabled Services"
+    ],
+    "criteria2": [
+      "Accel-KKR LLC - Software & Tech-Enabled Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "7cd9cd29-01d1-4a77-bcbe-b8c0f80d29ea",
+      "organization_name": "Acceleration Resources",
+      "website_url": "www.accelres.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:08.478Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "0505aae1-5515-4997-b543-e55412401db5",
+      "organization_name": "Acceleration Resources, LLC",
+      "website_url": "www.accelres.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:56:43.381Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "accelres.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Acceleration Resources - Lower Middle Market Upstream Energy"
+    ],
+    "criteria2": [
+      "Acceleration Resources, LLC - Lower/Middle Market Upstream Energy"
+    ]
+  },
+  {
+    "org1": {
+      "id": "e19464ac-6450-450d-b464-1530315c56ed",
+      "organization_name": "Agility Equity Partners",
+      "website_url": "https://www.agilityep.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T03:33:16.006Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "884f34d0-ebf5-4554-84d7-5e8dcdf696f4",
+      "organization_name": "Agility Equity Partners, LLC",
+      "website_url": "www.agilityep.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:15:29.662Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "agilityep.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Agility Equity Partners - Lower Middle Market Co-Investment"
+    ],
+    "criteria2": [
+      "Agility Equity Partners, LLC - Specialty Distribution / Asset-Light Manufacturing / Recurring Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "2b347b15-ba7b-4e81-98dd-65d9e57a30b0",
+      "organization_name": "Align Capital Partners",
+      "website_url": "https://aligncp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-22T03:26:15.316Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "54905390-63e4-417a-88d9-81d8e8a85974",
+      "organization_name": "Align Capital Partners, LP",
+      "website_url": "www.aligncp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:19:43.594Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "aligncp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Align Capital Partners - Professional Business Services",
+      "Align Capital Partners - Industrial Services",
+      "Align Capital Partners - Specialty Manufacturing and Distribution",
+      "Align Capital Partners - Tech-Enabled Services"
+    ],
+    "criteria2": [
+      "Align Capital Partners, LP - Specialty Manufacturing & Distribution",
+      "Align Capital Partners, LP - Professional Business Services",
+      "Align Capital Partners, LP - Tech-Enabled Services",
+      "Align Capital Partners, LP - Industrial Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "5aa7be6c-0f7f-4d36-ad94-054e029c890a",
+      "organization_name": "Blue Point Capital Partners",
+      "website_url": "https://www.bluepointcapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-22T17:41:32.612Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "ec289ae1-2966-4f47-8fe2-9b10c5ecb847",
+      "organization_name": "Blue Point Capital Partners, LLC",
+      "website_url": "www.bluepointcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:06:21.900Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "bluepointcapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Blue Point Capital Partners - Industrial",
+      "Blue Point Capital Partners - Business Services",
+      "Blue Point Capital Partners - Consumer"
+    ],
+    "criteria2": [
+      "Blue Point Capital Partners, LLC - Industrial/Business Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "cc90714c-652c-4ed2-a07f-5a49f5879609",
+      "organization_name": "Brixey & Meyer Capital",
+      "website_url": "https://bmcgrowth.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T03:08:24.106Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "c701aea0-89ac-448f-af78-f7220f70b2df",
+      "organization_name": "Brixey & Meyer Capital LLC",
+      "website_url": "www.bmcgrowth.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:19:54.915Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "bmcgrowth.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Brixey & Meyer Capital - Lower Middle Market"
+    ],
+    "criteria2": [
+      "Brixey & Meyer Capital LLC - Lower Middle Market Healthcare and Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "9c980894-d7d8-4c45-b3dd-1f79fc4ec57f",
+      "organization_name": "Brown Advisory Incorporated",
+      "website_url": "www.brownadvisory.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:22:51.909Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "2360c97b-457e-431e-83d7-43bae32bc179",
+      "organization_name": "Brown Advisory LLC",
+      "website_url": "www.brownadvisory.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:23:08.636Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "brownadvisory.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Brown Advisory Incorporated - Small-Cap Fundamental Value",
+      "Brown Advisory Incorporated - Global Value Select",
+      "Brown Advisory Incorporated - International Value Select"
+    ],
+    "criteria2": [
+      "Brown Advisory LLC - General Buyout",
+      "Brown Advisory LLC - Sustainable Investing"
+    ]
+  },
+  {
+    "org1": {
+      "id": "86d625f7-ea4d-4a7a-921b-4eea0ed4245a",
+      "organization_name": "Council capital",
+      "website_url": "https://councilcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:46:47.037Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "0c1f5335-7305-4a87-a7a0-84120a82d15b",
+      "organization_name": "Council Capital",
+      "website_url": "www.councilcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:40:35.389Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "councilcapital.com",
+    "sharedCriteriaCount": 1,
+    "criteria1": [
+      "Council capital - Healthcare"
+    ],
+    "criteria2": [
+      "Council Capital - Healthcare Services and Technology"
+    ]
+  },
+  {
+    "org1": {
+      "id": "ad71b201-413b-466e-b488-09df06835ffd",
+      "organization_name": "Enhanced Capital Partners, Inc.",
+      "website_url": "www.enhancedcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:09:44.842Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "8619bd66-ecc1-4db5-926d-262094a61251",
+      "organization_name": "Enhanced Capital Partners, LLC",
+      "website_url": "www.enhancedcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:23.251Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "enhancedcapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Enhanced Capital Partners, Inc. - Community Development"
+    ],
+    "criteria2": [
+      "Enhanced Capital Partners, LLC - General Buyout",
+      "Enhanced Capital Partners, LLC - Venture Equity"
+    ]
+  },
+  {
+    "org1": {
+      "id": "a4bd2221-517e-42a8-a16e-83ea581b6b62",
+      "organization_name": "Gen Cap America",
+      "website_url": "https://gencapamerica.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:28:22.787Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "b0bebd95-d3a0-4d37-9dfa-ccf676331bcf",
+      "organization_name": "Gen Cap America, Inc.",
+      "website_url": "www.gencapamerica.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:26:20.213Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "gencapamerica.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Gen Cap America - Middle Market Buyouts & Recapitalizations"
+    ],
+    "criteria2": [
+      "Gen Cap America, Inc. - Middle-Market/Lower-Middle-Market"
+    ]
+  },
+  {
+    "org1": {
+      "id": "bba6cc70-cef1-48f8-b26f-402ad7325702",
+      "organization_name": "Kinzie Capital Partners",
+      "website_url": "https://www.kinziecp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:21:59.540Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "6eab7abd-559e-4607-add8-cfc6b221acf6",
+      "organization_name": "Kinzie Capital Partners LP",
+      "website_url": "www.kinziecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:01:57.939Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "kinziecp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Kinzie Capital Partners - Manufactured Products/Business Services/Consumer"
+    ],
+    "criteria2": [
+      "Kinzie Capital Partners LP - Manufactured Products",
+      "Kinzie Capital Partners LP - Business Services",
+      "Kinzie Capital Partners LP - Consumer"
+    ]
+  },
+  {
+    "org1": {
+      "id": "7eca8001-b908-4b1b-bc05-db7ff3fc99e5",
+      "organization_name": "LFM Capital",
+      "website_url": "https://www.lfmcapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T16:45:55.776Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "5d483668-66d7-43c9-a3e9-73fe17d58e50",
+      "organization_name": "LFM Capital, LLC",
+      "website_url": "www.lfmcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:20:10.403Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "lfmcapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "LFM Capital - Manufacturing & Industrial Services"
+    ],
+    "criteria2": [
+      "LFM Capital, LLC - Manufacturing"
+    ]
+  },
+  {
+    "org1": {
+      "id": "57218108-de3b-4339-bbc6-998bcf66bb11",
+      "organization_name": "Petra Capital Partners",
+      "website_url": "https://petracapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-21T03:28:24.854Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "f68f23d6-d47d-4a8a-b1e0-9808970461fd",
+      "organization_name": "Petra Capital Partners, LLC",
+      "website_url": "www.petracapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T20:57:28.027Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "petracapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Petra Capital Partners - Business Services",
+      "Petra Capital Partners - Healthcare",
+      "Petra Capital Partners - Technology-enabled Services"
+    ],
+    "criteria2": [
+      "Petra Capital Partners, LLC - Healthcare",
+      "Petra Capital Partners, LLC - B2B Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "d460383c-5a0b-44de-a1dc-ce812d21b84f",
+      "organization_name": "Resilience Capital Partners",
+      "website_url": "https://resiliencecapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-24T03:51:02.000Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "1e95b698-f8b8-475e-af13-4d9e9b12310a",
+      "organization_name": "Resilience Capital Partners LLC",
+      "website_url": "www.resiliencecapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:07:57.300Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "resiliencecapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Resilience Capital Partners - General Buyout"
+    ],
+    "criteria2": [
+      "Resilience Capital Partners LLC - General Buyout"
+    ]
+  },
+  {
+    "org1": {
+      "id": "462ff96c-67e2-4def-be8a-8b4299f7fe22",
+      "organization_name": "Seidler Kutsenda Management Company LLC",
+      "website_url": "www.sepfunds.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:47:29.337Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "d60fac0f-c536-4679-933e-f7d95d5a11fd",
+      "organization_name": "Seidler Kutsenda Management Company, LLC",
+      "website_url": "sepfunds.com/#what-we-do",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:47:35.730Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "sepfunds.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Seidler Kutsenda Management Company LLC - General Buyout"
+    ],
+    "criteria2": [
+      "Seidler Kutsenda Management Company, LLC - Consumer/Manufacturing/Healthcare/Business Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "4351ae1d-a319-4f94-86db-29cd6b139111",
+      "organization_name": "Shore Capital Partners",
+      "website_url": "https://www.shorecp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:22:05.354Z",
+      "profiles": "0",
+      "criteria_count": "5",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "89350ce0-8708-4a56-9fa3-8050dc7a9415",
+      "organization_name": "Shore Capital Partners, LLC",
+      "website_url": "www.shorecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:53:10.218Z",
+      "profiles": "0",
+      "criteria_count": "5",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "shorecp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Shore Capital Partners - Healthcare",
+      "Shore Capital Partners - Food & Beverage",
+      "Shore Capital Partners - Business Services",
+      "Shore Capital Partners - Industrials",
+      "Shore Capital Partners - Real Estate"
+    ],
+    "criteria2": [
+      "Shore Capital Partners, LLC - Healthcare",
+      "Shore Capital Partners, LLC - Food & Beverage",
+      "Shore Capital Partners, LLC - Business Services",
+      "Shore Capital Partners, LLC - Industrials",
+      "Shore Capital Partners, LLC - Real Estate"
+    ]
+  },
+  {
+    "org1": {
+      "id": "ad2dfc6c-a4d1-4c06-8dfa-015a4afb7122",
+      "organization_name": "Stonehenge Partners",
+      "website_url": "https://stonehengepartners.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-22T17:48:03.182Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "36eab266-78d9-40b7-9d36-54095be5517d",
+      "organization_name": "Stonehenge Partners, Inc.",
+      "website_url": "www.stonehengepartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:25:20.250Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "stonehengepartners.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Stonehenge Partners - Healthcare",
+      "Stonehenge Partners - Manufacturing",
+      "Stonehenge Partners - Distribution",
+      "Stonehenge Partners - Business Services"
+    ],
+    "criteria2": [
+      "Stonehenge Partners, Inc. - Manufacturing/Distribution/Healthcare/Business Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "9c3e1246-6c89-4084-9ec0-35165376fd1e",
+      "organization_name": "Svoboda Capital Partners",
+      "website_url": "https://svoco.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:22:01.485Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "c917c000-2a48-4478-9754-4e31bb8937cf",
+      "organization_name": "Svoboda Capital Partners LLC",
+      "website_url": "www.svoco.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:34:08.702Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "svoco.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Svoboda Capital Partners - Business Services"
+    ],
+    "criteria2": [
+      "Svoboda Capital Partners LLC - General Buyout"
+    ]
+  },
+  {
+    "org1": {
+      "id": "767b0b40-1e59-4051-afd9-31c83850ced7",
+      "organization_name": "Whistler Capital Partners",
+      "website_url": "https://whistlercapital.com/",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-09-20T16:45:59.466Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "468b11ae-3aec-4854-857f-7ca92c8edcb8",
+      "organization_name": "Whistler Capital Partners LLC",
+      "website_url": "www.whistlercapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:50:51.031Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match & Same Domain",
+    "domain": "whistlercapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Whistler Capital Partners - Healthcare & Tech-Enabled Services"
+    ],
+    "criteria2": [
+      "Whistler Capital Partners LLC - Healthcare Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "992b1226-056d-4df8-8ae9-4469dbad2405",
+      "organization_name": "Woodside Capital Partners",
+      "website_url": null,
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:59:23.819Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "07e5e1a5-409d-4438-841a-e42ed5ec604e",
+      "organization_name": "Woodside Capital Partners, LLC",
+      "website_url": "woodsidecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:59:34.448Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Exact Normalized Name Match",
+    "domain": "woodsidecp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Woodside Capital Partners - Commercial/Industrial"
+    ],
+    "criteria2": [
+      "Woodside Capital Partners, LLC - Small Balance Commercial Real Estate"
+    ]
+  }
+]

@@ -1,0 +1,626 @@
+[
+  {
+    "brandedName": "1315 Capital",
+    "primaryCriteria": {
+      "id": "c7d274ad-0f30-4ee8-9e30-11ffe29e6cf0",
+      "name": "1315 Capital - Healthcare Growth Equity",
+      "created": "2026-10-17T03:15:22.048Z"
+    },
+    "duplicateCriteria": {
+      "id": "b3a5c6f9-8c1e-44fe-abe5-d728f6a7f36c",
+      "name": "1315 Capital, LLC - Healthcare Growth Equity",
+      "created": "2026-10-20T19:46:52.168Z"
+    }
+  },
+  {
+    "brandedName": "154 Partners Investment Management",
+    "primaryCriteria": {
+      "id": "9baa07d4-ef79-4904-835e-7bc171ca8ed7",
+      "name": "154 Partners Investment Management - Sports & Live Events",
+      "created": "2026-10-17T03:15:34.627Z"
+    },
+    "duplicateCriteria": {
+      "id": "fa33976e-14d6-43c0-99bf-7e937cfb04fd",
+      "name": "154 Partners Investment Management LLC - Sports & Live Events",
+      "created": "2026-10-20T19:47:16.632Z"
+    }
+  },
+  {
+    "brandedName": "154 Partners Investment Management",
+    "primaryCriteria": {
+      "id": "b2f00310-50c2-4ac4-b8dd-9b31e5c2afe7",
+      "name": "154 Partners Investment Management - Services",
+      "created": "2026-10-17T03:15:35.724Z"
+    },
+    "duplicateCriteria": {
+      "id": "e100b605-0bde-4c1c-a144-d57ef18602ea",
+      "name": "154 Partners Investment Management LLC - Services",
+      "created": "2026-10-20T19:47:17.417Z"
+    }
+  },
+  {
+    "brandedName": "3 Boomerang Capital",
+    "primaryCriteria": {
+      "id": "6f6c7899-6aa5-441c-803f-edaf028f6262",
+      "name": "3 Boomerang Capital - Healthcare",
+      "created": "2026-10-17T03:16:23.304Z"
+    },
+    "duplicateCriteria": {
+      "id": "fcab723f-71a6-4823-9c43-af3d41594479",
+      "name": "3 Boomerang Capital, LP - Healthcare Focus",
+      "created": "2026-10-20T19:49:31.722Z"
+    }
+  },
+  {
+    "brandedName": "424 Capital",
+    "primaryCriteria": {
+      "id": "d87337e5-baab-4b88-bdd6-9c44678f5de8",
+      "name": "424 Capital - Healthcare and Energy Transition",
+      "created": "2026-10-17T03:16:31.494Z"
+    },
+    "duplicateCriteria": {
+      "id": "1afebfa7-951f-463e-a438-60cc2e0d0fde",
+      "name": "424 Capital, LLC - Healthcare and Energy Transition",
+      "created": "2026-10-20T19:51:02.911Z"
+    }
+  },
+  {
+    "brandedName": "4x4 Capital",
+    "primaryCriteria": {
+      "id": "bf2f973c-d2e6-4cf2-bdc2-5d715cc45075",
+      "name": "4x4 Capital - Consumer Goods/Services",
+      "created": "2026-10-17T03:16:38.259Z"
+    },
+    "duplicateCriteria": {
+      "id": "dbf7e02b-92bd-4e85-99c2-8d7891523c30",
+      "name": "4x4 Capital, LLC - Consumer Goods/Services",
+      "created": "2026-10-20T19:51:16.580Z"
+    }
+  },
+  {
+    "brandedName": "Accel-KKR",
+    "primaryCriteria": {
+      "id": "324d4096-1fdc-4e13-ba59-cc6a4e77a155",
+      "name": "Accel-KKR - Software and Tech-Enabled Services",
+      "created": "2026-10-18T22:37:02.200Z"
+    },
+    "duplicateCriteria": {
+      "id": "f018cb1e-8b9e-4b4b-96e7-cd08f79ab7b7",
+      "name": "Accel-KKR LLC - Software & Tech-Enabled Services",
+      "created": "2026-10-20T19:56:36.364Z"
+    }
+  },
+  {
+    "brandedName": "Acceleration Resources",
+    "primaryCriteria": {
+      "id": "26a9c12b-6492-4dba-9d94-60d897a183e1",
+      "name": "Acceleration Resources - Lower Middle Market Upstream Energy",
+      "created": "2026-10-18T22:37:09.792Z"
+    },
+    "duplicateCriteria": {
+      "id": "b53accb2-ae0a-4c8b-9ada-b7facb7b5880",
+      "name": "Acceleration Resources, LLC - Lower/Middle Market Upstream Energy",
+      "created": "2026-10-20T19:56:44.152Z"
+    }
+  },
+  {
+    "brandedName": "Align Capital Partners",
+    "primaryCriteria": {
+      "id": "b94c3251-66bd-4dff-bd1a-48ac518e41f1",
+      "name": "Align Capital Partners - Professional Business Services",
+      "created": "2026-09-20T03:40:12.637Z"
+    },
+    "duplicateCriteria": {
+      "id": "d4678ed2-1d6b-4a1d-a34b-65dd9cf71909",
+      "name": "Align Capital Partners, LP - Professional Business Services",
+      "created": "2026-10-20T20:19:45.034Z"
+    }
+  },
+  {
+    "brandedName": "Align Capital Partners",
+    "primaryCriteria": {
+      "id": "32073e6e-f3f3-4e3d-9509-799ec049bc91",
+      "name": "Align Capital Partners - Tech-Enabled Services",
+      "created": "2026-09-20T03:40:13.737Z"
+    },
+    "duplicateCriteria": {
+      "id": "fe5d5b92-752a-45b8-b9c9-f0f9f2141444",
+      "name": "Align Capital Partners, LP - Tech-Enabled Services",
+      "created": "2026-10-20T20:19:45.914Z"
+    }
+  },
+  {
+    "brandedName": "Align Capital Partners",
+    "primaryCriteria": {
+      "id": "348ade94-be44-4804-a148-2eabef8e1fee",
+      "name": "Align Capital Partners - Industrial Services",
+      "created": "2026-09-20T03:40:14.650Z"
+    },
+    "duplicateCriteria": {
+      "id": "da519070-3aee-41e8-bb71-738ae771f2f8",
+      "name": "Align Capital Partners, LP - Industrial Services",
+      "created": "2026-10-20T20:19:46.598Z"
+    }
+  },
+  {
+    "brandedName": "Align Capital Partners",
+    "primaryCriteria": {
+      "id": "4b5a030f-9c75-454f-9c71-2fdc85fc9286",
+      "name": "Align Capital Partners - Specialty Manufacturing and Distribution",
+      "created": "2026-09-20T03:40:15.171Z"
+    },
+    "duplicateCriteria": {
+      "id": "f8e09fbb-bbe8-409d-ac46-79c8e8a1f6f3",
+      "name": "Align Capital Partners, LP - Specialty Manufacturing & Distribution",
+      "created": "2026-10-20T20:19:47.339Z"
+    }
+  },
+  {
+    "brandedName": "Blue Point Capital Partners",
+    "primaryCriteria": {
+      "id": "f75455ed-1ef6-48ef-94e6-98399a23bbb0",
+      "name": "Blue Point Capital Partners - Industrial",
+      "created": "2026-09-22T17:41:34.384Z"
+    },
+    "duplicateCriteria": {
+      "id": "763c6b8e-7777-4340-8639-4531d452fdc6",
+      "name": "Blue Point Capital Partners, LLC - Industrial/Business Services",
+      "created": "2026-10-21T03:06:22.606Z"
+    }
+  },
+  {
+    "brandedName": "Brixey & Meyer Capital",
+    "primaryCriteria": {
+      "id": "2cc77231-01a8-48aa-a4d4-fccd9ad91c50",
+      "name": "Brixey & Meyer Capital - Lower Middle Market",
+      "created": "2026-10-12T03:08:25.462Z"
+    },
+    "duplicateCriteria": {
+      "id": "3bcb8428-0958-4c71-ac78-dbbafdbfab08",
+      "name": "Brixey & Meyer Capital LLC - Lower Middle Market Healthcare and Services",
+      "created": "2026-10-21T03:19:56.081Z"
+    }
+  },
+  {
+    "brandedName": "Council capital",
+    "primaryCriteria": {
+      "id": "a0b68c48-8b55-4603-91ed-436eba6b4d5e",
+      "name": "Council capital - Healthcare",
+      "created": "2026-09-21T03:46:47.923Z"
+    },
+    "duplicateCriteria": {
+      "id": "b8d3ef6d-d3e4-45fc-920c-c8cbba00f430",
+      "name": "Council Capital - Healthcare Services and Technology",
+      "created": "2026-10-22T03:40:35.900Z"
+    }
+  },
+  {
+    "brandedName": "Kinzie Capital Partners",
+    "primaryCriteria": {
+      "id": "6667b3e9-50a5-488d-8ab4-31f5f28f4d0a",
+      "name": "Kinzie Capital Partners LP - Manufactured Products",
+      "created": "2026-10-23T05:01:58.315Z"
+    },
+    "duplicateCriteria": {
+      "id": "29375a22-9e0f-4655-81f6-555ff8112c57",
+      "name": "Kinzie Capital Partners - Manufactured Products/Business Services/Consumer",
+      "created": "2026-10-12T02:22:00.266Z"
+    }
+  },
+  {
+    "brandedName": "LFM Capital",
+    "primaryCriteria": {
+      "id": "4993fa32-4b40-4a3a-bc78-99d107167424",
+      "name": "LFM Capital - Manufacturing & Industrial Services",
+      "created": "2026-09-20T16:45:57.682Z"
+    },
+    "duplicateCriteria": {
+      "id": "0c43386c-cf93-4a5d-bfb1-f48d894c4092",
+      "name": "LFM Capital, LLC - Manufacturing",
+      "created": "2026-10-23T05:20:11.493Z"
+    }
+  },
+  {
+    "brandedName": "Petra Capital Partners",
+    "primaryCriteria": {
+      "id": "b544dd43-a1da-459a-a36b-47c05df990c2",
+      "name": "Petra Capital Partners - Healthcare",
+      "created": "2026-09-22T18:06:20.310Z"
+    },
+    "duplicateCriteria": {
+      "id": "976f1238-d2f2-4750-bd37-862d6567ddff",
+      "name": "Petra Capital Partners, LLC - Healthcare",
+      "created": "2026-10-23T20:57:28.556Z"
+    }
+  },
+  {
+    "brandedName": "Resilience Capital Partners",
+    "primaryCriteria": {
+      "id": "efd6d119-5677-488f-83c5-64892ba5c17d",
+      "name": "Resilience Capital Partners - General Buyout",
+      "created": "2026-07-02T16:52:54.460Z"
+    },
+    "duplicateCriteria": {
+      "id": "9f77fff8-eebd-4903-a6b5-1b68c070d08d",
+      "name": "Resilience Capital Partners LLC - General Buyout",
+      "created": "2026-10-24T05:07:57.811Z"
+    }
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryCriteria": {
+      "id": "fee8f017-667a-4e4d-9b90-d9c8514453d9",
+      "name": "Shore Capital Partners - Healthcare",
+      "created": "2026-10-12T02:22:06.909Z"
+    },
+    "duplicateCriteria": {
+      "id": "50d85012-55bc-41f6-96b8-ffac85f17680",
+      "name": "Shore Capital Partners, LLC - Healthcare",
+      "created": "2026-10-24T05:53:11.371Z"
+    }
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryCriteria": {
+      "id": "6d364204-cb1d-4c17-92fa-5cc273d7115c",
+      "name": "Shore Capital Partners - Food & Beverage",
+      "created": "2026-10-12T02:22:07.495Z"
+    },
+    "duplicateCriteria": {
+      "id": "d14ed66e-d309-49c7-af3b-435e0beffc12",
+      "name": "Shore Capital Partners, LLC - Food & Beverage",
+      "created": "2026-10-24T05:53:11.933Z"
+    }
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryCriteria": {
+      "id": "926d3843-0128-4817-a9f3-ae17a0a84b08",
+      "name": "Shore Capital Partners - Business Services",
+      "created": "2026-10-12T02:22:08.289Z"
+    },
+    "duplicateCriteria": {
+      "id": "b5353098-06a5-4e2c-9626-58680f0ae216",
+      "name": "Shore Capital Partners, LLC - Business Services",
+      "created": "2026-10-24T05:53:12.550Z"
+    }
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryCriteria": {
+      "id": "7c8ea4fc-f8a7-4840-a824-7b642183d819",
+      "name": "Shore Capital Partners - Industrials",
+      "created": "2026-10-12T02:22:08.739Z"
+    },
+    "duplicateCriteria": {
+      "id": "3f008a46-2606-4891-9b99-84840f636e30",
+      "name": "Shore Capital Partners, LLC - Industrials",
+      "created": "2026-10-24T05:53:13.125Z"
+    }
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryCriteria": {
+      "id": "d271ece9-8cb7-4faf-84c1-501b4fe65688",
+      "name": "Shore Capital Partners - Real Estate",
+      "created": "2026-10-12T02:22:09.188Z"
+    },
+    "duplicateCriteria": {
+      "id": "aff43300-7d0f-4b96-9b1e-c6037957ffdc",
+      "name": "Shore Capital Partners, LLC - Real Estate",
+      "created": "2026-10-24T05:53:13.702Z"
+    }
+  },
+  {
+    "brandedName": "Stonehenge Partners",
+    "primaryCriteria": {
+      "id": "971772a1-78f0-45d5-b202-c1d829c3b4ea",
+      "name": "Stonehenge Partners - Manufacturing",
+      "created": "2026-09-22T17:48:05.019Z"
+    },
+    "duplicateCriteria": {
+      "id": "55b0b388-1e13-4ab3-8f4c-a21311718e2e",
+      "name": "Stonehenge Partners, Inc. - Manufacturing/Distribution/Healthcare/Business Services",
+      "created": "2026-10-24T06:25:21.737Z"
+    }
+  },
+  {
+    "brandedName": "Access Holdings",
+    "primaryCriteria": {
+      "id": "3038f5b8-ee54-417b-9259-b8c9592e621d",
+      "name": "Access Holdings - Lower-Middle Market",
+      "created": "2026-10-18T22:37:24.781Z"
+    },
+    "duplicateCriteria": {
+      "id": "1328a63a-0859-4c5e-b8f0-0a96392e8c0d",
+      "name": "Access Holdings Management Company LLC - Lower-Middle Market",
+      "created": "2026-10-20T19:57:06.790Z"
+    }
+  },
+  {
+    "brandedName": "Affinius Capital",
+    "primaryCriteria": {
+      "id": "c97ec615-5440-45bb-b845-b1b7ebf438ee",
+      "name": "Affinius Capital - Real Estate Investments",
+      "created": "2026-10-20T20:13:41.266Z"
+    },
+    "duplicateCriteria": {
+      "id": "fab682fa-8588-45f2-b849-49aab463abec",
+      "name": "Affinius Capital Management LLC - Real Estate Investments",
+      "created": "2026-10-20T20:13:52.718Z"
+    }
+  },
+  {
+    "brandedName": "BayPine",
+    "primaryCriteria": {
+      "id": "3826a38e-9a0f-4ef6-899a-138b84e163a2",
+      "name": "Baypine Holdings LP - Business Services",
+      "created": "2026-10-21T02:42:41.457Z"
+    },
+    "duplicateCriteria": {
+      "id": "3cf14284-9ba2-4674-80a2-c9fd0f8f2ad5",
+      "name": "BayPine LP - Healthcare/Industrial/Business Services",
+      "created": "2026-10-21T02:42:48.341Z"
+    }
+  },
+  {
+    "brandedName": "Continuim Equity Partners",
+    "primaryCriteria": {
+      "id": "462fabe2-d038-4480-a8f4-762520c1f0fd",
+      "name": "Continuim Equity Partners - Manufacturing & Industrial",
+      "created": "2026-09-20T01:53:59.996Z"
+    },
+    "duplicateCriteria": {
+      "id": "dd05b714-566b-4480-9881-9597cf82f55c",
+      "name": "Continuim Equity Management, LP - Manufacturing and Industrial",
+      "created": "2026-10-22T03:31:29.342Z"
+    }
+  },
+  {
+    "brandedName": "Elevar Equity",
+    "primaryCriteria": {
+      "id": "f342a5a6-c5c3-4a86-9030-919d97d07eb8",
+      "name": "Elevar Equity Management Ltd. - Emerging Markets Focus",
+      "created": "2026-10-23T01:55:25.405Z"
+    },
+    "duplicateCriteria": {
+      "id": "9bced2c6-27b6-437a-84cd-cd414191fac5",
+      "name": "Elevar Equity, LLC - Emerging Markets Focus",
+      "created": "2026-10-23T01:55:42.852Z"
+    }
+  },
+  {
+    "brandedName": "Enhanced Healthcare Partners",
+    "primaryCriteria": {
+      "id": "e0cb209e-2090-4efc-80a4-97b216145ec8",
+      "name": "Enhanced Healthcare Management Company, LLC - Healthcare",
+      "created": "2026-10-23T02:13:32.859Z"
+    },
+    "duplicateCriteria": {
+      "id": "8351c42f-d3c0-442d-a9dc-f9513ce08648",
+      "name": "Enhanced Healthcare Partners - Healthcare",
+      "created": "2026-10-23T02:13:40.761Z"
+    }
+  },
+  {
+    "brandedName": "Forest Road",
+    "primaryCriteria": {
+      "id": "f8c098a4-c5a1-449a-bf2b-9a8aef1b671f",
+      "name": "Forest Road Asset Management LLC - General Buyout",
+      "created": "2026-10-23T02:44:36.804Z"
+    },
+    "duplicateCriteria": {
+      "id": "743a9d90-c4b0-4e6d-b2fb-2ea5fafe19bd",
+      "name": "Forest Road Company, LLC - General Buyout",
+      "created": "2026-10-23T02:44:44.205Z"
+    }
+  },
+  {
+    "brandedName": "GCP Capital Partners",
+    "primaryCriteria": {
+      "id": "9527711b-6723-4469-81ab-df3d4450ca0d",
+      "name": "GCP Capital Partners Holdings LLC - Business Services and Financial Services/Technology",
+      "created": "2026-10-23T03:25:09.739Z"
+    },
+    "duplicateCriteria": {
+      "id": "44777cc8-ce38-447e-bdad-7a97b27171c1",
+      "name": "GCP Capital Partners LLC - Business Services and Financial Services",
+      "created": "2026-10-23T03:25:17.359Z"
+    }
+  },
+  {
+    "brandedName": "Genstar Capital",
+    "primaryCriteria": {
+      "id": "26c652ec-4379-40be-8b66-5647e77816b4",
+      "name": "Genstar Capital Management, LLC - Healthcare",
+      "created": "2026-10-23T03:28:56.381Z"
+    },
+    "duplicateCriteria": {
+      "id": "61762ecd-dedd-4ec4-b71a-a79b8449a1b2",
+      "name": "Genstar Capital, LLC - Healthcare Services",
+      "created": "2026-10-23T03:29:18.326Z"
+    }
+  },
+  {
+    "brandedName": "Genstar Capital",
+    "primaryCriteria": {
+      "id": "e7649fed-3240-4db4-8782-e47c486e9362",
+      "name": "Genstar Capital Management, LLC - Financial Services",
+      "created": "2026-10-23T03:28:55.673Z"
+    },
+    "duplicateCriteria": {
+      "id": "c5bc1fbe-672b-4ab5-ac03-b13418645637",
+      "name": "Genstar Capital, LLC - Financial Services",
+      "created": "2026-10-23T03:29:19.394Z"
+    }
+  },
+  {
+    "brandedName": "Genstar Capital",
+    "primaryCriteria": {
+      "id": "b3b9b03e-c6ad-4806-afbd-85667b2b62f6",
+      "name": "Genstar Capital Management, LLC - Industrials",
+      "created": "2026-10-23T03:28:57.035Z"
+    },
+    "duplicateCriteria": {
+      "id": "37682bfa-ee04-4131-b705-b3876fc5d0b1",
+      "name": "Genstar Capital, LLC - Industrials",
+      "created": "2026-10-23T03:29:20.265Z"
+    }
+  },
+  {
+    "brandedName": "Genstar Capital",
+    "primaryCriteria": {
+      "id": "185ccc5d-ae4c-48e1-aab3-f990f19606cd",
+      "name": "Genstar Capital Management, LLC - Software",
+      "created": "2026-10-23T03:28:57.543Z"
+    },
+    "duplicateCriteria": {
+      "id": "01babb69-64a4-4ba5-bda3-6c60577a8c61",
+      "name": "Genstar Capital, LLC - Software",
+      "created": "2026-10-23T03:29:21.113Z"
+    }
+  },
+  {
+    "brandedName": "GPI Capital",
+    "primaryCriteria": {
+      "id": "e2a98350-c206-4e7b-9498-71717b7926a8",
+      "name": "GPI Capital Limited - Technology/Consumer/Industrial",
+      "created": "2026-10-23T03:39:47.543Z"
+    },
+    "duplicateCriteria": {
+      "id": "7f9bbd28-bdaf-4fb8-b05d-2b1fcb10e195",
+      "name": "GPI Capital, L.P. - Technology/Consumer/Industrial",
+      "created": "2026-10-23T03:39:53.672Z"
+    }
+  },
+  {
+    "brandedName": "Invictus Capital Partners",
+    "primaryCriteria": {
+      "id": "1c22a4a7-94e0-429d-8d22-640fdad0bf8f",
+      "name": "Invictus Capital Management, LP - Single-Family Residential Credit",
+      "created": "2026-10-23T04:40:29.123Z"
+    },
+    "duplicateCriteria": {
+      "id": "6f2873ab-1f86-4039-9498-4b121f17f980",
+      "name": "Invictus Capital Partners, Lp - Single-Family Residential Credit",
+      "created": "2026-10-23T04:40:35.499Z"
+    }
+  },
+  {
+    "brandedName": "Lime Rock Partners",
+    "primaryCriteria": {
+      "id": "6667d9f5-c6d8-4ec9-bfc2-e352dabe542d",
+      "name": "Lime Rock Management LP - Energy Sector",
+      "created": "2026-10-23T05:23:21.073Z"
+    },
+    "duplicateCriteria": {
+      "id": "bd737ce8-c3b3-4404-96c2-4bc3a776eea1",
+      "name": "Lime Rock Partners, LLC - Energy Sector Investments",
+      "created": "2026-10-23T05:23:34.656Z"
+    }
+  },
+  {
+    "brandedName": "New Harbor Capital",
+    "primaryCriteria": {
+      "id": "6389a4d5-275c-4756-9ae9-f5b4aff32ae1",
+      "name": "New Harbor Capital - Healthcare Education",
+      "created": "2026-10-12T02:21:55.077Z"
+    },
+    "duplicateCriteria": {
+      "id": "fc989c92-f8ed-4fdf-b4ce-846b0f962f7b",
+      "name": "New Harbor Capital Management, LP - Healthcare",
+      "created": "2026-10-23T19:55:48.058Z"
+    }
+  },
+  {
+    "brandedName": "New Harbor Capital",
+    "primaryCriteria": {
+      "id": "6389a4d5-275c-4756-9ae9-f5b4aff32ae1",
+      "name": "New Harbor Capital - Healthcare Education",
+      "created": "2026-10-12T02:21:55.077Z"
+    },
+    "duplicateCriteria": {
+      "id": "a82abf67-26c1-4318-baca-73284aa73b84",
+      "name": "New Harbor Capital Management, LP - Education",
+      "created": "2026-10-23T19:55:48.781Z"
+    }
+  },
+  {
+    "brandedName": "Primus Capital",
+    "primaryCriteria": {
+      "id": "720e1765-f201-4a69-ad13-acf03166feb2",
+      "name": "Primus Capital - Healthcare",
+      "created": "2026-08-22T04:54:10.737Z"
+    },
+    "duplicateCriteria": {
+      "id": "8e9e0ced-4f90-411c-8858-a61c2f56b65b",
+      "name": "Primus Capital Partners, Inc. - Healthcare/Software/Technology",
+      "created": "2026-10-23T21:14:43.700Z"
+    }
+  },
+  {
+    "brandedName": "RCP",
+    "primaryCriteria": {
+      "id": "8c8da950-5ca2-4748-91f8-2bb55ce71579",
+      "name": "RCP Advisors 2, LLC - Small Buyouts",
+      "created": "2026-10-24T04:59:52.360Z"
+    },
+    "duplicateCriteria": {
+      "id": "cc001857-f709-42bd-93bf-29ebd0eac7dc",
+      "name": "RCP Advisors, LLC - Small Buyouts",
+      "created": "2026-10-24T04:59:58.584Z"
+    }
+  },
+  {
+    "brandedName": "Soleus Capital",
+    "primaryCriteria": {
+      "id": "7c09c735-b606-459a-991b-263d9334b458",
+      "name": "Soleus Capital LLC - Healthcare Investment",
+      "created": "2026-10-24T06:07:30.860Z"
+    },
+    "duplicateCriteria": {
+      "id": "374ccd5d-8f4e-42e6-b759-15540e46b13d",
+      "name": "Soleus Capital Management, L.P. - Healthcare Investment",
+      "created": "2026-10-24T06:07:37.480Z"
+    }
+  },
+  {
+    "brandedName": "TCG Capital Management",
+    "primaryCriteria": {
+      "id": "72462e6f-f5b5-451f-b7bb-1a65a6fb9ad0",
+      "name": "TCG Capital Management, L.P. - Sports/Media/Technology",
+      "created": "2026-10-24T06:41:31.027Z"
+    },
+    "duplicateCriteria": {
+      "id": "31f04afd-fad9-4bb6-bad1-1244ed5211b4",
+      "name": "TCG Capital Management, LP - Sports/Media/Technology",
+      "created": "2026-10-24T06:41:37.537Z"
+    }
+  },
+  {
+    "brandedName": "Tecum Capital",
+    "primaryCriteria": {
+      "id": "db6d21d9-34a8-40b3-a244-8e00a32ef3e0",
+      "name": "Tecum Capital - Junior Capital",
+      "created": "2026-08-29T03:38:00.416Z"
+    },
+    "duplicateCriteria": {
+      "id": "ab70876a-3ae5-448d-8a73-b042ea7bbf69",
+      "name": "Tecum Capital Management, Inc. - Junior Capital",
+      "created": "2026-10-24T06:43:32.599Z"
+    }
+  },
+  {
+    "brandedName": "Tecum Capital",
+    "primaryCriteria": {
+      "id": "d5c57745-5b99-4081-aee1-5ea9b408163d",
+      "name": "Tecum Capital - Control Equity",
+      "created": "2026-08-29T03:38:01.197Z"
+    },
+    "duplicateCriteria": {
+      "id": "0adccaaa-bb9c-4ba1-aea9-931b25f196be",
+      "name": "Tecum Capital Management, Inc. - Control Equity",
+      "created": "2026-10-24T06:43:33.236Z"
+    }
+  }
+]

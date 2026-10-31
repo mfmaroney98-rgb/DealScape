@@ -1,0 +1,6078 @@
+[
+  {
+    "clusterId": 1,
+    "count": 7,
+    "orgs": [
+      {
+        "id": "b8e09075-875f-4d0e-be6c-0ae570b6942e",
+        "name": "Blackstone Alternative Credit Advisors LP",
+        "website": "www.blackstone.com/our-businesses/credit/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:00:17.646Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "531cd6e2-8f46-4a5b-a6cf-22c12aa2a307",
+        "name": "Blackstone Energy Transition Partners",
+        "website": "www.blackstone.com/our-businesses/blackstone-energy-transition-partners",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:00:30.019Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "632d6a92-81c6-4d3b-94b4-7f423fd4d03b",
+        "name": "Blackstone Growth Advisors L.L.C.",
+        "website": "www.blackstone.com/our-businesses/blackstone-growth-bxg/",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T03:00:39.972Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ec5cda4d-f4f8-45c6-9988-4d99718e9aec",
+        "name": "Blackstone Life Sciences",
+        "website": "www.blackstone.com/our-businesses/life-sciences/",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T03:00:50.563Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "3ef1ef24-dfe0-4ba7-b3d6-d455bfe83c27",
+        "name": "Blackstone Real Estate Advisors L.P.",
+        "website": "www.blackstone.com/our-businesses/real-estate",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:01:15.411Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "af4e224e-9e2a-436e-b6c1-557f16142a45",
+        "name": "Strategic Partners Fund Solutions Advisors L.P.",
+        "website": "www.blackstone.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:27:24.022Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6e495a49-e8b3-4910-b10b-a1f4f00100c2",
+        "name": "The Blackstone Group",
+        "website": "www.blackstone.com/our-businesses/aam/private-equity",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:49:40.154Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 2,
+    "count": 6,
+    "orgs": [
+      {
+        "id": "d4f050d1-4e7a-4eb7-b2e1-b89593f07baa",
+        "name": "Morgan Stanley Energy Partners",
+        "website": "www.morganstanley.com/im/en-us/individual-investor/about-us/people-and-teams/investment-teams/energy-partners-team.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:40:57.414Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2f2d8a71-0079-4d33-b54d-ed0ff76f3c52",
+        "name": "Morgan Stanley Expansion Capital",
+        "website": "www.morganstanley.com/im/en-us/individual-investor/about-us/people-and-teams/investment-teams/expansion-capital-team.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:41:24.843Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "de5fe770-41b2-44c4-8d9f-66331fd31074",
+        "name": "Morgan Stanley Infrastructure Inc.",
+        "website": "www.morganstanley.com/im/en-us/institutional-investor/strategies/real-assets/private-infrastructure.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:41:33.016Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6194d7a8-cef8-4f58-9249-8a085ce13093",
+        "name": "Morgan Stanley Private Equity",
+        "website": "www.morganstanley.com/im/en-us/capital-seeker/capabilities/private-equity.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:43:20.414Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4dca1526-ef0a-4ce4-9434-510b95537e41",
+        "name": "Morgan Stanley Private Equity Asia, Inc.",
+        "website": "www.morganstanley.com/im/en-us/individual-investor/about-us/people-and-teams/investment-teams/private-equity-asia-team.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:43:45.474Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "174820ad-e96e-452d-8713-e8258e13bb87",
+        "name": "Morgan Stanley Real Estate Fund, Inc.",
+        "website": "www.morganstanley.com/im/en-us/individual-investor/about-us/investment-teams/real-assets/private-real-estate-investing-team",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:44:18.404Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 3,
+    "count": 4,
+    "orgs": [
+      {
+        "id": "7dbfab89-b31a-4868-aa55-da6fb20c2643",
+        "name": "Granite Capital Partners, L.L.C.",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:42:03.947Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "aa5b7488-3652-459b-abd9-112872e82145",
+        "name": "Granite Capital Partners, LLC",
+        "website": "www.granitecappartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:42:35.457Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dab3018e-23d1-467d-8112-8b765d8165dd",
+        "name": "Granite Equity Partners LLC",
+        "website": "www.granite.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:42:53.263Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4a903464-f666-4a6a-a751-e9cdb3206ce4",
+        "name": "Granite Partners",
+        "website": "www.granitepartners.ca/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:43:04.841Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 4,
+    "count": 4,
+    "orgs": [
+      {
+        "id": "cb50869f-c220-47a5-813f-0755cbabfa14",
+        "name": "Resolute Administration, Inc.",
+        "website": "resolutecap.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:08:50.570Z",
+        "criteria_count": 6,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "89a45c2a-5cdd-420a-b1d0-7e714bd18ef8",
+        "name": "Resolute Capital Partners",
+        "website": "https://resolutecap.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-21T03:28:20.148Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "459a77db-25bc-49cf-acde-372672db9cfb",
+        "name": "Resolute Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:09:02.674Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "cd948e82-900f-400a-b433-2cb2572bbbfb",
+        "name": "Resolute Ventures, Inc.",
+        "website": "www.resolute.vc",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-24T05:09:08.673Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 5,
+    "count": 4,
+    "orgs": [
+      {
+        "id": "6a7eb5fe-5e6a-491a-9b25-49052a8b2536",
+        "name": "TPG Capital Advisors LLC",
+        "website": "www.tpg.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:58:16.571Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "cfa86b3e-daff-4436-ac8a-75a83aba3b69",
+        "name": "TPG Capital, L.P.",
+        "website": "www.tpg.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:58:31.167Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9a979bbc-84d5-49ac-b80f-f7d8aa7da14b",
+        "name": "TPG Growth, LLC",
+        "website": "www.tpg.com/platforms/growth/tpg-growth",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:58:48.142Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c763bb10-1426-46a0-b499-2edf91fcdda1",
+        "name": "TPG Real Estate",
+        "website": "www.tpg.com/platforms/real-estate/tpg-real-estate-partners/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:59:18.887Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 6,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "b27622e7-b8be-4fdf-b52b-57348394cc76",
+        "name": "Agility Capital, LLC",
+        "website": "www.agilitycap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-20T20:15:23.161Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e19464ac-6450-450d-b464-1530315c56ed",
+        "name": "Agility Equity Partners",
+        "website": "https://www.agilityep.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T03:33:16.006Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "884f34d0-ebf5-4554-84d7-5e8dcdf696f4",
+        "name": "Agility Equity Partners, LLC",
+        "website": "www.agilityep.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:15:29.662Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 7,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "a629bf3c-ee0e-45f8-8662-2d41526cd763",
+        "name": "Blueline Capital Management, LLC",
+        "website": "www.bluelinelp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:08:27.889Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7fab58c7-ff4e-4708-a135-eca4125e09a4",
+        "name": "BlueLine Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:08:33.350Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "918ba90e-9139-4bb8-83bf-2721a8ad4113",
+        "name": "Blueline Ventures",
+        "website": "www.blueline-ventures.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:08:43.960Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 8,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "3f4715ec-ae24-44a3-9205-8fed1fddff84",
+        "name": "Crow Holdings",
+        "website": "www.crowholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:49:55.667Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "12b065ca-7d79-4c11-b134-6ccd3c27b21a",
+        "name": "Crow Holdings Capital Partners, L.L.C.",
+        "website": "www.crowholdings.com/investment-management",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:50:16.579Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "544cfcf0-fbd9-4fcf-91c7-f48b26d2cae1",
+        "name": "Crow Holdings Capital",
+        "website": "crowholdingscapital-ip.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:50:04.557Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 9,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "2539deec-1e11-4af0-9c93-ff95541ffff0",
+        "name": "Evolution Capital",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:23:09.337Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9e95764b-6d58-46ca-afeb-03ab6b915819",
+        "name": "Evolution Capital Partners, LLC",
+        "website": "evolutioncapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:23:20.732Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f0b57a65-c903-4b57-b584-5da53d1ac451",
+        "name": "Evolution Equity Partners",
+        "website": "www.evolutionequity.com",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T02:23:35.702Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 10,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "bb59309d-7357-4206-8a01-b02af09feb2c",
+        "name": "Falcon Capital, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:28:03.759Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6863ff90-27b6-4eb7-aa05-ddd3d7285741",
+        "name": "Falcon Investment Advisors, LLC",
+        "website": "www.falconinvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:28:11.517Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1be27cbe-d2be-40ed-8daf-3e3f19bda0e0",
+        "name": "Falcon Partners, LLC",
+        "website": "falconpartners.com/",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T02:28:18.515Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 11,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "9756c3c9-7ba5-413e-9606-647072837ffb",
+        "name": "Fulcrum Capital Holdings LLC",
+        "website": "fulcruminv.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:52:38.830Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b0552f65-bd9a-440c-9f59-96ed7ad5d625",
+        "name": "Fulcrum Capital Partners Inc.",
+        "website": "fulcrumcapital.ca",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:52:45.803Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "639fd4c9-cace-4658-b3a0-d43c07ea4992",
+        "name": "Fulcrum Equity Partners, Inc.",
+        "website": "www.fulcrumep.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:52:58.382Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 12,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "a16360ee-5567-4afb-9976-fbc70cc0b917",
+        "name": "Generation Equity Capital, LLC",
+        "website": "www.generationequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:26:53.712Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e25425e9-2374-452d-aaca-e22059f25756",
+        "name": "Generation Equity Investors, LLC",
+        "website": "www.generationequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:27:04.009Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dd50fead-cd95-4c26-bc79-fcf55c986c53",
+        "name": "Generation Partners",
+        "website": "www.generation.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:27:19.308Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 13,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "eb4e4218-034f-4db9-8d86-edbf1d6fd68c",
+        "name": "Guggenheim Funds Investment Advisors, LLC",
+        "website": "www.guggenheiminvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:53:25.283Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "30a16d81-b84e-42b4-a014-f57810474172",
+        "name": "Guggenheim Investments Inc.",
+        "website": "www.guggenheiminvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:53:34.602Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f0f5590a-5b6c-4587-aeab-f56edb6c61ea",
+        "name": "Guggenheim Partners Investment Management, LLC",
+        "website": "www.guggenheimpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:53:43.129Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 14,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "af06d1b3-6080-42c8-b5f5-4e8c5269fe50",
+        "name": "Juniper Capital Management, LLC",
+        "website": "www.junipercapmgt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:52:11.249Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "37f375c0-da66-436a-b533-b29cbabc10da",
+        "name": "Juniper Investment Company, LLC",
+        "website": "juniperfunds.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:52:23.668Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "178ba7da-da32-4d2b-a012-27f30d197761",
+        "name": "Juniper Ventures",
+        "website": "juniperventures.xyz",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:52:30.828Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 15,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "7821a56d-85eb-4665-a959-355cad6f5c3a",
+        "name": "Kilmer Brownfield Management Ltd.",
+        "website": "www.kilmergroup.com/brownfield/contact.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:59:39.877Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b5e4b80a-b683-4575-8caf-986826582904",
+        "name": "Kilmer Capital Partners",
+        "website": "www.kilmergroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:59:46.438Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fdf60aca-dd38-4b7a-8b7c-3d9c2c72404a",
+        "name": "Kilmer Van Nostrand Co. Limited",
+        "website": "www.kilmergroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:59:52.867Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 16,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "6aeb6458-19db-4a0f-9a7b-b9ab870069aa",
+        "name": "Lafayette Square Holding Company, LLC",
+        "website": "www.lafayettesquare.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:09:10.159Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1ac2f4b8-ac96-459d-a089-53b17b5706ed",
+        "name": "LS BDC Adviser, LLC, Asset Management Arm",
+        "website": "www.lafayettesquare.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T18:53:12.493Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2efff870-ca01-4fec-a28f-c686d01f3ce1",
+        "name": "Lafayette Square LLC",
+        "website": "www.industrious.vc",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T05:09:17.363Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 17,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "4749c5c0-e6f4-4232-9b10-d5daaf7a678e",
+        "name": "Legacy Capital LLC",
+        "website": "legacycapital.fund",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:17:02.288Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7e8501cc-723d-45c4-b6e5-538b8eede37a",
+        "name": "Legacy Capital Ventures, LLC",
+        "website": "www.legacycv.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:17:15.946Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9c4eff22-65df-4d9b-9d75-c1bca21ad766",
+        "name": "Legacy Partners, Inc.",
+        "website": "www.legacypartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:17:33.969Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 18,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "1234148d-6dab-40ad-aa50-95a6c94fbb62",
+        "name": "Princeton Equity Group, LLC",
+        "website": "www.princetonequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:14:51.432Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "454be452-1ec1-4ecf-83a4-dc560a712d3a",
+        "name": "Princeton Investment Advisors, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:14:57.698Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "832e45cd-6be3-4a44-afa7-29728ff53fb7",
+        "name": "Princeton Ventures Management, LLC",
+        "website": "www.princetonventures.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:15:05.685Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 19,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "8cbcd6c7-fb60-4024-a3ee-ff12fd314874",
+        "name": "SCP Capital Partners",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:42:55.841Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0f14dc8a-b711-4cf9-9062-3d7ec4ee9b4e",
+        "name": "SCP Management LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:43:03.123Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e996fefc-e1ca-4cb8-84bf-bfdb092031c9",
+        "name": "SCP Partners",
+        "website": "www.scppartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:43:10.909Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 20,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "c914c9b1-9cd5-463b-b6ca-c123f6b5ea7b",
+        "name": "Sixth Street Advisers, LLC",
+        "website": "sixthstreet.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:01:00.620Z",
+        "criteria_count": 7,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "3b4ce656-6c31-400b-8cdc-dc8614285eef",
+        "name": "Sixth Street Growth",
+        "website": "www.sixthstreet.com/growth",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:01:25.062Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "75d17046-0a9f-48b0-951c-993cfdab0a66",
+        "name": "Sixth Street Partners, LLC",
+        "website": "www.sixthstreet.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:01:55.793Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 21,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "b2fe75cb-3672-4cec-819e-8ec5ec289b4b",
+        "name": "Stonehenge Capital Company, LLC",
+        "website": "www.stonehengecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:25:11.778Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ad2dfc6c-a4d1-4c06-8dfa-015a4afb7122",
+        "name": "Stonehenge Partners",
+        "website": "https://stonehengepartners.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-22T17:48:03.182Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "36eab266-78d9-40b7-9d36-54095be5517d",
+        "name": "Stonehenge Partners, Inc.",
+        "website": "www.stonehengepartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:25:20.250Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 22,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "9d1ff983-8181-4e0e-925d-ad44cd66514e",
+        "name": "Trinity Capital Investment, LLC",
+        "website": "trinitycapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:06:15.764Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b384f5ca-cb91-45a3-9129-d4c270e6abf6",
+        "name": "Trinity Fund Advisors LLC",
+        "website": "www.trinityinvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:06:23.097Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "84ca8952-d630-4ba2-a517-e50373f2e21c",
+        "name": "Trinity Real Estate Investments LLC",
+        "website": "www.trinityinvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:06:53.631Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 23,
+    "count": 3,
+    "orgs": [
+      {
+        "id": "82ec2110-7351-4394-a0c3-60c731e24fcc",
+        "name": "Woodside Capital Management, LLC",
+        "website": "www.woodsidemanagement.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:59:17.651Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "992b1226-056d-4df8-8ae9-4469dbad2405",
+        "name": "Woodside Capital Partners",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:59:23.819Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "07e5e1a5-409d-4438-841a-e42ed5ec604e",
+        "name": "Woodside Capital Partners, LLC",
+        "website": "woodsidecp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:59:34.448Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 24,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "02087585-6cb2-4300-9dd7-e82ed8e753ca",
+        "name": "1315 Capital",
+        "website": "www.1315capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:15:19.946Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "a65808cc-ba2c-4f16-ae81-d4311a5094bc",
+        "name": "1315 Capital, LLC",
+        "website": "www.1315capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:46:51.533Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 25,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "284e1f87-b52f-48a7-9871-3b64bf78d1af",
+        "name": "154 Partners Investment Management",
+        "website": "154partners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:15:33.573Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b46771a6-b323-4bca-b13f-678ff0a327f8",
+        "name": "154 Partners Investment Management LLC",
+        "website": "154partners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:47:16.023Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 26,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b6a0a774-4f10-4990-b5c8-577661712809",
+        "name": "1801 Admin, LLC",
+        "website": "www.versa.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:47:32.517Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "bdf399d2-4501-429e-8dd5-6e77f7672903",
+        "name": "Versa Capital",
+        "website": "www.versa.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:15:41.893Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 27,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "75f19376-fa90-4e55-9764-2b07877b109f",
+        "name": "1kx Management",
+        "website": "www.1kx.capital",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:15:49.782Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ceb27481-6573-4880-98e0-beae58932d9d",
+        "name": "1kx Management Ltd.",
+        "website": "www.1kx.capital",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-20T19:48:06.847Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 28,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d5b044ee-136e-427c-b82f-32767623a69e",
+        "name": "26North Partners",
+        "website": "www.26n.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:06.949Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "eee33e92-b0da-4f27-9f33-87c12a338e16",
+        "name": "26North Partners LP",
+        "website": "www.26n.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:49:15.269Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 29,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6c6f33d1-a950-441e-8aa8-c5f2c8e6a756",
+        "name": "3 Boomerang Capital",
+        "website": "www.3boomerang.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:22.758Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "92df5da2-e6f9-406d-b202-814b4c482e45",
+        "name": "3 Boomerang Capital, LP",
+        "website": "www.3boomerang.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:49:31.039Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 30,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "478b83af-49d2-4e8b-9569-883d9af53c1a",
+        "name": "3 Rivers Capital",
+        "website": "https://3riverscap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T03:49:04.896Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1af144a8-c771-4bba-96d3-7508395c9bc6",
+        "name": "3 Rivers Capital, LLC",
+        "website": "www.3riverscap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:49:38.626Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 31,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "48676ae1-0f18-47af-ada8-af10e2a9f034",
+        "name": "424 Capital",
+        "website": "www.424capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:30.854Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "27a81447-020a-4ad7-a786-d0104b3219dd",
+        "name": "424 Capital, LLC",
+        "website": "www.424capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:51:00.738Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 32,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "99d1fe24-4ff1-47e9-b22d-4112ab2047e9",
+        "name": "4x4 Capital",
+        "website": "4x4capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:37.542Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "73c47025-7da3-41b4-90ca-a3b4a3c6d34a",
+        "name": "4x4 Capital, LLC",
+        "website": "4x4capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:51:15.764Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 33,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ae8ad519-f8d3-4ecf-8c0f-e5f18c321bca",
+        "name": "501 North Growth Equity",
+        "website": "www.501northgrowthequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:45.794Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "567da1b2-77f0-4ef9-85d0-bce184c1abff",
+        "name": "501 North, LLC",
+        "website": "www.501northgrowthequity.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-20T19:51:34.170Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 34,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "faefc853-bbe2-4de2-b7d0-fdca7f2b55a7",
+        "name": "57 Stars",
+        "website": "www.57stars.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-17T03:16:55.688Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d65ee266-36bb-46c3-963d-21b1b3987c58",
+        "name": "57 Stars LLC",
+        "website": "www.57stars.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:52:26.108Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 35,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "fe13b3c5-64d1-4d4e-a94d-82eba2bbb4f9",
+        "name": "Accel-KKR",
+        "website": "www.accel-kkr.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-18T22:37:01.589Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "97cab8fa-4312-4ab0-891c-b6c899ad9f18",
+        "name": "Accel-KKR LLC",
+        "website": "www.accel-kkr.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:56:35.686Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 36,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "7cd9cd29-01d1-4a77-bcbe-b8c0f80d29ea",
+        "name": "Acceleration Resources",
+        "website": "www.accelres.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-18T22:37:08.478Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0505aae1-5515-4997-b543-e55412401db5",
+        "name": "Acceleration Resources, LLC",
+        "website": "www.accelres.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:56:43.381Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 37,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "de60b767-2b56-4cd9-909f-3314dc07ae74",
+        "name": "Access Holdings",
+        "website": "www.accessholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-18T22:37:24.242Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "51f0b490-9496-4800-81bc-f55e4378ecfd",
+        "name": "Access Holdings Management Company LLC",
+        "website": "www.accessholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:57:06.120Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 38,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "565e9df8-cd30-4def-adbb-64650beb03e2",
+        "name": "ACM Capital Partners, LLC",
+        "website": "www.acmcapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T19:59:43.602Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dbe7ce2f-1fa7-49c2-ab9e-040dfd1a9d37",
+        "name": "ACM Management Company, LLC",
+        "website": "www.agriculturecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:00:00.727Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 39,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "526f37af-e96c-463a-8869-101c22095f91",
+        "name": "Affinius Capital",
+        "website": "www.affiniuscapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:13:40.608Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "596d9e8c-8c66-4d0a-be4c-d11a304b6bab",
+        "name": "Affinius Capital Management LLC",
+        "website": "affiniuscapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:13:52.081Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 40,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "2b347b15-ba7b-4e81-98dd-65d9e57a30b0",
+        "name": "Align Capital Partners",
+        "website": "https://aligncp.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-22T03:26:15.316Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "54905390-63e4-417a-88d9-81d8e8a85974",
+        "name": "Align Capital Partners, LP",
+        "website": "www.aligncp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:19:43.594Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 41,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "674e7784-49fa-460c-997a-0e31067deb54",
+        "name": "Alta Capital Corporation",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T20:24:51.103Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d91227e1-4855-4023-9747-395e74a2919b",
+        "name": "Alta Partners LP",
+        "website": "www.altapartners.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-20T20:25:14.904Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 42,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "19c7b732-d50d-4a4e-9fc0-2b226d2766eb",
+        "name": "Alterna Capital Partners LLC",
+        "website": "WWW.ALTERNACAPITAL.COM",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:01:39.338Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0fa3e7d4-b177-42e7-bbfc-719d5e22687f",
+        "name": "Alterna Equity Partners",
+        "website": "www.alternaequitypartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:01:48.203Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 43,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "f0f0ea83-6265-46c1-9d1f-7b46b5ea6bd6",
+        "name": "Alternative Capital Fund Management LLC",
+        "website": "www.altcapinvestments.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:01:55.333Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7f9d8f38-1352-49b2-8695-0aed4618b7e7",
+        "name": "Alternative Investment Management, LLC",
+        "website": "www.aim13.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:02:04.344Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 44,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "00d230c5-c2de-4f93-a022-f19400a4943f",
+        "name": "American Capital Equity Management LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:04:25.738Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "400c4e8d-911b-4e41-8b56-c45b5d1f52d5",
+        "name": "American Capital, Ltd.",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:04:33.981Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 45,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "48a9bc13-7ebb-4dd2-8e1e-dd0dc024f923",
+        "name": "American Infrastructure Funds LLC",
+        "website": "www.aimlp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:05:19.133Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9b0fd6b6-b6a7-459f-9736-c3aadabdfb1b",
+        "name": "American Infrastructure Partners, LLC",
+        "website": "www.american-infrastructure.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:05:25.501Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 46,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "40486fde-6ab3-40eb-b487-02c21b4caa31",
+        "name": "Amplify Capital",
+        "website": "www.amplifycapital.ca",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-20T21:07:12.229Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9dd83c6d-cf62-45af-b85d-8761c2a3e6ad",
+        "name": "Amplify Partners, LLC",
+        "website": "www.amplifypartners.com",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-20T21:07:20.403Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 47,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a6b51779-745c-4414-aada-9788f07f7e9b",
+        "name": "Anacapa Capital Management",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:07:51.835Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "469dd401-e570-4d34-a54d-662eb9fe1b38",
+        "name": "Anacapa Partners LP",
+        "website": "anacapapartners.com/site/global/home/p_home.gsp",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:08:04.923Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 48,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "dca5efd8-bc4a-4fb0-bada-ec2fc3ca2f02",
+        "name": "Andrew W. Byrd & Co., L.L.C.",
+        "website": "www.tvvcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-20T21:10:40.191Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2b336cf8-48aa-4f09-a5fd-537d4518bf14",
+        "name": "TVV Capital",
+        "website": "https://tvvcapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-21T03:28:30.336Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 49,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "1a81fcef-abb2-4e65-b0b7-dcaef13cdd68",
+        "name": "Apollo Capital Management, L.P.",
+        "website": "www.apollo.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:42:48.439Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "5d07477a-26c9-47f4-bf63-617ffc041a7c",
+        "name": "Apollo Investment Management, L.P.",
+        "website": "www.apollo.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:43:08.750Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 50,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3853f5e8-61a3-4a73-8941-0157e9a9133b",
+        "name": "ARA Advisers, LLC",
+        "website": "www.arapartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:44:42.951Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d98e0429-c9aa-4862-b501-e8769e7e3e7c",
+        "name": "Ara Partners Group, LLC",
+        "website": "www.arapartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:45:04.078Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 51,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "f3daa6b4-7374-4ff0-8eeb-2ee411d1f624",
+        "name": "Ares EIF Management, LLC",
+        "website": "www.aresmgmt.com/our-business/private-equity",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:49:25.311Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4273adfe-b516-4653-b623-d2458dd91805",
+        "name": "Landmark Partners, an Ares company",
+        "website": "www.aresmgmt.com/our-business/secondaries",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:11:38.362Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 52,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c798c531-3710-4e0c-9d22-c2d4eba093b6",
+        "name": "Ark Capital Management",
+        "website": "www.ark-cap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:52:06.102Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "41482b0a-0991-484d-9d3d-aeb423a81d5b",
+        "name": "Ark Investment Partners LP",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:52:12.330Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 53,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "40fcffdb-33b6-4cd1-b581-7068793abf4c",
+        "name": "Arlon Capital Partners",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:53:05.459Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4b297046-b8e9-40bd-865b-05a61ef460b7",
+        "name": "Arlon Group LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T01:53:12.428Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 54,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ad53745d-0197-4244-9275-7e45e26eb664",
+        "name": "Aspen Capital Group",
+        "website": "www.aspencapgroup.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T02:04:00.721Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7ddde1b7-88d7-4fc5-9a50-4cf371a120f1",
+        "name": "Aspen Capital Partners",
+        "website": "www.aspencapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:04:06.444Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 55,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "2552f7f6-a7ed-40b7-af97-2f5f90b6d717",
+        "name": "Audax Management Company (NY), LLC",
+        "website": "www.audaxprivatedebt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:10:32.744Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "33f12404-f471-4cbe-a331-b360cafae2fc",
+        "name": "Audax Private Debt LLC",
+        "website": "www.audaxprivatedebt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:10:59.246Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 56,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c844a683-58ab-4cb2-ab2a-24ce76585caa",
+        "name": "Aurora Capital Partners",
+        "website": "www.auroracap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:12:02.158Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d80dc1f6-852e-4d2a-a18b-6e2b8e097b9a",
+        "name": "Aurora Management Partners, LLC",
+        "website": "www.auroramp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:12:36.907Z",
+        "criteria_count": 8,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 57,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c186c7b3-a1c9-4fc1-baa0-3183cd5de006",
+        "name": "Austin Capital Corporation",
+        "website": "www.austincapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:12:54.217Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "003d8e4f-ad19-4451-8e35-5e663983add0",
+        "name": "Austin Ventures",
+        "website": "austinventures.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T02:13:18.545Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 58,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4254b079-28bf-4972-a77b-d202c8a568fd",
+        "name": "Avego Healthcare Capital, LLC",
+        "website": "www.avego.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T02:15:15.478Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "855edf11-ee0c-4c92-abef-0f2556a20cfa",
+        "name": "Avego Management, LLC",
+        "website": "www.avego.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:15:27.436Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 59,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "74556753-98a9-4185-bd51-28ea6454455d",
+        "name": "Avenir Capital Corporation",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-21T02:15:33.658Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "33059a25-ef71-4bab-aae2-cf279fb6f72b",
+        "name": "Avenir Management Company, LLC",
+        "website": "www.avenirgrowth.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T02:15:39.156Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 60,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ff58f453-6f27-40a9-b1d0-fcd4d8216739",
+        "name": "Avenue Capital Group, LLC",
+        "website": "www.avenuecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:15:52.640Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "06d2f9ac-4f83-4308-9973-ba71633ad6a2",
+        "name": "Avenue Capital Management II, L.P.",
+        "website": "www.avenuecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:16:19.188Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 61,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "93de316d-9640-4849-b195-61e40d06dd56",
+        "name": "Bain Capital Ventures,LP",
+        "website": "www.baincapitalventures.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T02:36:34.434Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c0f9245c-d970-427a-89ab-3e33fe3f48b4",
+        "name": "Bain Capital, LP",
+        "website": "www.baincapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:36:45.896Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 62,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9f4dbce8-a023-4c37-bd41-04062ceb888e",
+        "name": "Baypine Holdings LP",
+        "website": "baypine.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:42:39.617Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dd2a7007-f6fe-49df-9a9a-7764d6f5285c",
+        "name": "BayPine LP",
+        "website": "www.baypine.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:42:47.686Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 63,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "0c5bdb82-88d6-4f83-93dd-e981b796cf40",
+        "name": "Belveron Partners, LLC",
+        "website": "www.belveron.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:47:55.619Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1191c859-ec2a-48fc-a9d0-b35c34622f1d",
+        "name": "Belveron Real Estate Partners, LLC",
+        "website": "belveron.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:48:02.918Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 64,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ebfbebfd-fe62-4eab-981b-1a9ff294bd9f",
+        "name": "BentallGreenOak (U.S.) Limited Partnership",
+        "website": "www.bgo.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:49:53.886Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1eea14f8-8396-4ea9-8c18-2adee172c639",
+        "name": "BentallGreenOak Strategic Capital Partners, LLC",
+        "website": "bgo.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:50:06.056Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 65,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bd7ac6a3-7c0a-4c25-a433-11f03c505f58",
+        "name": "BlackRock Advisors, LLC",
+        "website": "www.blackrock.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:58:18.608Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "39319d9f-974d-4c37-8bf2-5dc68a355388",
+        "name": "BlackRock Private Equity Partners, Inc.",
+        "website": "www.blackrock.com/institutions/en-zz/investment-strategies/alternative-investments/fund-of-private-equity-funds",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T02:59:49.096Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 66,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "cd226923-e2af-4127-92fb-518e84f83b4b",
+        "name": "Blackstreet Capital Holdings, LLC",
+        "website": "www.bchhold.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:01:24.604Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d6b7c343-f112-41d9-b40b-4071aeec1762",
+        "name": "Blackstreet Capital Management, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:01:31.832Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 67,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "19a491dd-2914-4a40-a03c-03b02c88d36d",
+        "name": "Blue Owl Real Estate Capital LLC",
+        "website": "www.blueowl.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:06:01.918Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "33597af8-7690-4262-8846-fbfbbd67a8cf",
+        "name": "GP Strategic Capital",
+        "website": "www.blueowl.com/gp-strategic-capital",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:39:31.336Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 68,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5aa7be6c-0f7f-4d36-ad94-054e029c890a",
+        "name": "Blue Point Capital Partners",
+        "website": "https://www.bluepointcapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-22T17:41:32.612Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ec289ae1-2966-4f47-8fe2-9b10c5ecb847",
+        "name": "Blue Point Capital Partners, LLC",
+        "website": "www.bluepointcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:06:21.900Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 69,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "e2af0367-6a69-44c3-bcc8-da78312d948e",
+        "name": "Blueprint Equity, LLC",
+        "website": "www.onblueprint.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-21T03:08:50.168Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "75bba194-a686-493a-b7c9-8a7bc4fc156f",
+        "name": "Blueprint Ventures",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-21T03:08:56.904Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 70,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5162545b-d88e-47c8-814a-cab7af112aca",
+        "name": "Bluescape Energy Partners LLC",
+        "website": "bluescapegroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:09:03.676Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "38937f58-3a2a-44b2-9048-527e0198c4be",
+        "name": "Parallel Resource Partners, LLC",
+        "website": "bluescapegroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:45:00.349Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 71,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "0f3c172a-b0db-4781-91ef-063bdd8e187e",
+        "name": "Breakwall Capital LLC",
+        "website": "www.breakwallcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:15:36.777Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c5cf8743-f4b6-46c4-ae14-162fc2dc18ca",
+        "name": "Breakwall Investment Advisor LLC",
+        "website": "www.breakwallcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:15:43.884Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 72,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "cc90714c-652c-4ed2-a07f-5a49f5879609",
+        "name": "Brixey & Meyer Capital",
+        "website": "https://bmcgrowth.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T03:08:24.106Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c701aea0-89ac-448f-af78-f7220f70b2df",
+        "name": "Brixey & Meyer Capital LLC",
+        "website": "www.bmcgrowth.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:19:54.915Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 73,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5083b7fd-18fe-479b-b429-70be24ee8f37",
+        "name": "Brookfield Oaktree Holdings, LLC",
+        "website": "www.oaktreecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:21:44.049Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4f3c26fc-5a94-4c2e-ba93-4a68fe7c24f7",
+        "name": "Oaktree Capital Management, L.P.",
+        "website": "www.oaktreecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:23:11.559Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 74,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9e89542a-1899-43b6-bd58-4be14b840515",
+        "name": "Brookside Capital Partners",
+        "website": "www.brooksidecp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:21:58.070Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c7dd652a-85fa-45b4-bb8c-79661b40f80f",
+        "name": "Brookside Equity Partners LLC",
+        "website": "www.brooksideequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:22:10.020Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 75,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9c980894-d7d8-4c45-b3dd-1f79fc4ec57f",
+        "name": "Brown Advisory Incorporated",
+        "website": "www.brownadvisory.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:22:51.909Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2360c97b-457e-431e-83d7-43bae32bc179",
+        "name": "Brown Advisory LLC",
+        "website": "www.brownadvisory.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:23:08.636Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 76,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bdec4cbc-7e15-44a0-8344-f19af9937862",
+        "name": "Canyon Capital Advisors LLC",
+        "website": "www.canyonpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:34:03.628Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "cf87c0a2-12d9-42b3-8840-85b44a0a252f",
+        "name": "Canyon Partners, LLC",
+        "website": "www.canyonpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:34:14.375Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 77,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c0e17a19-b27e-4401-b6a0-7198aaa454b0",
+        "name": "Capitala Group",
+        "website": "www.capitalagroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:36:03.873Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9edcd5c2-32b3-4fc9-ab59-42ad7265e92d",
+        "name": "Capitala Investment Advisors, LLC",
+        "website": "www.capitalagroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:36:17.588Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 78,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "55a1bbe3-f4b5-4984-8839-78fc46ba4ea2",
+        "name": "CapitalWorks, LLC",
+        "website": "cwindustrials.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:36:54.002Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ca33a18d-b9c4-4535-8396-ddb60d03ea51",
+        "name": "CW Industrial Partners",
+        "website": "https://cwindustrials.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-26T02:53:00.131Z",
+        "criteria_count": 6,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 79,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "85788e82-e891-4dbb-b61a-5579563bb5c9",
+        "name": "Capricorn Holdings",
+        "website": "www.capricornholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:38:02.492Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0ec11648-b918-467b-94d5-270272e9b621",
+        "name": "Capricorn Investment Group LLC",
+        "website": "capricornllc.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-21T03:38:09.672Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 80,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d2f88000-8153-44d9-abc8-ed420d6b5595",
+        "name": "Champlain Capital Management, LLC",
+        "website": "www.champlaincapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T02:55:36.961Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ce52ba5c-96b5-4c35-981e-6b5db42393e6",
+        "name": "Champlain Investment Partners, LLC",
+        "website": "www.cipvt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T02:55:45.926Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 81,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "acffb1fa-b728-461b-9af2-33d3cd75ec27",
+        "name": "Churchill Asset Management LLC",
+        "website": "www.churchillam.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:01:35.194Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "85902c7a-50ce-4d26-94c6-2c417c664713",
+        "name": "Churchill DLC Advisor LLC",
+        "website": "www.churchillam.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:02:01.950Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 82,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "141ffb58-81c0-46a0-bc00-acd574665b2a",
+        "name": "CID Capital, Inc.",
+        "website": "www.cidcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:03:32.447Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "63a7a5aa-4422-49e3-b1ce-037600362eb7",
+        "name": "CID Equity",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-22T03:03:57.686Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 83,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3dc8ac83-420f-4807-bf72-2bbc7f492ba7",
+        "name": "Clarion Capital Partners, LLC",
+        "website": "www.clarion-capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:08:31.133Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c8b1aa7e-ecae-4cd9-a83a-5125224a7509",
+        "name": "Clarion Partners, LLC",
+        "website": "www.clarionpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:08:56.968Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 84,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "65572398-1291-4884-ad9b-3857080e9ad6",
+        "name": "CM Equity Partners",
+        "website": "www.cmequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:15:56.507Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d705cb68-8fad-408d-9042-51779d2a8620",
+        "name": "CM Investment Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:16:06.649Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 85,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "8e0e044c-d459-448f-8f56-dbd9167ffb15",
+        "name": "Continuim Equity Management, LP",
+        "website": "www.continuim.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:31:28.801Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "612ab640-7ae7-4f04-8468-2032dfff1315",
+        "name": "Continuim Equity Partners",
+        "website": "https://www.continuim.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T01:53:59.580Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 86,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6006cf03-736c-438b-9512-49f58d60c537",
+        "name": "Cooper Capital Partners",
+        "website": "www.cooperandcompany.org",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:33:10.875Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ef86967b-7c3a-4861-ac3b-b87354acb810",
+        "name": "Cooper Investment Partners, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:33:23.564Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 87,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "86d625f7-ea4d-4a7a-921b-4eea0ed4245a",
+        "name": "Council capital",
+        "website": "https://councilcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-21T03:46:47.037Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0c1f5335-7305-4a87-a7a0-84120a82d15b",
+        "name": "Council Capital",
+        "website": "www.councilcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:40:35.389Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 88,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5362afc5-438a-44a0-a769-6af833962ea2",
+        "name": "Crescent Real Estate Holdings LLC",
+        "website": "www.crescent.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:44:08.215Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "8651aec9-77ac-49f8-8a37-e4b1354c2c25",
+        "name": "Crescent Real Estate LLC",
+        "website": "crescent.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:44:17.117Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 89,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ffbc788b-b6f5-4fc1-9a98-04feffe5160f",
+        "name": "Crown Capital Group",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:50:24.149Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "a9d0f61a-d770-4735-927a-41ea308f22da",
+        "name": "Crown Capital Investments, LLC",
+        "website": "www.crown-inv.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:50:35.426Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 90,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ab4c97de-2cd1-43c5-913d-ba0dd51b76ae",
+        "name": "Cyprium Investment Partners LLC",
+        "website": "www.cyprium.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:57:40.031Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "00a2f0f1-82ba-4541-9e24-2c01476b51ef",
+        "name": "Cyprium Partners",
+        "website": "https://cyprium.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-31T03:13:06.663Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 91,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "1d493c66-6d64-471d-a5ec-8012567bbca4",
+        "name": "D'Orazio Capital Management, Inc.",
+        "website": "www.doraziocp.com/direct-equity",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:58:11.875Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ca604196-65cc-45a3-b8c8-61511b462bc3",
+        "name": "D'Orazio Capital Partners, LLC",
+        "website": "www.doraziocp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T03:58:20.703Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 92,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d5a97132-a427-484c-a377-5b4f59b264cd",
+        "name": "Domain Capital Advisors, LLC",
+        "website": "domaincapitalgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T12:58:57.879Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e4c5dedf-de49-4480-8919-862d84875f1f",
+        "name": "Domain Capital Group, LLC",
+        "website": "www.domaincapitalgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T12:59:27.816Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 93,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "cee00888-323f-42ca-a23f-da8b45bd77e2",
+        "name": "Edgewater Capital Management, LLC",
+        "website": "www.edgewatercapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T13:16:29.889Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1dd504b5-02a5-4ee5-80f5-18753678798d",
+        "name": "Edgewater Capital Partners",
+        "website": "https://www.edgewatercapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-24T02:49:56.351Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 94,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ba8eef21-60a0-4300-884b-e8e774ca51b9",
+        "name": "EIG Global Energy Partners",
+        "website": "eigpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T13:20:07.915Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d851389d-8ccc-46bf-a664-6c8e64a36543",
+        "name": "EIG Management Company, LLC",
+        "website": "eigpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-22T13:20:35.395Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 95,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d42dc86a-13ba-45e4-8cd2-4d95e5c0bed5",
+        "name": "Elevar Equity Management Ltd.",
+        "website": "elevarequity.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T01:55:24.670Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2c6980dc-8a52-426b-984b-1a9153c329bc",
+        "name": "Elevar Equity, LLC",
+        "website": "www.elevarequity.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T01:55:40.604Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 96,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "df4b9852-3461-4468-bd48-fe40179e834a",
+        "name": "Eltura Capital Management, LLC",
+        "website": "www.eltura.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T01:57:05.242Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "bc9a06ae-345d-4611-8b05-da27d45e32bd",
+        "name": "Eltura Capital Partners LP",
+        "website": "www.eltura.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T01:57:12.064Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 97,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d6694978-32d0-4557-8673-fced6ef9f99e",
+        "name": "Emerald Advisers, LLC",
+        "website": "www.teamemerald.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T01:58:20.134Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "81c63912-c9ac-4a45-8deb-d03c7f3fb94b",
+        "name": "Emerald Asset Management, Inc.",
+        "website": "www.teamemerald.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T01:59:03.824Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 98,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "be71c94e-9ad5-4af3-baca-900cc7db6611",
+        "name": "Empeiria Capital Management, LLC",
+        "website": "www.orchardholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:01:05.830Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7a29514e-391d-4581-ac21-72b44a84adae",
+        "name": "Orchard Holdings Group",
+        "website": "https://www.orchardholdings.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T03:05:18.439Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 99,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6fcb4dc0-7038-4664-8c33-0fd46460a492",
+        "name": "Endurance Partners",
+        "website": "www.endurance-partners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:03:41.368Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "88e32f20-d689-41dd-ba40-92e1f47b6ead",
+        "name": "Endurance Ventures",
+        "website": "www.enduranceventures.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:03:50.004Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 100,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ad71b201-413b-466e-b488-09df06835ffd",
+        "name": "Enhanced Capital Partners, Inc.",
+        "website": "www.enhancedcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:09:44.842Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "8619bd66-ecc1-4db5-926d-262094a61251",
+        "name": "Enhanced Capital Partners, LLC",
+        "website": "www.enhancedcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:13:23.251Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 101,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "1a263d62-6fad-4c9a-a7f2-974c1c1a21f9",
+        "name": "Enhanced Healthcare Management Company, LLC",
+        "website": "www.enhancedhealthcare.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:13:32.232Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "98fee6ac-bcc3-4cd3-b1d8-c0df5185eb8f",
+        "name": "Enhanced Healthcare Partners",
+        "website": "www.enhancedhealthcare.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:13:40.148Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 102,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "f82abbc1-10ac-4acd-b830-8a25b300da07",
+        "name": "FIC",
+        "website": "www.ficfund.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:33:39.003Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "557b26ea-f5b3-4a70-b9a4-92063ad1e44f",
+        "name": "FIC Partners Management, LP",
+        "website": "www.ficfund.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:33:45.798Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 103,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6272d1d0-36fe-435f-9b64-92d8ec9bda8a",
+        "name": "First Capital Group",
+        "website": "www.firstcapitalgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:36:45.520Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e7973ca4-c711-4567-95d6-35aab3dd2fcc",
+        "name": "First Capital Partners, LLC",
+        "website": "www.firstcapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:36:58.384Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 104,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "44556d3c-de29-439a-94e2-7fa6b9c269ba",
+        "name": "Fonds de solidarité FTQ",
+        "website": "www.fondsftq.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:43:05.737Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1bcb7d92-6da2-4eeb-bf29-753be412a498",
+        "name": "Fonds régional de solidarité FTQ Outaouais",
+        "website": "www.fondsftq.com/en/financement/fonds-regionaux/outaouais.aspx",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T02:43:55.658Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 105,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "59e5ba75-8f41-461f-b898-6e6a10fb2e2f",
+        "name": "Forest Road Asset Management LLC",
+        "website": "www.forestroadco.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:44:36.258Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fdb94675-5170-464a-8ecc-8dfe8a72e780",
+        "name": "Forest Road Company, LLC",
+        "website": "www.forestroadco.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T02:44:43.629Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 106,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "417f7e5b-893c-497b-b84f-ba39d3278cc8",
+        "name": "GC Advisors LLC",
+        "website": "www.golubcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:23:35.584Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e23b73eb-319e-42c3-a3b8-45318e51961d",
+        "name": "Golub Capital LLC",
+        "website": "www.golubcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:38:26.770Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 107,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6574fada-d561-4d89-9a5d-ba383ac77503",
+        "name": "GCP Capital Partners Holdings LLC",
+        "website": "www.gcpcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:25:08.421Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9f31498c-701a-43bc-998a-6cdb5a95207a",
+        "name": "GCP Capital Partners LLC",
+        "website": "www.gcpcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:25:15.893Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 108,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6696503d-01fe-4fe0-8ae9-f6072b741a1c",
+        "name": "GEF Capital Partners, LLC",
+        "website": "www.gefcapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T03:25:40.489Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f0d9402d-562c-4c46-8137-1bf1fc546cd2",
+        "name": "GEF Management Corporation",
+        "website": "www.globalenvironmentfund.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:25:48.066Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 109,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a4bd2221-517e-42a8-a16e-83ea581b6b62",
+        "name": "Gen Cap America",
+        "website": "https://gencapamerica.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-21T03:28:22.787Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b0bebd95-d3a0-4d37-9dfa-ccf676331bcf",
+        "name": "Gen Cap America, Inc.",
+        "website": "www.gencapamerica.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:26:20.213Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 110,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "efaca63a-bdf9-40ab-92d1-50607c1dc3f6",
+        "name": "GenNx360 Capital Partners",
+        "website": "www.gennx360.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:28:22.811Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4f8f4586-5288-440c-a0a3-e747908e569c",
+        "name": "GenNx360 Management Company, LLC",
+        "website": "www.gennx360.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:28:30.481Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 111,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "35a61303-0e37-4748-9e63-cc5bf92662c8",
+        "name": "Genstar Capital Management, LLC",
+        "website": "www.gencap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:28:55.027Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ba5ba880-6dec-4614-a8de-941e1660a6d6",
+        "name": "Genstar Capital, LLC",
+        "website": "www.gencap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:29:17.388Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 112,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "8d2a8f1e-8b9d-467d-9e87-47d8489d93ec",
+        "name": "GF Capital Asset Advisors, LLC",
+        "website": "www.gfcap.com/private-equity.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:30:18.946Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4b4bdb0c-7e37-4e43-a055-6e7f2118821c",
+        "name": "GF Capital Management & Advisors, LLC",
+        "website": "www.gfcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:30:25.988Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 113,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "cd5459de-3908-49ed-89f1-411651d0ffa5",
+        "name": "GPI Capital Limited",
+        "website": "gpicap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T03:39:46.794Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "41936680-50de-42ef-ad71-20654ed65468",
+        "name": "GPI Capital, L.P.",
+        "website": "gpicap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T03:39:52.987Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 114,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "954dc40e-8cea-48d2-981e-c7de40e007f1",
+        "name": "H.I.G. WhiteHorse Advisers, LLC",
+        "website": "www.whitehorse.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T03:55:15.009Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "00f45126-04f9-4424-a561-f00fd78213dd",
+        "name": "WhiteHorse Capital Partners, L.P.",
+        "website": "www.whitehorse.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:52:53.035Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 115,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3abc014d-8ab9-4b77-8216-8b78ff7e5e71",
+        "name": "Harvest Capital Strategies LLC",
+        "website": "www.harvestgrowthcapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:03:05.133Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b31b49c7-024a-433a-84d9-6ded53a50ddc",
+        "name": "Harvest Growth Capital LLC",
+        "website": "www.harvestgrowthcapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:03:12.317Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 116,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "0a2b4d18-946a-43bb-9f2f-0f7deadb4bd0",
+        "name": "Heartland Equity Management, LLC",
+        "website": "heartland.fund",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:08:20.526Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2a390f87-c346-41ea-906e-5a7124e9dcc4",
+        "name": "Heartland Ventures",
+        "website": "www.heartlandvc.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:08:41.940Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 117,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "234e63a4-8ceb-4861-8d87-60c7f6278f90",
+        "name": "Heritage Group, LLC",
+        "website": "www.heritagegroupusa.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:10:20.693Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d1449048-bfba-4092-a31c-dc09b649bade",
+        "name": "Heritage Holding",
+        "website": "www.heritage-holding.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:10:44.933Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 118,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bf5d9fc8-2904-4b74-b7bf-0ffb05c5a97c",
+        "name": "High Street Capital",
+        "website": "www.highstreetcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:12:33.337Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b8630d4e-b7b4-400d-936d-714f1ea32d5f",
+        "name": "High Street Equity Partners, LLC",
+        "website": "www.highstreetequity.com",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T04:12:49.786Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 119,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "7c154e17-3d12-4401-861e-3da5000b1b8e",
+        "name": "HighVista Private Capital Management LLC",
+        "website": "www.highvistastrategies.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:14:50.019Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "11a57a54-7383-4a62-8cb1-1e91be1fafdc",
+        "name": "HighVista Strategies LLC",
+        "website": "www.highvistastrategies.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:15:02.129Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 120,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a52acf4a-0de1-416b-9b6d-bd6707836908",
+        "name": "Hildred Capital Management, LLC",
+        "website": "www.hildredcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:15:20.715Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "86c118aa-7f30-4d47-8330-4c42652b368f",
+        "name": "Hildred Capital Partners, LLC",
+        "website": "www.hildredpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:15:27.341Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 121,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3f6d86de-da37-4b29-8b5d-a2d8627c7c78",
+        "name": "Houston Partners",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:18:44.115Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "a3e8ea1b-c987-4000-a079-14199fab9e04",
+        "name": "Houston Ventures",
+        "website": "www.houven.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:18:52.639Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 122,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4a459f31-c21a-4e54-8535-416694e42329",
+        "name": "Hps Advisors, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:19:04.960Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "72b5b6aa-aba4-4b8c-9261-00007f57b9ec",
+        "name": "HPS Investment Partners, LLC",
+        "website": "www.hpspartners.com/en/home/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:19:20.415Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 123,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "94f292af-5981-4a19-b84b-ddf394e11c4d",
+        "name": "iCapital Advisors, LLC",
+        "website": "www.icapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:24:18.785Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "41604eab-2ddf-4c5a-8b4c-a3519f518e37",
+        "name": "Institutional Capital Network, Inc.",
+        "website": "icapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:33:35.084Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 124,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "eb11b52f-f10a-495f-9a4a-8868e7c23e99",
+        "name": "Incline Equity Partners",
+        "website": "https://inclineequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T01:44:52.002Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "3ed04298-ed63-4173-9e07-bbeb582cb7dd",
+        "name": "Incline Management, L.P.",
+        "website": "www.inclineequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:29:04.500Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 125,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "8c565943-c448-4fd9-a917-ea859f7c9528",
+        "name": "Indigo Capital, LLC",
+        "website": "www.indigocap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:29:30.566Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b5ec2cb2-5465-437c-acd7-e0a64a852d11",
+        "name": "Indigo Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:29:46.307Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 126,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3f2e19e8-ece8-48a9-a316-cbc45606b07d",
+        "name": "Interlock Equity LP",
+        "website": "www.interlockequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:35:36.351Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ca29cb09-bf8e-4f17-911b-cbe41a048c8f",
+        "name": "Interlock Partners",
+        "website": "www.interlock.vc",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T04:35:44.429Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 127,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c9406afc-191c-43f1-a2ea-5f5f81fae74b",
+        "name": "Intrepid Capital Management Inc.",
+        "website": "intrepidcapitalfunds.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:37:07.174Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "cfb5bc34-7f1b-4f64-9491-c2cd74d40e69",
+        "name": "Intrepid Capital Partners, LLC",
+        "website": "www.intrepidpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:37:15.171Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 128,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "31acad7b-f0d3-4c82-b72c-f504f7a207cb",
+        "name": "Invesco Advisers, Inc.",
+        "website": "www.invesco.com/us/en/institutional.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:38:46.091Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "05068698-1328-4f8c-8633-58a18b2f8fdd",
+        "name": "Invesco Private Capital, Inc.",
+        "website": "www.invesco.com/us/en/Individual-investor.html",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:39:08.031Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 129,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "23a76573-3828-4cb6-b5df-c3fd1f47907a",
+        "name": "Invictus Capital Management, LP",
+        "website": "www.invictuscp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:40:28.718Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "493bd903-a950-4027-9014-95568ac2ec61",
+        "name": "Invictus Capital Partners, Lp",
+        "website": "invictuscp.com//",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:40:35.105Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 130,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "e80028ac-0b8a-49ed-a977-6a7312bff344",
+        "name": "Invus Financial Advisors, LLC",
+        "website": "www.invus.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:41:00.628Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4bdcd88d-2384-41b3-975c-f01c5c6e4130",
+        "name": "The Invus Group, LLC",
+        "website": "www.invus.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:53:11.939Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 131,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "728a074d-7a62-4cc1-9e4b-be130608fe9a",
+        "name": "Ironwood Capital",
+        "website": "ironwoodcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:42:18.212Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c66cd14b-fabf-424f-af2f-38ab00a08211",
+        "name": "Ironwood Investment Management, LLC",
+        "website": "www.ironwoodinvestmentmanagement.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:42:28.260Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 132,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "69808f21-b717-40e5-a1ed-73787ab83ee7",
+        "name": "Jefferson Capital Partners",
+        "website": "www.jeffcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:47:29.193Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "00ff5b12-e4ad-4c57-ab71-e1c853b75827",
+        "name": "Jefferson Partners",
+        "website": "www.jefferson.com/",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T04:47:35.763Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 133,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "2886f738-fc6e-4fb0-95f6-5448b7766888",
+        "name": "Junction Capital Partners",
+        "website": "www.junctioncapitalpartners.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:51:52.648Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "31a38a9e-0cd4-4396-98a6-71caa238f965",
+        "name": "Junction Equity Partners",
+        "website": "https://www.junctionequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T15:38:07.883Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 134,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3ffd92f7-ffac-4883-bf4c-a7a52428caa9",
+        "name": "Jupiter Holdings LLC",
+        "website": "www.jupiterholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:52:42.894Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "316bd261-aea6-44ef-a9df-1cb1309727f2",
+        "name": "Jupiter Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:52:50.342Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 135,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a798be57-e6f6-407b-b0eb-6c2f018d6f14",
+        "name": "KCB Management",
+        "website": "www.kcbpem.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:55:38.175Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "8955021e-8b08-4b97-9a79-b323433c8195",
+        "name": "KCB Partners",
+        "website": "www.kcb-partners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:55:57.774Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 136,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "074b91ba-ac9c-455d-a69a-e03b67766be3",
+        "name": "Kennedy Lewis Capital Holdings LLC",
+        "website": "klimllc.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:56:46.123Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "aeee4f5b-6ca4-46ab-9011-abbef8008f96",
+        "name": "Kennedy Lewis Management LP",
+        "website": "www.klimllc.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:57:12.871Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 137,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "579d4525-ebb6-424b-b2b9-6c76bbfe333b",
+        "name": "Kensington Capital Partners Limited",
+        "website": "www.kcpl.ca",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T04:57:27.348Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dc7de76a-42d6-4204-b53b-6febcc67b6a0",
+        "name": "Kensington Investment Management, Inc.",
+        "website": "www.kcpl.ca",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:57:34.157Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 138,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b0470534-7ecd-4cfe-a667-c12a85873a97",
+        "name": "KG Funds Management LLC",
+        "website": "www.kgfunds.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T04:58:33.933Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "46014eae-f71c-4ee9-908b-fce62378c336",
+        "name": "KG Investments",
+        "website": "www.kginvest.net",
+        "buyer_type": "Family Office",
+        "created_at": "2026-10-23T04:58:40.568Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 139,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bba6cc70-cef1-48f8-b26f-402ad7325702",
+        "name": "Kinzie Capital Partners",
+        "website": "https://www.kinziecp.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T02:21:59.540Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6eab7abd-559e-4607-add8-cfc6b221acf6",
+        "name": "Kinzie Capital Partners LP",
+        "website": "www.kinziecp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:01:57.939Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 140,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "2a825257-bb8a-4a3e-8579-cfaadd210935",
+        "name": "KKR Credit Advisors (US) LLC",
+        "website": "www.kkr.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:02:53.457Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fb6d70d8-e4ad-4646-9fea-f954c57054f9",
+        "name": "Kohlberg Kravis Roberts & Co. L.P.",
+        "website": "www.kkr.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:05:07.131Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 141,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "024b9b11-3988-4a00-84f9-b52b8a5b310d",
+        "name": "L Capital LLC",
+        "website": "www.lcapitalmgmt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:07:16.430Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "491173fc-c524-498c-b96b-6e2a38ca4fa9",
+        "name": "L Capital Partners",
+        "website": null,
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T05:07:31.442Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 142,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "08bba66e-0620-4cf7-aaed-4c8c18485243",
+        "name": "Lantern Asset Management, L.P.",
+        "website": "www.lanternam.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:12:02.697Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "77eed4e1-ab8e-40b7-82ec-13284f20704b",
+        "name": "Lantern Capital Partners, L.P.",
+        "website": "www.lanternam.com/capital-partners",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:12:08.607Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 143,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "e07bce4d-b318-44f9-ab82-b43baa7ab4b9",
+        "name": "Lateral Capital Management, LLC",
+        "website": "lateralcapital.com/",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T05:13:30.467Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "bf971ba2-1264-4574-b838-3a82f2f4d8c0",
+        "name": "Lateral Investment Management, LLC",
+        "website": "lateralim.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T05:13:37.982Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 144,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "7eca8001-b908-4b1b-bc05-db7ff3fc99e5",
+        "name": "LFM Capital",
+        "website": "https://www.lfmcapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-20T16:45:55.776Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "5d483668-66d7-43c9-a3e9-73fe17d58e50",
+        "name": "LFM Capital, LLC",
+        "website": "www.lfmcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:20:10.403Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 145,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c3282e36-9c43-4a71-b7b6-f30912de4202",
+        "name": "Liebman Group Advisors, LLC",
+        "website": "www.liebmangroupadvisors.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:21:25.390Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7c4226b9-d18c-45e6-918b-e02af2dc6336",
+        "name": "Liebman Group, LLC",
+        "website": "www.liebman-group.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:21:34.470Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 146,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3763ea1d-6d46-4789-b582-0c24bb152df4",
+        "name": "Lime Rock Management LP",
+        "website": "www.lrpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:23:20.687Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7df75160-b86e-4916-9749-9dd38473c97f",
+        "name": "Lime Rock Partners, LLC",
+        "website": "www.lrpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T05:23:33.962Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 147,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b68dd363-493a-4e61-8761-9311658ead27",
+        "name": "Madison Capital Group LLC",
+        "website": "www.madisoncapgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T18:58:54.484Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d712c412-8553-4cb1-8f94-2ae001cc8ad1",
+        "name": "Madison Investment Partners, Inc.",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T18:59:21.050Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 148,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "68867513-e81a-4517-947d-4de1512774d6",
+        "name": "Magna Capital, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T18:59:53.640Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9ba3a19c-b8ce-404d-9756-7460cb23d147",
+        "name": "Magna Management LLC",
+        "website": "magnainvests.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:00:13.215Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 149,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "7f3932ad-235c-403b-af26-7f8f5d1ff216",
+        "name": "Marlin Equity Partners, LLC",
+        "website": "www.marlinequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:06:26.391Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "baac9d45-d1d1-480f-bc7a-88e661853692",
+        "name": "Marlin Management Company, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:06:33.268Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 150,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b4e39ffa-6341-49ac-8f45-d343e849c8b9",
+        "name": "Maven Capital Management, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:08:37.226Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0243ca04-3560-4e5a-9808-a0c267e1fbdf",
+        "name": "Maven Equity Partners, LLC",
+        "website": "www.mavenequitypartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:08:42.831Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 151,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "50469914-9c35-4b0f-a2b9-fd37e777e01e",
+        "name": "Mentor Capital Partners, Ltd.",
+        "website": "www.mentorcapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:19:46.724Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "24c9ebec-09fb-4392-abb1-f7dd54ce1bf7",
+        "name": "Mentor Partners, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:19:52.526Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 152,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "44312875-17f2-4348-8f44-905bb01778c4",
+        "name": "Meridian Capital",
+        "website": "www.meridiancapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:21:56.593Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "154bc953-2b5c-422e-9ad4-aa4dcec9848f",
+        "name": "Meridian Management Group, Inc.",
+        "website": "mmgcapitalgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:22:14.544Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 153,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ee9e0545-127f-4f22-aa52-2e3c73136c48",
+        "name": "Mesirow Financial Institutional Real Estate Direct",
+        "website": "www.mesirow.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:26:16.381Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fa2c8a92-cd33-4ebb-93af-6ffc5a1fa378",
+        "name": "Mesirow Private Equity",
+        "website": "www.mesirow.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:26:27.431Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 154,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b8438eca-5ff2-4f16-beb2-2e28d7ad47d8",
+        "name": "mHUB Accelerated Incubation, LLC",
+        "website": "www.mhubchicago.com/accelerator",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T19:28:11.687Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fbb09bca-c1f6-404f-84bd-923c8aa01979",
+        "name": "mHUB Chicago",
+        "website": "mhubchicago.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T19:28:19.256Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 155,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c4c93510-62d8-4f35-8c39-958ca8412977",
+        "name": "Middlefield Limited",
+        "website": "www.middlefield.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:30:14.823Z",
+        "criteria_count": 8,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "160af67e-7da3-413e-a297-cb69c4882a21",
+        "name": "Middlefield Venture Group",
+        "website": "www.middlefield.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:30:33.962Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 156,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "20add4a0-d949-438d-9ea4-431551914a86",
+        "name": "MidOcean Credit Fund Management, L.P.",
+        "website": "www.midoceanpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:30:57.849Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "985e9bf6-d21d-4dee-a323-e2c2eb880c76",
+        "name": "MidOcean US Advisor, LP",
+        "website": "www.midoceanpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:31:05.196Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 157,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c26dfe9e-624d-4277-8107-a4d680d87c1e",
+        "name": "Morgan Creek Capital Management, LLC",
+        "website": "www.morgancreekcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:40:02.520Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9e06713a-72d2-4f99-b9a2-dbdb560b381a",
+        "name": "Morgan Creek Digital Assets, LLC",
+        "website": "www.morgancreekcap.com/morgan-creek-digital/",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T19:40:12.029Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 158,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "fb9b5789-1200-4136-b254-3413b73c8ed5",
+        "name": "Mosaic Capital Corporation",
+        "website": "www.mosaiccapitalcorp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:45:41.635Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7d306ac3-0fbf-4e85-90d1-55fc5c003025",
+        "name": "Mosaic Capital Partners",
+        "website": "www.mosaicvp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:45:54.405Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 159,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4fc56f6f-7426-48f7-b4f8-ff15ea9bd005",
+        "name": "Mountain Capital Management, LLC",
+        "website": "www.mountainlp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:46:49.307Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e5d3380a-6802-4bbd-9ffb-07161f9d8e04",
+        "name": "Mountain Group Capital, LLC",
+        "website": "mtngp.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T19:47:04.631Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 160,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d6e87d4c-60aa-4b8d-8343-7c394611470d",
+        "name": "MPE Mgt. Co., LLC",
+        "website": "www.mpepartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:47:27.202Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "465b34a3-6988-402b-819f-bbf9188a0986",
+        "name": "MPE Partners",
+        "website": "https://www.mpepartners.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-23T03:47:33.591Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 161,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "0c611503-9a6e-48bc-868d-675684f01519",
+        "name": "Napier Park Financial Partners",
+        "website": "www.napierparkglobal.com/private-equity",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:50:24.221Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c552cb4f-d040-489f-962b-df426b3b80e2",
+        "name": "Napier Park Global Capital (US) LP",
+        "website": "www.napierparkglobal.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:50:32.016Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 162,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c4d77021-e071-4865-b133-ed7d0c77b09c",
+        "name": "Natural Capital",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:51:12.894Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "12409d67-d215-4c77-82eb-25542a3bb2ae",
+        "name": "Natural Capital Management, LLC",
+        "website": "www.naturalcapitalfirm.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:51:18.940Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 163,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3fb61e70-7e57-4c70-8aab-9dc410d52bbf",
+        "name": "New Harbor Capital",
+        "website": "https://www.newharborcap.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T02:21:52.423Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6a1720c4-37a0-4996-a122-34a5c7b80fdc",
+        "name": "New Harbor Capital Management, LP",
+        "website": "www.newharborcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T19:55:47.519Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 164,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "62d14299-8813-44db-8a39-1882d88ccc81",
+        "name": "NewMarket Capital Partners, LLC",
+        "website": "www.newmarketcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:01:15.391Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "561d8faa-c7a6-4bd9-a8ff-a175016c3134",
+        "name": "Newmarket Investment Management, LP",
+        "website": "www.newmarketcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:01:29.202Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 165,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "33b93adb-8cbf-4055-9331-d16a265a4059",
+        "name": "NewSpring Capital, LLC",
+        "website": "www.newspringcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:02:23.125Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "fea0b163-2ce0-4427-b750-2b106e8dbab6",
+        "name": "NewSpring Franchise",
+        "website": "newspringcapital.com/funds/franchise",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:02:33.146Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 166,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "cf62a85d-cc43-4296-ad4c-c77b2d42243d",
+        "name": "Nexus Capital Management LP",
+        "website": "www.nexuslp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:08:59.083Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "70d8530e-96a7-494b-b809-1bbeea6d9bb8",
+        "name": "Nexus Group, LLC",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T20:09:06.020Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 167,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d4f8bae0-37e5-4ffd-9fc8-338796d6bf6f",
+        "name": "Northgate Capital Group, L.L.C.",
+        "website": "www.northgate.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T20:15:55.733Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "297c22ee-8c3f-4a54-a4a0-1480d380b477",
+        "name": "Northgate CFI, S. de R.L. de C.V.",
+        "website": "www.northgate.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:16:03.616Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 168,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a423b621-97f8-4ab2-bc10-7a781bcdf3ec",
+        "name": "OCP Fund Management LP",
+        "website": "www.overbaycapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:25:00.965Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6f551ded-be75-4c9d-94a5-ff0e0dc1cdba",
+        "name": "Overbay Capital Partners Inc.",
+        "website": "www.overbaycapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:36:29.370Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 169,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9ff47f60-5fbe-43e5-aacd-ff88f0df4c38",
+        "name": "Omega Capital Management, LLC",
+        "website": "www.omegacapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:28:42.672Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "841fd891-63e5-4ca5-b55e-20eb997f4582",
+        "name": "Omega Fund Management, LLC",
+        "website": "omegafunds.com",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-23T20:28:51.235Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 170,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "28810889-defa-4c77-909f-164a46dc4816",
+        "name": "Peloton Capital Management",
+        "website": "www.pelotoncapitalmanagement.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:52:39.549Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "dcf28513-8081-415a-b09f-d36aa8712ba0",
+        "name": "Peloton Equity, LLC",
+        "website": "www.pelotonequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:52:48.707Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 171,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "57218108-de3b-4339-bbc6-998bcf66bb11",
+        "name": "Petra Capital Partners",
+        "website": "https://petracapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-09-21T03:28:24.854Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f68f23d6-d47d-4a8a-b1e0-9808970461fd",
+        "name": "Petra Capital Partners, LLC",
+        "website": "www.petracapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T20:57:28.027Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 172,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5c3b5f20-0c01-4c6e-a715-20ed4e0f522d",
+        "name": "PNC Erieview Capital",
+        "website": "www.pnc.com/erieview?WT.mc_id=Erie14_Offline_0001",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:04:42.870Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9bf396b4-af5f-4d9e-b691-a0e6d3d31e69",
+        "name": "PNC Mezzanine Capital",
+        "website": "www.pnc.com/mezzanine",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:04:50.900Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 173,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b05e693f-70da-4df3-9f31-04bf17032025",
+        "name": "Poseidon Asset Management, LLC",
+        "website": "Poseidonassetmanagement.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T21:06:47.088Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2919316d-0f2b-4a56-bc98-cd0a3b4b2d58",
+        "name": "Poseidon Investment Management LLC",
+        "website": "www.poseidonassetmanagement.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:06:53.028Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 174,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "2d9d7ac9-9e4c-429b-a020-dbeb0134099a",
+        "name": "PPC Enterprises LLC",
+        "website": "www.ppcenterprises.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:08:26.429Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "86ff0d15-66da-4c31-be4c-caec3cd466f1",
+        "name": "PPC Investment Partners LP",
+        "website": "www.ppcpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:08:41.860Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 175,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4acfeb75-7946-49a6-8143-302eea3b457e",
+        "name": "PPM America Capital Partners, LLC",
+        "website": "www.ppmamerica.com/investment-solutions/our-strategies/private-equity",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:08:57.929Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "4a35ee6a-4a06-4b91-ad9f-2242dec1405d",
+        "name": "PPM America, Inc.",
+        "website": "www.ppmamerica.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:12:03.042Z",
+        "criteria_count": 4,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 176,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "40d18ea7-9148-439b-aeb7-2ba3e98e16c9",
+        "name": "Primus Capital",
+        "website": "https://primuscapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-22T04:54:09.600Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "3d1204db-62db-45d9-be33-bd8bba73c374",
+        "name": "Primus Capital Partners, Inc.",
+        "website": "primuscapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-23T21:14:42.976Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 177,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "e50b8b91-3ea7-4b34-a59a-2c1c8d2773d5",
+        "name": "Princeville Capital",
+        "website": "www.princeville-capital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T21:15:12.567Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "6b85cee9-f717-48a8-8551-ce224bd9431f",
+        "name": "Princeville Global",
+        "website": "www.princeville-capital.com/princeville-global",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-23T21:15:21.003Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 178,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9abcee56-3742-4a24-8632-40781a666d8a",
+        "name": "Promus Asset Management, LLC",
+        "website": "promusholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T04:46:23.615Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "19122c47-4d87-478d-8769-5f2b906afed8",
+        "name": "Promus Capital, LLC",
+        "website": "promusholdings.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T04:46:29.528Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 179,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "237328f8-d6ca-4da9-9add-df0c960284c9",
+        "name": "Quantum Capital Management, LLC",
+        "website": "www.quantumadv.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T04:53:54.093Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "41b94d63-2104-4119-8668-ceabc278ece1",
+        "name": "Quantum Capital Partners",
+        "website": "www.quantumcapitalpartners.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T04:54:00.279Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 180,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "34f49408-640c-4091-a30a-509a74f96721",
+        "name": "RC Capital",
+        "website": "https://rccf.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T03:04:55.468Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b9e282f1-929e-4e64-915d-9eac9d2ca087",
+        "name": "River Cities Capital Fund Management",
+        "website": "www.rccf.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T05:17:04.388Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 181,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "880679f8-dffb-479f-8a81-530c30fd7377",
+        "name": "RCP Advisors 2, LLC",
+        "website": "www.rcpadvisors.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T04:59:51.851Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ad5b7fc5-dd6a-4d3c-b87f-1709b5d5322d",
+        "name": "RCP Advisors, LLC",
+        "website": "www.rcpadvisors.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T04:59:58.038Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 182,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "d460383c-5a0b-44de-a1dc-ce812d21b84f",
+        "name": "Resilience Capital Partners",
+        "website": "https://resiliencecapital.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-24T03:51:02.000Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "1e95b698-f8b8-475e-af13-4d9e9b12310a",
+        "name": "Resilience Capital Partners LLC",
+        "website": "www.resiliencecapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:07:57.300Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 183,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "c55b0eeb-f855-4b11-aaa7-9048627dde2d",
+        "name": "Rock Creek Capital, LLC",
+        "website": "www.rockcreekcapllc.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:19:26.430Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "30d7119f-139a-4574-820a-56c1eab89847",
+        "name": "Rock Creek Group LLC",
+        "website": "www.therockcreekgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:19:33.669Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 184,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "6b1bc60c-085d-4417-b17c-eee0a9f4ef95",
+        "name": "Rockwood Capital, LLC",
+        "website": "www.rockwoodcap.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:21:00.823Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "5cc88cbf-8149-4ea1-91f6-3c5b6d83997c",
+        "name": "Rockwood Equity Partners, LLC",
+        "website": "www.rockwoodequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:21:12.348Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 185,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "27b07e34-5cb2-4cda-a6fa-07d54226a20f",
+        "name": "RSF Capital Management",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:27:01.783Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "96d2953c-bba4-4028-9aa1-5d3d6c3aa51d",
+        "name": "RSF Partners, Inc.",
+        "website": "www.rsfpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:27:08.250Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 186,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "1bfebe38-cdec-4df9-bf20-c5e066e120db",
+        "name": "Sands Capital Alternatives, LLC",
+        "website": "www.sandscapital.com/global-ventures/",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T05:36:04.155Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "e6f9d91d-6f61-4081-ad59-368662e3dbff",
+        "name": "Sands Capital Management, LLC",
+        "website": "www.sandscapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T05:36:54.833Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 187,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bbfcd7ef-48da-45c2-949e-0e7d09ce2511",
+        "name": "Search Fund Management, LLC",
+        "website": "www.searchfunds.net",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:44:53.439Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "7031335a-69b6-425f-9797-db06703f4413",
+        "name": "Search Fund Ventures, LLC",
+        "website": "www.searchfundventures.co",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T05:45:00.515Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 188,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "462ff96c-67e2-4def-be8a-8b4299f7fe22",
+        "name": "Seidler Kutsenda Management Company LLC",
+        "website": "www.sepfunds.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:47:29.337Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d60fac0f-c536-4679-933e-f7d95d5a11fd",
+        "name": "Seidler Kutsenda Management Company, LLC",
+        "website": "sepfunds.com/#what-we-do",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:47:35.730Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 189,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4351ae1d-a319-4f94-86db-29cd6b139111",
+        "name": "Shore Capital Partners",
+        "website": "https://www.shorecp.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T02:22:05.354Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "89350ce0-8708-4a56-9fa3-8050dc7a9415",
+        "name": "Shore Capital Partners, LLC",
+        "website": "www.shorecp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T05:53:10.218Z",
+        "criteria_count": 5,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 190,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9387fd7c-a097-48c8-9d21-865a6a1cc376",
+        "name": "Soleus Capital LLC",
+        "website": "www.soleuscapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:07:30.325Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f73e9f4f-e916-4c86-94d9-d6c11a14b561",
+        "name": "Soleus Capital Management, L.P.",
+        "website": "www.soleuscapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:07:37.117Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 191,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "68c4ac7e-d282-42d0-be40-a3374dd90acd",
+        "name": "Sprout Capital Partners Management, LLC",
+        "website": "www.sproutcapitalpartners.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:15:27.956Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "52b2c31a-307f-46f3-b6b0-f301f21b08f2",
+        "name": "Sprout Group",
+        "website": null,
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:15:33.171Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 192,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a527b5c5-d9d5-4c81-ab33-4d8f6aa4786f",
+        "name": "Starwood Capital Group Management, L.L.C.",
+        "website": "www.starwoodcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:19:38.950Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d36f5ec1-bc05-4a2c-be72-752cc8fd640a",
+        "name": "Starwood Capital Operations, LLC",
+        "website": "www.starwoodcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:19:46.893Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 193,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "43cf8d1f-195f-4354-b6b9-d191dccb74a9",
+        "name": "STG Partners, LLC",
+        "website": "www.stg.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:22:45.661Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "64650184-840c-4a61-9d31-10d5c5da478e",
+        "name": "Symphony Technology Group, LLC",
+        "website": "stg.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:35:54.383Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 194,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3b06132f-e394-4ce2-89b4-49994ddf90df",
+        "name": "Stonetree Capital Advisors, LLC",
+        "website": "stonetreemgt.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:25:46.208Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "cc0033a0-432f-4e21-872d-7108b037860e",
+        "name": "StoneTree Investment Partners LLC",
+        "website": "www.stonetreeinvest.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:25:56.083Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 195,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "b0276f4e-32bf-4928-8484-6e8c34c5d003",
+        "name": "Sunstone Management, Inc.",
+        "website": "www.sunstoneinvestment.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:31:55.242Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f7dc1c03-1a53-4d11-a6f2-b63bee108091",
+        "name": "Sunstone Partners Management, LLC",
+        "website": "www.sunstonepartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:32:02.271Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 196,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "9c3e1246-6c89-4084-9ec0-35165376fd1e",
+        "name": "Svoboda Capital Partners",
+        "website": "https://svoco.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-12T02:22:01.485Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "c917c000-2a48-4478-9754-4e31bb8937cf",
+        "name": "Svoboda Capital Partners LLC",
+        "website": "www.svoco.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:34:08.702Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 197,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "405e4de6-9068-40e0-8256-c4c23160f168",
+        "name": "Tandem",
+        "website": null,
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:40:17.821Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2452f9ab-dca2-4607-9637-4bc20ec1f287",
+        "name": "Tandem Partners Group, Llc",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-24T06:40:23.040Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 198,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "543cf917-5e9e-44f6-8fa8-cf94b3ed1cfd",
+        "name": "TCG Capital Management, L.P.",
+        "website": "www.tcg.co",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:41:30.463Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "355ea89d-7be0-4c78-a0c8-719f803c0e2f",
+        "name": "TCG Capital Management, LP",
+        "website": "www.tcg.co",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T06:41:36.897Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 199,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "3b9d57f1-4c80-4a3a-b288-65d1701680ba",
+        "name": "Tecum Capital",
+        "website": "https://www.tecum.com/",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-08-29T03:28:14.942Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "209a0b86-df71-4461-8238-bae6af63e37e",
+        "name": "Tecum Capital Management, Inc.",
+        "website": "www.tecum.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:43:31.585Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 200,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "a9344c6a-fb61-4265-8ab6-86e62bc09125",
+        "name": "The Catalyst Capital Group Inc.",
+        "website": "www.catcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:49:58.360Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f016e812-dd2c-43d2-b2fc-745bf7e5a862",
+        "name": "The Catalyst Group, Inc.",
+        "website": "www.tcgfunds.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T06:50:09.817Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 201,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ffcc4a93-3158-4ad4-a783-72f05118efc5",
+        "name": "Thrivent Investment Capital Advisors, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:50:05.222Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "67b7238a-625e-435b-9673-3a7759e7ca34",
+        "name": "Thrivent Investment Management Inc.",
+        "website": "www.thrivent.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T15:50:20.227Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 202,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "fe17d58c-e919-45ea-946e-f0d0be20a1af",
+        "name": "Transition Capital Partners, LLC",
+        "website": "www.tcplp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:00:42.562Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b5c3b663-3445-4328-b680-0a424122e717",
+        "name": "Transition Equity Partners, LLC",
+        "website": "transitionequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:00:50.960Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 203,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "f531d59f-4515-4a6f-b959-32cb282ec735",
+        "name": "Transportation Resource Partners, LP",
+        "website": "www.trpfund.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:01:09.409Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "2f8355be-02e4-401b-a1f3-0cfd84c625a8",
+        "name": "TRP Capital Advisors, LLC",
+        "website": "www.trpfund.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:09:21.912Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 204,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "74578606-8130-416a-9b30-98f23eaa71e9",
+        "name": "Triatomic Capital Private LP",
+        "website": "www.triatomic.ai",
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-24T16:04:12.747Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "8f6c02b7-b085-44b8-835f-1a31cb3f7c8b",
+        "name": "Triatomic Management LP",
+        "website": "www.triatomic.ai",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:04:19.511Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 205,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "03c9c978-09c5-404f-8307-4bd0cd79aaac",
+        "name": "Trident Capital, Inc.",
+        "website": "www.tridentcap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:04:44.227Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "50cbb130-a5db-45cf-866a-5f1d7b9aad32",
+        "name": "Trident Management LLC",
+        "website": "www.trident.co",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:04:56.528Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 206,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "db080850-964f-4097-bdc9-5d4f142ac6fc",
+        "name": "Triplepoint Advisers LLC",
+        "website": "www.triplepointcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:07:01.436Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "df198bae-9f95-4444-840f-fef5eb7990c7",
+        "name": "TriplePoint Capital, LLC",
+        "website": "www.triplepointcapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:07:09.765Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 207,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "aa40ed7f-f27f-4886-ac35-256850398165",
+        "name": "Ultra Capital Management LLC",
+        "website": "ultracm.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:15:09.808Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "b54a17d6-f89b-4f24-bfaf-be6ef53b14c2",
+        "name": "Ultra Capital, LLC",
+        "website": "www.ultracapital.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:15:17.564Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 208,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "bd439487-78d7-4aa2-86b9-b215040aa932",
+        "name": "Unique Capital Management, LLC",
+        "website": "www.unique-capital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:16:42.443Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "be47686c-c594-488c-abd2-e0f3239a9192",
+        "name": "Unique Investment Corporation",
+        "website": "www.uniquepartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:16:51.199Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 209,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "02dffa77-a2f2-48b3-81af-2d1e92b375da",
+        "name": "Variant Equity Advisors, LLC",
+        "website": "variantequity.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:22:36.384Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "0843e19d-776c-49b8-ae0a-cf902360d24a",
+        "name": "Variant Equity, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:22:43.214Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 210,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "ccc1893a-a0e2-4631-ae58-568fccb7e3ff",
+        "name": "Velocity Capital Management LLC",
+        "website": "www.velocitycm.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:23:55.201Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ad37a501-bf39-405b-a95c-8fa98c16e65d",
+        "name": "Velocity Fund Management",
+        "website": null,
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:24:01.445Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 211,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "1e39f2ea-080f-40a1-8d16-2a77d76d55bc",
+        "name": "Venture Investment Management Co., LLC",
+        "website": "www.viafunds.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:24:56.207Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "92b8a51c-5c2c-486c-8969-69d56fc979bd",
+        "name": "Venture Investment Partners, LLC",
+        "website": null,
+        "buyer_type": "Venture Capital Firm",
+        "created_at": "2026-10-24T16:25:02.666Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 212,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "e076b7db-120e-467b-abd3-bff682a9a2e3",
+        "name": "W Capital Management, LLC",
+        "website": "www.wcapgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:36:25.983Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "aecdb729-eccd-49bc-a256-16ba2517457d",
+        "name": "W Investments",
+        "website": "winvestments.ca",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:36:34.145Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 213,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "4e13d6ba-f040-4471-9f5b-c0a9b5423020",
+        "name": "Wafra Inc.",
+        "website": "www.wafra.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:36:56.064Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "9f6e5777-1b9d-4de4-b7ff-99740f6168d7",
+        "name": "Wafra Partners LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:37:03.677Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 214,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "feb5d379-a1b8-4305-ba25-fc6676e811d5",
+        "name": "Waveland Capital Group LLC",
+        "website": "www.wavelandgroup.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:41:09.854Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "ea322c25-c216-47e1-8950-b23acd4df712",
+        "name": "Waveland Investments, LLC",
+        "website": null,
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:41:15.563Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 215,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "03963429-35e7-4686-82f3-ab172c2e97c1",
+        "name": "Waypoint Capital Partners Advisors, LLC",
+        "website": "www.waypointcapitalpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:42:29.796Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "5366c1ac-5a2b-498f-859d-c995358e6d2d",
+        "name": "Waypoint Investment Partners Inc.",
+        "website": "www.waypointinvestmentpartners.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:42:36.206Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 216,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "fc533630-726b-4c09-a01d-d5e19bd1bfa8",
+        "name": "Wellington Management Company LLP",
+        "website": "www.wellington.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:44:46.851Z",
+        "criteria_count": 3,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "86dfdb29-96ee-4221-b980-4299b771a10b",
+        "name": "Wellington Management Group LLP",
+        "website": "www.wellington.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:45:04.536Z",
+        "criteria_count": 2,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 217,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "5068970c-7f5c-4c69-bb60-7199eb00b427",
+        "name": "West Monroe Capital",
+        "website": "www.wmcapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:46:17.476Z",
+        "criteria_count": 7,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "d4e387b0-9fe5-4af3-a0ba-1fd2516873bf",
+        "name": "West Monroe Partners, LLC",
+        "website": "www.westmonroe.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:46:31.279Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 218,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "75a47e44-9cb9-462a-b68e-0b85bb6e5e77",
+        "name": "WestCap Investment Partners, LLC",
+        "website": "www.westcap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:47:36.563Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "095e7dee-80b8-4d63-baf1-4eb8b909aed2",
+        "name": "Westcap Management, LLC",
+        "website": "www.westcap.com",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-10-24T16:47:44.004Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 219,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "767b0b40-1e59-4051-afd9-31c83850ced7",
+        "name": "Whistler Capital Partners",
+        "website": "https://whistlercapital.com/",
+        "buyer_type": "Growth Equity Firm",
+        "created_at": "2026-09-20T16:45:59.466Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "468b11ae-3aec-4854-857f-7ca92c8edcb8",
+        "name": "Whistler Capital Partners LLC",
+        "website": "www.whistlercapital.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:50:51.031Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 220,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "f9835ba9-6a73-4c2a-85c9-5ca19469813d",
+        "name": "Wincove Private Holdings, LP",
+        "website": "www.wincove.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T16:55:10.260Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "a125afa9-b017-4411-83b5-43ce8d19ac58",
+        "name": "WPH GP, LLC",
+        "website": "www.wincove.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T17:00:39.693Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  },
+  {
+    "clusterId": 221,
+    "count": 2,
+    "orgs": [
+      {
+        "id": "aa6257b1-49e9-4a0e-80a3-3927f945be0e",
+        "name": "ZelnickMedia Corporation",
+        "website": "zmclp.com",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T17:06:26.114Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      },
+      {
+        "id": "f38e9ca0-e80e-4d14-8843-45ca69e6003c",
+        "name": "ZMC Advisors. L.P.",
+        "website": "WWW.ZMCLP.COM",
+        "buyer_type": "PE Firm",
+        "created_at": "2026-10-24T17:07:33.632Z",
+        "criteria_count": 1,
+        "profile_count": 0,
+        "listing_count": 0
+      }
+    ]
+  }
+]

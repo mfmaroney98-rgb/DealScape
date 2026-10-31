@@ -1,0 +1,391 @@
+{
+  "totalToClean": 2918,
+  "collisions": [
+    {
+      "cleanedName": "CS Capital Partners",
+      "items": [
+        {
+          "id": "f301553e-6f5b-428a-b464-07b54957a975",
+          "original": "CS Capital Partners",
+          "website": "www.cscapitalpartners.com",
+          "criteria_count": "1"
+        },
+        {
+          "id": "e7280de0-2385-47ca-a975-35f86f352f02",
+          "original": "CS Capital Partners, L.L.C.",
+          "website": null,
+          "criteria_count": "1"
+        }
+      ]
+    },
+    {
+      "cleanedName": "Granite Capital Partners",
+      "items": [
+        {
+          "id": "7dbfab89-b31a-4868-aa55-da6fb20c2643",
+          "original": "Granite Capital Partners, L.L.C.",
+          "website": null,
+          "criteria_count": "1"
+        },
+        {
+          "id": "aa5b7488-3652-459b-abd9-112872e82145",
+          "original": "Granite Capital Partners, LLC",
+          "website": "www.granitecappartners.com",
+          "criteria_count": "1"
+        }
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "id": "4069469c-c07f-45b5-ab3e-ffaeb4a896e8",
+      "orig": "10 East Partners LLC",
+      "cleaned": "10 East Partners",
+      "criteria_count": 1,
+      "website": "www.10east.co"
+    },
+    {
+      "id": "fe882872-973b-42f4-a8bf-0a33fe32eaf7",
+      "orig": "10H Capital Management, LLC",
+      "cleaned": "10H Capital Management",
+      "criteria_count": 1,
+      "website": "www.10hcapital.com"
+    },
+    {
+      "id": "6d3175a6-24f9-4c39-bc36-1e8fe1b93ad5",
+      "orig": "137 Ventures Management LLC",
+      "cleaned": "137 Ventures Management",
+      "criteria_count": 1,
+      "website": "www.137ventures.com"
+    },
+    {
+      "id": "8d76ad6e-bbf6-4e23-abe4-9cc66ba9a2aa",
+      "orig": "13th Floor Investments, LLC",
+      "cleaned": "13th Floor Investments",
+      "criteria_count": 1,
+      "website": "www.13fi.com"
+    },
+    {
+      "id": "b6a0a774-4f10-4990-b5c8-577661712809",
+      "orig": "1801 Admin, LLC",
+      "cleaned": "1801 Admin",
+      "criteria_count": 1,
+      "website": "www.versa.com"
+    },
+    {
+      "id": "30e6a75d-0b22-4ab2-b686-47cbea9165eb",
+      "orig": "1901 Partners Management, Lp",
+      "cleaned": "1901 Partners Management",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "3dd06b57-436d-4147-be1f-982c3d21183e",
+      "orig": "21st Century Group, LLC",
+      "cleaned": "21st Century Group",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "ca345837-2fe8-4062-b1de-dc966ec0936d",
+      "orig": "22C Capital LLC",
+      "cleaned": "22C Capital",
+      "criteria_count": 5,
+      "website": "www.22ccapital.com"
+    },
+    {
+      "id": "9aa37bb1-2305-4d5c-bd13-fec989e97d8d",
+      "orig": "25Madison, LLC",
+      "cleaned": "25Madison",
+      "criteria_count": 1,
+      "website": "www.25madison.com"
+    },
+    {
+      "id": "b649c749-1c8a-433c-aff9-6e4ad0306529",
+      "orig": "2M Companies, Inc.",
+      "cleaned": "2M Companies",
+      "criteria_count": 1,
+      "website": "www.2m.com"
+    },
+    {
+      "id": "c0902e8a-b762-4641-933d-94430bc5a28f",
+      "orig": "354 Partners LLC",
+      "cleaned": "354 Partners",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "7e177416-3aa4-4580-b16d-393e4442e5de",
+      "orig": "3G Capital, Inc.",
+      "cleaned": "3G Capital",
+      "criteria_count": 1,
+      "website": "www.3g-capital.com"
+    },
+    {
+      "id": "b7e45ebc-2c93-4efe-9357-364f770d72d3",
+      "orig": "3L Capital Management, LLC",
+      "cleaned": "3L Capital Management",
+      "criteria_count": 1,
+      "website": "www.3lcap.com"
+    },
+    {
+      "id": "18027abd-964a-4f6c-9333-816987154742",
+      "orig": "401 Capital Partners Inc.",
+      "cleaned": "401 Capital Partners",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "8c141a72-95f6-48bf-9329-572470add3b5",
+      "orig": "4130 Partners LLC",
+      "cleaned": "4130 Partners",
+      "criteria_count": 1,
+      "website": "4130partners.com"
+    },
+    {
+      "id": "994fd0ff-c465-431d-a015-219fc7cfacaf",
+      "orig": "4612 Group, LLC",
+      "cleaned": "4612 Group",
+      "criteria_count": 1,
+      "website": "www.4612group.com"
+    },
+    {
+      "id": "161184cd-6654-49bf-90e4-1168a0006147",
+      "orig": "50T Holdings, LLC",
+      "cleaned": "50T Holdings",
+      "criteria_count": 1,
+      "website": "50tfunds.com"
+    },
+    {
+      "id": "29b71935-2160-4535-aa6a-c0b2a760c2e6",
+      "orig": "52nd Street Capital Advisors LLC",
+      "cleaned": "52nd Street Capital Advisors",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "e60dbb82-fc9c-404b-ae31-868dc08db2dd",
+      "orig": "5th Century Partners LP",
+      "cleaned": "5th Century Partners",
+      "criteria_count": 1,
+      "website": "www.5cpartners.com"
+    },
+    {
+      "id": "e482a4a2-92a5-4926-858e-aa4f5fc7c0fc",
+      "orig": "747 Capital, LLC",
+      "cleaned": "747 Capital",
+      "criteria_count": 1,
+      "website": "www.747capital.com"
+    },
+    {
+      "id": "eab677f4-4927-4dd6-ac2e-3a0e9776edae",
+      "orig": "8 Pillars Capital LLC",
+      "cleaned": "8 Pillars Capital",
+      "criteria_count": 1,
+      "website": "8pillarscapital.com"
+    },
+    {
+      "id": "c76819d2-dafe-4202-94ba-b4c64a032509",
+      "orig": "9Yards Capital Management LP",
+      "cleaned": "9Yards Capital Management",
+      "criteria_count": 1,
+      "website": "9yardscapital.com"
+    },
+    {
+      "id": "57bdc4c9-6ff5-4373-8a2a-8e0966ebbeec",
+      "orig": "A-Venture Capital LLC",
+      "cleaned": "A-Venture Capital",
+      "criteria_count": 1,
+      "website": "www.aventure-capital.com"
+    },
+    {
+      "id": "7fa1c35b-abe6-4594-8dc7-04a195c40e04",
+      "orig": "AAF Management Ltd.",
+      "cleaned": "AAF Management",
+      "criteria_count": 1,
+      "website": "www.aaf.vc"
+    },
+    {
+      "id": "8f72d9d9-b275-43ae-8f6e-c3dad6a550b4",
+      "orig": "AAM Capital Partners, L.P.",
+      "cleaned": "AAM Capital Partners",
+      "criteria_count": 1,
+      "website": "www.aamcompany.com"
+    },
+    {
+      "id": "16249cc4-d26c-48dd-9d1a-e9af8eb4b879",
+      "orig": "Abacus Capital Group LLC",
+      "cleaned": "Abacus Capital Group",
+      "criteria_count": 1,
+      "website": "www.abacuscapitalgroup.com"
+    },
+    {
+      "id": "d10a7039-9ac1-486c-9b29-8f4c9333897a",
+      "orig": "Abbott Capital Management, LLC",
+      "cleaned": "Abbott Capital Management",
+      "criteria_count": 1,
+      "website": "www.abbottcapital.com"
+    },
+    {
+      "id": "25dddd5a-c37b-4397-99c2-a4a11bfca339",
+      "orig": "abrdn Inc.",
+      "cleaned": "abrdn",
+      "criteria_count": 1,
+      "website": "www.aberdeeninvestments.com"
+    },
+    {
+      "id": "129a850f-b903-4811-8507-81dac798a03a",
+      "orig": "ABRY Partners, LLC",
+      "cleaned": "ABRY Partners",
+      "criteria_count": 2,
+      "website": "https://abry.com"
+    },
+    {
+      "id": "d24f250e-b9ee-40de-a975-6b11d2a9646a",
+      "orig": "ABS Capital Partners, Inc.",
+      "cleaned": "ABS Capital Partners",
+      "criteria_count": 1,
+      "website": "https://www.abscapital.com"
+    },
+    {
+      "id": "847992d1-2078-490d-8087-f081a87362b0",
+      "orig": "Acacia Partners, LLC",
+      "cleaned": "Acacia Partners",
+      "criteria_count": 1,
+      "website": "https://www.acaciapartnersllc.com"
+    },
+    {
+      "id": "8d784f9a-0326-4674-9c0f-0d021fcb396a",
+      "orig": "Accel Management Co, Inc.",
+      "cleaned": "Accel Management",
+      "criteria_count": 1,
+      "website": "www.accel.com"
+    },
+    {
+      "id": "ba3984c9-4893-4b71-8477-9b3c25561c84",
+      "orig": "Accent Capital, LLC",
+      "cleaned": "Accent Capital",
+      "criteria_count": 1,
+      "website": "www.accentcap.com"
+    },
+    {
+      "id": "79547b83-8a5a-4804-ba8c-be70336a69ea",
+      "orig": "Accial Capital Management LLC",
+      "cleaned": "Accial Capital Management",
+      "criteria_count": 1,
+      "website": "www.accialcapital.com"
+    },
+    {
+      "id": "791b6eed-1474-4c55-a05d-3a5de7f7dfbf",
+      "orig": "Accolade Capital Management, LLC",
+      "cleaned": "Accolade Capital Management",
+      "criteria_count": 2,
+      "website": "www.accoladepartners.com"
+    },
+    {
+      "id": "883baf10-e56f-4cad-8c88-e96827003873",
+      "orig": "Accomplice Management, LLC",
+      "cleaned": "Accomplice Management",
+      "criteria_count": 1,
+      "website": "www.accomplice.co"
+    },
+    {
+      "id": "610bd0d5-5c00-4feb-b983-7501ec86e0a2",
+      "orig": "Accord Group Holdings LLC",
+      "cleaned": "Accord Group Holdings",
+      "criteria_count": 1,
+      "website": "accord-group.net"
+    },
+    {
+      "id": "e32203e8-a6b3-4588-925f-3ddb8861943b",
+      "orig": "Accretia Capital, LLC",
+      "cleaned": "Accretia Capital",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "a64910e5-315e-4d1e-92b8-bbd5c664c2ef",
+      "orig": "Accretive Capital Partners LLC",
+      "cleaned": "Accretive Capital Partners",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "45a0eb53-697c-4b90-ab24-f31ca8cbdbea",
+      "orig": "Accretive Solutions Capital Partners, Inc.",
+      "cleaned": "Accretive Solutions Capital Partners",
+      "criteria_count": 1,
+      "website": null
+    },
+    {
+      "id": "cb4c4254-52cf-4f83-ad0f-231ae4d7b3a0",
+      "orig": "Accrue Sports and Entertainment Ventures, LLC",
+      "cleaned": "Accrue Sports and Entertainment Ventures",
+      "criteria_count": 1,
+      "website": "capabilities.g-funksports.com/Accrue"
+    },
+    {
+      "id": "18f2dec4-0376-49c6-a69b-312bcad0c6d8",
+      "orig": "Achieve Partners Management, LLC",
+      "cleaned": "Achieve Partners Management",
+      "criteria_count": 2,
+      "website": "www.achievepartners.com"
+    },
+    {
+      "id": "4055e8b5-908a-4ca0-8b6c-b2501883a7e0",
+      "orig": "ACI Capital Co., LLC",
+      "cleaned": "ACI Capital",
+      "criteria_count": 1,
+      "website": "www.acicapital.com"
+    },
+    {
+      "id": "ee113353-ab4e-44bd-b896-4de8d5d1d1ff",
+      "orig": "Aclaria Capital, LLC",
+      "cleaned": "Aclaria Capital",
+      "criteria_count": 1,
+      "website": "www.aclaria.com"
+    },
+    {
+      "id": "565e9df8-cd30-4def-adbb-64650beb03e2",
+      "orig": "ACM Capital Partners, LLC",
+      "cleaned": "ACM Capital Partners",
+      "criteria_count": 1,
+      "website": "www.acmcapitalpartners.com"
+    },
+    {
+      "id": "dbe7ce2f-1fa7-49c2-ab9e-040dfd1a9d37",
+      "orig": "ACM Management Company, LLC",
+      "cleaned": "ACM Management",
+      "criteria_count": 1,
+      "website": "www.agriculturecapital.com"
+    },
+    {
+      "id": "5a539c08-82ea-4a74-8725-29dc941e1d0a",
+      "orig": "ACME, LLC",
+      "cleaned": "ACME",
+      "criteria_count": 1,
+      "website": "www.acme.vc"
+    },
+    {
+      "id": "16df3164-5f7d-43a5-8806-1255322fea54",
+      "orig": "ACON Investments, L.L.C.",
+      "cleaned": "ACON Investments",
+      "criteria_count": 1,
+      "website": "aconinvestments.com"
+    },
+    {
+      "id": "fc9e224c-ba77-403b-ad06-34c94781a080",
+      "orig": "Acorn Growth Companies, LLC",
+      "cleaned": "Acorn Growth Companies",
+      "criteria_count": 1,
+      "website": "www.acorncapitalmanagement.com"
+    },
+    {
+      "id": "92c7dfbb-7d9c-4e1a-b46f-5ca3d5a7b8f7",
+      "orig": "Acquire Investments, LLC",
+      "cleaned": "Acquire Investments",
+      "criteria_count": 1,
+      "website": "www.acquireinvestmentsgrowthfunds.com"
+    }
+  ]
+}

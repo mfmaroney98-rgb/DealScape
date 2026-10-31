@@ -1,0 +1,1002 @@
+[
+  {
+    "o1": {
+      "id": "6194d7a8-cef8-4f58-9249-8a085ce13093",
+      "name": "Morgan Stanley Private Equity",
+      "website": "www.morganstanley.com/im/en-us/capital-seeker/capabilities/private-equity.html",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:43:20.414Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "4dca1526-ef0a-4ce4-9434-510b95537e41",
+      "name": "Morgan Stanley Private Equity Asia, Inc.",
+      "website": "www.morganstanley.com/im/en-us/individual-investor/about-us/people-and-teams/investment-teams/private-equity-asia-team.html",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:43:45.474Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "morganstanley.com",
+    "dom2": "morganstanley.com"
+  },
+  {
+    "o1": {
+      "id": "3f4715ec-ae24-44a3-9205-8fed1fddff84",
+      "name": "Crow Holdings",
+      "website": "www.crowholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:49:55.667Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "12b065ca-7d79-4c11-b134-6ccd3c27b21a",
+      "name": "Crow Holdings Capital Partners, L.L.C.",
+      "website": "www.crowholdings.com/investment-management",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:50:16.579Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "crowholdings.com",
+    "dom2": "crowholdings.com"
+  },
+  {
+    "o1": {
+      "id": "284e1f87-b52f-48a7-9871-3b64bf78d1af",
+      "name": "154 Partners Investment Management",
+      "website": "154partners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:33.573Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "b46771a6-b323-4bca-b13f-678ff0a327f8",
+      "name": "154 Partners Investment Management LLC",
+      "website": "154partners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:47:16.023Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "154partners.com",
+    "dom2": "154partners.com"
+  },
+  {
+    "o1": {
+      "id": "75f19376-fa90-4e55-9764-2b07877b109f",
+      "name": "1kx Management",
+      "website": "www.1kx.capital",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:15:49.782Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "ceb27481-6573-4880-98e0-beae58932d9d",
+      "name": "1kx Management Ltd.",
+      "website": "www.1kx.capital",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-20T19:48:06.847Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "1kx.capital",
+    "dom2": "1kx.capital"
+  },
+  {
+    "o1": {
+      "id": "d5b044ee-136e-427c-b82f-32767623a69e",
+      "name": "26North Partners",
+      "website": "www.26n.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:06.949Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "eee33e92-b0da-4f27-9f33-87c12a338e16",
+      "name": "26North Partners LP",
+      "website": "www.26n.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:49:15.269Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "26n.com",
+    "dom2": "26n.com"
+  },
+  {
+    "o1": {
+      "id": "faefc853-bbe2-4de2-b7d0-fdca7f2b55a7",
+      "name": "57 Stars",
+      "website": "www.57stars.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:55.688Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "d65ee266-36bb-46c3-963d-21b1b3987c58",
+      "name": "57 Stars LLC",
+      "website": "www.57stars.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:52:26.108Z",
+      "criteria_count": 5,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "57stars.com",
+    "dom2": "57stars.com"
+  },
+  {
+    "o1": {
+      "id": "fe13b3c5-64d1-4d4e-a94d-82eba2bbb4f9",
+      "name": "Accel-KKR",
+      "website": "www.accel-kkr.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:01.589Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "97cab8fa-4312-4ab0-891c-b6c899ad9f18",
+      "name": "Accel-KKR LLC",
+      "website": "www.accel-kkr.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:56:35.686Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "accel-kkr.com",
+    "dom2": "accel-kkr.com"
+  },
+  {
+    "o1": {
+      "id": "de60b767-2b56-4cd9-909f-3314dc07ae74",
+      "name": "Access Holdings",
+      "website": "www.accessholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:24.242Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "51f0b490-9496-4800-81bc-f55e4378ecfd",
+      "name": "Access Holdings Management Company LLC",
+      "website": "www.accessholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:57:06.120Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "accessholdings.com",
+    "dom2": "accessholdings.com"
+  },
+  {
+    "o1": {
+      "id": "526f37af-e96c-463a-8869-101c22095f91",
+      "name": "Affinius Capital",
+      "website": "www.affiniuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:13:40.608Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "596d9e8c-8c66-4d0a-be4c-d11a304b6bab",
+      "name": "Affinius Capital Management LLC",
+      "website": "affiniuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:13:52.081Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "affiniuscapital.com",
+    "dom2": "affiniuscapital.com"
+  },
+  {
+    "o1": {
+      "id": "1a81fcef-abb2-4e65-b0b7-dcaef13cdd68",
+      "name": "Apollo Capital Management, L.P.",
+      "website": "www.apollo.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T01:42:48.439Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "5d07477a-26c9-47f4-bf63-617ffc041a7c",
+      "name": "Apollo Investment Management, L.P.",
+      "website": "www.apollo.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T01:43:08.750Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "apollo.com",
+    "dom2": "apollo.com"
+  },
+  {
+    "o1": {
+      "id": "9f4dbce8-a023-4c37-bd41-04062ceb888e",
+      "name": "Baypine Holdings LP",
+      "website": "baypine.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T02:42:39.617Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "dd2a7007-f6fe-49df-9a9a-7764d6f5285c",
+      "name": "BayPine LP",
+      "website": "www.baypine.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T02:42:47.686Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "baypine.com",
+    "dom2": "baypine.com"
+  },
+  {
+    "o1": {
+      "id": "cc90714c-652c-4ed2-a07f-5a49f5879609",
+      "name": "Brixey & Meyer Capital",
+      "website": "https://bmcgrowth.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T03:08:24.106Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "c701aea0-89ac-448f-af78-f7220f70b2df",
+      "name": "Brixey & Meyer Capital LLC",
+      "website": "www.bmcgrowth.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:19:54.915Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "bmcgrowth.com",
+    "dom2": "bmcgrowth.com"
+  },
+  {
+    "o1": {
+      "id": "9c980894-d7d8-4c45-b3dd-1f79fc4ec57f",
+      "name": "Brown Advisory Incorporated",
+      "website": "www.brownadvisory.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:22:51.909Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "2360c97b-457e-431e-83d7-43bae32bc179",
+      "name": "Brown Advisory LLC",
+      "website": "www.brownadvisory.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T03:23:08.636Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "brownadvisory.com",
+    "dom2": "brownadvisory.com"
+  },
+  {
+    "o1": {
+      "id": "8e0e044c-d459-448f-8f56-dbd9167ffb15",
+      "name": "Continuim Equity Management, LP",
+      "website": "www.continuim.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:31:28.801Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "612ab640-7ae7-4f04-8468-2032dfff1315",
+      "name": "Continuim Equity Partners",
+      "website": "https://www.continuim.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T01:53:59.580Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "continuim.com",
+    "dom2": "continuim.com"
+  },
+  {
+    "o1": {
+      "id": "5362afc5-438a-44a0-a769-6af833962ea2",
+      "name": "Crescent Real Estate Holdings LLC",
+      "website": "www.crescent.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:44:08.215Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "8651aec9-77ac-49f8-8a37-e4b1354c2c25",
+      "name": "Crescent Real Estate LLC",
+      "website": "crescent.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:44:17.117Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "crescent.com",
+    "dom2": "crescent.com"
+  },
+  {
+    "o1": {
+      "id": "ab4c97de-2cd1-43c5-913d-ba0dd51b76ae",
+      "name": "Cyprium Investment Partners LLC",
+      "website": "www.cyprium.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:57:40.031Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "00a2f0f1-82ba-4541-9e24-2c01476b51ef",
+      "name": "Cyprium Partners",
+      "website": "https://cyprium.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-31T03:13:06.663Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "cyprium.com",
+    "dom2": "cyprium.com"
+  },
+  {
+    "o1": {
+      "id": "1d493c66-6d64-471d-a5ec-8012567bbca4",
+      "name": "D'Orazio Capital Management, Inc.",
+      "website": "www.doraziocp.com/direct-equity",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:58:11.875Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "ca604196-65cc-45a3-b8c8-61511b462bc3",
+      "name": "D'Orazio Capital Partners, LLC",
+      "website": "www.doraziocp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:58:20.703Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "doraziocp.com",
+    "dom2": "doraziocp.com"
+  },
+  {
+    "o1": {
+      "id": "cee00888-323f-42ca-a23f-da8b45bd77e2",
+      "name": "Edgewater Capital Management, LLC",
+      "website": "www.edgewatercapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T13:16:29.889Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "1dd504b5-02a5-4ee5-80f5-18753678798d",
+      "name": "Edgewater Capital Partners",
+      "website": "https://www.edgewatercapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-24T02:49:56.351Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "edgewatercapital.com",
+    "dom2": "edgewatercapital.com"
+  },
+  {
+    "o1": {
+      "id": "d42dc86a-13ba-45e4-8cd2-4d95e5c0bed5",
+      "name": "Elevar Equity Management Ltd.",
+      "website": "elevarequity.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T01:55:24.670Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "2c6980dc-8a52-426b-984b-1a9153c329bc",
+      "name": "Elevar Equity, LLC",
+      "website": "www.elevarequity.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T01:55:40.604Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "elevarequity.com",
+    "dom2": "elevarequity.com"
+  },
+  {
+    "o1": {
+      "id": "df4b9852-3461-4468-bd48-fe40179e834a",
+      "name": "Eltura Capital Management, LLC",
+      "website": "www.eltura.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T01:57:05.242Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "bc9a06ae-345d-4611-8b05-da27d45e32bd",
+      "name": "Eltura Capital Partners LP",
+      "website": "www.eltura.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T01:57:12.064Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "eltura.com",
+    "dom2": "eltura.com"
+  },
+  {
+    "o1": {
+      "id": "1a263d62-6fad-4c9a-a7f2-974c1c1a21f9",
+      "name": "Enhanced Healthcare Management Company, LLC",
+      "website": "www.enhancedhealthcare.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:32.232Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "98fee6ac-bcc3-4cd3-b1d8-c0df5185eb8f",
+      "name": "Enhanced Healthcare Partners",
+      "website": "www.enhancedhealthcare.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:40.148Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "enhancedhealthcare.com",
+    "dom2": "enhancedhealthcare.com"
+  },
+  {
+    "o1": {
+      "id": "f82abbc1-10ac-4acd-b830-8a25b300da07",
+      "name": "FIC",
+      "website": "www.ficfund.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:33:39.003Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "557b26ea-f5b3-4a70-b9a4-92063ad1e44f",
+      "name": "FIC Partners Management, LP",
+      "website": "www.ficfund.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:33:45.798Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "ficfund.com",
+    "dom2": "ficfund.com"
+  },
+  {
+    "o1": {
+      "id": "6574fada-d561-4d89-9a5d-ba383ac77503",
+      "name": "GCP Capital Partners Holdings LLC",
+      "website": "www.gcpcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:25:08.421Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "9f31498c-701a-43bc-998a-6cdb5a95207a",
+      "name": "GCP Capital Partners LLC",
+      "website": "www.gcpcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:25:15.893Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "gcpcapital.com",
+    "dom2": "gcpcapital.com"
+  },
+  {
+    "o1": {
+      "id": "efaca63a-bdf9-40ab-92d1-50607c1dc3f6",
+      "name": "GenNx360 Capital Partners",
+      "website": "www.gennx360.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:22.811Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "4f8f4586-5288-440c-a0a3-e747908e569c",
+      "name": "GenNx360 Management Company, LLC",
+      "website": "www.gennx360.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:30.481Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "gennx360.com",
+    "dom2": "gennx360.com"
+  },
+  {
+    "o1": {
+      "id": "35a61303-0e37-4748-9e63-cc5bf92662c8",
+      "name": "Genstar Capital Management, LLC",
+      "website": "www.gencap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:55.027Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "ba5ba880-6dec-4614-a8de-941e1660a6d6",
+      "name": "Genstar Capital, LLC",
+      "website": "www.gencap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:29:17.388Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "gencap.com",
+    "dom2": "gencap.com"
+  },
+  {
+    "o1": {
+      "id": "23a76573-3828-4cb6-b5df-c3fd1f47907a",
+      "name": "Invictus Capital Management, LP",
+      "website": "www.invictuscp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:40:28.718Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "493bd903-a950-4027-9014-95568ac2ec61",
+      "name": "Invictus Capital Partners, Lp",
+      "website": "invictuscp.com//",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:40:35.105Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "invictuscp.com",
+    "dom2": "invictuscp.com"
+  },
+  {
+    "o1": {
+      "id": "074b91ba-ac9c-455d-a69a-e03b67766be3",
+      "name": "Kennedy Lewis Capital Holdings LLC",
+      "website": "klimllc.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:56:46.123Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "aeee4f5b-6ca4-46ab-9011-abbef8008f96",
+      "name": "Kennedy Lewis Management LP",
+      "website": "www.klimllc.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:57:12.871Z",
+      "criteria_count": 5,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "klimllc.com",
+    "dom2": "klimllc.com"
+  },
+  {
+    "o1": {
+      "id": "579d4525-ebb6-424b-b2b9-6c76bbfe333b",
+      "name": "Kensington Capital Partners Limited",
+      "website": "www.kcpl.ca",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:57:27.348Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "dc7de76a-42d6-4204-b53b-6febcc67b6a0",
+      "name": "Kensington Investment Management, Inc.",
+      "website": "www.kcpl.ca",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T04:57:34.157Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "kcpl.ca",
+    "dom2": "kcpl.ca"
+  },
+  {
+    "o1": {
+      "id": "bba6cc70-cef1-48f8-b26f-402ad7325702",
+      "name": "Kinzie Capital Partners",
+      "website": "https://www.kinziecp.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:21:59.540Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "6eab7abd-559e-4607-add8-cfc6b221acf6",
+      "name": "Kinzie Capital Partners LP",
+      "website": "www.kinziecp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:01:57.939Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "kinziecp.com",
+    "dom2": "kinziecp.com"
+  },
+  {
+    "o1": {
+      "id": "3763ea1d-6d46-4789-b582-0c24bb152df4",
+      "name": "Lime Rock Management LP",
+      "website": "www.lrpartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:23:20.687Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "7df75160-b86e-4916-9749-9dd38473c97f",
+      "name": "Lime Rock Partners, LLC",
+      "website": "www.lrpartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:23:33.962Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "lrpartners.com",
+    "dom2": "lrpartners.com"
+  },
+  {
+    "o1": {
+      "id": "3fb61e70-7e57-4c70-8aab-9dc410d52bbf",
+      "name": "New Harbor Capital",
+      "website": "https://www.newharborcap.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:21:52.423Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "6a1720c4-37a0-4996-a122-34a5c7b80fdc",
+      "name": "New Harbor Capital Management, LP",
+      "website": "www.newharborcap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:55:47.519Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "newharborcap.com",
+    "dom2": "newharborcap.com"
+  },
+  {
+    "o1": {
+      "id": "62d14299-8813-44db-8a39-1882d88ccc81",
+      "name": "NewMarket Capital Partners, LLC",
+      "website": "www.newmarketcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T20:01:15.391Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "561d8faa-c7a6-4bd9-a8ff-a175016c3134",
+      "name": "Newmarket Investment Management, LP",
+      "website": "www.newmarketcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T20:01:29.202Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "newmarketcapital.com",
+    "dom2": "newmarketcapital.com"
+  },
+  {
+    "o1": {
+      "id": "4acfeb75-7946-49a6-8143-302eea3b457e",
+      "name": "PPM America Capital Partners, LLC",
+      "website": "www.ppmamerica.com/investment-solutions/our-strategies/private-equity",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:08:57.929Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "4a35ee6a-4a06-4b91-ad9f-2242dec1405d",
+      "name": "PPM America, Inc.",
+      "website": "www.ppmamerica.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:12:03.042Z",
+      "criteria_count": 4,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "ppmamerica.com",
+    "dom2": "ppmamerica.com"
+  },
+  {
+    "o1": {
+      "id": "40d18ea7-9148-439b-aeb7-2ba3e98e16c9",
+      "name": "Primus Capital",
+      "website": "https://primuscapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-22T04:54:09.600Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "3d1204db-62db-45d9-be33-bd8bba73c374",
+      "name": "Primus Capital Partners, Inc.",
+      "website": "primuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:14:42.976Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "primuscapital.com",
+    "dom2": "primuscapital.com"
+  },
+  {
+    "o1": {
+      "id": "d460383c-5a0b-44de-a1dc-ce812d21b84f",
+      "name": "Resilience Capital Partners",
+      "website": "https://resiliencecapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-24T03:51:02.000Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "1e95b698-f8b8-475e-af13-4d9e9b12310a",
+      "name": "Resilience Capital Partners LLC",
+      "website": "www.resiliencecapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T05:07:57.300Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "resiliencecapital.com",
+    "dom2": "resiliencecapital.com"
+  },
+  {
+    "o1": {
+      "id": "9c3e1246-6c89-4084-9ec0-35165376fd1e",
+      "name": "Svoboda Capital Partners",
+      "website": "https://svoco.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:22:01.485Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "c917c000-2a48-4478-9754-4e31bb8937cf",
+      "name": "Svoboda Capital Partners LLC",
+      "website": "www.svoco.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:34:08.702Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "svoco.com",
+    "dom2": "svoco.com"
+  },
+  {
+    "o1": {
+      "id": "3b9d57f1-4c80-4a3a-b288-65d1701680ba",
+      "name": "Tecum Capital",
+      "website": "https://www.tecum.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-29T03:28:14.942Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "209a0b86-df71-4461-8238-bae6af63e37e",
+      "name": "Tecum Capital Management, Inc.",
+      "website": "www.tecum.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:43:31.585Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "tecum.com",
+    "dom2": "tecum.com"
+  },
+  {
+    "o1": {
+      "id": "fc533630-726b-4c09-a01d-d5e19bd1bfa8",
+      "name": "Wellington Management Company LLP",
+      "website": "www.wellington.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:44:46.851Z",
+      "criteria_count": 3,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "86dfdb29-96ee-4221-b980-4299b771a10b",
+      "name": "Wellington Management Group LLP",
+      "website": "www.wellington.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T16:45:04.536Z",
+      "criteria_count": 2,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "wellington.com",
+    "dom2": "wellington.com"
+  },
+  {
+    "o1": {
+      "id": "75a47e44-9cb9-462a-b68e-0b85bb6e5e77",
+      "name": "WestCap Investment Partners, LLC",
+      "website": "www.westcap.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T16:47:36.563Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "095e7dee-80b8-4d63-baf1-4eb8b909aed2",
+      "name": "Westcap Management, LLC",
+      "website": "www.westcap.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T16:47:44.004Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "westcap.com",
+    "dom2": "westcap.com"
+  },
+  {
+    "o1": {
+      "id": "767b0b40-1e59-4051-afd9-31c83850ced7",
+      "name": "Whistler Capital Partners",
+      "website": "https://whistlercapital.com/",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-09-20T16:45:59.466Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "o2": {
+      "id": "468b11ae-3aec-4854-857f-7ca92c8edcb8",
+      "name": "Whistler Capital Partners LLC",
+      "website": "www.whistlercapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:50:51.031Z",
+      "criteria_count": 1,
+      "profile_count": 0,
+      "listing_count": 0
+    },
+    "type": "Same Domain & High Name Overlap",
+    "dom1": "whistlercapital.com",
+    "dom2": "whistlercapital.com"
+  }
+]

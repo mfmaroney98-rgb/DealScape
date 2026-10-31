@@ -1,0 +1,1132 @@
+[
+  {
+    "brandedName": "1315 Capital",
+    "primaryOrgId": "02087585-6cb2-4300-9dd7-e82ed8e753ca",
+    "primaryOrgOriginalName": "1315 Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "a65808cc-ba2c-4f16-ae81-d4311a5094bc",
+        "name": "1315 Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "b3a5c6f9-8c1e-44fe-abe5-d728f6a7f36c",
+        "name": "1315 Capital, LLC - Healthcare Growth Equity"
+      }
+    ]
+  },
+  {
+    "brandedName": "154 Partners Investment Management",
+    "primaryOrgId": "284e1f87-b52f-48a7-9871-3b64bf78d1af",
+    "primaryOrgOriginalName": "154 Partners Investment Management",
+    "duplicateOrgIds": [
+      {
+        "id": "b46771a6-b323-4bca-b13f-678ff0a327f8",
+        "name": "154 Partners Investment Management LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "fa33976e-14d6-43c0-99bf-7e937cfb04fd",
+        "name": "154 Partners Investment Management LLC - Sports & Live Events"
+      },
+      {
+        "id": "e100b605-0bde-4c1c-a144-d57ef18602ea",
+        "name": "154 Partners Investment Management LLC - Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "1kx Management",
+    "primaryOrgId": "75f19376-fa90-4e55-9764-2b07877b109f",
+    "primaryOrgOriginalName": "1kx Management",
+    "duplicateOrgIds": [
+      {
+        "id": "ceb27481-6573-4880-98e0-beae58932d9d",
+        "name": "1kx Management Ltd."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "eae6d03e-5670-4270-bfe0-071f1be53762",
+        "name": "1kx Management Ltd. - Blockchain and Web3 Investments"
+      }
+    ]
+  },
+  {
+    "brandedName": "26North Partners",
+    "primaryOrgId": "d5b044ee-136e-427c-b82f-32767623a69e",
+    "primaryOrgOriginalName": "26North Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "eee33e92-b0da-4f27-9f33-87c12a338e16",
+        "name": "26North Partners LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "6ed76713-a364-4da6-b274-cc4041bfec8c",
+        "name": "26North Partners LP - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "3 Boomerang Capital",
+    "primaryOrgId": "6c6f33d1-a950-441e-8aa8-c5f2c8e6a756",
+    "primaryOrgOriginalName": "3 Boomerang Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "92df5da2-e6f9-406d-b202-814b4c482e45",
+        "name": "3 Boomerang Capital, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "fcab723f-71a6-4823-9c43-af3d41594479",
+        "name": "3 Boomerang Capital, LP - Healthcare Focus"
+      }
+    ]
+  },
+  {
+    "brandedName": "3 Rivers Capital",
+    "primaryOrgId": "478b83af-49d2-4e8b-9569-883d9af53c1a",
+    "primaryOrgOriginalName": "3 Rivers Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "1af144a8-c771-4bba-96d3-7508395c9bc6",
+        "name": "3 Rivers Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "a1fa16b3-1217-451c-be1c-0074dcf928cc",
+        "name": "3 Rivers Capital, LLC - Niche Manufacturing and Specialty Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "424 Capital",
+    "primaryOrgId": "48676ae1-0f18-47af-ada8-af10e2a9f034",
+    "primaryOrgOriginalName": "424 Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "27a81447-020a-4ad7-a786-d0104b3219dd",
+        "name": "424 Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "1afebfa7-951f-463e-a438-60cc2e0d0fde",
+        "name": "424 Capital, LLC - Healthcare and Energy Transition"
+      }
+    ]
+  },
+  {
+    "brandedName": "4x4 Capital",
+    "primaryOrgId": "99d1fe24-4ff1-47e9-b22d-4112ab2047e9",
+    "primaryOrgOriginalName": "4x4 Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "73c47025-7da3-41b4-90ca-a3b4a3c6d34a",
+        "name": "4x4 Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "dbf7e02b-92bd-4e85-99c2-8d7891523c30",
+        "name": "4x4 Capital, LLC - Consumer Goods/Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "57 Stars",
+    "primaryOrgId": "d65ee266-36bb-46c3-963d-21b1b3987c58",
+    "primaryOrgOriginalName": "57 Stars LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "faefc853-bbe2-4de2-b7d0-fdca7f2b55a7",
+        "name": "57 Stars"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "33c7ccfb-72e3-45d9-90d3-1cc0fef69ab7",
+        "name": "57 Stars - Global Growth Sectors"
+      }
+    ]
+  },
+  {
+    "brandedName": "Accel-KKR",
+    "primaryOrgId": "fe13b3c5-64d1-4d4e-a94d-82eba2bbb4f9",
+    "primaryOrgOriginalName": "Accel-KKR",
+    "duplicateOrgIds": [
+      {
+        "id": "97cab8fa-4312-4ab0-891c-b6c899ad9f18",
+        "name": "Accel-KKR LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "f018cb1e-8b9e-4b4b-96e7-cd08f79ab7b7",
+        "name": "Accel-KKR LLC - Software & Tech-Enabled Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Acceleration Resources",
+    "primaryOrgId": "7cd9cd29-01d1-4a77-bcbe-b8c0f80d29ea",
+    "primaryOrgOriginalName": "Acceleration Resources",
+    "duplicateOrgIds": [
+      {
+        "id": "0505aae1-5515-4997-b543-e55412401db5",
+        "name": "Acceleration Resources, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "b53accb2-ae0a-4c8b-9ada-b7facb7b5880",
+        "name": "Acceleration Resources, LLC - Lower/Middle Market Upstream Energy"
+      }
+    ]
+  },
+  {
+    "brandedName": "Agility Equity Partners",
+    "primaryOrgId": "e19464ac-6450-450d-b464-1530315c56ed",
+    "primaryOrgOriginalName": "Agility Equity Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "884f34d0-ebf5-4554-84d7-5e8dcdf696f4",
+        "name": "Agility Equity Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "954105ae-3fd0-4e08-811d-3c3270fdbe48",
+        "name": "Agility Equity Partners, LLC - Specialty Distribution / Asset-Light Manufacturing / Recurring Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Align Capital Partners",
+    "primaryOrgId": "2b347b15-ba7b-4e81-98dd-65d9e57a30b0",
+    "primaryOrgOriginalName": "Align Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "54905390-63e4-417a-88d9-81d8e8a85974",
+        "name": "Align Capital Partners, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "d4678ed2-1d6b-4a1d-a34b-65dd9cf71909",
+        "name": "Align Capital Partners, LP - Professional Business Services"
+      },
+      {
+        "id": "fe5d5b92-752a-45b8-b9c9-f0f9f2141444",
+        "name": "Align Capital Partners, LP - Tech-Enabled Services"
+      },
+      {
+        "id": "da519070-3aee-41e8-bb71-738ae771f2f8",
+        "name": "Align Capital Partners, LP - Industrial Services"
+      },
+      {
+        "id": "f8e09fbb-bbe8-409d-ac46-79c8e8a1f6f3",
+        "name": "Align Capital Partners, LP - Specialty Manufacturing & Distribution"
+      }
+    ]
+  },
+  {
+    "brandedName": "Blue Point Capital Partners",
+    "primaryOrgId": "5aa7be6c-0f7f-4d36-ad94-054e029c890a",
+    "primaryOrgOriginalName": "Blue Point Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "ec289ae1-2966-4f47-8fe2-9b10c5ecb847",
+        "name": "Blue Point Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "763c6b8e-7777-4340-8639-4531d452fdc6",
+        "name": "Blue Point Capital Partners, LLC - Industrial/Business Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Brixey & Meyer Capital",
+    "primaryOrgId": "cc90714c-652c-4ed2-a07f-5a49f5879609",
+    "primaryOrgOriginalName": "Brixey & Meyer Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "c701aea0-89ac-448f-af78-f7220f70b2df",
+        "name": "Brixey & Meyer Capital LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "3bcb8428-0958-4c71-ac78-dbbafdbfab08",
+        "name": "Brixey & Meyer Capital LLC - Lower Middle Market Healthcare and Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Brown Advisory",
+    "primaryOrgId": "9c980894-d7d8-4c45-b3dd-1f79fc4ec57f",
+    "primaryOrgOriginalName": "Brown Advisory Incorporated",
+    "duplicateOrgIds": [
+      {
+        "id": "2360c97b-457e-431e-83d7-43bae32bc179",
+        "name": "Brown Advisory LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "874dd465-278e-47aa-9374-a68441684779",
+        "name": "Brown Advisory LLC - General Buyout"
+      },
+      {
+        "id": "18205020-879c-4b14-ba29-3d3bda266062",
+        "name": "Brown Advisory LLC - Sustainable Investing"
+      }
+    ]
+  },
+  {
+    "brandedName": "Council capital",
+    "primaryOrgId": "86d625f7-ea4d-4a7a-921b-4eea0ed4245a",
+    "primaryOrgOriginalName": "Council capital",
+    "duplicateOrgIds": [
+      {
+        "id": "0c1f5335-7305-4a87-a7a0-84120a82d15b",
+        "name": "Council Capital"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "b8d3ef6d-d3e4-45fc-920c-c8cbba00f430",
+        "name": "Council Capital - Healthcare Services and Technology"
+      }
+    ]
+  },
+  {
+    "brandedName": "Enhanced Capital Partners",
+    "primaryOrgId": "8619bd66-ecc1-4db5-926d-262094a61251",
+    "primaryOrgOriginalName": "Enhanced Capital Partners, LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "ad71b201-413b-466e-b488-09df06835ffd",
+        "name": "Enhanced Capital Partners, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "27e63d1a-92f2-4355-9054-8fd26dd751e0",
+        "name": "Enhanced Capital Partners, Inc. - Community Development"
+      }
+    ]
+  },
+  {
+    "brandedName": "Gen Cap America",
+    "primaryOrgId": "a4bd2221-517e-42a8-a16e-83ea581b6b62",
+    "primaryOrgOriginalName": "Gen Cap America",
+    "duplicateOrgIds": [
+      {
+        "id": "b0bebd95-d3a0-4d37-9dfa-ccf676331bcf",
+        "name": "Gen Cap America, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "98a57d6a-d7c3-400d-bac6-0e906a10db2d",
+        "name": "Gen Cap America, Inc. - Middle-Market/Lower-Middle-Market"
+      }
+    ]
+  },
+  {
+    "brandedName": "Kinzie Capital Partners",
+    "primaryOrgId": "6eab7abd-559e-4607-add8-cfc6b221acf6",
+    "primaryOrgOriginalName": "Kinzie Capital Partners LP",
+    "duplicateOrgIds": [
+      {
+        "id": "bba6cc70-cef1-48f8-b26f-402ad7325702",
+        "name": "Kinzie Capital Partners"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "29375a22-9e0f-4655-81f6-555ff8112c57",
+        "name": "Kinzie Capital Partners - Manufactured Products/Business Services/Consumer"
+      }
+    ]
+  },
+  {
+    "brandedName": "LFM Capital",
+    "primaryOrgId": "7eca8001-b908-4b1b-bc05-db7ff3fc99e5",
+    "primaryOrgOriginalName": "LFM Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "5d483668-66d7-43c9-a3e9-73fe17d58e50",
+        "name": "LFM Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "0c43386c-cf93-4a5d-bfb1-f48d894c4092",
+        "name": "LFM Capital, LLC - Manufacturing"
+      }
+    ]
+  },
+  {
+    "brandedName": "Petra Capital Partners",
+    "primaryOrgId": "57218108-de3b-4339-bbc6-998bcf66bb11",
+    "primaryOrgOriginalName": "Petra Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "f68f23d6-d47d-4a8a-b1e0-9808970461fd",
+        "name": "Petra Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "976f1238-d2f2-4750-bd37-862d6567ddff",
+        "name": "Petra Capital Partners, LLC - Healthcare"
+      },
+      {
+        "id": "20f47508-55c7-4bf7-83c0-005be746d14e",
+        "name": "Petra Capital Partners, LLC - B2B Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Resilience Capital Partners",
+    "primaryOrgId": "d460383c-5a0b-44de-a1dc-ce812d21b84f",
+    "primaryOrgOriginalName": "Resilience Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "1e95b698-f8b8-475e-af13-4d9e9b12310a",
+        "name": "Resilience Capital Partners LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "9f77fff8-eebd-4903-a6b5-1b68c070d08d",
+        "name": "Resilience Capital Partners LLC - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "Seidler Kutsenda",
+    "primaryOrgId": "462ff96c-67e2-4def-be8a-8b4299f7fe22",
+    "primaryOrgOriginalName": "Seidler Kutsenda Management Company LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "d60fac0f-c536-4679-933e-f7d95d5a11fd",
+        "name": "Seidler Kutsenda Management Company, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "5ea21598-f1a4-4171-9495-4fac057979c2",
+        "name": "Seidler Kutsenda Management Company, LLC - Consumer/Manufacturing/Healthcare/Business Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Shore Capital Partners",
+    "primaryOrgId": "4351ae1d-a319-4f94-86db-29cd6b139111",
+    "primaryOrgOriginalName": "Shore Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "89350ce0-8708-4a56-9fa3-8050dc7a9415",
+        "name": "Shore Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "50d85012-55bc-41f6-96b8-ffac85f17680",
+        "name": "Shore Capital Partners, LLC - Healthcare"
+      },
+      {
+        "id": "d14ed66e-d309-49c7-af3b-435e0beffc12",
+        "name": "Shore Capital Partners, LLC - Food & Beverage"
+      },
+      {
+        "id": "b5353098-06a5-4e2c-9626-58680f0ae216",
+        "name": "Shore Capital Partners, LLC - Business Services"
+      },
+      {
+        "id": "3f008a46-2606-4891-9b99-84840f636e30",
+        "name": "Shore Capital Partners, LLC - Industrials"
+      },
+      {
+        "id": "aff43300-7d0f-4b96-9b1e-c6037957ffdc",
+        "name": "Shore Capital Partners, LLC - Real Estate"
+      }
+    ]
+  },
+  {
+    "brandedName": "Stonehenge Partners",
+    "primaryOrgId": "ad2dfc6c-a4d1-4c06-8dfa-015a4afb7122",
+    "primaryOrgOriginalName": "Stonehenge Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "36eab266-78d9-40b7-9d36-54095be5517d",
+        "name": "Stonehenge Partners, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "55b0b388-1e13-4ab3-8f4c-a21311718e2e",
+        "name": "Stonehenge Partners, Inc. - Manufacturing/Distribution/Healthcare/Business Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Svoboda Capital Partners",
+    "primaryOrgId": "9c3e1246-6c89-4084-9ec0-35165376fd1e",
+    "primaryOrgOriginalName": "Svoboda Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "c917c000-2a48-4478-9754-4e31bb8937cf",
+        "name": "Svoboda Capital Partners LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "7c99d766-80fb-4e05-8ebe-ee93bcf72345",
+        "name": "Svoboda Capital Partners LLC - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "Whistler Capital Partners",
+    "primaryOrgId": "767b0b40-1e59-4051-afd9-31c83850ced7",
+    "primaryOrgOriginalName": "Whistler Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "468b11ae-3aec-4854-857f-7ca92c8edcb8",
+        "name": "Whistler Capital Partners LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "857d41d1-afaf-414a-9251-d67e523517eb",
+        "name": "Whistler Capital Partners LLC - Healthcare Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Woodside Capital Partners",
+    "primaryOrgId": "992b1226-056d-4df8-8ae9-4469dbad2405",
+    "primaryOrgOriginalName": "Woodside Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "07e5e1a5-409d-4438-841a-e42ed5ec604e",
+        "name": "Woodside Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "58b3da45-e762-4569-b9ea-ff4e39fa8cfa",
+        "name": "Woodside Capital Partners, LLC - Small Balance Commercial Real Estate"
+      }
+    ]
+  },
+  {
+    "brandedName": "501 North Growth Equity",
+    "primaryOrgId": "ae8ad519-f8d3-4ecf-8c0f-e5f18c321bca",
+    "primaryOrgOriginalName": "501 North Growth Equity",
+    "duplicateOrgIds": [
+      {
+        "id": "567da1b2-77f0-4ef9-85d0-bce184c1abff",
+        "name": "501 North, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "1deb3c42-0f3b-40cf-8c36-e6b613d85904",
+        "name": "501 North, LLC - Healthcare and Technology"
+      }
+    ]
+  },
+  {
+    "brandedName": "Access Holdings",
+    "primaryOrgId": "de60b767-2b56-4cd9-909f-3314dc07ae74",
+    "primaryOrgOriginalName": "Access Holdings",
+    "duplicateOrgIds": [
+      {
+        "id": "51f0b490-9496-4800-81bc-f55e4378ecfd",
+        "name": "Access Holdings Management Company LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "1328a63a-0859-4c5e-b8f0-0a96392e8c0d",
+        "name": "Access Holdings Management Company LLC - Lower-Middle Market"
+      }
+    ]
+  },
+  {
+    "brandedName": "Affinius Capital",
+    "primaryOrgId": "526f37af-e96c-463a-8869-101c22095f91",
+    "primaryOrgOriginalName": "Affinius Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "596d9e8c-8c66-4d0a-be4c-d11a304b6bab",
+        "name": "Affinius Capital Management LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "fab682fa-8588-45f2-b849-49aab463abec",
+        "name": "Affinius Capital Management LLC - Real Estate Investments"
+      }
+    ]
+  },
+  {
+    "brandedName": "BayPine",
+    "primaryOrgId": "9f4dbce8-a023-4c37-bd41-04062ceb888e",
+    "primaryOrgOriginalName": "Baypine Holdings LP",
+    "duplicateOrgIds": [
+      {
+        "id": "dd2a7007-f6fe-49df-9a9a-7764d6f5285c",
+        "name": "BayPine LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "3cf14284-9ba2-4674-80a2-c9fd0f8f2ad5",
+        "name": "BayPine LP - Healthcare/Industrial/Business Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "Continuim Equity Partners",
+    "primaryOrgId": "612ab640-7ae7-4f04-8468-2032dfff1315",
+    "primaryOrgOriginalName": "Continuim Equity Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "8e0e044c-d459-448f-8f56-dbd9167ffb15",
+        "name": "Continuim Equity Management, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "dd05b714-566b-4480-9881-9597cf82f55c",
+        "name": "Continuim Equity Management, LP - Manufacturing and Industrial"
+      }
+    ]
+  },
+  {
+    "brandedName": "Crow Holdings",
+    "primaryOrgId": "3f4715ec-ae24-44a3-9205-8fed1fddff84",
+    "primaryOrgOriginalName": "Crow Holdings",
+    "duplicateOrgIds": [
+      {
+        "id": "12b065ca-7d79-4c11-b134-6ccd3c27b21a",
+        "name": "Crow Holdings Capital Partners, L.L.C."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "9f81e7ed-e5ba-47aa-88b9-899647fd553f",
+        "name": "Crow Holdings Capital Partners, L.L.C. - Residential and Industrial Real Estate"
+      }
+    ]
+  },
+  {
+    "brandedName": "D'Orazio Capital Partners",
+    "primaryOrgId": "1d493c66-6d64-471d-a5ec-8012567bbca4",
+    "primaryOrgOriginalName": "D'Orazio Capital Management, Inc.",
+    "duplicateOrgIds": [
+      {
+        "id": "ca604196-65cc-45a3-b8c8-61511b462bc3",
+        "name": "D'Orazio Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "69f58bd2-a6dd-498a-89a0-ee6e726a3cd6",
+        "name": "D'Orazio Capital Partners, LLC - Industrial"
+      }
+    ]
+  },
+  {
+    "brandedName": "Edgewater Capital Partners",
+    "primaryOrgId": "1dd504b5-02a5-4ee5-80f5-18753678798d",
+    "primaryOrgOriginalName": "Edgewater Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "cee00888-323f-42ca-a23f-da8b45bd77e2",
+        "name": "Edgewater Capital Management, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "282eb3db-1502-4b68-b508-a95f98e98d7f",
+        "name": "Edgewater Capital Management, LLC - Specialty Industrials"
+      }
+    ]
+  },
+  {
+    "brandedName": "Elevar Equity",
+    "primaryOrgId": "d42dc86a-13ba-45e4-8cd2-4d95e5c0bed5",
+    "primaryOrgOriginalName": "Elevar Equity Management Ltd.",
+    "duplicateOrgIds": [
+      {
+        "id": "2c6980dc-8a52-426b-984b-1a9153c329bc",
+        "name": "Elevar Equity, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "9bced2c6-27b6-437a-84cd-cd414191fac5",
+        "name": "Elevar Equity, LLC - Emerging Markets Focus"
+      }
+    ]
+  },
+  {
+    "brandedName": "Eltura Capital Partners",
+    "primaryOrgId": "df4b9852-3461-4468-bd48-fe40179e834a",
+    "primaryOrgOriginalName": "Eltura Capital Management, LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "bc9a06ae-345d-4611-8b05-da27d45e32bd",
+        "name": "Eltura Capital Partners LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "e73950b4-6e55-46e8-81d6-e7be5f379fa3",
+        "name": "Eltura Capital Partners LP - Consumer and Commercial Credit"
+      }
+    ]
+  },
+  {
+    "brandedName": "Enhanced Healthcare Partners",
+    "primaryOrgId": "1a263d62-6fad-4c9a-a7f2-974c1c1a21f9",
+    "primaryOrgOriginalName": "Enhanced Healthcare Management Company, LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "98fee6ac-bcc3-4cd3-b1d8-c0df5185eb8f",
+        "name": "Enhanced Healthcare Partners"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "8351c42f-d3c0-442d-a9dc-f9513ce08648",
+        "name": "Enhanced Healthcare Partners - Healthcare"
+      }
+    ]
+  },
+  {
+    "brandedName": "FIC",
+    "primaryOrgId": "f82abbc1-10ac-4acd-b830-8a25b300da07",
+    "primaryOrgOriginalName": "FIC",
+    "duplicateOrgIds": [
+      {
+        "id": "557b26ea-f5b3-4a70-b9a4-92063ad1e44f",
+        "name": "FIC Partners Management, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "407efccd-03c1-42a9-9bcc-674f417f154e",
+        "name": "FIC Partners Management, LP - Infrastructure Energy"
+      }
+    ]
+  },
+  {
+    "brandedName": "Forest Road",
+    "primaryOrgId": "59e5ba75-8f41-461f-b898-6e6a10fb2e2f",
+    "primaryOrgOriginalName": "Forest Road Asset Management LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "fdb94675-5170-464a-8ecc-8dfe8a72e780",
+        "name": "Forest Road Company, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "743a9d90-c4b0-4e6d-b2fb-2ea5fafe19bd",
+        "name": "Forest Road Company, LLC - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "GCP Capital Partners",
+    "primaryOrgId": "6574fada-d561-4d89-9a5d-ba383ac77503",
+    "primaryOrgOriginalName": "GCP Capital Partners Holdings LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "9f31498c-701a-43bc-998a-6cdb5a95207a",
+        "name": "GCP Capital Partners LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "44777cc8-ce38-447e-bdad-7a97b27171c1",
+        "name": "GCP Capital Partners LLC - Business Services and Financial Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "GenNx360 Capital Partners",
+    "primaryOrgId": "efaca63a-bdf9-40ab-92d1-50607c1dc3f6",
+    "primaryOrgOriginalName": "GenNx360 Capital Partners",
+    "duplicateOrgIds": [
+      {
+        "id": "4f8f4586-5288-440c-a0a3-e747908e569c",
+        "name": "GenNx360 Management Company, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "55786dec-8278-4d23-b6e2-61aa80bd550d",
+        "name": "GenNx360 Management Company, LLC - Industrial Services and Manufacturing"
+      }
+    ]
+  },
+  {
+    "brandedName": "Genstar Capital",
+    "primaryOrgId": "35a61303-0e37-4748-9e63-cc5bf92662c8",
+    "primaryOrgOriginalName": "Genstar Capital Management, LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "ba5ba880-6dec-4614-a8de-941e1660a6d6",
+        "name": "Genstar Capital, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "61762ecd-dedd-4ec4-b71a-a79b8449a1b2",
+        "name": "Genstar Capital, LLC - Healthcare Services"
+      },
+      {
+        "id": "c5bc1fbe-672b-4ab5-ac03-b13418645637",
+        "name": "Genstar Capital, LLC - Financial Services"
+      },
+      {
+        "id": "37682bfa-ee04-4131-b705-b3876fc5d0b1",
+        "name": "Genstar Capital, LLC - Industrials"
+      },
+      {
+        "id": "01babb69-64a4-4ba5-bda3-6c60577a8c61",
+        "name": "Genstar Capital, LLC - Software"
+      }
+    ]
+  },
+  {
+    "brandedName": "GPI Capital",
+    "primaryOrgId": "cd5459de-3908-49ed-89f1-411651d0ffa5",
+    "primaryOrgOriginalName": "GPI Capital Limited",
+    "duplicateOrgIds": [
+      {
+        "id": "41936680-50de-42ef-ad71-20654ed65468",
+        "name": "GPI Capital, L.P."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "7f9bbd28-bdaf-4fb8-b05d-2b1fcb10e195",
+        "name": "GPI Capital, L.P. - Technology/Consumer/Industrial"
+      }
+    ]
+  },
+  {
+    "brandedName": "Invictus Capital Partners",
+    "primaryOrgId": "23a76573-3828-4cb6-b5df-c3fd1f47907a",
+    "primaryOrgOriginalName": "Invictus Capital Management, LP",
+    "duplicateOrgIds": [
+      {
+        "id": "493bd903-a950-4027-9014-95568ac2ec61",
+        "name": "Invictus Capital Partners, Lp"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "6f2873ab-1f86-4039-9498-4b121f17f980",
+        "name": "Invictus Capital Partners, Lp - Single-Family Residential Credit"
+      }
+    ]
+  },
+  {
+    "brandedName": "Kennedy Lewis Management",
+    "primaryOrgId": "aeee4f5b-6ca4-46ab-9011-abbef8008f96",
+    "primaryOrgOriginalName": "Kennedy Lewis Management LP",
+    "duplicateOrgIds": [
+      {
+        "id": "074b91ba-ac9c-455d-a69a-e03b67766be3",
+        "name": "Kennedy Lewis Capital Holdings LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "94aad99b-d47d-49e1-89b3-f23499034e06",
+        "name": "Kennedy Lewis Capital Holdings LLC - Middle-Market Non-Sponsor Lending"
+      }
+    ]
+  },
+  {
+    "brandedName": "Lime Rock Partners",
+    "primaryOrgId": "3763ea1d-6d46-4789-b582-0c24bb152df4",
+    "primaryOrgOriginalName": "Lime Rock Management LP",
+    "duplicateOrgIds": [
+      {
+        "id": "7df75160-b86e-4916-9749-9dd38473c97f",
+        "name": "Lime Rock Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "bd737ce8-c3b3-4404-96c2-4bc3a776eea1",
+        "name": "Lime Rock Partners, LLC - Energy Sector Investments"
+      }
+    ]
+  },
+  {
+    "brandedName": "Middlefield Venture Group",
+    "primaryOrgId": "c4c93510-62d8-4f35-8c39-958ca8412977",
+    "primaryOrgOriginalName": "Middlefield Limited",
+    "duplicateOrgIds": [
+      {
+        "id": "160af67e-7da3-413e-a297-cb69c4882a21",
+        "name": "Middlefield Venture Group"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "9024b34f-414e-4763-bca7-4a0674702635",
+        "name": "Middlefield Venture Group - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "Morgan Stanley Private Equity",
+    "primaryOrgId": "6194d7a8-cef8-4f58-9249-8a085ce13093",
+    "primaryOrgOriginalName": "Morgan Stanley Private Equity",
+    "duplicateOrgIds": [
+      {
+        "id": "4dca1526-ef0a-4ce4-9434-510b95537e41",
+        "name": "Morgan Stanley Private Equity Asia, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "1d1adc99-8b0a-4f73-b64e-277bc584a8ab",
+        "name": "Morgan Stanley Private Equity Asia, Inc. - Asia-Pacific Consumer/Industrial/Healthcare/Financial Services/Telecom"
+      }
+    ]
+  },
+  {
+    "brandedName": "New Harbor Capital",
+    "primaryOrgId": "3fb61e70-7e57-4c70-8aab-9dc410d52bbf",
+    "primaryOrgOriginalName": "New Harbor Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "6a1720c4-37a0-4996-a122-34a5c7b80fdc",
+        "name": "New Harbor Capital Management, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "fc989c92-f8ed-4fdf-b4ce-846b0f962f7b",
+        "name": "New Harbor Capital Management, LP - Healthcare"
+      },
+      {
+        "id": "a82abf67-26c1-4318-baca-73284aa73b84",
+        "name": "New Harbor Capital Management, LP - Education"
+      },
+      {
+        "id": "57f2409a-9848-4644-8035-7147d3c30116",
+        "name": "New Harbor Capital Management, LP - Technology-Enabled Services"
+      }
+    ]
+  },
+  {
+    "brandedName": "PPM America",
+    "primaryOrgId": "4a35ee6a-4a06-4b91-ad9f-2242dec1405d",
+    "primaryOrgOriginalName": "PPM America, Inc.",
+    "duplicateOrgIds": [
+      {
+        "id": "4acfeb75-7946-49a6-8143-302eea3b457e",
+        "name": "PPM America Capital Partners, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "5115afa3-2ce3-472e-b897-2c3c6ece9159",
+        "name": "PPM America Capital Partners, LLC - General Buyout"
+      }
+    ]
+  },
+  {
+    "brandedName": "Primus Capital",
+    "primaryOrgId": "40d18ea7-9148-439b-aeb7-2ba3e98e16c9",
+    "primaryOrgOriginalName": "Primus Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "3d1204db-62db-45d9-be33-bd8bba73c374",
+        "name": "Primus Capital Partners, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "8e9e0ced-4f90-411c-8858-a61c2f56b65b",
+        "name": "Primus Capital Partners, Inc. - Healthcare/Software/Technology"
+      }
+    ]
+  },
+  {
+    "brandedName": "RCP",
+    "primaryOrgId": "880679f8-dffb-479f-8a81-530c30fd7377",
+    "primaryOrgOriginalName": "RCP Advisors 2, LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "ad5b7fc5-dd6a-4d3c-b87f-1709b5d5322d",
+        "name": "RCP Advisors, LLC"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "cc001857-f709-42bd-93bf-29ebd0eac7dc",
+        "name": "RCP Advisors, LLC - Small Buyouts"
+      }
+    ]
+  },
+  {
+    "brandedName": "Soleus Capital",
+    "primaryOrgId": "9387fd7c-a097-48c8-9d21-865a6a1cc376",
+    "primaryOrgOriginalName": "Soleus Capital LLC",
+    "duplicateOrgIds": [
+      {
+        "id": "f73e9f4f-e916-4c86-94d9-d6c11a14b561",
+        "name": "Soleus Capital Management, L.P."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "374ccd5d-8f4e-42e6-b759-15540e46b13d",
+        "name": "Soleus Capital Management, L.P. - Healthcare Investment"
+      }
+    ]
+  },
+  {
+    "brandedName": "TCG Capital Management",
+    "primaryOrgId": "543cf917-5e9e-44f6-8fa8-cf94b3ed1cfd",
+    "primaryOrgOriginalName": "TCG Capital Management, L.P.",
+    "duplicateOrgIds": [
+      {
+        "id": "355ea89d-7be0-4c78-a0c8-719f803c0e2f",
+        "name": "TCG Capital Management, LP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "31f04afd-fad9-4bb6-bad1-1244ed5211b4",
+        "name": "TCG Capital Management, LP - Sports/Media/Technology"
+      }
+    ]
+  },
+  {
+    "brandedName": "Tecum Capital",
+    "primaryOrgId": "3b9d57f1-4c80-4a3a-b288-65d1701680ba",
+    "primaryOrgOriginalName": "Tecum Capital",
+    "duplicateOrgIds": [
+      {
+        "id": "209a0b86-df71-4461-8238-bae6af63e37e",
+        "name": "Tecum Capital Management, Inc."
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "ab70876a-3ae5-448d-8a73-b042ea7bbf69",
+        "name": "Tecum Capital Management, Inc. - Junior Capital"
+      },
+      {
+        "id": "0adccaaa-bb9c-4ba1-aea9-931b25f196be",
+        "name": "Tecum Capital Management, Inc. - Control Equity"
+      }
+    ]
+  },
+  {
+    "brandedName": "Wellington",
+    "primaryOrgId": "fc533630-726b-4c09-a01d-d5e19bd1bfa8",
+    "primaryOrgOriginalName": "Wellington Management Company LLP",
+    "duplicateOrgIds": [
+      {
+        "id": "86dfdb29-96ee-4221-b980-4299b771a10b",
+        "name": "Wellington Management Group LLP"
+      }
+    ],
+    "duplicateCriteriaToDelete": [],
+    "duplicateCriteriaToTransfer": [
+      {
+        "id": "3d5d9949-6494-4b9a-84de-669abf5d49f4",
+        "name": "Wellington Management Group LLP - Climate Growth & Biotech"
+      },
+      {
+        "id": "fdade43a-fdf9-4302-bc10-b8f6e3986cfc",
+        "name": "Wellington Management Group LLP - Consumer & Technology"
+      }
+    ]
+  }
+]

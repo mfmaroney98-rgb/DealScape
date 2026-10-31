@@ -1,0 +1,995 @@
+[
+  {
+    "org1": {
+      "id": "ae8ad519-f8d3-4ecf-8c0f-e5f18c321bca",
+      "organization_name": "501 North Growth Equity",
+      "website_url": "www.501northgrowthequity.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-17T03:16:45.794Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "567da1b2-77f0-4ef9-85d0-bce184c1abff",
+      "organization_name": "501 North, LLC",
+      "website_url": "www.501northgrowthequity.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-20T19:51:34.170Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "501northgrowthequity.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "501 North Growth Equity - Enterprise Technology & Healthcare"
+    ],
+    "criteria2": [
+      "501 North, LLC - Healthcare and Technology"
+    ]
+  },
+  {
+    "org1": {
+      "id": "de60b767-2b56-4cd9-909f-3314dc07ae74",
+      "organization_name": "Access Holdings",
+      "website_url": "www.accessholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-18T22:37:24.242Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "51f0b490-9496-4800-81bc-f55e4378ecfd",
+      "organization_name": "Access Holdings Management Company LLC",
+      "website_url": "www.accessholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T19:57:06.120Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "accessholdings.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Access Holdings - Lower-Middle Market"
+    ],
+    "criteria2": [
+      "Access Holdings Management Company LLC - Lower-Middle Market"
+    ]
+  },
+  {
+    "org1": {
+      "id": "526f37af-e96c-463a-8869-101c22095f91",
+      "organization_name": "Affinius Capital",
+      "website_url": "www.affiniuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:13:40.608Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "596d9e8c-8c66-4d0a-be4c-d11a304b6bab",
+      "organization_name": "Affinius Capital Management LLC",
+      "website_url": "affiniuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-20T20:13:52.081Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "affiniuscapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Affinius Capital - Real Estate Investments"
+    ],
+    "criteria2": [
+      "Affinius Capital Management LLC - Real Estate Investments"
+    ]
+  },
+  {
+    "org1": {
+      "id": "9f4dbce8-a023-4c37-bd41-04062ceb888e",
+      "organization_name": "Baypine Holdings LP",
+      "website_url": "baypine.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T02:42:39.617Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "dd2a7007-f6fe-49df-9a9a-7764d6f5285c",
+      "organization_name": "BayPine LP",
+      "website_url": "www.baypine.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-21T02:42:47.686Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "baypine.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Baypine Holdings LP - Healthcare Services",
+      "Baypine Holdings LP - Industrial Services",
+      "Baypine Holdings LP - Business Services"
+    ],
+    "criteria2": [
+      "BayPine LP - Healthcare/Industrial/Business Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "8e0e044c-d459-448f-8f56-dbd9167ffb15",
+      "organization_name": "Continuim Equity Management, LP",
+      "website_url": "www.continuim.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:31:28.801Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "612ab640-7ae7-4f04-8468-2032dfff1315",
+      "organization_name": "Continuim Equity Partners",
+      "website_url": "https://www.continuim.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-09-20T01:53:59.580Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "continuim.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Continuim Equity Management, LP - Manufacturing and Industrial"
+    ],
+    "criteria2": [
+      "Continuim Equity Partners - Manufacturing & Industrial"
+    ]
+  },
+  {
+    "org1": {
+      "id": "5362afc5-438a-44a0-a769-6af833962ea2",
+      "organization_name": "Crescent Real Estate Holdings LLC",
+      "website_url": "www.crescent.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:44:08.215Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "8651aec9-77ac-49f8-8a37-e4b1354c2c25",
+      "organization_name": "Crescent Real Estate LLC",
+      "website_url": "crescent.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:44:17.117Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "crescent.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Crescent Real Estate Holdings LLC - Commercial Real Estate"
+    ],
+    "criteria2": [
+      "Crescent Real Estate LLC - Commercial Real Estate"
+    ]
+  },
+  {
+    "org1": {
+      "id": "3f4715ec-ae24-44a3-9205-8fed1fddff84",
+      "organization_name": "Crow Holdings",
+      "website_url": "www.crowholdings.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:49:55.667Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "12b065ca-7d79-4c11-b134-6ccd3c27b21a",
+      "organization_name": "Crow Holdings Capital Partners, L.L.C.",
+      "website_url": "www.crowholdings.com/investment-management",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:50:16.579Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "crowholdings.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Crow Holdings - Multifamily and Industrial"
+    ],
+    "criteria2": [
+      "Crow Holdings Capital Partners, L.L.C. - Residential and Industrial Real Estate"
+    ]
+  },
+  {
+    "org1": {
+      "id": "1d493c66-6d64-471d-a5ec-8012567bbca4",
+      "organization_name": "D'Orazio Capital Management, Inc.",
+      "website_url": "www.doraziocp.com/direct-equity",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:58:11.875Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "ca604196-65cc-45a3-b8c8-61511b462bc3",
+      "organization_name": "D'Orazio Capital Partners, LLC",
+      "website_url": "www.doraziocp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T03:58:20.703Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "doraziocp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "D'Orazio Capital Management, Inc. - General Buyout"
+    ],
+    "criteria2": [
+      "D'Orazio Capital Partners, LLC - Industrial"
+    ]
+  },
+  {
+    "org1": {
+      "id": "cee00888-323f-42ca-a23f-da8b45bd77e2",
+      "organization_name": "Edgewater Capital Management, LLC",
+      "website_url": "www.edgewatercapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-22T13:16:29.889Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "1dd504b5-02a5-4ee5-80f5-18753678798d",
+      "organization_name": "Edgewater Capital Partners",
+      "website_url": "https://www.edgewatercapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-24T02:49:56.351Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "edgewatercapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Edgewater Capital Management, LLC - Specialty Industrials"
+    ],
+    "criteria2": [
+      "Edgewater Capital Partners - Edgewater Capital Partners Criteria"
+    ]
+  },
+  {
+    "org1": {
+      "id": "d42dc86a-13ba-45e4-8cd2-4d95e5c0bed5",
+      "organization_name": "Elevar Equity Management Ltd.",
+      "website_url": "elevarequity.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T01:55:24.670Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "2c6980dc-8a52-426b-984b-1a9153c329bc",
+      "organization_name": "Elevar Equity, LLC",
+      "website_url": "www.elevarequity.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T01:55:40.604Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "elevarequity.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Elevar Equity Management Ltd. - Emerging Markets Focus"
+    ],
+    "criteria2": [
+      "Elevar Equity, LLC - Emerging Markets Focus"
+    ]
+  },
+  {
+    "org1": {
+      "id": "df4b9852-3461-4468-bd48-fe40179e834a",
+      "organization_name": "Eltura Capital Management, LLC",
+      "website_url": "www.eltura.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T01:57:05.242Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "bc9a06ae-345d-4611-8b05-da27d45e32bd",
+      "organization_name": "Eltura Capital Partners LP",
+      "website_url": "www.eltura.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T01:57:12.064Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "eltura.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Eltura Capital Management, LLC - Structured Credit"
+    ],
+    "criteria2": [
+      "Eltura Capital Partners LP - Consumer and Commercial Credit"
+    ]
+  },
+  {
+    "org1": {
+      "id": "1a263d62-6fad-4c9a-a7f2-974c1c1a21f9",
+      "organization_name": "Enhanced Healthcare Management Company, LLC",
+      "website_url": "www.enhancedhealthcare.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:32.232Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "98fee6ac-bcc3-4cd3-b1d8-c0df5185eb8f",
+      "organization_name": "Enhanced Healthcare Partners",
+      "website_url": "www.enhancedhealthcare.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:13:40.148Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "enhancedhealthcare.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Enhanced Healthcare Management Company, LLC - Healthcare"
+    ],
+    "criteria2": [
+      "Enhanced Healthcare Partners - Healthcare"
+    ]
+  },
+  {
+    "org1": {
+      "id": "f82abbc1-10ac-4acd-b830-8a25b300da07",
+      "organization_name": "FIC",
+      "website_url": "www.ficfund.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:33:39.003Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "557b26ea-f5b3-4a70-b9a4-92063ad1e44f",
+      "organization_name": "FIC Partners Management, LP",
+      "website_url": "www.ficfund.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:33:45.798Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "ficfund.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "FIC - Energy and Infrastructure"
+    ],
+    "criteria2": [
+      "FIC Partners Management, LP - Infrastructure Energy"
+    ]
+  },
+  {
+    "org1": {
+      "id": "59e5ba75-8f41-461f-b898-6e6a10fb2e2f",
+      "organization_name": "Forest Road Asset Management LLC",
+      "website_url": "www.forestroadco.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:44:36.258Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "fdb94675-5170-464a-8ecc-8dfe8a72e780",
+      "organization_name": "Forest Road Company, LLC",
+      "website_url": "www.forestroadco.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T02:44:43.629Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "forestroadco.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Forest Road Asset Management LLC - General Buyout"
+    ],
+    "criteria2": [
+      "Forest Road Company, LLC - General Buyout"
+    ]
+  },
+  {
+    "org1": {
+      "id": "6574fada-d561-4d89-9a5d-ba383ac77503",
+      "organization_name": "GCP Capital Partners Holdings LLC",
+      "website_url": "www.gcpcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:25:08.421Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "9f31498c-701a-43bc-998a-6cdb5a95207a",
+      "organization_name": "GCP Capital Partners LLC",
+      "website_url": "www.gcpcapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:25:15.893Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "gcpcapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "GCP Capital Partners Holdings LLC - Business Services and Financial Services/Technology"
+    ],
+    "criteria2": [
+      "GCP Capital Partners LLC - Business Services and Financial Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "efaca63a-bdf9-40ab-92d1-50607c1dc3f6",
+      "organization_name": "GenNx360 Capital Partners",
+      "website_url": "www.gennx360.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:22.811Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "4f8f4586-5288-440c-a0a3-e747908e569c",
+      "organization_name": "GenNx360 Management Company, LLC",
+      "website_url": "www.gennx360.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:30.481Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "gennx360.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "GenNx360 Capital Partners - Industrial and Business Services"
+    ],
+    "criteria2": [
+      "GenNx360 Management Company, LLC - Industrial Services and Manufacturing"
+    ]
+  },
+  {
+    "org1": {
+      "id": "35a61303-0e37-4748-9e63-cc5bf92662c8",
+      "organization_name": "Genstar Capital Management, LLC",
+      "website_url": "www.gencap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:28:55.027Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "ba5ba880-6dec-4614-a8de-941e1660a6d6",
+      "organization_name": "Genstar Capital, LLC",
+      "website_url": "www.gencap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T03:29:17.388Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "gencap.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Genstar Capital Management, LLC - Financial Services",
+      "Genstar Capital Management, LLC - Healthcare",
+      "Genstar Capital Management, LLC - Industrials",
+      "Genstar Capital Management, LLC - Software"
+    ],
+    "criteria2": [
+      "Genstar Capital, LLC - Healthcare Services",
+      "Genstar Capital, LLC - Financial Services",
+      "Genstar Capital, LLC - Industrials",
+      "Genstar Capital, LLC - Software"
+    ]
+  },
+  {
+    "org1": {
+      "id": "cd5459de-3908-49ed-89f1-411651d0ffa5",
+      "organization_name": "GPI Capital Limited",
+      "website_url": "gpicap.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T03:39:46.794Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "41936680-50de-42ef-ad71-20654ed65468",
+      "organization_name": "GPI Capital, L.P.",
+      "website_url": "gpicap.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-23T03:39:52.987Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "gpicap.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "GPI Capital Limited - Technology/Consumer/Industrial"
+    ],
+    "criteria2": [
+      "GPI Capital, L.P. - Technology/Consumer/Industrial"
+    ]
+  },
+  {
+    "org1": {
+      "id": "23a76573-3828-4cb6-b5df-c3fd1f47907a",
+      "organization_name": "Invictus Capital Management, LP",
+      "website_url": "www.invictuscp.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:40:28.718Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "493bd903-a950-4027-9014-95568ac2ec61",
+      "organization_name": "Invictus Capital Partners, Lp",
+      "website_url": "invictuscp.com//",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:40:35.105Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "invictuscp.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Invictus Capital Management, LP - Single-Family Residential Credit"
+    ],
+    "criteria2": [
+      "Invictus Capital Partners, Lp - Single-Family Residential Credit"
+    ]
+  },
+  {
+    "org1": {
+      "id": "074b91ba-ac9c-455d-a69a-e03b67766be3",
+      "organization_name": "Kennedy Lewis Capital Holdings LLC",
+      "website_url": "klimllc.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:56:46.123Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "aeee4f5b-6ca4-46ab-9011-abbef8008f96",
+      "organization_name": "Kennedy Lewis Management LP",
+      "website_url": "www.klimllc.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T04:57:12.871Z",
+      "profiles": "0",
+      "criteria_count": "5",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "klimllc.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Kennedy Lewis Capital Holdings LLC - Middle-Market Non-Sponsor Lending"
+    ],
+    "criteria2": [
+      "Kennedy Lewis Management LP - Healthcare and Life Sciences",
+      "Kennedy Lewis Management LP - Power and Energy Infrastructure",
+      "Kennedy Lewis Management LP - Homebuilder Finance",
+      "Kennedy Lewis Management LP - Opportunistic Cyclicals",
+      "Kennedy Lewis Management LP - Telecommunications, Media, and Technology"
+    ]
+  },
+  {
+    "org1": {
+      "id": "3763ea1d-6d46-4789-b582-0c24bb152df4",
+      "organization_name": "Lime Rock Management LP",
+      "website_url": "www.lrpartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:23:20.687Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "7df75160-b86e-4916-9749-9dd38473c97f",
+      "organization_name": "Lime Rock Partners, LLC",
+      "website_url": "www.lrpartners.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T05:23:33.962Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Same Core Brand",
+    "domain": "lrpartners.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Lime Rock Management LP - Energy Sector"
+    ],
+    "criteria2": [
+      "Lime Rock Partners, LLC - Energy Sector Investments"
+    ]
+  },
+  {
+    "org1": {
+      "id": "c4c93510-62d8-4f35-8c39-958ca8412977",
+      "organization_name": "Middlefield Limited",
+      "website_url": "www.middlefield.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:30:14.823Z",
+      "profiles": "0",
+      "criteria_count": "8",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "160af67e-7da3-413e-a297-cb69c4882a21",
+      "organization_name": "Middlefield Venture Group",
+      "website_url": "www.middlefield.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:30:33.962Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "middlefield.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Middlefield Limited - Real Estate",
+      "Middlefield Limited - Income Plus",
+      "Middlefield Limited - Healthcare",
+      "Middlefield Limited - Infrastructure",
+      "Middlefield Limited - Energy",
+      "Middlefield Limited - Global Dividends",
+      "Middlefield Limited - Fixed Income",
+      "Middlefield Limited - Innovation"
+    ],
+    "criteria2": [
+      "Middlefield Venture Group - General Buyout"
+    ]
+  },
+  {
+    "org1": {
+      "id": "6194d7a8-cef8-4f58-9249-8a085ce13093",
+      "organization_name": "Morgan Stanley Private Equity",
+      "website_url": "www.morganstanley.com/im/en-us/capital-seeker/capabilities/private-equity.html",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:43:20.414Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "4dca1526-ef0a-4ce4-9434-510b95537e41",
+      "organization_name": "Morgan Stanley Private Equity Asia, Inc.",
+      "website_url": "www.morganstanley.com/im/en-us/individual-investor/about-us/people-and-teams/investment-teams/private-equity-asia-team.html",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:43:45.474Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "morganstanley.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Morgan Stanley Private Equity - General Buyout"
+    ],
+    "criteria2": [
+      "Morgan Stanley Private Equity Asia, Inc. - Asia-Pacific Consumer/Industrial/Healthcare/Financial Services/Telecom"
+    ]
+  },
+  {
+    "org1": {
+      "id": "3fb61e70-7e57-4c70-8aab-9dc410d52bbf",
+      "organization_name": "New Harbor Capital",
+      "website_url": "https://www.newharborcap.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-12T02:21:52.423Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "6a1720c4-37a0-4996-a122-34a5c7b80fdc",
+      "organization_name": "New Harbor Capital Management, LP",
+      "website_url": "www.newharborcap.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T19:55:47.519Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "newharborcap.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "New Harbor Capital - Healthcare Education",
+      "New Harbor Capital - Healthcare Technology",
+      "New Harbor Capital - Education Technology"
+    ],
+    "criteria2": [
+      "New Harbor Capital Management, LP - Healthcare",
+      "New Harbor Capital Management, LP - Education",
+      "New Harbor Capital Management, LP - Technology-Enabled Services"
+    ]
+  },
+  {
+    "org1": {
+      "id": "4acfeb75-7946-49a6-8143-302eea3b457e",
+      "organization_name": "PPM America Capital Partners, LLC",
+      "website_url": "www.ppmamerica.com/investment-solutions/our-strategies/private-equity",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:08:57.929Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "4a35ee6a-4a06-4b91-ad9f-2242dec1405d",
+      "organization_name": "PPM America, Inc.",
+      "website_url": "www.ppmamerica.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:12:03.042Z",
+      "profiles": "0",
+      "criteria_count": "4",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "ppmamerica.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "PPM America Capital Partners, LLC - General Buyout"
+    ],
+    "criteria2": [
+      "PPM America, Inc. - Private Equity",
+      "PPM America, Inc. - Commercial Real Estate Debt",
+      "PPM America, Inc. - Private and Structured Credit",
+      "PPM America, Inc. - Emerging Markets Debt"
+    ]
+  },
+  {
+    "org1": {
+      "id": "40d18ea7-9148-439b-aeb7-2ba3e98e16c9",
+      "organization_name": "Primus Capital",
+      "website_url": "https://primuscapital.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-22T04:54:09.600Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "3d1204db-62db-45d9-be33-bd8bba73c374",
+      "organization_name": "Primus Capital Partners, Inc.",
+      "website_url": "primuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-23T21:14:42.976Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "primuscapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Primus Capital - Healthcare",
+      "Primus Capital - Software/Technology"
+    ],
+    "criteria2": [
+      "Primus Capital Partners, Inc. - Healthcare/Software/Technology"
+    ]
+  },
+  {
+    "org1": {
+      "id": "880679f8-dffb-479f-8a81-530c30fd7377",
+      "organization_name": "RCP Advisors 2, LLC",
+      "website_url": "www.rcpadvisors.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T04:59:51.851Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "ad5b7fc5-dd6a-4d3c-b87f-1709b5d5322d",
+      "organization_name": "RCP Advisors, LLC",
+      "website_url": "www.rcpadvisors.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T04:59:58.038Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "rcpadvisors.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "RCP Advisors 2, LLC - Small Buyouts"
+    ],
+    "criteria2": [
+      "RCP Advisors, LLC - Small Buyouts"
+    ]
+  },
+  {
+    "org1": {
+      "id": "9387fd7c-a097-48c8-9d21-865a6a1cc376",
+      "organization_name": "Soleus Capital LLC",
+      "website_url": "www.soleuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:07:30.325Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "f73e9f4f-e916-4c86-94d9-d6c11a14b561",
+      "organization_name": "Soleus Capital Management, L.P.",
+      "website_url": "www.soleuscapital.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:07:37.117Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "soleuscapital.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Soleus Capital LLC - Healthcare Investment"
+    ],
+    "criteria2": [
+      "Soleus Capital Management, L.P. - Healthcare Investment"
+    ]
+  },
+  {
+    "org1": {
+      "id": "543cf917-5e9e-44f6-8fa8-cf94b3ed1cfd",
+      "organization_name": "TCG Capital Management, L.P.",
+      "website_url": "www.tcg.co",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T06:41:30.463Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "355ea89d-7be0-4c78-a0c8-719f803c0e2f",
+      "organization_name": "TCG Capital Management, LP",
+      "website_url": "www.tcg.co",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T06:41:36.897Z",
+      "profiles": "0",
+      "criteria_count": "1",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "tcg.co",
+    "sharedCriteriaCount": 1,
+    "criteria1": [
+      "TCG Capital Management, L.P. - Sports/Media/Technology"
+    ],
+    "criteria2": [
+      "TCG Capital Management, LP - Sports/Media/Technology"
+    ]
+  },
+  {
+    "org1": {
+      "id": "3b9d57f1-4c80-4a3a-b288-65d1701680ba",
+      "organization_name": "Tecum Capital",
+      "website_url": "https://www.tecum.com/",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-08-29T03:28:14.942Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "209a0b86-df71-4461-8238-bae6af63e37e",
+      "organization_name": "Tecum Capital Management, Inc.",
+      "website_url": "www.tecum.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T06:43:31.585Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "tecum.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Tecum Capital - Junior Capital",
+      "Tecum Capital - Control Equity"
+    ],
+    "criteria2": [
+      "Tecum Capital Management, Inc. - Junior Capital",
+      "Tecum Capital Management, Inc. - Control Equity"
+    ]
+  },
+  {
+    "org1": {
+      "id": "fc533630-726b-4c09-a01d-d5e19bd1bfa8",
+      "organization_name": "Wellington Management Company LLP",
+      "website_url": "www.wellington.com",
+      "buyer_type": "PE Firm",
+      "created_at": "2026-10-24T16:44:46.851Z",
+      "profiles": "0",
+      "criteria_count": "3",
+      "listing_count": "0"
+    },
+    "org2": {
+      "id": "86dfdb29-96ee-4221-b980-4299b771a10b",
+      "organization_name": "Wellington Management Group LLP",
+      "website_url": "www.wellington.com",
+      "buyer_type": "Growth Equity Firm",
+      "created_at": "2026-10-24T16:45:04.536Z",
+      "profiles": "0",
+      "criteria_count": "2",
+      "listing_count": "0"
+    },
+    "type": "Same Domain & Substring/Related Name",
+    "domain": "wellington.com",
+    "sharedCriteriaCount": 0,
+    "criteria1": [
+      "Wellington Management Company LLP - Healthcare",
+      "Wellington Management Company LLP - Energy",
+      "Wellington Management Company LLP - Real Estate"
+    ],
+    "criteria2": [
+      "Wellington Management Group LLP - Climate Growth & Biotech",
+      "Wellington Management Group LLP - Consumer & Technology"
+    ]
+  }
+]
