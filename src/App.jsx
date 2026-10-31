@@ -821,37 +821,16 @@ function App() {
 
   return (
     <Router>
-      <div style={{ '--console-h': profile?.role === 'corporate' ? '2.5rem' : '0rem', paddingTop: 'var(--console-h)' }}>
-      {profile?.role === 'corporate' && (
-        <div className="fixed top-0 inset-x-0 h-10 bg-slate-900 border-b border-slate-800 text-white text-xs px-6 flex items-center justify-between z-[9999]">
-          <div className="flex items-center gap-2 font-bold tracking-wide">
-            <span className="bg-blue-600 text-[10px] px-2 py-0.5 rounded font-black text-white">ADMIN</span>
-            <span className="text-slate-300">Corporate View-As Console</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-slate-400 font-semibold">Active PE Firm Context:</span>
-            <CorporateViewAsSelector
-              organizations={organizations}
-              selectedOrg={impersonatedOrg}
-              onSelectOrg={(org) => setImpersonatedOrg(org)}
-            />
-            {impersonatedOrg && (
-              <button
-                onClick={() => setImpersonatedOrg(null)}
-                className="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded transition-colors text-[10px] cursor-pointer"
-              >
-                Clear Context
-              </button>
-            )}
-          </div>
-        </div>
-      )}
       <Layout 
         session={session} 
         organizationName={impersonatedOrg ? impersonatedOrg.organization_name : profile?.organization?.organization_name}
         darkMode={darkMode}
         setDarkMode={setDarkMode}
         onSignOut={handleSignOut}
+        profile={profile}
+        organizations={organizations}
+        impersonatedOrg={impersonatedOrg}
+        onSelectOrg={(org) => setImpersonatedOrg(org)}
       >
         <Routes>
           <Route path="/" element={session ? <Navigate to="/dashboard" /> : <Login />} />
@@ -1047,16 +1026,30 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Layout>
-      </div>
     </Router>
   );
 }
 
-const Layout = ({ children, session, organizationName, darkMode, setDarkMode, onSignOut }) => {
+const Layout = ({ 
+  children, 
+  session, 
+  organizationName, 
+  darkMode, 
+  setDarkMode, 
+  onSignOut,
+  profile,
+  organizations,
+  impersonatedOrg,
+  onSelectOrg
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const hideNavbarOn = ['/', '/signup'];
   const shouldShowNavbar = session && !hideNavbarOn.includes(location.pathname);
+
+  // View-As Console is ONLY displayed on buyer pages for DealScape corporate accounts
+  const isBuyerRoute = location.pathname.startsWith('/dashboard/buyer') || location.pathname.startsWith('/onboarding/buyer');
+  const showCorporateConsole = profile?.role === 'corporate' && isBuyerRoute;
 
   useEffect(() => {
     if (darkMode) {
@@ -1076,11 +1069,37 @@ const Layout = ({ children, session, organizationName, darkMode, setDarkMode, on
   }, [session, location.pathname, navigate]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} onSignOut={onSignOut} />}
-      <main className={clsx("flex-1", shouldShowNavbar && "pt-20")}>
-        {children}
-      </main>
+    <div style={{ '--console-h': showCorporateConsole ? '2.5rem' : '0rem', paddingTop: 'var(--console-h)' }}>
+      {showCorporateConsole && (
+        <div className="fixed top-0 inset-x-0 h-10 bg-slate-900 border-b border-slate-800 text-white text-xs px-6 flex items-center justify-between z-[9999]">
+          <div className="flex items-center gap-2 font-bold tracking-wide">
+            <span className="bg-blue-600 text-[10px] px-2 py-0.5 rounded font-black text-white">ADMIN</span>
+            <span className="text-slate-300">Corporate View-As Console</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-slate-400 font-semibold">Active PE Firm Context:</span>
+            <CorporateViewAsSelector
+              organizations={organizations}
+              selectedOrg={impersonatedOrg}
+              onSelectOrg={onSelectOrg}
+            />
+            {impersonatedOrg && (
+              <button
+                onClick={() => onSelectOrg(null)}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded transition-colors text-[10px] cursor-pointer"
+              >
+                Clear Context
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      <div className="flex flex-col min-h-screen">
+        {shouldShowNavbar && <Navbar organizationName={organizationName} darkMode={darkMode} setDarkMode={setDarkMode} onSignOut={onSignOut} />}
+        <main className={clsx("flex-1", shouldShowNavbar && "pt-20")}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
