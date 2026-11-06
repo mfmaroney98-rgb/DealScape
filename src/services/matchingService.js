@@ -23,7 +23,58 @@ export const matchingService = {
       throw error;
     }
 
-    return data || [];
+    const candidates = data || [];
+    if (candidates.length === 0) return [];
+
+    // Automatically hydrate with any existing cached AI scores from ai_match_cache ($0 cost, fast DB lookup)
+    try {
+      const { cacheService } = await import('./cacheService.js');
+      const listingIds = candidates.map(c => c.listing_id);
+      const cachedScores = await cacheService.getCachedScores(criteriaId, listingIds);
+
+      if (cachedScores && cachedScores.size > 0) {
+        return candidates.map(c => {
+          const cached = cachedScores.get(c.listing_id);
+          if (cached) {
+            const s1Score = Number(c.stage1_score) || 0;
+            const aiScore = Number(cached.ai_score) || 0;
+            const finalScore = Math.round((0.4 * s1Score + 0.6 * aiScore) * 10) / 10;
+            let tier;
+            if (finalScore >= 75) tier = 'Strong';
+            else if (finalScore >= 45) tier = 'Moderate';
+            else tier = 'Weak';
+
+            return {
+              ...c,
+              criteria_id: criteriaId,
+              ai_score: aiScore,
+              ai_reasoning: cached.ai_reasoning || '',
+              semantic_score: aiScore,
+              industry_fit_score: aiScore,
+              total_score: finalScore,
+              match_tier: tier,
+              bonus_score: 0,
+              bonus_reasons: []
+            };
+          }
+          return {
+            ...c,
+            criteria_id: criteriaId
+          };
+        });
+      } else {
+        return candidates.map(c => ({
+          ...c,
+          criteria_id: criteriaId
+        }));
+      }
+    } catch (cacheErr) {
+      console.warn('[Stage 1] Failed to attach cached AI scores:', cacheErr);
+      return candidates.map(c => ({
+        ...c,
+        criteria_id: criteriaId
+      }));
+    }
   },
 
   /**

@@ -356,7 +356,7 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
   const location = useLocation();
 
   // Match data may be passed via router state (from MatchResults) to avoid re-RPC
-  const matchData = location.state?.match || null;
+  const [matchData, setMatchData] = useState(location.state?.match || null);
 
   const [listing, setListing] = useState(previewListing || null);
   const [loading, setLoading] = useState(!previewListing);
@@ -379,8 +379,23 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
     } else if (matchData?.matchedCriteriaList?.length > 0) {
       // Fallback to the first criteria ID in the list if general criteria_id is not directly present
       setActiveLogicCriteriaId(matchData.matchedCriteriaList[0].criteriaId);
+    } else if (!matchData && _criteriaId && listingId && !isPreview) {
+      import('../services/cacheService.js').then(({ cacheService }) => {
+        cacheService.getCachedScores(_criteriaId, [listingId]).then(cachedMap => {
+          const cached = cachedMap.get(listingId);
+          if (cached) {
+            setMatchData({
+              criteria_id: _criteriaId,
+              ai_score: Number(cached.ai_score),
+              ai_reasoning: cached.ai_reasoning,
+              total_score: Number(cached.ai_score),
+              match_tier: Number(cached.ai_score) >= 75 ? 'Strong' : Number(cached.ai_score) >= 45 ? 'Moderate' : 'Weak'
+            });
+          }
+        }).catch(() => {});
+      });
     }
-  }, [matchData]);
+  }, [matchData, _criteriaId, listingId, isPreview]);
 
   useEffect(() => {
     if (previewListing) {

@@ -96,7 +96,11 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
 
   useEffect(() => {
     if (selectedMatch) {
-      setActiveLogicCriteriaId(selectedMatch.criteria_id || '');
+      setActiveLogicCriteriaId(
+        selectedMatch.criteria_id ||
+        selectedMatch.matchedCriteriaList?.[0]?.criteriaId ||
+        ''
+      );
     }
   }, [selectedMatch]);
 
@@ -203,6 +207,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
         if (!existing || m.total_score > existing.total_score) {
           mergedMap.set(m.listing_id, {
             ...m,
+            criteria_id: criteriaId,
             matchedCriteriaList
           });
         } else {
@@ -1033,13 +1038,33 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
               </div>
 
               {/* Drawer Scrollable Content */}
-              <div className="flex-1 overflow-y-auto p-6 bg-white space-y-6">
+              <div className="flex-1 overflow-y-auto p-6 bg-white dark:bg-slate-900 space-y-6">
                 {drawerTab === 'details' && (
                   <>
+                    {/* AI Match Analysis (from cache) */}
+                    {selectedMatch.ai_reasoning && (
+                      <div className="p-4 bg-gradient-to-br from-violet-50/80 to-blue-50/60 dark:from-violet-950/40 dark:to-blue-950/30 rounded-xl border border-violet-200/50 dark:border-violet-800/50">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Sparkles size={13} className="text-violet-500 dark:text-violet-400" />
+                            <span className="text-[10px] font-extrabold text-violet-700 dark:text-violet-300 uppercase tracking-wider">AI Match Analysis</span>
+                          </div>
+                          {selectedMatch.ai_score != null && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-violet-100 dark:bg-violet-900/60 text-violet-700 dark:text-violet-300">
+                              Fit: {Math.round(selectedMatch.ai_score)}%
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                          {selectedMatch.ai_reasoning}
+                        </p>
+                      </div>
+                    )}
+
                     {/* Summary */}
                     <div className="space-y-2">
                       <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Executive Teaser</h4>
-                      <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/50">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
                         {selectedMatch.summary || 'No teaser description available.'}
                       </p>
                     </div>
@@ -1107,7 +1132,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                 {drawerTab === 'scores' && (() => {
                   const activeCriteriaMatch = (selectedMatch.matchedCriteriaList || []).find(
                     item => item.criteriaId === activeLogicCriteriaId
-                  ) || {
+                  ) || selectedMatch.matchedCriteriaList?.[0] || {
                     totalScore: selectedMatch.total_score,
                     financialScore: selectedMatch.financial_score || 0,
                     geographyScore: selectedMatch.geography_score || 0,
@@ -1152,15 +1177,21 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                         </div>
                       )}
 
-                      {activeCriteriaMatch.aiReasoning && (
-                        <div className="p-4 mb-4 bg-gradient-to-br from-violet-50/80 to-blue-50/60 rounded-xl border border-violet-200/50">
+                      {activeCriteriaMatch.aiReasoning ? (
+                        <div className="p-4 mb-4 bg-gradient-to-br from-violet-50/80 to-blue-50/60 dark:from-violet-950/40 dark:to-blue-950/30 rounded-xl border border-violet-200/50 dark:border-violet-800/50">
                           <div className="flex items-center gap-2 mb-2">
-                            <Sparkles size={13} className="text-violet-500" />
-                            <span className="text-[10px] font-extrabold text-violet-700 uppercase tracking-wider">AI Match Analysis</span>
+                            <Sparkles size={13} className="text-violet-500 dark:text-violet-400" />
+                            <span className="text-[10px] font-extrabold text-violet-700 dark:text-violet-300 uppercase tracking-wider">AI Match Analysis</span>
                           </div>
-                          <p className="text-xs text-slate-700 leading-relaxed">
+                          <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                             {activeCriteriaMatch.aiReasoning}
                           </p>
+                        </div>
+                      ) : (
+                        <div className="p-3.5 mb-4 bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                          <Sparkles size={14} className="text-slate-400 mx-auto mb-1.5" />
+                          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">No cached AI analysis for this criteria set yet.</p>
+                          <p className="text-[11px] text-slate-400 mt-1">Click &ldquo;Activate AI Scores&rdquo; at the top of the dashboard to generate and cache AI scores.</p>
                         </div>
                       )}
 
