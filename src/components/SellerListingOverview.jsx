@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
+import BuyerListingDetail from './BuyerListingDetail';
 import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
@@ -453,16 +454,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
         )}
 
         {activeTab === 'preview' && (
-          <div className="p-12 rounded-2xl border border-slate-200/60 dark:border-slate-700/40 text-center flex flex-col items-center justify-center min-h-[400px]">
-            <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl mb-4 flex items-center justify-center">
-              <FileText className="text-emerald-600 dark:text-emerald-400" size={32} />
-            </div>
-            <h2 className="text-2xl font-bold text-indigo-400 dark:text-white mb-2">Buyer Preview Mode</h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-              This section will allow you to preview this listing exactly as it appears to buyers on the platform.
-            </p>
-            <span className="mt-8 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-medium border border-slate-200 dark:border-slate-700">Coming Soon</span>
-          </div>
+          <BuyerListingDetail previewListing={listing} isPreview={true} />
         )}
       </div>
     </div>

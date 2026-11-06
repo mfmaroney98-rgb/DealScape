@@ -30,6 +30,7 @@ import {
   AlertCircle,
   CheckCircle2,
   ExternalLink,
+  Eye,
 } from 'lucide-react';
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -349,62 +350,74 @@ const OwnershipFlag = ({ show, label }) =>
 
       /* ─── Main Component ──────────────────────────────────────────────────── */
 
-      export default function BuyerListingDetail() {
-  const {id: _criteriaId, listingId } = useParams();
-      const location = useLocation();
+export default function BuyerListingDetail({ previewListing = null, isPreview = false }) {
+  const { id: _criteriaId, listingId: routeListingId } = useParams();
+  const listingId = previewListing?.id || routeListingId;
+  const location = useLocation();
 
-      // Match data may be passed via router state (from MatchResults) to avoid re-RPC
-      const matchData = location.state?.match || null;
+  // Match data may be passed via router state (from MatchResults) to avoid re-RPC
+  const matchData = location.state?.match || null;
 
-      const [listing, setListing] = useState(null);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-      const [teaserSignedUrl, setTeaserSignedUrl] = useState(null);
-      const [downloadingTeaser, setDownloadingTeaser] = useState(false);
-      const [fileError, setFileError] = useState(null);
-      const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
-      const [naicsMap, setNaicsMap] = useState(null);
+  const [listing, setListing] = useState(previewListing || null);
+  const [loading, setLoading] = useState(!previewListing);
+  const [error, setError] = useState(null);
+  const [teaserSignedUrl, setTeaserSignedUrl] = useState(null);
+  const [downloadingTeaser, setDownloadingTeaser] = useState(false);
+  const [fileError, setFileError] = useState(null);
+  const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
+  const [naicsMap, setNaicsMap] = useState(null);
 
   useEffect(() => {
-        fetchNaicsMap()
-          .then(map => setNaicsMap(map))
-          .catch(err => console.error('Failed to load NAICS from database:', err));
+    fetchNaicsMap()
+      .then(map => setNaicsMap(map))
+      .catch(err => console.error('Failed to load NAICS from database:', err));
   }, []);
 
   useEffect(() => {
     if (matchData?.criteria_id) {
-        setActiveLogicCriteriaId(matchData.criteria_id);
+      setActiveLogicCriteriaId(matchData.criteria_id);
     } else if (matchData?.matchedCriteriaList?.length > 0) {
-        // Fallback to the first criteria ID in the list if general criteria_id is not directly present
-        setActiveLogicCriteriaId(matchData.matchedCriteriaList[0].criteriaId);
+      // Fallback to the first criteria ID in the list if general criteria_id is not directly present
+      setActiveLogicCriteriaId(matchData.matchedCriteriaList[0].criteriaId);
     }
   }, [matchData]);
 
   useEffect(() => {
+    if (previewListing) {
+      setListing(previewListing);
+      if (previewListing.teaser_url) {
+        sellerListingService.getSignedUrl(previewListing.teaser_url, 3600)
+          .then(url => setTeaserSignedUrl(url))
+          .catch(err => console.error('Failed to get signed teaser url:', err));
+      }
+      setLoading(false);
+      return;
+    }
+
     if (!listingId) return;
     const load = async () => {
       try {
         const data = await sellerListingService.getPublicListingById(listingId);
-      setListing(data);
-      // Pre-generate a signed URL so the iframe can render immediately.
-      // Use a long expiry (3600s = 1 hour) so the viewer stays valid while reading.
-      if (data?.teaser_url) {
+        setListing(data);
+        // Pre-generate a signed URL so the iframe can render immediately.
+        // Use a long expiry (3600s = 1 hour) so the viewer stays valid while reading.
+        if (data?.teaser_url) {
           try {
             const url = await sellerListingService.getSignedUrl(data.teaser_url, 3600);
-      setTeaserSignedUrl(url);
+            setTeaserSignedUrl(url);
           } catch {
-        // Non-fatal — viewer will show an error state instead
-      }
+            // Non-fatal — viewer will show an error state instead
+          }
         }
       } catch (err) {
         console.error('Failed to load listing:', err);
-      setError(err.message || 'Failed to load listing.');
+        setError(err.message || 'Failed to load listing.');
       } finally {
         setLoading(false);
       }
     };
-      load();
-  }, [listingId]);
+    load();
+  }, [listingId, previewListing]);
 
   /* File handlers */
   const handleDownloadTeaser = async () => {
@@ -447,13 +460,14 @@ const OwnershipFlag = ({ show, label }) =>
 
   const keywords = (() => {
     const raw = listing?.keywords || '';
-      const clean = raw.replace(/[{ }"[\]]/g, '');
+    if (Array.isArray(raw)) return raw;
+    const clean = typeof raw === 'string' ? raw.replace(/[{}"[\]]/g, '') : '';
     return clean ? clean.split(',').map(k => k.trim()).filter(Boolean) : [];
   })();
 
   const hasCategorizedKeywords = (() => {
     const cats = listing?.categorized_keywords;
-      if (!cats || typeof cats !== 'object') return false;
+    if (!cats || typeof cats !== 'object') return false;
     return Object.values(cats).some(arr => Array.isArray(arr) && arr.length > 0);
   })();
 
@@ -462,45 +476,67 @@ const OwnershipFlag = ({ show, label }) =>
     return locs.map(l => l.split(':').pop()).filter(Boolean);
   })();
 
-      /* ── Loading / error states ── */
-      if (loading) {
+  /* ── Loading / error states ── */
+  if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+      <div className={isPreview ? "flex flex-col items-center justify-center gap-4 py-20" : "min-h-screen flex flex-col items-center justify-center gap-4"}>
         <Loader2 className="animate-spin text-accent" size={40} />
         <p className="text-muted-foreground font-medium">Loading listing details...</p>
       </div>
-      );
+    );
   }
 
-      if (error || !listing) {
+  if (error || !listing) {
     return (
-      <div className="min-h-screen p-6 animate-fade-in">
-        <div className="max-w-6xl mx-auto py-12">
-          <Link
-            to="/dashboard/buyer"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
-          >
-            <ArrowLeft size={16} /> Back to Buyer Dashboard
-          </Link>
+      <div className={isPreview ? "p-4" : "min-h-screen p-6 animate-fade-in"}>
+        <div className="max-w-6xl mx-auto py-8">
+          {!isPreview && (
+            <Link
+              to="/dashboard/buyer"
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
+            >
+              <ArrowLeft size={16} /> Back to Buyer Dashboard
+            </Link>
+          )}
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
             {error || 'Listing not found.'}
           </div>
         </div>
       </div>
-      );
+    );
   }
 
-      return (
-      <div className="min-h-screen p-6 animate-fade-in relative">
-        {/* Background glows */}
+  return (
+    <div className={isPreview ? "animate-fade-in relative" : "min-h-screen p-6 animate-fade-in relative"}>
+      {/* Background glows - only when standalone */}
+      {!isPreview && (
         <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[150px] rounded-full" />
           <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-emerald-500/5 blur-[120px] rounded-full" />
         </div>
+      )}
 
-        <div className="max-w-7xl mx-auto py-10">
+      <div className={isPreview ? "w-full" : "max-w-7xl mx-auto py-10"}>
 
-          {/* ── Back nav ── */}
+        {/* ── Preview Banner or Back nav ── */}
+        {isPreview ? (
+          <div className="mb-6 p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
+                <Eye size={20} />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-foreground">Buyer Preview Mode</p>
+                <p className="text-xs text-muted-foreground">
+                  This preview displays your listing exactly as potential buyers see it. Confidential company names and internal notes are omitted.
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 shrink-0 w-fit">
+              Live Buyer View
+            </span>
+          </div>
+        ) : (
           <Link
             to="/dashboard/buyer"
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8 group"
@@ -508,6 +544,7 @@ const OwnershipFlag = ({ show, label }) =>
             <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
             Back to Buyer Dashboard
           </Link>
+        )}
 
           {/* ── Hero Header ── */}
           <div className={`glass rounded-3xl p-7 mb-6 border ${tier.borderClass}`}>
@@ -591,27 +628,33 @@ const OwnershipFlag = ({ show, label }) =>
                       Est. {listing.year_founded}
                     </span>
                   )}
-                  {matchData?.search_revenue && (
-                    <span className="flex items-center gap-1.5">
-                      <DollarSign size={14} className="text-emerald-500" />
-                      Rev: {formatCurrency(matchData.search_revenue)}
-                    </span>
-                  )}
+                  {(() => {
+                    const rev = matchData?.search_revenue || listing?.search_revenue || financialHistory?.['LTM']?.revenue || financialHistory?.['FY0']?.revenue;
+                    if (!rev) return null;
+                    return (
+                      <span className="flex items-center gap-1.5">
+                        <DollarSign size={14} className="text-emerald-500" />
+                        Rev: {formatCurrency(rev)}
+                      </span>
+                    );
+                  })()}
                 </div>
               </div>
 
               {/* Action buttons */}
               <div className="flex items-center gap-3 shrink-0">
                 <button
-                  title="Save listing (coming soon)"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border/60 text-muted-foreground hover:text-foreground hover:border-accent/40 hover:bg-accent/5 transition-all text-sm font-medium"
+                  title={isPreview ? "Disabled in preview mode" : "Save listing (coming soon)"}
+                  disabled={isPreview}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border/60 text-muted-foreground hover:text-foreground hover:border-accent/40 hover:bg-accent/5 transition-all text-sm font-medium disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Bookmark size={15} />
                   Save
                 </button>
                 <button
-                  title="Request NDA (coming soon)"
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 hover:shadow-accent/30"
+                  title={isPreview ? "Disabled in preview mode" : "Request NDA (coming soon)"}
+                  disabled={isPreview}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 hover:shadow-accent/30 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <FileSignature size={15} />
                   Request NDA
