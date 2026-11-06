@@ -147,7 +147,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           <Link to="/dashboard/seller/listings" className="inline-flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
             <ArrowLeft size={16} /> Back to Listings
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{listing.seller_anon_name || "Unnamed Listing"}</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">{listing.seller_name || listing.seller_anon_name || "Unnamed Listing"}</h1>
         </div>
 
         {/* Tab Navigation */}
@@ -192,8 +192,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <h3 className="text-xl font-bold mb-4 text-indigo-400 dark:text-white">Company Information</h3>
                 <div className="space-y-4">
                   <div>
-                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Company Name</span>
-                    <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.seller_name || '--'}</span>
+                    <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Anonymous Title</span>
+                    <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.seller_anon_name || '--'}</span>
                   </div>
                   {listing.year_founded && (
                     <div>

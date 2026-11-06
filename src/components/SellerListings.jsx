@@ -174,14 +174,14 @@ export default function SellerListings({ orgId, isCorporate }) {
                       to={listing.status === 'Draft' ? `/onboarding/seller/edit/${listing.id}` : `/dashboard/seller/listings/${listing.id}`}
                       className="text-indigo-400 hover:text-indigo-300 hover:underline transition-all"
                     >
-                      {listing.seller_anon_name || 'Untitled Listing'}
+                      {listing.seller_name || listing.seller_anon_name || 'Untitled Listing'}
                     </Link>
                   </h3>
                 </div>
 
                 {/* Headings row */}
                 <div className="flex flex-row w-full mb-2">
-                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Company Name</div>
+                  <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Anonymous Listing Name</div>
                   <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Keywords</div>
                   <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Revenue</div>
                   <div className="flex-1 text-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">EBITDA</div>
@@ -190,7 +190,7 @@ export default function SellerListings({ orgId, isCorporate }) {
                 {/* Values row */}
                 <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '1.05rem' }}>
-                    {listing.seller_name || '--'}
+                    {listing.seller_anon_name || '--'}
                   </div>
                   <div style={{ flex: 1, textAlign: 'center', color: '#818cf8', fontWeight: 500, fontSize: '0.95rem', whiteSpace: 'pre-line', lineHeight: '1.4' }}>
                     {getDisplayKeywords(listing.keywords)}
