@@ -265,6 +265,7 @@ Important Rules:
    */
   async scoreMatchesWithAI(buyerCriteria, candidates, criteriaId) {
     const { cacheService } = await import('./cacheService.js');
+    const { fetchNaicsMap, getNaicsName, resolveTo2022NaicsCode } = await import('./naicsService.js');
 
     if (!candidates || candidates.length === 0) return [];
 
@@ -284,27 +285,44 @@ Important Rules:
       }));
     }
 
+    // Load NAICS map for human-readable code labels
+    let naicsMap = null;
+    try {
+      naicsMap = await fetchNaicsMap();
+    } catch (e) {
+      console.warn('[Stage 2] Failed to fetch naicsMap for prompt context:', e);
+    }
+
     // 3. Build the batch prompt for uncached candidates
-    const buyerContext = this._buildBuyerContext(buyerCriteria);
+    const buyerContext = this._buildBuyerContext(buyerCriteria, naicsMap);
     const candidateEntries = uncachedCandidates.map((c, idx) =>
-      this._buildCandidateEntry(c, idx + 1)
-    ).join('\n');
+      this._buildCandidateEntry(c, idx + 1, naicsMap)
+    ).join('\n\n');
 
-    const prompt = `You are an M&A matching analyst. Score each seller listing against the buyer's investment criteria on qualitative fit (0-100).
+    const prompt = `You are a private equity & M&A investment analyst. Score each seller listing against the buyer's investment criteria on qualitative fit (0-100).
 
-BUYER CRITERIA:
+BUYER INVESTMENT THESIS & CRITERIA:
 ${buyerContext}
 
 SELLER LISTINGS TO SCORE:
 ${candidateEntries}
 
-SCORING INSTRUCTIONS:
-- Score ONLY on qualitative alignment. Do NOT consider financials or geography (already scored separately).
-- Consider: industry overlap, business model fit, customer/end-market alignment, operational compatibility, strategic coherence, and keyword overlap.
-- A score of 80-100 means strong qualitative alignment across most dimensions.
-- A score of 50-79 means partial alignment with some relevant overlap.
-- A score of 0-49 means weak qualitative fit with limited overlap.
-- For each listing, provide a concise 1-2 sentence explanation of why it scored the way it did.
+CRITICAL M&A SCORING RULES:
+1. Investment Mandate & Disjunctive ("OR") Logic:
+   - The buyer's mandate ("Investment Mandate / Strategy Name" and "Target Industries") outlines a broad acquisition platform targeting MULTIPLE independent verticals (e.g. Facility Services OR IT MSPs OR Corporate Compliance & Accounting / Advisory).
+   - In private equity, an acquisition target only operates in ONE of these verticals at a time.
+   - You MUST score each listing based EXCLUSIVELY on how well it fits the specific vertical it operates in.
+   - STRICT RULE: NEVER penalize a candidate, dock points, or mention that it "lacks ties" to other unrelated verticals listed in the mandate (such as facility services, HVAC, landscaping, or IT). If a candidate fits Corporate Compliance & Accounting / B2B Professional Services / Advisory with recurring retainers, it satisfies the mandate completely. Treat its alignment with that vertical as a full 85-95+ match.
+
+2. Qualitative Alignment Only:
+   - Financial scale and geographic location are already scored separately by quantitative algorithms. Focus solely on strategic, business model, operational, and customer alignment within the relevant vertical.
+
+3. Scoring Calibration:
+   - 85 - 100 (Strong Match): Direct strategic alignment with the overarching mandate or strong vertical fit within one of the buyer's targeted sub-sectors.
+   - 60 - 84 (Moderate Match): Partial fit, adjacent sector, or complementary business model.
+   - 0 - 59 (Weak Match): Unrelated industry, conflicting model, or minimal overlap.
+
+4. Provide a crisp 1-2 sentence explanation articulating the strategic fit within its vertical. Do not mention absent verticals.
 
 Return ONLY a JSON object in this exact format:
 { "scores": [{ "id": "listing_uuid", "score": 0-100, "reason": "1-2 sentence explanation" }] }`;
@@ -358,18 +376,28 @@ Return ONLY a JSON object in this exact format:
    * Builds the buyer criteria context string for the AI prompt.
    * @private
    */
-  _buildBuyerContext(criteria) {
+  _buildBuyerContext(criteria, naicsMap) {
     const kw = criteria.categorized_keywords || {};
     const lines = [];
 
-    if (kw.industry?.length) lines.push(`- Target Industries: ${kw.industry.join(', ')}`);
+    if (criteria.investment_criteria_name) {
+      lines.push(`- Investment Mandate / Strategy Name: ${criteria.investment_criteria_name}`);
+    }
+    if (kw.industry?.length) lines.push(`- Target Industries / Sub-Sectors: ${kw.industry.join(', ')}`);
     if (kw.business_model?.length) lines.push(`- Business Models: ${kw.business_model.join(', ')}`);
     if (kw.revenue_model?.length) lines.push(`- Revenue Models: ${kw.revenue_model.join(', ')}`);
     if (kw.customer_type?.length) lines.push(`- Customer Types: ${kw.customer_type.join(', ')}`);
     if (kw.end_market?.length) lines.push(`- End Markets: ${kw.end_market.join(', ')}`);
     if (kw.operational_model?.length) lines.push(`- Operational Preferences: ${kw.operational_model.join(', ')}`);
     if (kw.differentiation?.length) lines.push(`- Differentiation Sought: ${kw.differentiation.join(', ')}`);
-    if (criteria.naics_codes?.length) lines.push(`- NAICS Codes: ${criteria.naics_codes.join(', ')}`);
+    if (criteria.naics_codes?.length) {
+      const formattedNaics = criteria.naics_codes.slice(0, 10).map(c => {
+        const resolvedCode = resolveTo2022NaicsCode(c);
+        const name = naicsMap ? getNaicsName(c, naicsMap) : null;
+        return name ? `${resolvedCode} (${name})` : resolvedCode;
+      }).join(', ');
+      lines.push(`- Target NAICS: ${formattedNaics}`);
+    }
 
     return lines.length > 0 ? lines.join('\n') : '- No specific qualitative criteria provided';
   },
@@ -378,10 +406,11 @@ Return ONLY a JSON object in this exact format:
    * Builds a single candidate entry string for the AI prompt.
    * @private
    */
-  _buildCandidateEntry(candidate, index) {
+  _buildCandidateEntry(candidate, index, naicsMap) {
     const kw = candidate.categorized_keywords || {};
     const lines = [`[Listing ${index}]`, `  ID: ${candidate.listing_id}`];
 
+    if (candidate.seller_anon_name) lines.push(`  Headline / Anonymous Title: ${candidate.seller_anon_name}`);
     if (candidate.summary) lines.push(`  Summary: ${candidate.summary}`);
     if (kw.industry?.length) lines.push(`  Industries: ${kw.industry.join(', ')}`);
     if (kw.business_model?.length) lines.push(`  Business Models: ${kw.business_model.join(', ')}`);
@@ -390,7 +419,15 @@ Return ONLY a JSON object in this exact format:
     if (kw.end_market?.length) lines.push(`  End Markets: ${kw.end_market.join(', ')}`);
     if (kw.operational_model?.length) lines.push(`  Operational Model: ${kw.operational_model.join(', ')}`);
     if (kw.differentiation?.length) lines.push(`  Differentiation: ${kw.differentiation.join(', ')}`);
-    if (candidate.naics_codes?.length) lines.push(`  NAICS: ${candidate.naics_codes.join(', ')}`);
+    if (candidate.keywords) lines.push(`  Keywords: ${candidate.keywords}`);
+    if (candidate.naics_codes?.length) {
+      const formattedNaics = candidate.naics_codes.slice(0, 8).map(c => {
+        const resolvedCode = resolveTo2022NaicsCode(c);
+        const name = naicsMap ? getNaicsName(c, naicsMap) : null;
+        return name ? `${resolvedCode} (${name})` : resolvedCode;
+      }).join(', ');
+      lines.push(`  NAICS: ${formattedNaics}`);
+    }
 
     const ownershipFlags = [];
     if (candidate.is_founder_owned) ownershipFlags.push('Founder-owned');

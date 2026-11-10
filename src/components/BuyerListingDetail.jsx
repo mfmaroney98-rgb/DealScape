@@ -6,7 +6,7 @@ import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
-import { fetchNaicsMap, getNaicsName } from '../services/naicsService';
+import { fetchNaicsMap, getNaicsName, resolveTo2022NaicsCode } from '../services/naicsService';
 import {
   ArrowLeft,
   Loader2,
@@ -968,11 +968,12 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
                 {listing.naics_codes && listing.naics_codes.length > 0 ? (
                   <div className="space-y-2">
                     {listing.naics_codes.map((code) => {
+                      const displayCode = resolveTo2022NaicsCode(code) || code;
                       const name = getNaicsName(code, naicsMap);
                       return (
                         <div key={code} className="p-3 bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/80 rounded-xl flex items-start gap-2.5 hover:bg-slate-100/50 dark:hover:bg-slate-800/60 transition-colors">
                           <span className="text-[10px] font-black px-2 py-0.5 bg-[#ff9500]/10 border border-[#ff9500]/30 text-[#e08400] dark:text-[#ff9d1a] rounded shrink-0 mt-0.5">
-                            {code}
+                            {displayCode}
                           </span>
                           {name && (
                             <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-snug">

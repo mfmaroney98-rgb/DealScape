@@ -281,17 +281,40 @@ export async function fetchNaicsMap() {
 }
 
 /**
+ * Translates a given NAICS code (e.g. legacy 2017) to its official 2022 equivalent code.
+ * Also standardizes sector range representations (e.g. 31/32/33 -> 31-33).
+ */
+export function resolveTo2022NaicsCode(code) {
+  if (!code) return '';
+  let c = String(code).trim();
+  if (NAICS_2017_TO_2022_MAP[c]) {
+    return NAICS_2017_TO_2022_MAP[c];
+  }
+  if (c.length === 4 && NAICS_2017_TO_2022_MAP[c.slice(0, 3)]) {
+    return NAICS_2017_TO_2022_MAP[c.slice(0, 3)] + c.slice(3);
+  }
+  if (['31', '32', '33'].includes(c)) return '31-33';
+  if (['44', '45'].includes(c)) return '44-45';
+  if (['48', '49'].includes(c)) return '48-49';
+  return c;
+}
+
+/**
  * Resolves a NAICS code to its database-provided title.
+ * Automatically translates legacy 2017 codes (e.g. 4541 -> 4599, 5112 -> 5132)
+ * before checking the 2022 database records, avoiding erroneous fallback to parent sectors.
  * Directly references the database records loaded in naicsMap (or sectorsTree).
  * Supports exact matches and prefix matching for 5/6 digit codes.
  */
 export function getNaicsName(code, lookupSource) {
   if (!code || !lookupSource) return null;
-  const c = String(code).trim();
+  const raw = String(code).trim();
+  const c = resolveTo2022NaicsCode(raw);
 
   // If lookupSource is a Map returned from fetchNaicsMap()
   if (lookupSource instanceof Map) {
     if (lookupSource.has(c)) return lookupSource.get(c);
+    if (lookupSource.has(raw)) return lookupSource.get(raw);
     if (c.length > 4 && lookupSource.has(c.slice(0, 4))) return lookupSource.get(c.slice(0, 4));
     if (c.length > 3 && lookupSource.has(c.slice(0, 3))) return lookupSource.get(c.slice(0, 3));
     if (c.length > 2 && lookupSource.has(c.slice(0, 2))) return lookupSource.get(c.slice(0, 2));
@@ -300,17 +323,17 @@ export function getNaicsName(code, lookupSource) {
 
   // If lookupSource is an array / sectorsTree
   if (Array.isArray(lookupSource)) {
-    const sector = lookupSource.find(s => s.code === c || (s.code.includes('-') && c.length === 2 && s.code.startsWith(c.slice(0, 1))));
-    if (sector && (sector.code === c || c.length === 2)) return sector.name;
+    const sector = lookupSource.find(s => s.code === c || s.code === raw || (s.code.includes('-') && c.length === 2 && s.code.startsWith(c.slice(0, 1))));
+    if (sector && (sector.code === c || sector.code === raw || c.length === 2)) return sector.name;
 
     for (const s of lookupSource) {
-      const sub = s.subsectors?.find(sub => sub.code === c || (c.length > 3 && sub.code === c.slice(0, 3)));
-      if (sub && sub.code === c) return sub.name;
+      const sub = s.subsectors?.find(sub => sub.code === c || sub.code === raw || (c.length > 3 && sub.code === c.slice(0, 3)));
+      if (sub && (sub.code === c || sub.code === raw)) return sub.name;
 
       if (s.subsectors) {
         for (const subsector of s.subsectors) {
           if (subsector.industryGroups) {
-            const ig = subsector.industryGroups.find(ig => ig.code === c || (c.length > 4 && ig.code === c.slice(0, 4)));
+            const ig = subsector.industryGroups.find(ig => ig.code === c || ig.code === raw || (c.length > 4 && ig.code === c.slice(0, 4)));
             if (ig) return ig.name;
           }
         }
