@@ -607,8 +607,7 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
               </Link>
             </div>
             <div className="flex-1 overflow-y-hidden space-y-1 pr-1">
-              {criteriaList.map((crit, idx) => {
-                const colorClass = COLORS[idx % COLORS.length];
+              {criteriaList.map((crit) => {
                 const isChecked = selectedCriteriaIds.has(crit.id);
                 return (
                   <div
@@ -629,14 +628,13 @@ export default function BuyerSaaSDashboard({ profile, darkMode, setDarkMode, onS
                       isChecked ? "bg-slate-200 text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-800"
                     )}
                   >
-                    <div className="flex items-center gap-2 truncate">
+                    <div className="flex items-center gap-1.5 truncate">
                       <input
                         type="checkbox"
                         checked={isChecked}
                         readOnly
                         className="rounded border-slate-355 text-blue-600 focus:ring-blue-500 w-3.5 h-3.5 shrink-0 cursor-pointer bg-white"
                       />
-                      <div className={clsx("w-2 h-2 rounded shrink-0 shadow-sm", colorClass)} />
                       <span className="truncate select-none">{crit.investment_criteria_name || 'Untitled Set'}</span>
                     </div>
 
