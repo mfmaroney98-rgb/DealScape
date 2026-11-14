@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
 import BuyerListingDetail from './BuyerListingDetail';
-import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -16,6 +16,7 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [downloadingFile, setDownloadingFile] = useState(null); // 'teaser' or 'cim' or null
   const [viewingFile, setViewingFile] = useState(null); // 'teaser' or 'cim' or null
   const [downloadError, setDownloadError] = useState(null);
+  const [statusUpdating, setStatusUpdating] = useState(false);
 
   const handleView = async (type, path) => {
     if (!path) return;
@@ -57,6 +58,24 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
       setDownloadError(`Failed to download ${type}.`);
     } finally {
       setDownloadingFile(null);
+    }
+  };
+
+  const handleStatusChange = async (newStatus, confirmMessage) => {
+    if (confirmMessage && !window.confirm(confirmMessage)) {
+      return;
+    }
+
+    setStatusUpdating(true);
+    setError(null);
+    try {
+      const updated = await sellerListingService.updateListingStatus(id, newStatus);
+      setListing(prev => ({ ...prev, ...updated }));
+    } catch (err) {
+      console.error(`Error updating listing status to ${newStatus}:`, err);
+      setError(err.message || `Failed to update listing status to ${newStatus}.`);
+    } finally {
+      setStatusUpdating(false);
     }
   };
 
@@ -368,9 +387,27 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                 <div className="space-y-5">
                   <div>
                     <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Current Status</span>
-                    <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-medium">
-                      In Process
-                    </span>
+                    {(() => {
+                      const statusStyles = {
+                        Active: 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400',
+                        'Under Offer': 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-400',
+                        Paused: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 text-orange-700 dark:text-orange-400',
+                        Draft: 'bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300',
+                        Closed: 'bg-blue-50 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-400',
+                        Withdrawn: 'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400',
+                      };
+                      const currentStatus = listing.status || 'Draft';
+                      const badgeClass = statusStyles[currentStatus] || statusStyles.Draft;
+                      return (
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full border text-sm font-medium ${badgeClass}`}>
+                          {currentStatus === 'Paused'
+                            ? 'Paused (Hidden from Buyers)'
+                            : currentStatus === 'Under Offer'
+                            ? 'Under Offer (Exclusivity)'
+                            : currentStatus}
+                        </span>
+                      );
+                    })()}
                   </div>
                   <div>
                     <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Date Uploaded to DealScape</span>
@@ -395,18 +432,65 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                   className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-50 border border-indigo-200/40 dark:bg-indigo-950/30 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 font-semibold transition-all hover:bg-indigo-100 dark:hover:bg-indigo-900/40 cursor-pointer shadow-sm">
                   <Edit3 size={18} /> Edit Listing
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-50 border border-orange-200/40 dark:bg-orange-950/30 dark:border-orange-500/30 text-orange-700 dark:text-orange-300 font-semibold transition-all hover:bg-orange-100 dark:hover:bg-orange-900/40 cursor-pointer shadow-sm">
-                  <EyeOff size={18} /> Hide / Pause Client
-                </button>
-                <button className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-100 border border-close-deal dark:bg-blue-950/30 dark:border-blue-500/30 text-blue-800 dark:text-blue-300 font-semibold transition-all hover:bg-blue-200/70 dark:hover:bg-blue-900/40 cursor-pointer shadow-sm">
-                  <Handshake size={18} /> Close Deal
-                </button>
-                <button
-                  onClick={handleDeleteListing}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-50 border border-red-200/40 dark:bg-red-950/30 dark:border-red-500/30 text-red-700 dark:text-red-300 font-semibold transition-all hover:bg-red-100 dark:hover:bg-red-900/40 cursor-pointer shadow-sm"
-                >
-                  <Archive size={18} /> Withdraw Listing
-                </button>
+                {listing.status === 'Active' && (
+                  <button
+                    onClick={() => handleStatusChange(
+                      'Under Offer',
+                      'Mark this listing as Under Offer (Exclusivity)? It will stay in your Active & Offers tab but will be hidden from new buyer searches and matches.'
+                    )}
+                    disabled={statusUpdating}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-indigo-50 border border-indigo-200/40 dark:bg-indigo-950/30 dark:border-indigo-500/30 text-indigo-700 dark:text-indigo-300 font-semibold transition-all hover:bg-indigo-100 dark:hover:bg-indigo-900/40 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    {statusUpdating ? <Loader2 size={18} className="animate-spin" /> : <Lock size={18} />} Mark Under Offer (Exclusivity)
+                  </button>
+                )}
+                {(listing.status === 'Active' || listing.status === 'Under Offer') && (
+                  <button
+                    onClick={() => handleStatusChange(
+                      'Paused',
+                      'Pause this listing? It will be hidden from buyers and excluded from buyer search and matches until you make it active again.'
+                    )}
+                    disabled={statusUpdating}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-orange-50 border border-orange-200/40 dark:bg-orange-950/30 dark:border-orange-500/30 text-orange-700 dark:text-orange-300 font-semibold transition-all hover:bg-orange-100 dark:hover:bg-orange-900/40 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    {statusUpdating ? <Loader2 size={18} className="animate-spin" /> : <EyeOff size={18} />} Pause Listing
+                  </button>
+                )}
+                {(listing.status === 'Draft' || listing.status === 'Paused' || listing.status === 'Under Offer' || listing.status === 'Withdrawn' || listing.status === 'Closed') && (
+                  <button
+                    onClick={() => handleStatusChange(
+                      'Active',
+                      listing.status === 'Draft'
+                        ? 'Publish this listing? It will become visible to matched buyers.'
+                        : 'Make this listing active? It will become visible to buyers again.'
+                    )}
+                    disabled={statusUpdating}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-50 border border-emerald-200/40 dark:bg-emerald-950/30 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-semibold transition-all hover:bg-emerald-100 dark:hover:bg-emerald-900/40 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    {statusUpdating ? <Loader2 size={18} className="animate-spin" /> : <Eye size={18} />} {listing.status === 'Draft' ? 'Publish Listing' : 'Make Active'}
+                  </button>
+                )}
+                {(listing.status === 'Active' || listing.status === 'Under Offer' || listing.status === 'Paused') && (
+                  <button
+                    onClick={() => handleStatusChange(
+                      'Closed',
+                      'Mark this deal as Closed? It will be hidden from buyers and moved to your Closed tab.'
+                    )}
+                    disabled={statusUpdating}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-100 border border-close-deal dark:bg-blue-950/30 dark:border-blue-500/30 text-blue-800 dark:text-blue-300 font-semibold transition-all hover:bg-blue-200/70 dark:hover:bg-blue-900/40 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    {statusUpdating ? <Loader2 size={18} className="animate-spin" /> : <Handshake size={18} />} Close Deal
+                  </button>
+                )}
+                {listing.status !== 'Withdrawn' && (
+                  <button
+                    onClick={handleDeleteListing}
+                    disabled={statusUpdating}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-50 border border-red-200/40 dark:bg-red-950/30 dark:border-red-500/30 text-red-700 dark:text-red-300 font-semibold transition-all hover:bg-red-100 dark:hover:bg-red-900/40 cursor-pointer shadow-sm disabled:opacity-50"
+                  >
+                    <Archive size={18} /> Withdraw Listing
+                  </button>
+                )}
               </div>
 
               {/* Deal Team */}

@@ -2,13 +2,13 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { supabase } from '../lib/supabase';
-import { Briefcase, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, FileText, Archive, CheckCircle2 } from 'lucide-react';
+import { Briefcase, TrendingUp, DollarSign, PlusCircle, ArrowLeft, Loader2, Search, FileText, Archive, CheckCircle2, EyeOff } from 'lucide-react';
 
 export default function SellerListings({ orgId, isCorporate }) {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('Active'); // 'Active', 'Draft', 'Archived'
+  const [activeTab, setActiveTab] = useState('Active'); // 'Active', 'Paused', 'Draft', 'Closed', 'Withdrawn'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +35,8 @@ export default function SellerListings({ orgId, isCorporate }) {
   const filteredListings = useMemo(() => {
     if (activeTab === 'Active') {
       return listings.filter(l => l.status === 'Active' || l.status === 'Under Offer');
+    } else if (activeTab === 'Paused') {
+      return listings.filter(l => l.status === 'Paused');
     } else if (activeTab === 'Draft') {
       return listings.filter(l => l.status === 'Draft');
     } else if (activeTab === 'Closed') {
@@ -110,6 +112,7 @@ export default function SellerListings({ orgId, isCorporate }) {
         <div className="flex flex-wrap gap-2 mb-8 p-1.5 bg-slate-100 dark:bg-slate-950 rounded-2xl w-fit border border-slate-200/60 dark:border-slate-800/60">
           {[
             { id: 'Active', icon: TrendingUp, label: 'Active & Offers' },
+            { id: 'Paused', icon: EyeOff, label: 'Paused' },
             { id: 'Draft', icon: FileText, label: 'Drafts' },
             { id: 'Closed', icon: CheckCircle2, label: 'Closed' },
             { id: 'Withdrawn', icon: Archive, label: 'Withdrawn' }
@@ -131,6 +134,7 @@ export default function SellerListings({ orgId, isCorporate }) {
                   : 'bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
               }`}>
                 {tab.id === 'Active' ? listings.filter(l => l.status === 'Active' || l.status === 'Under Offer').length :
+                 tab.id === 'Paused' ? listings.filter(l => l.status === 'Paused').length :
                  tab.id === 'Draft' ? listings.filter(l => l.status === 'Draft').length :
                  tab.id === 'Closed' ? listings.filter(l => l.status === 'Closed').length :
                  listings.filter(l => l.status === 'Withdrawn').length}
@@ -171,7 +175,7 @@ export default function SellerListings({ orgId, isCorporate }) {
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem' }}>
                   <h3 style={{ fontSize: '1.5rem', fontWeight: 700, margin: 0 }}>
                     <Link
-                      to={listing.status === 'Draft' ? `/onboarding/seller/edit/${listing.id}` : `/dashboard/seller/listings/${listing.id}`}
+                      to={`/dashboard/seller/listings/${listing.id}`}
                       className="text-indigo-400 hover:text-indigo-300 hover:underline transition-all"
                     >
                       {listing.seller_name || listing.seller_anon_name || 'Untitled Listing'}

@@ -82,13 +82,20 @@ export const sellerListingService = {
   },
 
   /**
+   * Updates the status of a listing (e.g., 'Active', 'Paused', 'Closed', 'Withdrawn', 'Draft').
+   */
+  async updateListingStatus(listingId, status) {
+    return this.updateListing(listingId, { status });
+  },
+
+  /**
    * Deletes a seller listing and its associated storage files.
    */
   async deleteListing(listingId) {
     // Soft delete: update status to 'Withdrawn'
     const { error } = await supabase
       .from('seller_listings')
-      .update({ status: 'Withdrawn' })
+      .update({ status: 'Withdrawn', updated_at: new Date().toISOString() })
       .eq('id', listingId);
 
     if (error) throw error;
@@ -155,7 +162,7 @@ export const sellerListingService = {
         'search_revenue_growth_yoy, status, created_at, naics_codes'
       )
       .eq('id', id)
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
     return data;

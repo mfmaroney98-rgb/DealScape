@@ -413,6 +413,10 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
     const load = async () => {
       try {
         const data = await sellerListingService.getPublicListingById(listingId);
+        if (!data) {
+          setError('This listing is currently unavailable or has been paused by the seller.');
+          return;
+        }
         setListing(data);
         // Pre-generate a signed URL so the iframe can render immediately.
         // Use a long expiry (3600s = 1 hour) so the viewer stays valid while reading.

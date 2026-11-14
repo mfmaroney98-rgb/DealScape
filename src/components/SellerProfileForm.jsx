@@ -811,7 +811,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
     navigate(-1);
   };
 
-  const handleSubmit = async (e, submitStatus = 'Active') => {
+  const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setLoading(true);
     setError(null);
@@ -849,10 +849,10 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         sanitizedData.cim_file_name = null;
       }
 
-      // Apply specific type conversions and status
+      // Apply specific type conversions and preserve status (publishing happens on Listing Overview)
       sanitizedData.employees_count = sanitizedData.employees_count === '' || sanitizedData.employees_count === null ? null : parseInt(sanitizedData.employees_count, 10);
       sanitizedData.year_founded = sanitizedData.year_founded === '' || sanitizedData.year_founded === null ? null : String(sanitizedData.year_founded);
-      sanitizedData.status = submitStatus;
+      sanitizedData.status = formData.status || 'Draft';
 
       // Ensure keywords are saved as a comma-separated string (not array) for the TEXT column
       if (Array.isArray(sanitizedData.keywords)) {
@@ -929,7 +929,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         await onComplete();
       }
 
-      navigate('/dashboard');
+      navigate(savedListing?.id ? `/dashboard/seller/listings/${savedListing.id}` : '/dashboard');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -2037,14 +2037,6 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
             Cancel
           </button>
           <button
-            type="button"
-            onClick={(e) => handleSubmit(e, 'Draft')}
-            disabled={loading}
-            className="btn-secondary px-12 py-4 text-lg font-bold border-indigo-500/30 hover:border-indigo-500 text-indigo-300 hover:text-indigo-100 transition-all h-auto bg-indigo-500/5 hover:bg-indigo-500/10"
-          >
-            Save as Draft
-          </button>
-          <button
             type="submit"
             disabled={loading}
             className="btn-primary flex items-center gap-3 px-16 py-4 text-lg font-bold shadow-2xl shadow-indigo-500/20 group h-auto"
@@ -2053,7 +2045,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
               <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                {formData.status === 'Draft' ? 'Publish Listing' : (isEditing ? 'Update Listing' : 'Publish Listing')}
+                {isEditing ? 'Save Changes' : 'Save Draft'}
                 <ChevronRight className="group-hover:translate-x-1 transition-transform" size={24} />
               </>
             )}
