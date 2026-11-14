@@ -156,6 +156,17 @@ export function normalizeTo2022Naics(codes, sectorsTree) {
     // If sectorsTree is provided, validate against loaded database records
     if (sectorsTree && sectorsTree.length > 0) {
       let valid = isValidNaicsCode(code, sectorsTree);
+      if (!valid && code.length > 4) {
+        // Fall back to 4-digit prefix if AI returned a 5- or 6-digit NAICS code
+        const prefix4 = code.slice(0, 4);
+        const mapped4 = NAICS_2017_TO_2022_MAP[prefix4] || prefix4;
+        if (isValidNaicsCode(mapped4, sectorsTree)) {
+          code = mapped4;
+          valid = true;
+        } else {
+          code = prefix4;
+        }
+      }
       if (!valid && code.length === 4) {
         // Try parent 3-digit fallback translation (e.g. 448x -> 458x)
         const p3 = code.slice(0, 3);

@@ -12,7 +12,7 @@ const openai = new OpenAI({
 
 export const aiService = {
   /**
-   * Extracts text from a PDF file.
+   * Extracts text from a PDF file, falling back to GPT-6 Luna vision OCR for scanned PDFs.
    */
   async extractTextFromPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
@@ -27,7 +27,82 @@ export const aiService = {
       fullText += pageText + '\n';
     }
 
-    return fullText;
+    const avgCharsPerPage = fullText.trim().length / Math.max(1, pdf.numPages);
+    if (avgCharsPerPage >= 40) {
+      return fullText;
+    }
+
+    console.info(`[PDF] Low text density (${avgCharsPerPage.toFixed(1)} chars/page); running vision OCR fallback on ${pdf.numPages} pages.`);
+    return this._extractTextFromScannedPDF(pdf);
+  },
+
+  /**
+   * Renders scanned PDF pages to images and transcribes them via GPT-6 Luna vision.
+   */
+  async _extractTextFromScannedPDF(pdf) {
+    if (typeof document === 'undefined') {
+      throw new Error('Scanned PDF vision fallback requires a browser DOM canvas.');
+    }
+
+    const batchSize = 10;
+    const maxPages = Math.min(pdf.numPages, 80);
+    const pageBatches = [];
+
+    for (let start = 1; start <= maxPages; start += batchSize) {
+      const end = Math.min(start + batchSize - 1, maxPages);
+      const images = [];
+
+      for (let pageNum = start; pageNum <= end; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        const ctx = canvas.getContext('2d');
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        images.push(canvas.toDataURL('image/jpeg', 0.8));
+
+        canvas.width = 0;
+        canvas.height = 0;
+      }
+
+      pageBatches.push({ start, end, images });
+    }
+
+    const results = [];
+    const concurrency = 3;
+    for (let i = 0; i < pageBatches.length; i += concurrency) {
+      const chunk = pageBatches.slice(i, i + concurrency);
+      const chunkTexts = await Promise.all(
+        chunk.map(async ({ start, end, images }) => {
+          const response = await openai.chat.completions.create({
+            model: 'gpt-6-luna',
+            reasoning_effort: 'none',
+            temperature: 0,
+            messages: [
+              {
+                role: 'user',
+                content: [
+                  {
+                    type: 'text',
+                    text: `Transcribe all text, headings, footnotes, and financial tables from these PDF pages (pages ${start}-${end}) in reading order. Preserve exact numbers, unit scales (e.g., "$ in thousands", "$ in millions"), table column headers/years, and dates.`
+                  },
+                  ...images.map(url => ({
+                    type: 'image_url',
+                    image_url: { url, detail: 'high' }
+                  }))
+                ]
+              }
+            ]
+          });
+          return response.choices[0].message.content || '';
+        })
+      );
+      results.push(...chunkTexts);
+    }
+
+    return results.join('\n\n');
   },
 
   /**
@@ -120,10 +195,10 @@ ${documentText}
 `;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-6-luna",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" },
-      temperature: 0.1,
+      reasoning_effort: "low",
     });
 
     return JSON.parse(response.choices[0].message.content);
@@ -180,51 +255,13 @@ ${text.slice(0, 30000)}
 `;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-6-luna",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" },
-      temperature: 0.1,
+      reasoning_effort: "low",
     });
 
     return JSON.parse(response.choices[0].message.content);
-  },
-
-  /**
-   * Convert keywords into up to three 2022 NAICS codes (broad or specific).
-   */
-  async generateNaicsFromKeywords(keywords) {
-    if (!keywords || !keywords.length) return [];
-
-    const prompt = `
-You are an expert M&A analyst and database clerk. Determine up to three official 2022 NAICS codes that best describe this company's industry and operations based on the provided business profile:
-${typeof keywords === 'string' ? keywords : JSON.stringify(keywords, null, 2)}
-
-Important Rules:
-1. Strictly use official 2022 NAICS codes. NEVER use deprecated 2017 codes (e.g., use '5132' for Software, NOT '5112'; use '513' for Publishing, NOT '511'; use '516' for Broadcasting, NOT '515'; use '449' for Furniture/Electronics Retail, NOT '442'/'443'; use '458' for Apparel Retail, NOT '448').
-2. If the company is broad, return 2-digit or 3-digit codes (e.g., '54', '513', or '31-33').
-3. If specific, prefer exact 4-digit codes (e.g., '5415', '5132', '4581').
-4. Return only standard numeric codes, never text words.
-5. Return the result as a strict JSON object matching exactly this schema:
-{
-  "naics_codes": ["string"]
-}
-6. Extract only the JSON, no markdown formatting or extra text.
-`;
-
-    try {
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_object" },
-        temperature: 0.1,
-      });
-
-      const data = JSON.parse(response.choices[0].message.content);
-      return data.naics_codes || [];
-    } catch (err) {
-      console.error('Failed to parse NAICS codes from keywords:', err);
-      return [];
-    }
   },
 
   /**
@@ -262,7 +299,7 @@ Important Rules:
   },
 
   /**
-   * Stage 2: Score candidates against buyer criteria using GPT-4o-mini.
+   * Stage 2: Score candidates against buyer criteria using GPT-6 Luna.
    * Checks cache first, only sends uncached candidates to the LLM.
    *
    * @param {Object} buyerCriteria - The buyer criteria record (from buyer_criteria table)
@@ -336,10 +373,10 @@ Return ONLY a JSON object in this exact format:
 
     try {
       const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'gpt-6-luna',
         messages: [{ role: 'user', content: prompt }],
         response_format: { type: 'json_object' },
-        temperature: 0,
+        reasoning_effort: 'low',
       });
 
       const result = JSON.parse(response.choices[0].message.content);

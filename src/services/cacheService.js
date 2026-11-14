@@ -48,7 +48,7 @@ export const cacheService = {
       listing_id: s.listing_id,
       ai_score: s.ai_score,
       ai_reasoning: s.ai_reasoning,
-      model_used: 'gpt-4o-mini'
+      model_used: 'gpt-6-luna'
     }));
 
     const { error } = await supabase
