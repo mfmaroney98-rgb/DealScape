@@ -34,13 +34,18 @@ export const aiService = {
    * Parses the text from a Teaser/CIM and returns structured listing data.
    */
   async parseListingDocument(text) {
+    const maxChars = 200000;
+    const documentText = text.length <= maxChars
+      ? text
+      : `${text.slice(0, 120000)}\n\n[... middle section truncated due to length ...]\n\n${text.slice(-80000)}`;
+
     const prompt = `
 You are an expert M&A analyst. Extract the following business details from the provided Teaser/CIM text.
 Return the result as a strict JSON object matching exactly this schema:
 
 {
   "seller_name": "string or null (the actual name of the company, e.g. 'Acme Manufacturing LLC')",
-  "seller_anon_name": "string or null (e.g., 'Project Apollo' or 'Project Falcon')",
+  "seller_anon_name": "string (ALWAYS provide a very short, 3-7 word anonymous descriptive title in Title Case that captures what the company does without using a 'Project X' code name or any real company names/trademarks, e.g., 'Medical Device Equipment Manufacturer' or 'Cloud Dental Scheduling SaaS Provider'. Never return null.)",
   "summary": "string or null (A concise, 2-4 sentence anonymous executive summary written for potential M&A buyers. Highlight the core business model, key value proposition, and primary target market while strictly omitting any real company names or identifying trademarks. E.g., 'A leading developer of cloud-based scheduling software for dental clinics, serving over 500 active practices across the US with a highly predictable, recurring subscription revenue model.')",
   "employees_count": number or null,
   "year_founded": number (YYYY) or null,
@@ -75,8 +80,8 @@ Important Rules:
 1. Extract ALL absolute financial metrics (Revenue, Gross Profit, EBITDA, EBIT, Net Income, and CapEx). IMPORTANT: Pay close attention to unit scales (e.g. "in thousands", "K", "M", "B", "Millions"). You MUST expand all financials into their full, un-abbreviated integer values. For example, if the document says "$5.2M" or "5,200 (in thousands)", you must output the integer 5200000. Never output "5.2" for 5 million.
 2. If the document provides margins (e.g., "20% EBITDA Margin") instead of absolute values, calculate the absolute value (e.g., Revenue * 0.20) and put that in the JSON. The system relies on absolute numbers to generate the search filters.
 3. If a value is genuinely not present and cannot be calculated, set it to null.
-4. FY0 is the most recent completed fiscal year. FY-1 is the year before that. LTM is the Last Twelve Months (if provided).
-5. For legal_entity, ONLY use one of the allowed strings: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other'. IMPORTANT: You MUST prioritize the CIM for this field. If the exact entity type is not explicitly mentioned in the CIM, set it to null (even if it appears in the Teaser). IMPORTANT: 'Inc.' is NOT a legal entity for this purpose; if you see 'Inc.', you must determine if it is a C-Corp or S-Corp from the CIM text, or set to null if unclear.
+4. FY0 is the most recent COMPLETED actual fiscal year relative to the document's publication date. FY-1 is the year before FY0, and FY-2 is two years before FY0 (all three must have distinct, consecutive years; never repeat the same year). LTM is ONLY for an explicitly stated "LTM" or "TTM" (Last/Trailing Twelve Months) figure—otherwise set LTM to null. Pay strict attention to "A" (Actual) vs. "E"/"P" (Estimated/Projected) labels and the document date (e.g., if a CIM is dated August 2016 and shows 2015A and 2016E/P–2021P, FY0 is 2015, NOT 2016). NEVER populate projected/estimated ("E" or "P", such as "2021P") numbers into FY-2, FY-1, FY0, or LTM.
+5. For legal_entity, ONLY use one of the allowed strings: 'Sole Proprietorship', 'LLC', 'S-Corp', 'C-Corp', 'General Partnership', 'LP', 'LLP', 'PLLC', 'PC', 'Trust', 'Nonprofit', 'Other'. IMPORTANT: You MUST prioritize the CIM for this field. If the exact entity type is not explicitly mentioned in the CIM, set it to null (even if it appears in the Teaser). IMPORTANT: 'Inc.' or 'Corp.' is NOT a legal entity for this purpose, especially for Canadian, international, or publicly traded companies (e.g., TSX, TSX-V, NASDAQ, NYSE); do NOT guess 'C-Corp' or 'S-Corp' from 'Inc.' alone—set to null unless 'C-Corp' or 'S-Corp' is explicitly stated.
 6. Extract only the JSON, no markdown formatting or extra text.
 7. If the document contains both a Teaser and a CIM, and there is conflicting or similar data (e.g., slightly different financial numbers or descriptions), ALWAYS prioritize and extract the data from the CIM. The CIM is the ultimate source of truth.
 8. Under "naics_codes", use strictly the official 2022 NAICS classification to determine up to three 4-digit codes that best represent this company. NEVER use deprecated 2017 codes (e.g., use '5132' for Software Publishers, NOT '5112'; use '4581' for Clothing Retail, NOT '4481'; use '4491' for Furniture Retail, NOT '4421'; use '5161' for Broadcasting, NOT '5151'). Only return valid numeric 4-digit strings.
@@ -84,8 +89,10 @@ Important Rules:
 10. For pref_transaction_type, you MUST ONLY output values from this exact list: ["Total Sale", "Acquisition of Majority Stake", "Management Buyout", "Merger", "Divestiture", "Asset Sale", "Acquisition of Minority Stake", "Minority Equity Raise", "SAFE / Convertible Note", "Angel / Pre-Seed Round", "Seed Round", "Series A", "Series B", "Series C & Beyond", "Debt Raise", "Mezzanine Financing", "Bridge Loan", "Recapitalization", "Restructuring", "Distressed Sale", "Joint Venture / Strategic Alliance"].
     Mapping guidelines:
     - Prefer specific rounds: If the text mentions a "Series A", output "Series A" (do NOT select generic "Minority Equity Raise").
-    - Total Sale vs. Majority Stake: If 100% of the company/assets are being sold, select "Total Sale". If the owner is selling a majority portion but retaining equity, select "Acquisition of Majority Stake".
+    - Total Sale vs. Majority Stake: Only select "Total Sale" if 100% of the company/assets are explicitly being sold or a full exit is stated. If the owner is selling a majority portion but retaining equity, select "Acquisition of Majority Stake".
+    - Strategic Partner / Ambiguous Transaction: If the document only mentions "seeking a partner" or a "potential strategic transaction" without specifying a buyout or equity sale, select "Joint Venture / Strategic Alliance" or return an empty array [].
     - Divestiture vs. Asset Sale: Select "Divestiture" for business unit spin-offs/carve-outs. Select "Asset Sale" for IP, equipment, or facility sales.
+11. Ownership flags (is_founder_owned, is_female_owned, is_minority_owned, is_family_owned, is_operator_owned): Check whether the company is publicly traded (e.g., mentions an IPO, stock ticker, TSX, TSX-V, NYSE, NASDAQ). If it is a publicly traded company, set is_founder_owned and is_operator_owned to false unless majority founder/operator control is explicitly stated. Never guess ownership demographics; only set true when supported by the text.
 
 
 
@@ -96,9 +103,9 @@ INCLUDE:
 - Industry or vertical (1-3): Prefer narrow over broad. e.g. "dental practice management".
 - Revenue model (1-2): e.g. "recurring revenue", "subscription", "project-based".
 - Customer type (1-2): e.g. "enterprise", "SMB", "government", "franchise operators".
-- Delivery/Operational model (1-2): e.g. "asset-light", "remote-first", "field service operations".
-- Differentiation (1-2): e.g. "proprietary software", "sole-source contracts", "patented process".
-- End market served (1-2): e.g. "hospitals and health systems", "mid-market CFOs".
+- Delivery/Operational model (1-2): Include go-to-market/channel & deployment signals, e.g. "asset-light", "remote-first", "OEM channel partnerships", "cloud and on-premise".
+- Differentiation (1-2): e.g. "proprietary software", "sole-source contracts", "patented process", "offline-capable".
+- End market served (1-3): Capture ALL primary end markets mentioned, e.g. "K-12 education", "enterprise meeting rooms", "hospitals and health systems".
 - Reason for sale (1-2): e.g. "owner retirement", "growth capital needed", "strategic partnership sought".
 
 EXCLUDE (Do NOT extract these):
@@ -109,7 +116,7 @@ EXCLUDE (Do NOT extract these):
 - Any phrase that would apply to most businesses being sold.
 
 Document Text:
-${text.slice(0, 30000)} // Ensure we don't blow past token limits for huge PDFs
+${documentText}
 `;
 
     const response = await openai.chat.completions.create({
