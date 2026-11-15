@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
+import { organizationService } from '../services/organizationService';
 import { supabase } from '../lib/supabase';
 import BuyerListingDetail from './BuyerListingDetail';
-import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock, UserPlus, X } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -17,6 +18,10 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [viewingFile, setViewingFile] = useState(null); // 'teaser' or 'cim' or null
   const [downloadError, setDownloadError] = useState(null);
   const [statusUpdating, setStatusUpdating] = useState(false);
+  const [orgUsers, setOrgUsers] = useState([]);
+  const [teamUpdating, setTeamUpdating] = useState(false);
+  const [teamError, setTeamError] = useState(null);
+  const [addingRole, setAddingRole] = useState(null); // 'primary' | 'member' | null
 
   const handleView = async (type, path) => {
     if (!path) return;
@@ -95,6 +100,49 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     }
   };
 
+  const handleAssignTeamUser = async (role, selectedUserId) => {
+    if (!selectedUserId || !listing) return;
+    const field = role === 'primary' ? 'primary_contact_ids' : 'team_member_ids';
+    const currentIds = Array.isArray(listing[field]) ? listing[field] : [];
+    if (currentIds.includes(selectedUserId)) {
+      setAddingRole(null);
+      return;
+    }
+
+    const updatedIds = [...currentIds, selectedUserId];
+    setTeamUpdating(true);
+    setTeamError(null);
+    try {
+      const updated = await sellerListingService.updateListing(listing.id, { [field]: updatedIds });
+      setListing(prev => ({ ...prev, ...updated }));
+      setAddingRole(null);
+    } catch (err) {
+      console.error(`Error assigning user to ${field}:`, err);
+      setTeamError(err.message || 'Failed to update deal team.');
+    } finally {
+      setTeamUpdating(false);
+    }
+  };
+
+  const handleRemoveTeamUser = async (role, userIdToRemove) => {
+    if (!listing) return;
+    const field = role === 'primary' ? 'primary_contact_ids' : 'team_member_ids';
+    const currentIds = Array.isArray(listing[field]) ? listing[field] : [];
+    const updatedIds = currentIds.filter(uid => uid !== userIdToRemove);
+
+    setTeamUpdating(true);
+    setTeamError(null);
+    try {
+      const updated = await sellerListingService.updateListing(listing.id, { [field]: updatedIds });
+      setListing(prev => ({ ...prev, ...updated }));
+    } catch (err) {
+      console.error(`Error removing user from ${field}:`, err);
+      setTeamError(err.message || 'Failed to update deal team.');
+    } finally {
+      setTeamUpdating(false);
+    }
+  };
+
   useEffect(() => {
     const fetchListing = async () => {
       try {
@@ -106,6 +154,15 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
         const data = await sellerListingService.getListingById(id, orgId, isCorporate);
         setListing(data);
+
+        if (data?.organization_id) {
+          try {
+            const users = await organizationService.getOrganizationUsers(data.organization_id);
+            setOrgUsers(users || []);
+          } catch (userErr) {
+            console.error("Error fetching organization users:", userErr);
+          }
+        }
       } catch (err) {
         console.error("Error fetching listing:", err);
         setError(err.message || 'Failed to load listing details.');
@@ -175,8 +232,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           <button
             onClick={() => setActiveTab('overview')}
             className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'overview'
-                ? 'bg-indigo-600 text-white'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             Listing Overview
@@ -184,8 +241,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           <button
             onClick={() => setActiveTab('buyers')}
             className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'buyers'
-                ? 'bg-indigo-600 text-white'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             Buyers
@@ -193,8 +250,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
           <button
             onClick={() => setActiveTab('preview')}
             className={`px-6 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap cursor-pointer ${activeTab === 'preview'
-                ? 'bg-indigo-600 text-white'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              ? 'bg-indigo-600 text-white'
+              : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
           >
             View Like a Buyer
@@ -403,8 +460,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                           {currentStatus === 'Paused'
                             ? 'Paused (Hidden from Buyers)'
                             : currentStatus === 'Under Offer'
-                            ? 'Under Offer (Exclusivity)'
-                            : currentStatus}
+                              ? 'Under Offer (Exclusivity)'
+                              : currentStatus}
                         </span>
                       );
                     })()}
@@ -495,26 +552,146 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
               {/* Deal Team */}
               <div className="p-6 rounded-2xl mt-2 border border-slate-200/60 dark:border-slate-700/40">
-                <h3 className="text-xl font-bold mb-6 text-indigo-400 dark:text-white flex items-center gap-2">
-                  <Users className="text-indigo-600 dark:text-indigo-400" size={20} /> Deal Team
-                </h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-indigo-400 dark:text-white flex items-center gap-2">
+                    <Users className="text-indigo-600 dark:text-indigo-400" size={20} /> Deal Team
+                  </h3>
+                  {teamUpdating && <Loader2 className="animate-spin text-indigo-500" size={16} />}
+                </div>
+
+                {teamError && (
+                  <div className="p-3 mb-4 rounded-xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-center gap-2">
+                    <AlertCircle size={14} className="flex-shrink-0" />
+                    <span>{teamError}</span>
+                  </div>
+                )}
+
                 <div className="space-y-6">
-                  <div>
-                    <h4 className="text-sm font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Sell-Side Advisor</h4>
-                    <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl">
-                      <span className="block text-slate-900 dark:text-slate-200 font-medium mb-1">Primary Contact *</span>
-                      <span className="block text-sm text-slate-500 dark:text-slate-400 break-all">user@example.com</span>
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-indigo-600 dark:text-indigo-300 mb-2">Other Team Members</h4>
-                    <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl flex flex-col items-center justify-center py-6 text-center">
-                      <span className="text-sm text-slate-500 italic block mb-2">No other team members assigned</span>
-                      <button className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">
-                        + Add Member
-                      </button>
-                    </div>
-                  </div>
+                  {[
+                    {
+                      role: 'primary',
+                      heading: 'Primary Contacts *',
+                      emptyText: 'No primary contact assigned',
+                      addLabel: '+ Add',
+                      ids: Array.isArray(listing.primary_contact_ids) ? listing.primary_contact_ids : []
+                    },
+                    {
+                      role: 'member',
+                      heading: 'Other Team Members',
+                      emptyText: 'No other team members assigned',
+                      addLabel: '+ Add',
+                      ids: Array.isArray(listing.team_member_ids) ? listing.team_member_ids : []
+                    }
+                  ].map(({ role, heading, emptyText, addLabel, ids }) => {
+                    const assignedUsers = ids
+                      .map(uid => orgUsers.find(u => u.id === uid))
+                      .filter(Boolean);
+                    const availableUsers = orgUsers.filter(u => !ids.includes(u.id));
+                    const isAdding = addingRole === role;
+
+                    return (
+                      <div key={role}>
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="text-sm font-semibold text-indigo-600 dark:text-indigo-300">{heading}</h4>
+                          {!isAdding && availableUsers.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => setAddingRole(role)}
+                              disabled={teamUpdating}
+                              className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer disabled:opacity-50"
+                            >
+                              {addLabel}
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          {assignedUsers.length > 0 ? (
+                            assignedUsers.map(member => {
+                              const displayName = member.name || [member.first_name, member.last_name].filter(Boolean).join(' ') || member.email || 'Unnamed User';
+                              return (
+                                <div
+                                  key={member.id}
+                                  className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/40 p-3.5 rounded-xl flex items-start justify-between gap-3"
+                                >
+                                  <div className="min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <span className="text-slate-900 dark:text-slate-200 font-medium text-sm truncate">
+                                        {displayName}
+                                      </span>
+                                      {member.title && (
+                                        <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-500/20">
+                                          {member.title}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <span className="block text-xs text-slate-500 dark:text-slate-400 break-all mt-0.5">
+                                      {member.email || 'No email'}
+                                    </span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveTeamUser(role, member.id)}
+                                    disabled={teamUpdating}
+                                    className="p-1 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer disabled:opacity-50 shrink-0"
+                                    title={`Remove from ${heading.replace(' *', '')}`}
+                                  >
+                                    <X size={15} />
+                                  </button>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl flex flex-col items-center justify-center py-5 text-center">
+                              <span className="text-sm text-slate-500 italic block">{emptyText}</span>
+                              {orgUsers.length === 0 && (
+                                <Link
+                                  to="/dashboard/seller/profile"
+                                  className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline mt-2"
+                                >
+                                  Add users in Seller Profile
+                                </Link>
+                              )}
+                            </div>
+                          )}
+
+                          {isAdding && (
+                            <div className="flex items-center gap-2 pt-1">
+                              <select
+                                defaultValue=""
+                                onChange={(e) => handleAssignTeamUser(role, e.target.value)}
+                                disabled={teamUpdating}
+                                className="form-input text-sm py-2 flex-1 cursor-pointer"
+                                autoFocus
+                              >
+                                <option value="" disabled>
+                                  Select user from organization...
+                                </option>
+                                {availableUsers.map(u => {
+                                  const labelName = u.name || [u.first_name, u.last_name].filter(Boolean).join(' ') || u.email || 'Unnamed User';
+                                  const labelMeta = [u.title, u.email].filter(Boolean).join(' • ');
+                                  return (
+                                    <option key={u.id} value={u.id}>
+                                      {labelMeta ? `${labelName} (${labelMeta})` : labelName}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                              <button
+                                type="button"
+                                onClick={() => setAddingRole(null)}
+                                disabled={teamUpdating}
+                                className="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                                title="Cancel"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <p className="text-xs text-slate-500 mt-4">* Includes emails for notifications</p>
               </div>

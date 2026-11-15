@@ -1,7 +1,7 @@
 import postgres from 'postgres';
 import fs from 'fs';
 
-const sqlFile = fs.readFileSync('supabase/migrations/20261114030000_add_first_last_name_to_user_profiles.sql', 'utf8');
+const sqlFile = fs.readFileSync('supabase/migrations/20261114040000_add_listing_deal_team.sql', 'utf8');
 
 const sql = postgres('postgresql://postgres:16l5OO3Co0UHzED4@db.laialzrtgfveczgemjto.supabase.co:5432/postgres', { ssl: 'require' });
 

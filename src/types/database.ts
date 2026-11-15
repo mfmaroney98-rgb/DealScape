@@ -86,6 +86,10 @@ export interface SellerListing {
     'FY-2': { date: string; revenue: number; ebitda: number; [key: string]: any };
   };
 
+  // Deal Team
+  primary_contact_ids?: string[];
+  team_member_ids?: string[];
+
   created_at: string;
   updated_at: string;
 }
@@ -148,6 +152,10 @@ export interface BuyerCriteria {
   // Criteria Overview Document
   overview_document_url?: string;
   overview_file_name?: string;
+
+  // Deal Team
+  primary_contact_ids?: string[];
+  team_member_ids?: string[];
 
   created_at: string;
   updated_at: string;
