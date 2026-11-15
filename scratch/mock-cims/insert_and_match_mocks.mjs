@@ -46,8 +46,13 @@ async function generateEmbedding(text) {
 async function main() {
   const evalResults = JSON.parse(fs.readFileSync('C:/DealScape/scratch/mock-cims/eval_results.json', 'utf8'));
 
-  const authUsers = await sql`SELECT id FROM auth.users LIMIT 1`;
-  const userId = authUsers[0].id;
+  const corpUsers = await sql`
+    SELECT id FROM public.user_profiles
+    WHERE organization_id = ${CORP_ORG_ID} AND role = 'corporate'
+    ORDER BY (email = 'mfmaroney98@gmail.com') DESC
+    LIMIT 1
+  `;
+  const userId = corpUsers[0].id;
 
   const insertedIds = {};
 
