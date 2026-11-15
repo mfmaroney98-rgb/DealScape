@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "apply-docs-migration": "node scratch/apply_documents_migration.js"
+    "apply-docs-migration": "node scratch/apply_documents_migration.js",
+    "backup": "node scripts/backup_db.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.1",
