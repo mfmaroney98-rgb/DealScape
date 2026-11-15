@@ -157,5 +157,39 @@ export const organizationService = {
       if (unlinkError) throw error;
     }
     return true;
+  },
+
+  /**
+   * Fetches public seller advisor details (organization name, website, and assigned primary contacts).
+   */
+  async getSellerAdvisorDetails(orgId, primaryContactIds = []) {
+    if (!orgId) return { organization: null, primaryContacts: [] };
+
+    const orgPromise = supabase
+      .from('organizations')
+      .select('id, organization_name, website_url')
+      .eq('id', orgId)
+      .maybeSingle();
+
+    const contactsPromise = Array.isArray(primaryContactIds) && primaryContactIds.length > 0
+      ? supabase
+          .from('user_profiles')
+          .select('id, name, first_name, last_name, title, email')
+          .in('id', primaryContactIds)
+      : Promise.resolve({ data: [], error: null });
+
+    const [orgRes, contactsRes] = await Promise.all([orgPromise, contactsPromise]);
+    if (orgRes.error) throw orgRes.error;
+    if (contactsRes.error) throw contactsRes.error;
+
+    const contactMap = new Map((contactsRes.data || []).map(c => [c.id, c]));
+    const primaryContacts = (Array.isArray(primaryContactIds) ? primaryContactIds : [])
+      .map(id => contactMap.get(id))
+      .filter(Boolean);
+
+    return {
+      organization: orgRes.data || null,
+      primaryContacts
+    };
   }
 };

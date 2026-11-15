@@ -6,6 +6,7 @@ import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
+import { organizationService } from '../services/organizationService';
 import { fetchNaicsMap, getNaicsName, resolveTo2022NaicsCode } from '../services/naicsService';
 import {
   ArrowLeft,
@@ -366,6 +367,7 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
   const [fileError, setFileError] = useState(null);
   const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
   const [naicsMap, setNaicsMap] = useState(null);
+  const [advisorDetails, setAdvisorDetails] = useState({ organization: null, primaryContacts: [] });
 
   useEffect(() => {
     fetchNaicsMap()
@@ -437,6 +439,27 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
     };
     load();
   }, [listingId, previewListing]);
+
+  useEffect(() => {
+    if (!listing?.organization_id) {
+      setAdvisorDetails({ organization: null, primaryContacts: [] });
+      return;
+    }
+
+    let active = true;
+    organizationService
+      .getSellerAdvisorDetails(listing.organization_id, listing.primary_contact_ids || [])
+      .then((details) => {
+        if (active) setAdvisorDetails(details);
+      })
+      .catch((err) => {
+        console.error('Failed to load seller advisor details:', err);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [listing?.organization_id, listing?.primary_contact_ids]);
 
   /* File handlers */
   const handleDownloadTeaser = async () => {
@@ -1117,6 +1140,90 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
                   )}
                 </div>
               )}
+
+              {/* Seller Advisor */}
+              <div className="glass rounded-3xl p-7 mt-6">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2 mb-5">
+                  <Building2 size={14} className="text-accent" />
+                  Seller Advisor
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider font-extrabold text-muted-foreground mb-1.5">
+                      Organization
+                    </p>
+                    <p className="text-sm font-semibold text-foreground">
+                      {advisorDetails.organization?.organization_name || '--'}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider font-extrabold text-muted-foreground mb-1.5">
+                      Website
+                    </p>
+                    {advisorDetails.organization?.website_url ? (
+                      <a
+                        href={
+                          advisorDetails.organization.website_url.startsWith('http')
+                            ? advisorDetails.organization.website_url
+                            : `https://${advisorDetails.organization.website_url}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline break-all"
+                      >
+                        <Globe size={14} className="shrink-0" />
+                        <span>{advisorDetails.organization.website_url}</span>
+                        <ExternalLink size={12} className="shrink-0" />
+                      </a>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">--</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider font-extrabold text-muted-foreground mb-1.5">
+                      Primary Contacts
+                    </p>
+                    {advisorDetails.primaryContacts.length > 0 ? (
+                      <div className="space-y-2.5">
+                        {advisorDetails.primaryContacts.map((contact) => {
+                          const displayName =
+                            contact.name ||
+                            [contact.first_name, contact.last_name].filter(Boolean).join(' ') ||
+                            contact.email ||
+                            'Unnamed Contact';
+                          return (
+                            <div
+                              key={contact.id}
+                              className="bg-slate-50/70 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/80 rounded-xl p-3"
+                            >
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-sm font-semibold text-foreground">{displayName}</span>
+                                {contact.title && (
+                                  <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-accent/10 text-accent border border-accent/20">
+                                    {contact.title}
+                                  </span>
+                                )}
+                              </div>
+                              {contact.email && (
+                                <a
+                                  href={`mailto:${contact.email}`}
+                                  className="block text-xs text-muted-foreground hover:text-accent hover:underline break-all mt-0.5"
+                                >
+                                  {contact.email}
+                                </a>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No primary contacts assigned</p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           );

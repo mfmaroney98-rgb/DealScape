@@ -4,7 +4,7 @@ import { sellerListingService } from '../services/sellerListingService';
 import { organizationService } from '../services/organizationService';
 import { supabase } from '../lib/supabase';
 import BuyerListingDetail from './BuyerListingDetail';
-import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock, UserPlus, X, Search } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock, UserPlus, X, Search, GripVertical } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -23,6 +23,8 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [teamError, setTeamError] = useState(null);
   const [addingRole, setAddingRole] = useState(null); // 'primary' | 'member' | null
   const [teamSearch, setTeamSearch] = useState('');
+  const [draggedTeamItem, setDraggedTeamItem] = useState(null); // { role, index } | null
+  const [dragOverTeamItem, setDragOverTeamItem] = useState(null); // { role, index } | null
   const teamDropdownRef = useRef(null);
 
   useEffect(() => {
@@ -159,6 +161,32 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
     }
   };
 
+  const handleReorderTeamUser = async (role, fromIndex, toIndex) => {
+    if (!listing || fromIndex === toIndex || fromIndex == null || toIndex == null) return;
+    const field = role === 'primary' ? 'primary_contact_ids' : 'team_member_ids';
+    const currentIds = Array.isArray(listing[field]) ? [...listing[field]] : [];
+    if (fromIndex < 0 || fromIndex >= currentIds.length || toIndex < 0 || toIndex >= currentIds.length) return;
+
+    const [moved] = currentIds.splice(fromIndex, 1);
+    currentIds.splice(toIndex, 0, moved);
+
+    // Optimistic update so UI doesn't snap back while saving
+    const previousIds = listing[field];
+    setListing(prev => ({ ...prev, [field]: currentIds }));
+    setTeamUpdating(true);
+    setTeamError(null);
+    try {
+      const updated = await sellerListingService.updateListing(listing.id, { [field]: currentIds });
+      setListing(prev => ({ ...prev, ...updated }));
+    } catch (err) {
+      console.error(`Error reordering ${field}:`, err);
+      setListing(prev => ({ ...prev, [field]: previousIds }));
+      setTeamError(err.message || 'Failed to reorder deal team.');
+    } finally {
+      setTeamUpdating(false);
+    }
+  };
+
   useEffect(() => {
     const fetchListing = async () => {
       try {
@@ -288,12 +316,20 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                     <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Anonymous Title</span>
                     <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.seller_anon_name || '--'}</span>
                   </div>
-                  {listing.year_founded && (
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Year Founded</span>
-                      <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.year_founded}</span>
+                      <span className="text-slate-900 dark:text-slate-200 font-medium">{listing.year_founded || '--'}</span>
                     </div>
-                  )}
+                    <div>
+                      <span className="text-sm text-slate-500 dark:text-slate-400 block mb-1">Headquarters</span>
+                      <span className="text-slate-900 dark:text-slate-200 font-medium">
+                        {Array.isArray(listing.locations) && listing.locations.length > 0
+                          ? listing.locations.map(l => l.split(':').pop()).filter(Boolean).join(', ') || '--'
+                          : '--'}
+                      </span>
+                    </div>
+                  </div>
 
                   <div className="pt-4 border-t border-slate-200 dark:border-slate-700/50">
                     <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Latest Financials</h4>
@@ -623,27 +659,67 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
 
                         <div className="space-y-2">
                           {assignedUsers.length > 0 ? (
-                            assignedUsers.map(member => {
+                            assignedUsers.map((member, idx) => {
                               const displayName = member.name || [member.first_name, member.last_name].filter(Boolean).join(' ') || member.email || 'Unnamed User';
+                              const isDragging = draggedTeamItem?.role === role && draggedTeamItem?.index === idx;
+                              const isDragOver = dragOverTeamItem?.role === role && dragOverTeamItem?.index === idx && draggedTeamItem?.index !== idx;
                               return (
                                 <div
                                   key={member.id}
-                                  className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-slate-700/40 p-3.5 rounded-xl flex items-start justify-between gap-3"
+                                  draggable={!teamUpdating}
+                                  onDragStart={(e) => {
+                                    setDraggedTeamItem({ role, index: idx });
+                                    e.dataTransfer.effectAllowed = 'move';
+                                  }}
+                                  onDragOver={(e) => {
+                                    if (draggedTeamItem?.role !== role) return;
+                                    e.preventDefault();
+                                    e.dataTransfer.dropEffect = 'move';
+                                    if (dragOverTeamItem?.role !== role || dragOverTeamItem?.index !== idx) {
+                                      setDragOverTeamItem({ role, index: idx });
+                                    }
+                                  }}
+                                  onDrop={(e) => {
+                                    e.preventDefault();
+                                    if (draggedTeamItem?.role === role) {
+                                      handleReorderTeamUser(role, draggedTeamItem.index, idx);
+                                    }
+                                    setDraggedTeamItem(null);
+                                    setDragOverTeamItem(null);
+                                  }}
+                                  onDragEnd={() => {
+                                    setDraggedTeamItem(null);
+                                    setDragOverTeamItem(null);
+                                  }}
+                                  className={`bg-slate-50 dark:bg-slate-800/30 border p-3.5 rounded-xl flex items-start justify-between gap-3 transition-all ${
+                                    isDragging ? 'opacity-50' : ''
+                                  } ${
+                                    isDragOver
+                                      ? 'border-indigo-500 ring-1 ring-indigo-500/30'
+                                      : 'border-slate-200 dark:border-slate-700/40'
+                                  }`}
                                 >
-                                  <div className="min-w-0">
-                                    <div className="flex items-center gap-2 flex-wrap">
-                                      <span className="text-slate-900 dark:text-slate-200 font-medium text-sm truncate">
-                                        {displayName}
-                                      </span>
-                                      {member.title && (
-                                        <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-500/20">
-                                          {member.title}
+                                  <div className="flex items-start gap-2.5 min-w-0">
+                                    <GripVertical
+                                      size={16}
+                                      className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-grab active:cursor-grabbing shrink-0 mt-0.5"
+                                      title="Drag to reorder"
+                                    />
+                                    <div className="min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <span className="text-slate-900 dark:text-slate-200 font-medium text-sm truncate">
+                                          {displayName}
                                         </span>
-                                      )}
+                                        {member.title && (
+                                          <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-500/20">
+                                            {member.title}
+                                          </span>
+                                        )}
+                                      </div>
+                                      <span className="block text-xs text-slate-500 dark:text-slate-400 break-all mt-0.5">
+                                        {member.email || 'No email'}
+                                      </span>
                                     </div>
-                                    <span className="block text-xs text-slate-500 dark:text-slate-400 break-all mt-0.5">
-                                      {member.email || 'No email'}
-                                    </span>
                                   </div>
                                   <button
                                     type="button"

@@ -159,7 +159,7 @@ export const sellerListingService = {
         'is_family_owned, is_operator_owned, keywords, locations, pref_transaction_type, ' +
         'financial_history, categorized_keywords, teaser_url, teaser_file_name, ' +
         'search_revenue, search_ebitda, search_ebitda_margin, search_gross_profit, ' +
-        'search_revenue_growth_yoy, status, created_at, naics_codes'
+        'search_revenue_growth_yoy, status, created_at, naics_codes, organization_id, primary_contact_ids'
       )
       .eq('id', id)
       .maybeSingle();
