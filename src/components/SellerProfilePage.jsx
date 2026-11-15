@@ -135,7 +135,13 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         role: 'seller'
       });
 
-      setOrgUsers(prev => [...prev, created]);
+      setOrgUsers(prev =>
+        [...prev, created].sort((a, b) => {
+          const aName = (a.first_name || a.name || a.email || '').trim().toLowerCase();
+          const bName = (b.first_name || b.name || b.email || '').trim().toLowerCase();
+          return aName.localeCompare(bName);
+        })
+      );
       setNewUser({ firstName: '', lastName: '', title: '', email: '' });
       setUserSuccess(`Added ${created.name} to the organization.`);
       setTimeout(() => setUserSuccess(null), 3500);

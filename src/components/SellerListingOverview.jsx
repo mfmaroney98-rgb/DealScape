@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { organizationService } from '../services/organizationService';
 import { supabase } from '../lib/supabase';
 import BuyerListingDetail from './BuyerListingDetail';
-import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock, UserPlus, X } from 'lucide-react';
+import { ArrowLeft, Loader2, Edit3, EyeOff, Eye, XCircle, Trash2, Users, FileText, CheckCircle2, Download, AlertCircle, Archive, Handshake, Lock, UserPlus, X, Search } from 'lucide-react';
 
 export default function SellerListingOverview({ orgId, isCorporate }) {
   const { id } = useParams();
@@ -22,6 +22,22 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
   const [teamUpdating, setTeamUpdating] = useState(false);
   const [teamError, setTeamError] = useState(null);
   const [addingRole, setAddingRole] = useState(null); // 'primary' | 'member' | null
+  const [teamSearch, setTeamSearch] = useState('');
+  const teamDropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (!addingRole) {
+      setTeamSearch('');
+      return;
+    }
+    const handleClickOutside = (e) => {
+      if (teamDropdownRef.current && !teamDropdownRef.current.contains(e.target)) {
+        setAddingRole(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [addingRole]);
 
   const handleView = async (type, path) => {
     if (!path) return;
@@ -641,8 +657,12 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                                 </div>
                               );
                             })
-                          ) : (
-                            <div className="bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent p-4 rounded-xl flex flex-col items-center justify-center py-5 text-center">
+                          ) : !isAdding ? (
+                            <div
+                              className={`bg-slate-50 dark:bg-slate-800/30 border border-slate-200 dark:border-transparent px-4 rounded-xl flex items-center justify-center text-center ${
+                                orgUsers.length === 0 ? 'flex-col py-4' : 'h-10'
+                              }`}
+                            >
                               <span className="text-sm text-slate-500 italic block">{emptyText}</span>
                               {orgUsers.length === 0 && (
                                 <Link
@@ -653,41 +673,89 @@ export default function SellerListingOverview({ orgId, isCorporate }) {
                                 </Link>
                               )}
                             </div>
-                          )}
+                          ) : null}
 
-                          {isAdding && (
-                            <div className="flex items-center gap-2 pt-1">
-                              <select
-                                defaultValue=""
-                                onChange={(e) => handleAssignTeamUser(role, e.target.value)}
-                                disabled={teamUpdating}
-                                className="form-input text-sm py-2 flex-1 cursor-pointer"
-                                autoFocus
+                          {isAdding && (() => {
+                            const q = teamSearch.trim().toLowerCase();
+                            const filteredUsers = q
+                              ? availableUsers.filter(u => {
+                                  const fullName = (u.name || [u.first_name, u.last_name].filter(Boolean).join(' ')).toLowerCase();
+                                  const title = (u.title || '').toLowerCase();
+                                  const email = (u.email || '').toLowerCase();
+                                  return fullName.includes(q) || title.includes(q) || email.includes(q);
+                                })
+                              : availableUsers;
+
+                            return (
+                              <div
+                                ref={teamDropdownRef}
+                                className={`relative flex items-center gap-2 h-10 ${assignedUsers.length > 0 ? 'mt-1' : ''}`}
                               >
-                                <option value="" disabled>
-                                  Select user from organization...
-                                </option>
-                                {availableUsers.map(u => {
-                                  const labelName = u.name || [u.first_name, u.last_name].filter(Boolean).join(' ') || u.email || 'Unnamed User';
-                                  const labelMeta = [u.title, u.email].filter(Boolean).join(' • ');
-                                  return (
-                                    <option key={u.id} value={u.id}>
-                                      {labelMeta ? `${labelName} (${labelMeta})` : labelName}
-                                    </option>
-                                  );
-                                })}
-                              </select>
-                              <button
-                                type="button"
-                                onClick={() => setAddingRole(null)}
-                                disabled={teamUpdating}
-                                className="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                                title="Cancel"
-                              >
-                                <X size={16} />
-                              </button>
-                            </div>
-                          )}
+                                <div className="relative flex-1 h-10">
+                                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                  <input
+                                    type="text"
+                                    value={teamSearch}
+                                    onChange={(e) => setTeamSearch(e.target.value)}
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Escape') setAddingRole(null);
+                                    }}
+                                    placeholder="Search users by name, title, or email..."
+                                    disabled={teamUpdating}
+                                    className="form-input text-sm h-10 py-0 !pl-9 pr-3 w-full"
+                                    autoFocus
+                                  />
+                                  <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-56 overflow-y-auto py-1">
+                                    {filteredUsers.length === 0 ? (
+                                      <div className="px-3 py-2.5 text-xs text-slate-500 dark:text-slate-400 text-center italic">
+                                        No matching users found
+                                      </div>
+                                    ) : (
+                                      filteredUsers.map(u => {
+                                        const labelName = u.name || [u.first_name, u.last_name].filter(Boolean).join(' ') || u.email || 'Unnamed User';
+                                        return (
+                                          <button
+                                            key={u.id}
+                                            type="button"
+                                            onClick={() => handleAssignTeamUser(role, u.id)}
+                                            disabled={teamUpdating}
+                                            className="w-full text-left px-3 py-2 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-colors cursor-pointer flex items-center justify-between gap-2"
+                                          >
+                                            <div className="min-w-0">
+                                              <div className="flex items-center gap-2 flex-wrap">
+                                                <span className="text-sm font-medium text-slate-900 dark:text-slate-200 truncate">
+                                                  {labelName}
+                                                </span>
+                                                {u.title && (
+                                                  <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-500/20">
+                                                    {u.title}
+                                                  </span>
+                                                )}
+                                              </div>
+                                              {u.email && (
+                                                <span className="block text-xs text-slate-500 dark:text-slate-400 truncate">
+                                                  {u.email}
+                                                </span>
+                                              )}
+                                            </div>
+                                          </button>
+                                        );
+                                      })
+                                    )}
+                                  </div>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setAddingRole(null)}
+                                  disabled={teamUpdating}
+                                  className="p-2 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                                  title="Cancel"
+                                >
+                                  <X size={16} />
+                                </button>
+                              </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     );

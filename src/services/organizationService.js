@@ -96,17 +96,20 @@ export const organizationService = {
   },
 
   /**
-   * Fetches all users belonging to an organization.
+   * Fetches all users belonging to an organization, sorted A-Z by first name.
    */
   async getOrganizationUsers(orgId) {
     const { data, error } = await supabase
       .from('user_profiles')
       .select('id, name, first_name, last_name, email, title, role, organization_id, created_at, updated_at')
-      .eq('organization_id', orgId)
-      .order('created_at', { ascending: true });
+      .eq('organization_id', orgId);
 
     if (error) throw error;
-    return data || [];
+    return (data || []).sort((a, b) => {
+      const aName = (a.first_name || a.name || a.email || '').trim().toLowerCase();
+      const bName = (b.first_name || b.name || b.email || '').trim().toLowerCase();
+      return aName.localeCompare(bName);
+    });
   },
 
   /**
