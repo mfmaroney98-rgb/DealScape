@@ -31,14 +31,32 @@ import {
 
 
 
-const KEYWORD_CATEGORIES = [
-  { id: 'industry', label: 'Industry / Vertical', example: 'Industrials, HealthTech' },
-  { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
-  { id: 'revenue_model', label: 'Revenue Model', example: 'Subscription, Recurring' },
-  { id: 'customer_type', label: 'Customer Type', example: 'Fortune 500, SMB' },
-  { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
-  { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' },
-  { id: 'end_market', label: 'End Market', example: 'Independent Clinics, Government' }
+const KEYWORD_GROUPS = [
+  {
+    title: 'Business & Revenue Profile',
+    colsClass: 'grid-cols-1 md:grid-cols-3',
+    items: [
+      { id: 'industry', label: 'Industry / Vertical', example: 'Industrials, HealthTech' },
+      { id: 'business_model', label: 'Business Model', example: 'B2B SaaS, Managed Services' },
+      { id: 'revenue_model', label: 'Revenue Model', example: 'Subscription, Recurring' }
+    ]
+  },
+  {
+    title: 'Target Customers & Markets',
+    colsClass: 'grid-cols-1 md:grid-cols-2',
+    items: [
+      { id: 'customer_type', label: 'Customer Type (Size / Channel)', example: 'Enterprise, Mid-Market, SMB, B2G, DTC' },
+      { id: 'end_market', label: 'End Market (Industry Served)', example: 'Hospitals, Aerospace, K-12 Schools' }
+    ]
+  },
+  {
+    title: 'Operations & Competitive Edge',
+    colsClass: 'grid-cols-1 md:grid-cols-2',
+    items: [
+      { id: 'operational_model', label: 'Operational Model', example: 'Asset-light, Remote-first' },
+      { id: 'differentiation', label: 'Differentiation', example: 'Proprietary IP, Sole-source' }
+    ]
+  }
 ];
 
 const TRANSACTION_GROUPS = {
@@ -1504,33 +1522,80 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
             <h2 className="text-xl font-bold">Business Characteristics</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {KEYWORD_CATEGORIES.map(cat => (
-              <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
-                <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
-                  {cat.label}
-                </label>
-                <div className="flex-1">
-                  <TagInput
-                    tags={formData.categorized_keywords?.[cat.id] || []}
-                    onChange={(newTags) => {
-                      setFormData(prev => {
-                        const updatedCategorized = {
-                          ...(prev.categorized_keywords || {}),
-                          [cat.id]: newTags
-                        };
-                        return {
-                          ...prev,
-                          categorized_keywords: updatedCategorized,
-                          keywords: Object.values(updatedCategorized).flat().filter(Boolean)
-                        };
-                      });
-                    }}
-                    placeholder={`e.g. ${cat.example}`}
-                  />
-                </div>
+          <div className="space-y-8">
+            {/* Row 1: Business & Revenue Profile */}
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mb-3 px-1">
+                {KEYWORD_GROUPS[0].title}
+              </h3>
+              <div className={`grid ${KEYWORD_GROUPS[0].colsClass} gap-6`}>
+                {KEYWORD_GROUPS[0].items.map(cat => (
+                  <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
+                    <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
+                      {cat.label}
+                    </label>
+                    <div className="flex-1">
+                      <TagInput
+                        tags={formData.categorized_keywords?.[cat.id] || []}
+                        onChange={(newTags) => {
+                          setFormData(prev => {
+                            const updatedCategorized = {
+                              ...(prev.categorized_keywords || {}),
+                              [cat.id]: newTags
+                            };
+                            return {
+                              ...prev,
+                              categorized_keywords: updatedCategorized,
+                              keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                            };
+                          });
+                        }}
+                        placeholder={`e.g. ${cat.example}`}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Row 2: Target Customers & Markets + Operations & Competitive Edge (4 boxes in 1 row) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {KEYWORD_GROUPS.slice(1).map(group => (
+                <div key={group.title}>
+                  <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-slate-500 mb-3 px-1">
+                    {group.title}
+                  </h3>
+                  <div className={`grid ${group.colsClass} gap-6`}>
+                    {group.items.map(cat => (
+                      <div key={cat.id} className="bg-slate-50 p-6 rounded-3xl border border-slate-200 flex flex-col transition-all hover:border-accent/30 hover:shadow-md">
+                        <label className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold mb-6 flex justify-between items-center px-1">
+                          {cat.label}
+                        </label>
+                        <div className="flex-1">
+                          <TagInput
+                            tags={formData.categorized_keywords?.[cat.id] || []}
+                            onChange={(newTags) => {
+                              setFormData(prev => {
+                                const updatedCategorized = {
+                                  ...(prev.categorized_keywords || {}),
+                                  [cat.id]: newTags
+                                };
+                                return {
+                                  ...prev,
+                                  categorized_keywords: updatedCategorized,
+                                  keywords: Object.values(updatedCategorized).flat().filter(Boolean)
+                                };
+                              });
+                            }}
+                            placeholder={`e.g. ${cat.example}`}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

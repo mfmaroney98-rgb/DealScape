@@ -177,10 +177,10 @@ INCLUDE:
 - Business model descriptor (1-2): e.g. "B2B SaaS", "managed services provider", "staffing firm".
 - Industry or vertical (1-3): Prefer narrow over broad. e.g. "dental practice management".
 - Revenue model (1-2): e.g. "recurring revenue", "subscription", "project-based".
-- Customer type (1-2): e.g. "enterprise", "SMB", "government", "franchise operators".
+- Customer type (1-2): Buyer tier, segment, or channel ONLY (e.g. "enterprise", "mid-market", "SMB", "B2G", "DTC", "franchise operators"). Do NOT put industry verticals here.
 - Delivery/Operational model (1-2): Include go-to-market/channel & deployment signals, e.g. "asset-light", "remote-first", "OEM channel partnerships", "cloud and on-premise".
 - Differentiation (1-2): e.g. "proprietary software", "sole-source contracts", "patented process", "offline-capable".
-- End market served (1-3): Capture ALL primary end markets mentioned, e.g. "K-12 education", "enterprise meeting rooms", "hospitals and health systems".
+- End market served (1-3): Specific industry verticals or end-user sectors served ONLY (e.g. "K-12 education", "automotive & aerospace", "hospitals and health systems"). Do NOT repeat generic segments like "enterprise" or "commercial".
 - Reason for sale (1-2): e.g. "owner retirement", "growth capital needed", "strategic partnership sought".
 
 EXCLUDE (Do NOT extract these):
@@ -222,10 +222,10 @@ Return the result as a strict JSON object matching exactly this schema:
     "industry": ["e.g. HealthTech, Industrials, FinTech"],
     "business_model": ["e.g. B2B SaaS, Managed Services, Asset-light"],
     "revenue_model": ["e.g. Subscription, Recurring, Transactional"],
-    "customer_type": ["e.g. Fortune 500, SMB, B2G"],
+    "customer_type": ["Buyer tier or channel only, e.g. Enterprise, Mid-Market, SMB, B2G, DTC"],
     "operational_model": ["e.g. Remote-first, Field-based, 24/7 Operations"],
     "differentiation": ["e.g. Proprietary IP, High Switch Costs, Sole-source"],
-    "end_market": ["e.g. Independent Clinics, Government Agencies, Pharma"],
+    "end_market": ["Industry verticals served only, e.g. Hospitals & Clinics, Aerospace & Defense, K-12 Schools"],
     "reason_for_sale": ["e.g. Owner retirement, Growth capital needed, Spin-off"]
   },
   "pref_transaction_type": ["Total Sale", "Acquisition of Majority Stake", "Management Buyout", "Merger", "Divestiture", "Asset Sale", "Acquisition of Minority Stake", "Minority Equity Raise", "SAFE / Convertible Note", "Angel / Pre-Seed Round", "Seed Round", "Series A", "Series B", "Series C & Beyond", "Debt Raise", "Mezzanine Financing", "Bridge Loan", "Recapitalization", "Restructuring", "Distressed Sale", "Joint Venture / Strategic Alliance"] or empty array,
