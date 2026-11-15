@@ -1,0 +1,651 @@
+[
+  {
+    "id": "deal1_ib_deck",
+    "archetype": "IB Slide Deck (Landscape 16:9)",
+    "target_buyer": "Zenda Capital Management - Early Stage Technology",
+    "ground_truth": {
+      "seller_name": "Apex ColdChain Analytics Inc.",
+      "year_founded": 2019,
+      "employees_count": 58,
+      "legal_entity": "C-Corp",
+      "locations": [
+        "US:Texas"
+      ],
+      "naics_codes": [
+        "5132",
+        "5415"
+      ],
+      "pref_transaction_type": [
+        "Acquisition of Majority Stake",
+        "Minority Equity Raise"
+      ],
+      "is_founder_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 7800000,
+          "gross_profit": 5850000,
+          "ebitda": 920000,
+          "capex": 180000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 10900000,
+          "gross_profit": 8390000,
+          "ebitda": 1740000,
+          "capex": 220000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 14200000,
+          "gross_profit": 11076000,
+          "ebitda": 2840000,
+          "capex": 280000
+        }
+      }
+    },
+    "extracted": {
+      "seller_name": "Apex ColdChain Analytics Inc.",
+      "seller_anon_name": "Real-Time IoT Supply Chain SaaS",
+      "summary": "A B2B SaaS platform specializing in real-time IoT and predictive analytics for the pharmaceutical and food logistics sectors. The company offers multi-year enterprise subscription contracts and boasts a high net revenue retention rate, serving key players in the supply chain industry.",
+      "employees_count": 58,
+      "year_founded": 2019,
+      "legal_entity": "C-Corp",
+      "naics_codes": [
+        "5112",
+        "5415",
+        "4931"
+      ],
+      "locations": [
+        "US:Texas"
+      ],
+      "keywords": {
+        "industry": [
+          "pharmaceutical logistics",
+          "food logistics"
+        ],
+        "business_model": [
+          "B2B SaaS"
+        ],
+        "revenue_model": [
+          "recurring revenue"
+        ],
+        "customer_type": [
+          "pharmaceutical manufacturers",
+          "3PL operators"
+        ],
+        "operational_model": [
+          "cloud-native",
+          "asset-light"
+        ],
+        "differentiation": [
+          "multi-year contracts",
+          "high net revenue retention"
+        ],
+        "end_market": [
+          "biologics distributors"
+        ],
+        "reason_for_sale": [
+          "fund European expansion",
+          "AI route-optimization R&D"
+        ]
+      },
+      "pref_transaction_type": [
+        "Acquisition of Majority Stake",
+        "Minority Equity Raise"
+      ],
+      "is_founder_owned": true,
+      "is_female_owned": false,
+      "is_minority_owned": false,
+      "is_family_owned": false,
+      "is_operator_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 7800000,
+          "gross_profit": 5850000,
+          "ebitda": 920000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 180000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 10900000,
+          "gross_profit": 8390000,
+          "ebitda": 1740000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 220000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 14200000,
+          "gross_profit": 11076000,
+          "ebitda": 2840000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 280000
+        },
+        "LTM": null
+      }
+    }
+  },
+  {
+    "id": "deal2_broker_memo",
+    "archetype": "LMM Business Broker Memo (2-Column Portrait)",
+    "target_buyer": "DealScape Demo - Lower Middle Market Business Services",
+    "ground_truth": {
+      "seller_name": "Heartland Commercial HVAC & Facilities Services LLC",
+      "year_founded": 2004,
+      "employees_count": 74,
+      "legal_entity": "S-Corp",
+      "locations": [
+        "US:Ohio"
+      ],
+      "naics_codes": [
+        "5612",
+        "2382"
+      ],
+      "pref_transaction_type": [
+        "Total Sale"
+      ],
+      "is_founder_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 7900000,
+          "gross_profit": 3318000,
+          "ebitda": 1420000,
+          "capex": 190000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 8800000,
+          "gross_profit": 3784000,
+          "ebitda": 1650000,
+          "capex": 210000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 9600000,
+          "gross_profit": 4128000,
+          "ebitda": 1850000,
+          "capex": 230000
+        }
+      }
+    },
+    "extracted": {
+      "seller_name": "Heartland Commercial HVAC & Facilities Services LLC",
+      "seller_anon_name": "Commercial HVAC Services Provider",
+      "summary": "A leading provider of commercial mechanical maintenance and HVAC services, specializing in preventative maintenance contracts for regional hospital networks, school districts, and Class-A office parks in Central Ohio. The company has a strong revenue base with a significant portion derived from recurring contracts, positioning it well for continued growth.",
+      "employees_count": 74,
+      "year_founded": 2004,
+      "legal_entity": "S-Corp",
+      "naics_codes": [
+        "238220",
+        "561210",
+        "811310"
+      ],
+      "locations": [
+        "US:Ohio"
+      ],
+      "keywords": {
+        "industry": [
+          "commercial HVAC",
+          "facilities services"
+        ],
+        "business_model": [
+          "B2B services"
+        ],
+        "revenue_model": [
+          "recurring revenue"
+        ],
+        "customer_type": [
+          "regional hospital networks",
+          "school districts"
+        ],
+        "operational_model": [
+          "preventative maintenance"
+        ],
+        "differentiation": [
+          "multi-year contracts"
+        ],
+        "end_market": [
+          "healthcare",
+          "education",
+          "commercial real estate"
+        ],
+        "reason_for_sale": [
+          "founder retirement"
+        ]
+      },
+      "pref_transaction_type": [
+        "Total Sale"
+      ],
+      "is_founder_owned": true,
+      "is_female_owned": false,
+      "is_minority_owned": false,
+      "is_family_owned": false,
+      "is_operator_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 7900000,
+          "gross_profit": 3318000,
+          "ebitda": 1420000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 190000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 8800000,
+          "gross_profit": 3784000,
+          "ebitda": 1650000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 210000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 9600000,
+          "gross_profit": 4128000,
+          "ebitda": 1850000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 230000
+        },
+        "LTM": null
+      }
+    }
+  },
+  {
+    "id": "deal3_blind_teaser",
+    "archetype": "1-2 Page Blind Teaser (Margin-Only Financials)",
+    "target_buyer": "Healthcare Services / B2B Managed Services Buyer",
+    "ground_truth": {
+      "seller_name": null,
+      "year_founded": 2013,
+      "employees_count": 112,
+      "legal_entity": null,
+      "locations": [
+        "US:Tennessee"
+      ],
+      "naics_codes": [
+        "6219",
+        "5419"
+      ],
+      "pref_transaction_type": [
+        "Total Sale",
+        "Acquisition of Majority Stake"
+      ],
+      "is_founder_owned": true,
+      "financial_history": {
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 15200000,
+          "gross_profit": 9120000,
+          "ebitda": 3344000,
+          "capex": null
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 18500000,
+          "gross_profit": 11470000,
+          "ebitda": 4440000,
+          "capex": null
+        }
+      }
+    },
+    "extracted": {
+      "seller_name": null,
+      "seller_anon_name": "Healthcare Revenue Cycle Managed Services Provider",
+      "summary": "A specialized B2B managed services provider delivering outsourced medical billing, coding compliance, and revenue cycle management to regional hospitals and multi-site healthcare systems. The company operates on multi-year service contracts with high switching costs, ensuring a stable revenue stream.",
+      "employees_count": 112,
+      "year_founded": 2013,
+      "legal_entity": null,
+      "naics_codes": [
+        "5416"
+      ],
+      "locations": [
+        "US:Tennessee"
+      ],
+      "keywords": {
+        "industry": [
+          "healthcare",
+          "revenue cycle management"
+        ],
+        "business_model": [
+          "B2B managed services"
+        ],
+        "revenue_model": [
+          "recurring revenue"
+        ],
+        "customer_type": [
+          "regional hospitals",
+          "multi-site healthcare systems"
+        ],
+        "operational_model": [
+          "outsourced services"
+        ],
+        "differentiation": [
+          "high switching costs"
+        ],
+        "end_market": [
+          "healthcare systems"
+        ],
+        "reason_for_sale": [
+          "strategic partnership sought",
+          "total sale"
+        ]
+      },
+      "pref_transaction_type": [
+        "Total Sale",
+        "Acquisition of Majority Stake"
+      ],
+      "is_founder_owned": true,
+      "is_female_owned": false,
+      "is_minority_owned": false,
+      "is_family_owned": false,
+      "is_operator_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 15200000,
+          "gross_profit": 9120000,
+          "ebitda": 3344000,
+          "ebit": null,
+          "net_income": null,
+          "capex": null
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 18500000,
+          "gross_profit": 11460000,
+          "ebitda": 4440000,
+          "ebit": null,
+          "net_income": null,
+          "capex": null
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": null,
+          "gross_profit": null,
+          "ebitda": null,
+          "ebit": null,
+          "net_income": null,
+          "capex": null
+        },
+        "LTM": null
+      }
+    }
+  },
+  {
+    "id": "deal4_cpg_saas_style",
+    "archetype": "Boutique Growth Memo (Omnichannel CPG Metrics)",
+    "target_buyer": "DealScape Demo - Middle Market Consumer",
+    "ground_truth": {
+      "seller_name": "Verdant Pet Nutrition Co.",
+      "year_founded": 2016,
+      "employees_count": 46,
+      "legal_entity": "LLC",
+      "locations": [
+        "US:Colorado"
+      ],
+      "naics_codes": [
+        "3111",
+        "4599"
+      ],
+      "pref_transaction_type": [
+        "Recapitalization",
+        "Acquisition of Majority Stake"
+      ],
+      "is_founder_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 21500000,
+          "gross_profit": 11610000,
+          "ebitda": 3225000,
+          "capex": 310000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 29800000,
+          "gross_profit": 16390000,
+          "ebitda": 5066000,
+          "capex": 420000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 38400000,
+          "gross_profit": 21504000,
+          "ebitda": 6912000,
+          "capex": 480000
+        }
+      }
+    },
+    "extracted": {
+      "seller_name": "Verdant Pet Nutrition Co.",
+      "seller_anon_name": "Veterinary-Formulated Pet Supplements",
+      "summary": "A rapidly growing omnichannel consumer packaged goods brand specializing in clean-label, veterinary-formulated pet supplements and functional nutrition. The company sells its products through direct-to-consumer e-commerce subscriptions and wholesale distribution, leveraging asset-light co-manufacturing and third-party logistics fulfillment.",
+      "employees_count": 46,
+      "year_founded": 2016,
+      "legal_entity": "LLC",
+      "naics_codes": [
+        "3111",
+        "4244",
+        "4541"
+      ],
+      "locations": [
+        "US:Colorado"
+      ],
+      "keywords": {
+        "industry": [
+          "pet nutrition",
+          "consumer packaged goods"
+        ],
+        "business_model": [
+          "omnichannel",
+          "DTC e-commerce"
+        ],
+        "revenue_model": [
+          "subscription",
+          "wholesale"
+        ],
+        "customer_type": [
+          "retailers",
+          "pet owners"
+        ],
+        "operational_model": [
+          "asset-light",
+          "3PL fulfillment"
+        ],
+        "differentiation": [
+          "clean-label",
+          "veterinary-formulated"
+        ],
+        "end_market": [
+          "pet supplements",
+          "functional nutrition"
+        ],
+        "reason_for_sale": [
+          "accelerate expansion",
+          "recapitalization"
+        ]
+      },
+      "pref_transaction_type": [
+        "Recapitalization",
+        "Acquisition of Majority Stake"
+      ],
+      "is_founder_owned": true,
+      "is_female_owned": false,
+      "is_minority_owned": false,
+      "is_family_owned": false,
+      "is_operator_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 21500000,
+          "gross_profit": 11610000,
+          "ebitda": 3225000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 310000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 29800000,
+          "gross_profit": 16390000,
+          "ebitda": 5066000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 420000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 38400000,
+          "gross_profit": 21504000,
+          "ebitda": 6912000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 480000
+        },
+        "LTM": null
+      }
+    }
+  },
+  {
+    "id": "deal5_industrial_multisite",
+    "archetype": "Industrial Multi-Site CIM (HQ vs Plants)",
+    "target_buyer": "General Industrial / Aerospace Manufacturing",
+    "ground_truth": {
+      "seller_name": "Great Lakes Precision Tooling Corp.",
+      "year_founded": 1998,
+      "employees_count": 215,
+      "legal_entity": "C-Corp",
+      "locations": [
+        "US:Wisconsin"
+      ],
+      "naics_codes": [
+        "3327",
+        "3364"
+      ],
+      "pref_transaction_type": [
+        "Total Sale",
+        "Management Buyout"
+      ],
+      "is_family_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 44100000,
+          "gross_profit": 14112000,
+          "ebitda": 7497000,
+          "capex": 2100000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 48500000,
+          "gross_profit": 15520000,
+          "ebitda": 8245000,
+          "capex": 2350000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 52000000,
+          "gross_profit": 17160000,
+          "ebitda": 9100000,
+          "capex": 2600000
+        }
+      }
+    },
+    "extracted": {
+      "seller_name": "Great Lakes Precision Tooling Corp.",
+      "seller_anon_name": "Aerospace Component Manufacturer",
+      "summary": "A family-owned precision CNC machining company specializing in mission-critical aerospace components, Great Lakes Precision Tooling Corp. has been operational since 1998 and employs 215 skilled machinists and engineers. The company is currently exploring options for a total sale or management buyout.",
+      "employees_count": 215,
+      "year_founded": 1998,
+      "legal_entity": "C-Corp",
+      "naics_codes": [
+        "332710",
+        "336413",
+        "332999"
+      ],
+      "locations": [
+        "US:Wisconsin"
+      ],
+      "keywords": {
+        "industry": [
+          "aerospace",
+          "defense",
+          "CNC manufacturing"
+        ],
+        "business_model": [
+          "precision machining"
+        ],
+        "revenue_model": [
+          "project-based"
+        ],
+        "customer_type": [
+          "government",
+          "defense contractors"
+        ],
+        "operational_model": [
+          "in-house manufacturing"
+        ],
+        "differentiation": [
+          "mission-critical components"
+        ],
+        "end_market": [
+          "aerospace",
+          "defense"
+        ],
+        "reason_for_sale": [
+          "family succession",
+          "strategic partnership sought"
+        ]
+      },
+      "pref_transaction_type": [
+        "Total Sale",
+        "Management Buyout"
+      ],
+      "is_founder_owned": true,
+      "is_female_owned": false,
+      "is_minority_owned": false,
+      "is_family_owned": true,
+      "is_operator_owned": true,
+      "financial_history": {
+        "FY-2": {
+          "date": "2023-12-31",
+          "revenue": 44100000,
+          "gross_profit": 14112000,
+          "ebitda": 7497000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 2100000
+        },
+        "FY-1": {
+          "date": "2024-12-31",
+          "revenue": 48500000,
+          "gross_profit": 15520000,
+          "ebitda": 8245000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 2350000
+        },
+        "FY0": {
+          "date": "2025-12-31",
+          "revenue": 52000000,
+          "gross_profit": 17160000,
+          "ebitda": 9100000,
+          "ebit": null,
+          "net_income": null,
+          "capex": 2600000
+        },
+        "LTM": null
+      }
+    }
+  }
+]

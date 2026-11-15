@@ -353,10 +353,10 @@ ${candidateEntries}
 
 CRITICAL M&A SCORING RULES:
 1. Investment Mandate & Disjunctive ("OR") Logic:
-   - The buyer's mandate ("Investment Mandate / Strategy Name" and "Target Industries") outlines a broad acquisition platform targeting MULTIPLE independent verticals (e.g. Facility Services OR IT MSPs OR Corporate Compliance & Accounting / Advisory).
-   - In private equity, an acquisition target only operates in ONE of these verticals at a time.
+   - A buyer's mandate ("Investment Mandate / Strategy Name" and "Target Industries") may list MULTIPLE independent target verticals (e.g., Vertical A OR Vertical B OR Vertical C).
+   - In private equity, an acquisition target typically operates in ONE of those verticals.
    - You MUST score each listing based EXCLUSIVELY on how well it fits the specific vertical it operates in.
-   - STRICT RULE: NEVER penalize a candidate, dock points, or mention that it "lacks ties" to other unrelated verticals listed in the mandate (such as facility services, HVAC, landscaping, or IT). If a candidate fits Corporate Compliance & Accounting / B2B Professional Services / Advisory with recurring retainers, it satisfies the mandate completely. Treat its alignment with that vertical as a full 85-95+ match.
+   - STRICT RULE: NEVER penalize a candidate, dock points, or mention that it "lacks ties" to other unrelated verticals listed in the mandate. If a candidate strongly fits one of the buyer's targeted verticals and business models, treat its alignment with that vertical as an 85-95+ match.
 
 2. Qualitative Alignment Only:
    - Financial scale and geographic location are already scored separately by quantitative algorithms. Focus solely on strategic, business model, operational, and customer alignment within the relevant vertical.
