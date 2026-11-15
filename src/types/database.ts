@@ -28,8 +28,12 @@ export type TransactionType =
   | 'Joint Venture / Strategic Alliance';
 
 export interface UserProfile {
-  id: string; // UUID from auth.users
+  id: string; // UUID from auth.users or auto-generated for manual org members
   name?: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  title?: string;
   role?: UserRole;
   organization_id?: string;
   organization_name?: string;

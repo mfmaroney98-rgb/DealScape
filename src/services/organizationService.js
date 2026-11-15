@@ -93,5 +93,66 @@ export const organizationService = {
 
     if (error) throw error;
     return data;
+  },
+
+  /**
+   * Fetches all users belonging to an organization.
+   */
+  async getOrganizationUsers(orgId) {
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .select('id, name, first_name, last_name, email, title, role, organization_id, created_at, updated_at')
+      .eq('organization_id', orgId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  },
+
+  /**
+   * Manually adds a user to an organization.
+   */
+  async addOrganizationUser(orgId, { firstName, lastName, email, title, role = 'seller' }) {
+    const cleanFirst = firstName?.trim() || null;
+    const cleanLast = lastName?.trim() || null;
+    const fullName = [cleanFirst, cleanLast].filter(Boolean).join(' ') || null;
+
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .insert({
+        organization_id: orgId,
+        first_name: cleanFirst,
+        last_name: cleanLast,
+        name: fullName,
+        email: email?.trim() || null,
+        title: title?.trim() || null,
+        role,
+        updated_at: new Date().toISOString()
+      })
+      .select('id, name, first_name, last_name, email, title, role, organization_id, created_at, updated_at')
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
+   * Removes a user from an organization.
+   */
+  async removeOrganizationUser(userId) {
+    const { error } = await supabase
+      .from('user_profiles')
+      .delete()
+      .eq('id', userId);
+
+    if (error) {
+      // Fallback: if user is referenced by listings/criteria, unlink from organization
+      const { error: unlinkError } = await supabase
+        .from('user_profiles')
+        .update({ organization_id: null, updated_at: new Date().toISOString() })
+        .eq('id', userId);
+      if (unlinkError) throw error;
+    }
+    return true;
   }
 };
