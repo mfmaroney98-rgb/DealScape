@@ -384,6 +384,8 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
   const [showRequestPrompt, setShowRequestPrompt] = useState(false);
   const [requestNote, setRequestNote] = useState('');
   const [downloadingCim, setDownloadingCim] = useState(false);
+  const [viewingCim, setViewingCim] = useState(false);
+  const [downloadingNda, setDownloadingNda] = useState(false);
 
   useEffect(() => {
     fetchNaicsMap()
@@ -564,23 +566,41 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
     }
   };
 
+  const triggerFileDownload = async (url, fallbackName) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Download failed');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = fallbackName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  };
+
+  const handleViewCim = async () => {
+    if (!listing?.id) return;
+    setViewingCim(true);
+    setNdaError(null);
+    try {
+      const { signedUrl } = await sellerListingService.getSecureDocumentUrl(listing.id, 'cim');
+      window.open(signedUrl, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      setNdaError(err.message || 'Could not open CIM.');
+    } finally {
+      setViewingCim(false);
+    }
+  };
+
   const handleDownloadCim = async () => {
     if (!listing?.id) return;
     setDownloadingCim(true);
     setNdaError(null);
     try {
       const { signedUrl, fileName } = await sellerListingService.getSecureDocumentUrl(listing.id, 'cim');
-      const res = await fetch(signedUrl);
-      if (!res.ok) throw new Error('Failed to download CIM');
-      const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = fileName || listing.cim_file_name || 'CIM.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(blobUrl);
+      await triggerFileDownload(signedUrl, fileName || listing.cim_file_name || 'CIM.pdf');
     } catch (err) {
       setNdaError(err.message || 'Could not download CIM.');
     } finally {
@@ -588,13 +608,28 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
     }
   };
 
-  const handleDownloadExecutedNda = async () => {
+  const handleViewExecutedNda = async () => {
     if (!ndaRequest?.id) return;
+    setNdaError(null);
     try {
       const url = await signingService.getExecutedPdf({ ndaRequestId: ndaRequest.id });
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     } catch (err) {
       setNdaError(err.message || 'Could not open executed NDA.');
+    }
+  };
+
+  const handleDownloadExecutedNda = async () => {
+    if (!ndaRequest?.id) return;
+    setDownloadingNda(true);
+    setNdaError(null);
+    try {
+      const url = await signingService.getExecutedPdf({ ndaRequestId: ndaRequest.id });
+      await triggerFileDownload(url, ndaRequest.source_nda_file_name || 'Executed_NDA.pdf');
+    } catch (err) {
+      setNdaError(err.message || 'Could not download executed NDA.');
+    } finally {
+      setDownloadingNda(false);
     }
   };
 
@@ -904,25 +939,47 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
                     Awaiting Seller Countersign
                   </button>
                 ) : (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={handleDownloadExecutedNda}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-semibold text-sm hover:bg-emerald-500/20 transition-all cursor-pointer"
-                    >
-                      <CheckCircle2 size={15} />
-                      NDA Executed · Download
-                    </button>
-                    {ndaRequest.cim_access_granted && listing?.cim_url ? (
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="inline-flex items-center gap-1.5">
                       <button
                         type="button"
-                        onClick={handleDownloadCim}
-                        disabled={downloadingCim}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 cursor-pointer disabled:opacity-50"
+                        onClick={handleViewExecutedNda}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-semibold text-sm hover:bg-emerald-500/20 transition-all cursor-pointer"
                       >
-                        {downloadingCim ? <Loader2 size={15} className="animate-spin" /> : <Unlock size={15} />}
-                        Download CIM
+                        <CheckCircle2 size={15} />
+                        NDA Executed · View
                       </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadExecutedNda}
+                        disabled={downloadingNda}
+                        title="Download Executed NDA"
+                        className="flex items-center justify-center p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all cursor-pointer disabled:opacity-50"
+                      >
+                        {downloadingNda ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
+                      </button>
+                    </div>
+                    {ndaRequest.cim_access_granted && listing?.cim_url ? (
+                      <div className="inline-flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={handleViewCim}
+                          disabled={viewingCim}
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 cursor-pointer disabled:opacity-50"
+                        >
+                          {viewingCim ? <Loader2 size={15} className="animate-spin" /> : <Unlock size={15} />}
+                          View CIM
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleDownloadCim}
+                          disabled={downloadingCim}
+                          title="Download CIM"
+                          className="flex items-center justify-center p-2.5 rounded-xl bg-accent text-white hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 cursor-pointer disabled:opacity-50"
+                        >
+                          {downloadingCim ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
+                        </button>
+                      </div>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20 text-xs font-semibold">
                         <Lock size={13} /> CIM Pending Seller Release
