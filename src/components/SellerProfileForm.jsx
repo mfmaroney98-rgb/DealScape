@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { organizationService } from '../services/organizationService';
 import { ndaTemplateService } from '../services/ndaTemplateService';
+import AutoCimConfirmModal from './AutoCimConfirmModal';
 import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors, expandNaicsCodes, normalizeTo2022Naics, getSectorCodeForNaics } from '../services/naicsService';
@@ -224,7 +225,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
                 ? data.keywords.split(',').map(k => k.trim()).filter(Boolean)
                 : (Array.isArray(data.keywords) ? data.keywords : []);
 
-              const hasCategorized = data.categorized_keywords && 
+              const hasCategorized = data.categorized_keywords &&
                 Object.values(data.categorized_keywords).flat().filter(Boolean).length > 0;
 
               const loadedCategorized = hasCategorized
@@ -311,9 +312,10 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
       custom_nda_sha256: null,
       nda_approval_required: true,
       nda_countersign_required: true,
-      auto_release_cim_on_nda: true
+      auto_release_cim_on_nda: false
     }
   });
+  const [showAutoCimConfirmModal, setShowAutoCimConfirmModal] = useState(false);
 
   // Load organization NDA templates and default NDA workflow preferences
   useEffect(() => {
@@ -330,7 +332,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
           nda_template_id: prev.nda_template_id || (defaultTpl ? defaultTpl.id : null),
           nda_approval_required: org?.default_nda_approval_required ?? true,
           nda_countersign_required: org?.default_nda_countersign_required ?? true,
-          auto_release_cim_on_nda: org?.default_auto_release_cim_on_nda ?? true,
+          auto_release_cim_on_nda: org?.default_auto_release_cim_on_nda ?? false,
         }));
       }
     });
@@ -572,11 +574,11 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
   const handleNaicsSubsectorToggle = (sectorCode, subsector) => {
     const subsectorCode = subsector.code;
     const allSubCodes = [subsectorCode, ...(subsector.industryGroups || []).map(ig => ig.code)];
-    
+
     setFormData(prev => {
       let updated = [...prev.naics_codes];
       const allSelected = allSubCodes.every(c => updated.includes(c));
-      
+
       if (allSelected) {
         updated = updated.filter(c => !allSubCodes.includes(c));
         updated = updated.filter(c => c !== sectorCode);
@@ -715,7 +717,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
 
       // Track highlighted fields for UX
       const updatedFields = [...new Set([...autoFilledFields])];
-      const hasKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object') 
+      const hasKeywords = (parsedData.keywords && typeof parsedData.keywords === 'object')
         ? Object.values(parsedData.keywords).flat().length > 0
         : (parsedData.keywords?.length > 0);
 
@@ -793,8 +795,8 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
       if (parsedData.keywords && typeof parsedData.keywords === 'object') {
         try {
           const { industryVec, modelVec, targetVec } = await aiService.generateSegmentedEmbeddings(parsedData.keywords);
-          setFormData(prev => ({ 
-            ...prev, 
+          setFormData(prev => ({
+            ...prev,
             embedding_industry: industryVec,
             embedding_model: modelVec,
             embedding_target: targetVec,
@@ -1167,13 +1169,12 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
             type="button"
             onClick={handleExtractClick}
             disabled={isParsing || !hasUploadedDocument}
-            className={`flex items-center gap-3 px-8 py-4 font-bold rounded-2xl transition-all duration-200 ${
-              !hasUploadedDocument
-                ? "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60 shadow-none"
-                : hasAiRun
-                  ? "bg-slate-900/90 hover:bg-slate-800 text-amber-400 border border-amber-500/40 hover:border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                  : "bg-amber-500 hover:bg-amber-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            }`}
+            className={`flex items-center gap-3 px-8 py-4 font-bold rounded-2xl transition-all duration-200 ${!hasUploadedDocument
+              ? "bg-slate-800 text-slate-500 border border-slate-700/60 cursor-not-allowed opacity-60 shadow-none"
+              : hasAiRun
+                ? "bg-slate-900/90 hover:bg-slate-800 text-amber-400 border border-amber-500/40 hover:border-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                : "bg-amber-500 hover:bg-amber-600 text-white shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              }`}
             title={
               !hasUploadedDocument
                 ? "Please upload a Teaser or CIM PDF above to extract with AI"
@@ -1674,7 +1675,7 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
                           title={`Period end date for ${period}`}
                         />
                       </div>
-                      
+
                       {/* --- Sleek Add LTM button in between columns --- */}
                       {period === 'FY0' && !showLtm && (
                         <div style={{ position: 'absolute', top: '12px', left: 'calc(100% + 8px)', transform: 'translateX(-50%)', zIndex: 20 }}>
@@ -2272,12 +2273,18 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
                 type="checkbox"
                 className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
                 checked={!!formData.auto_release_cim_on_nda}
-                onChange={(e) => setFormData((prev) => ({ ...prev, auto_release_cim_on_nda: e.target.checked }))}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setShowAutoCimConfirmModal(true);
+                  } else {
+                    setFormData((prev) => ({ ...prev, auto_release_cim_on_nda: false }));
+                  }
+                }}
               />
               <div>
                 <div className="font-semibold text-sm">Automatically release CIM once NDA is executed</div>
                 <div className="text-xs text-slate-400 mt-0.5">
-                  Independent of countersignature. When off, you manually grant CIM access after execution.
+                  Default is manual release. When enabled, buyers immediately gain CIM access as soon as the NDA is executed.
                 </div>
               </div>
             </label>
@@ -2316,24 +2323,33 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         </div>
       </form>
 
+      <AutoCimConfirmModal
+        isOpen={showAutoCimConfirmModal}
+        onCancel={() => setShowAutoCimConfirmModal(false)}
+        onConfirm={() => {
+          setFormData((prev) => ({ ...prev, auto_release_cim_on_nda: true }));
+          setShowAutoCimConfirmModal(false);
+        }}
+      />
+
       {/* Re-run AI Extraction Confirmation Modal */}
       {showReExtractModal && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
           onClick={() => setShowReExtractModal(false)}
         >
-          <div 
+          <div
             className="max-w-md w-full p-8 rounded-3xl border border-amber-500/30 shadow-2xl relative z-10 bg-white dark:bg-slate-900"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-14 h-14 bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 rounded-2xl flex items-center justify-center text-amber-500 dark:text-amber-400 mb-6 shadow-[0_0_20px_rgba(245,158,11,0.15)]">
               <AlertCircle size={28} />
             </div>
-            
+
             <h3 className="text-2xl font-bold mb-3 text-slate-900 dark:text-slate-100">
               Re-run AI Extraction?
             </h3>
-            
+
             <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">
               AI extraction has already been run for this listing. Re-running it will reset and overwrite the current extracted data. Are you sure you want to proceed?
             </p>

@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { organizationService } from '../services/organizationService';
 import { ndaTemplateService } from '../services/ndaTemplateService';
-import { 
-  Building2, 
-  Globe, 
-  FileText, 
-  Users, 
-  ArrowLeft, 
-  Save, 
+import AutoCimConfirmModal from './AutoCimConfirmModal';
+import {
+  Building2,
+  Globe,
+  FileText,
+  Users,
+  ArrowLeft,
+  Save,
   Loader2,
   AlertCircle,
   MapPin,
@@ -60,8 +61,9 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
   const [ndaDefaults, setNdaDefaults] = useState({
     default_nda_approval_required: true,
     default_nda_countersign_required: true,
-    default_auto_release_cim_on_nda: true,
+    default_auto_release_cim_on_nda: false,
   });
+  const [showAutoCimConfirmModal, setShowAutoCimConfirmModal] = useState(false);
   const [savingNdaDefaults, setSavingNdaDefaults] = useState(false);
   const [ndaDefaultsMsg, setNdaDefaultsMsg] = useState(null);
   const [newTemplateName, setNewTemplateName] = useState('');
@@ -71,6 +73,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
   const [templateError, setTemplateError] = useState(null);
   const [templateSuccess, setTemplateSuccess] = useState(null);
   const [templateActionId, setTemplateActionId] = useState(null);
+  const templateFileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,7 +84,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
           organizationService.getOrganizationUsers(orgId),
           ndaTemplateService.getOrgTemplates(orgId)
         ]);
-        
+
         setFormData({
           organization_name: org.organization_name || '',
           website_url: org.website_url || '',
@@ -92,7 +95,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         setNdaDefaults({
           default_nda_approval_required: org.default_nda_approval_required ?? true,
           default_nda_countersign_required: org.default_nda_countersign_required ?? true,
-          default_auto_release_cim_on_nda: org.default_auto_release_cim_on_nda ?? true,
+          default_auto_release_cim_on_nda: org.default_auto_release_cim_on_nda ?? false,
         });
         setOrgUsers(users || []);
         setNdaTemplates(templates || []);
@@ -129,12 +132,12 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         headquarters: formData.headquarters,
         other_locations: formData.other_locations.split(',').map(l => l.trim()).filter(Boolean)
       });
-      
+
       setSuccess(true);
       if (onComplete) {
         await onComplete();
       }
-      
+
       setTimeout(() => {
         navigate('/dashboard/seller');
       }, 1500);
@@ -246,6 +249,9 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
       setNdaTemplates(updatedList);
       setNewTemplateName('');
       setNewTemplateFile(null);
+      if (templateFileInputRef.current) {
+        templateFileInputRef.current.value = '';
+      }
       setNewTemplateDefault(false);
       setTemplateSuccess(`Uploaded "${created.name}".`);
       setTimeout(() => setTemplateSuccess(null), 3500);
@@ -317,7 +323,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         <Link to="/dashboard/seller" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
           <ArrowLeft size={16} /> Back to Dashboard
         </Link>
-        
+
         <div className="mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 bg-indigo-500/10 rounded-xl mb-4">
             <Users className="text-indigo-400" size={24} />
@@ -337,21 +343,19 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-indigo-700 dark:bg-indigo-600 text-white shadow-lg shadow-indigo-500/10'
-                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-900/60'
-              }`}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all cursor-pointer ${activeTab === tab.id
+                ? 'bg-indigo-700 dark:bg-indigo-600 text-white shadow-lg shadow-indigo-500/10'
+                : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-900/60'
+                }`}
             >
               <tab.icon size={18} />
               {tab.label}
               {tab.count !== undefined && (
                 <span
-                  className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors ${
-                    activeTab === tab.id
-                      ? 'bg-white/20 text-white'
-                      : 'bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
-                  }`}
+                  className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold transition-colors ${activeTab === tab.id
+                    ? 'bg-white/20 text-white'
+                    : 'bg-slate-200 dark:bg-slate-900 text-slate-700 dark:text-slate-300'
+                    }`}
                 >
                   {tab.count}
                 </span>
@@ -732,12 +736,18 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
                     type="checkbox"
                     className="mt-1 h-4 w-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500"
                     checked={ndaDefaults.default_auto_release_cim_on_nda}
-                    onChange={(e) => setNdaDefaults((prev) => ({ ...prev, default_auto_release_cim_on_nda: e.target.checked }))}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setShowAutoCimConfirmModal(true);
+                      } else {
+                        setNdaDefaults((prev) => ({ ...prev, default_auto_release_cim_on_nda: false }));
+                      }
+                    }}
                   />
                   <div>
                     <div className="font-semibold text-sm">Automatically release CIM once NDA is executed</div>
                     <div className="text-xs text-slate-400 mt-0.5">
-                      Independent of countersignature. When off, you manually grant CIM access after the NDA is executed.
+                      Default is manual release. When enabled, buyers immediately gain CIM access as soon as the NDA is executed.
                     </div>
                   </div>
                 </label>
@@ -793,6 +803,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
                   <div className="field-group">
                     <label className="form-label mb-2 block">NDA PDF File</label>
                     <input
+                      ref={templateFileInputRef}
                       type="file"
                       accept="application/pdf,.pdf"
                       className="form-input py-2"
@@ -919,6 +930,15 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
           </div>
         )}
       </div>
+
+      <AutoCimConfirmModal
+        isOpen={showAutoCimConfirmModal}
+        onCancel={() => setShowAutoCimConfirmModal(false)}
+        onConfirm={() => {
+          setNdaDefaults((prev) => ({ ...prev, default_auto_release_cim_on_nda: true }));
+          setShowAutoCimConfirmModal(false);
+        }}
+      />
     </div>
   );
 }
