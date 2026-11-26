@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
+import { organizationService } from '../services/organizationService';
+import { ndaTemplateService } from '../services/ndaTemplateService';
 import { aiService } from '../services/aiService';
 import TagInput from './TagInput';
 import { fetchNaicsSectors, expandNaicsCodes, normalizeTo2022Naics, getSectorCodeForNaics } from '../services/naicsService';
@@ -26,7 +28,11 @@ import {
   Sparkles,
   RotateCcw,
   Plus,
-  Minus
+  Minus,
+  FileSignature,
+  ShieldCheck,
+  X,
+  Eye
 } from 'lucide-react';
 
 
@@ -101,6 +107,8 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
   const [isParsing, setIsParsing] = useState(false);
   const [teaserFile, setTeaserFile] = useState(null);
   const [cimFile, setCimFile] = useState(null);
+  const [customNdaFile, setCustomNdaFile] = useState(null);
+  const [orgNdaTemplates, setOrgNdaTemplates] = useState([]);
   const [filesToDelete, setFilesToDelete] = useState([]);
   const [filesUrlsToDelete, setFilesUrlsToDelete] = useState([]);
 
@@ -296,9 +304,37 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
       teaser_url: null,
       teaser_file_name: null,
       cim_url: null,
-      cim_file_name: null
+      cim_file_name: null,
+      nda_template_id: null,
+      custom_nda_path: null,
+      custom_nda_file_name: null,
+      custom_nda_sha256: null,
+      nda_approval_required: true,
+      nda_countersign_required: true,
+      auto_release_cim_on_nda: true
     }
   });
+
+  // Load organization NDA templates and default NDA workflow preferences
+  useEffect(() => {
+    if (!orgId) return;
+    Promise.all([
+      ndaTemplateService.getOrgTemplates(orgId).catch(() => []),
+      organizationService.getOrganization(orgId).catch(() => null),
+    ]).then(([templates, org]) => {
+      setOrgNdaTemplates(templates || []);
+      if (!isEditing) {
+        const defaultTpl = (templates || []).find((t) => t.is_default) || (templates || [])[0] || null;
+        setFormData((prev) => ({
+          ...prev,
+          nda_template_id: prev.nda_template_id || (defaultTpl ? defaultTpl.id : null),
+          nda_approval_required: org?.default_nda_approval_required ?? true,
+          nda_countersign_required: org?.default_nda_countersign_required ?? true,
+          auto_release_cim_on_nda: org?.default_auto_release_cim_on_nda ?? true,
+        }));
+      }
+    });
+  }, [orgId, isEditing]);
 
   // Sync userId and orgId to formData when they become available
   useEffect(() => {
@@ -908,6 +944,14 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         const path = await sellerListingService.uploadListingDocument(savedListing.id, cimFile, 'cim');
         fileUpdates.cim_url = path;
         fileUpdates.cim_file_name = cimFile.name;
+        hasUpdates = true;
+      }
+      if (customNdaFile instanceof File) {
+        const customNda = await ndaTemplateService.uploadListingCustomNda(savedListing.id, customNdaFile);
+        fileUpdates.custom_nda_path = customNda.path;
+        fileUpdates.custom_nda_file_name = customNda.fileName;
+        fileUpdates.custom_nda_sha256 = customNda.sha256;
+        fileUpdates.nda_template_id = null;
         hasUpdates = true;
       }
 
@@ -2085,6 +2129,160 @@ export default function SellerProfileForm({ userId, orgId, isCorporate = false, 
         </div>
 
 
+
+        {/* NDA Configuration */}
+        <div className="glass p-8 rounded-3xl space-y-6">
+          <div className="flex items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                <FileSignature size={20} />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold">NDA &amp; CIM Access Configuration</h2>
+                <p className="text-xs text-slate-400">
+                  Assign an organization NDA template or upload a listing-specific PDF. Required before buyers can request an NDA.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* NDA Source Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="form-label mb-2 block">Organization NDA Template</label>
+              <select
+                className="form-input w-full bg-white py-3 h-[46px]"
+                style={{ width: '100%', appearance: 'auto', height: '46px' }}
+                value={formData.nda_template_id || ''}
+                onChange={(e) => {
+                  const val = e.target.value || null;
+                  setCustomNdaFile(null);
+                  setFormData((prev) => ({
+                    ...prev,
+                    nda_template_id: val,
+                    ...(val ? { custom_nda_path: null, custom_nda_file_name: null, custom_nda_sha256: null } : {}),
+                  }));
+                }}
+              >
+                <option value="">
+                  {orgNdaTemplates.length === 0 ? 'No org templates uploaded yet' : 'Select an organization template...'}
+                </option>
+                {orgNdaTemplates.map((tpl) => (
+                  <option key={tpl.id} value={tpl.id}>
+                    {tpl.name}{tpl.is_default ? ' (Default)' : ''}
+                  </option>
+                ))}
+              </select>
+              {orgNdaTemplates.length === 0 && !customNdaFile && !formData.custom_nda_path && (
+                <p className="text-xs text-amber-400 mt-2">
+                  No NDA templates found on your Seller Profile. Upload a custom NDA on the right or add a template in Seller Profile → NDA Templates.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="form-label mb-2 block">Or Upload Listing-Specific NDA (PDF)</label>
+              <div className="flex items-center gap-3">
+                <label className="flex-1 flex items-center justify-between px-4 py-2.5 rounded-xl border border-dashed border-slate-700 hover:border-indigo-500/50 cursor-pointer transition-colors">
+                  <span className="text-sm text-slate-300 truncate">
+                    {customNdaFile?.name || formData.custom_nda_file_name || 'Choose custom NDA PDF...'}
+                  </span>
+                  <UploadCloud size={18} className="text-indigo-400 shrink-0 ml-2" />
+                  <input
+                    type="file"
+                    accept="application/pdf,.pdf"
+                    className="hidden"
+                    onChange={(e) => {
+                      const f = e.target.files?.[0] || null;
+                      if (f) {
+                        setCustomNdaFile(f);
+                        setFormData((prev) => ({ ...prev, nda_template_id: null }));
+                      }
+                    }}
+                  />
+                </label>
+                {(customNdaFile || formData.custom_nda_path) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCustomNdaFile(null);
+                      setFormData((prev) => ({
+                        ...prev,
+                        custom_nda_path: null,
+                        custom_nda_file_name: null,
+                        custom_nda_sha256: null,
+                      }));
+                    }}
+                    className="p-2.5 rounded-xl border border-slate-700 text-slate-400 hover:text-red-400 hover:border-red-500/40"
+                    title="Remove custom NDA"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+              {formData.custom_nda_path && !customNdaFile && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const url = await ndaTemplateService.getSignedUrl(formData.custom_nda_path, 120);
+                    window.open(url, '_blank');
+                  }}
+                  className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:underline mt-2"
+                >
+                  <Eye size={13} /> View current custom NDA
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Workflow Toggles */}
+          <div className="space-y-3 pt-2">
+            <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-800 cursor-pointer hover:bg-slate-800/30 transition-colors">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                checked={!!formData.nda_approval_required}
+                onChange={(e) => setFormData((prev) => ({ ...prev, nda_approval_required: e.target.checked }))}
+              />
+              <div>
+                <div className="font-semibold text-sm">Require seller approval before sending NDA</div>
+                <div className="text-xs text-slate-400 mt-0.5">
+                  Buyers submit a request first and your deal team approves before they can view or sign the NDA. Uncheck for Instant NDA.
+                </div>
+              </div>
+            </label>
+
+            <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-800 cursor-pointer hover:bg-slate-800/30 transition-colors">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                checked={!!formData.nda_countersign_required}
+                onChange={(e) => setFormData((prev) => ({ ...prev, nda_countersign_required: e.target.checked }))}
+              />
+              <div>
+                <div className="font-semibold text-sm">Require seller countersignature (Default ON)</div>
+                <div className="text-xs text-slate-400 mt-0.5">
+                  After the buyer signs, a seller team member must countersign before the NDA is marked Executed.
+                </div>
+              </div>
+            </label>
+
+            <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-800 cursor-pointer hover:bg-slate-800/30 transition-colors">
+              <input
+                type="checkbox"
+                className="mt-1 h-4 w-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500"
+                checked={!!formData.auto_release_cim_on_nda}
+                onChange={(e) => setFormData((prev) => ({ ...prev, auto_release_cim_on_nda: e.target.checked }))}
+              />
+              <div>
+                <div className="font-semibold text-sm">Automatically release CIM once NDA is executed</div>
+                <div className="text-xs text-slate-400 mt-0.5">
+                  Independent of countersignature. When off, you manually grant CIM access after execution.
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
 
         {error && (
           <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-2">

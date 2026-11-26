@@ -145,6 +145,25 @@ export const sellerListingService = {
   },
 
   /**
+   * Fetches a signed URL for a teaser or CIM via the authoritative Edge Function
+   * (enforcing NDA & CIM access gating for CIMs), falling back to Storage signed URL if needed.
+   */
+  async getSecureDocumentUrl(listingId, documentType) {
+    const { data, error } = await supabase.functions.invoke('get-listing-document-url', {
+      body: { listingId, documentType },
+    });
+
+    if (error) {
+      throw new Error(error.message || `Failed to access ${documentType}`);
+    }
+    if (data?.error) {
+      throw new Error(data.error);
+    }
+
+    return data;
+  },
+
+  /**
    * Fetches a listing by ID for buyer-facing display.
    * Only returns buyer-safe fields — never seller_name (real identity).
    */
@@ -158,6 +177,9 @@ export const sellerListingService = {
         'ownership_structure, is_founder_owned, is_female_owned, is_minority_owned, ' +
         'is_family_owned, is_operator_owned, keywords, locations, pref_transaction_type, ' +
         'financial_history, categorized_keywords, teaser_url, teaser_file_name, ' +
+        'cim_url, cim_file_name, ' +
+        'nda_template_id, custom_nda_path, custom_nda_file_name, custom_nda_sha256, ' +
+        'nda_approval_required, nda_countersign_required, auto_release_cim_on_nda, ' +
         'search_revenue, search_ebitda, search_ebitda_margin, search_gross_profit, ' +
         'search_revenue_growth_yoy, status, created_at, naics_codes, organization_id, primary_contact_ids'
       )

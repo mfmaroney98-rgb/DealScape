@@ -7,6 +7,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { sellerListingService } from '../services/sellerListingService';
 import { organizationService } from '../services/organizationService';
+import { ndaService } from '../services/ndaService';
+import { signingService } from '../services/signingService';
+import { supabase } from '../lib/supabase';
+import NdaSigningModal from './NdaSigningModal';
 import { fetchNaicsMap, getNaicsName, resolveTo2022NaicsCode } from '../services/naicsService';
 import {
   ArrowLeft,
@@ -32,6 +36,9 @@ import {
   CheckCircle2,
   ExternalLink,
   Eye,
+  Clock,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 
 /* ─── Helpers ─────────────────────────────────────────────────────────── */
@@ -351,7 +358,7 @@ const OwnershipFlag = ({ show, label }) =>
 
       /* ─── Main Component ──────────────────────────────────────────────────── */
 
-export default function BuyerListingDetail({ previewListing = null, isPreview = false }) {
+export default function BuyerListingDetail({ previewListing = null, isPreview = false, orgId: propOrgId = null }) {
   const { id: _criteriaId, listingId: routeListingId } = useParams();
   const listingId = previewListing?.id || routeListingId;
   const location = useLocation();
@@ -368,6 +375,15 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
   const [activeLogicCriteriaId, setActiveLogicCriteriaId] = useState('');
   const [naicsMap, setNaicsMap] = useState(null);
   const [advisorDetails, setAdvisorDetails] = useState({ organization: null, primaryContacts: [] });
+  const [currentUser, setCurrentUser] = useState(null);
+  const [buyerOrg, setBuyerOrg] = useState(null);
+  const [ndaRequest, setNdaRequest] = useState(null);
+  const [ndaLoading, setNdaLoading] = useState(false);
+  const [ndaError, setNdaError] = useState(null);
+  const [showNdaModal, setShowNdaModal] = useState(false);
+  const [showRequestPrompt, setShowRequestPrompt] = useState(false);
+  const [requestNote, setRequestNote] = useState('');
+  const [downloadingCim, setDownloadingCim] = useState(false);
 
   useEffect(() => {
     fetchNaicsMap()
@@ -460,6 +476,127 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
       active = false;
     };
   }, [listing?.organization_id, listing?.primary_contact_ids]);
+
+  useEffect(() => {
+    if (isPreview || !listingId) return;
+    let active = true;
+
+    const loadNdaContext = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user || !active) return;
+
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('id, organization_id, name, first_name, last_name, title, email')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        const resolvedOrgId = propOrgId || profile?.organization_id || null;
+        if (active) {
+          setCurrentUser(profile || { id: user.id, email: user.email });
+        }
+
+        if (resolvedOrgId) {
+          const [org, req] = await Promise.all([
+            organizationService.getOrganization(resolvedOrgId).catch(() => null),
+            ndaService.getBuyerNdaForListing(listingId, resolvedOrgId).catch(() => null),
+          ]);
+          if (active) {
+            setBuyerOrg(org);
+            setNdaRequest(req);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load NDA context:', err);
+      }
+    };
+
+    loadNdaContext();
+    return () => {
+      active = false;
+    };
+  }, [isPreview, listingId, propOrgId]);
+
+  const hasListingNda = Boolean(listing?.nda_template_id || listing?.custom_nda_path);
+  const isBuyerProfileComplete = Boolean(
+    buyerOrg?.organization_name &&
+    buyerOrg?.buyer_type &&
+    (buyerOrg?.organization_summary || buyerOrg?.website_url)
+  );
+
+  const handleRequestNdaClick = () => {
+    setNdaError(null);
+    if (!hasListingNda) return;
+    if (!isBuyerProfileComplete) {
+      setNdaError('Please complete your Buyer Organization Profile (firm name, buyer type, and overview/website) before requesting an NDA.');
+      return;
+    }
+    if (listing?.nda_approval_required === false) {
+      handleSubmitNdaRequest('');
+    } else {
+      setShowRequestPrompt(true);
+    }
+  };
+
+  const handleSubmitNdaRequest = async (noteText) => {
+    if (!listing || !buyerOrg?.id || !currentUser?.id) return;
+    setNdaLoading(true);
+    setNdaError(null);
+    try {
+      const created = await ndaService.requestNda({
+        listing,
+        buyerOrgId: buyerOrg.id,
+        userId: currentUser.id,
+        userEmail: currentUser.email,
+        note: noteText,
+      });
+      setNdaRequest(created);
+      setShowRequestPrompt(false);
+      setRequestNote('');
+      if (created.status === 'awaiting_buyer_signature') {
+        setShowNdaModal(true);
+      }
+    } catch (err) {
+      setNdaError(err.message || 'Failed to submit NDA request.');
+    } finally {
+      setNdaLoading(false);
+    }
+  };
+
+  const handleDownloadCim = async () => {
+    if (!listing?.id) return;
+    setDownloadingCim(true);
+    setNdaError(null);
+    try {
+      const { signedUrl, fileName } = await sellerListingService.getSecureDocumentUrl(listing.id, 'cim');
+      const res = await fetch(signedUrl);
+      if (!res.ok) throw new Error('Failed to download CIM');
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = fileName || listing.cim_file_name || 'CIM.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      setNdaError(err.message || 'Could not download CIM.');
+    } finally {
+      setDownloadingCim(false);
+    }
+  };
+
+  const handleDownloadExecutedNda = async () => {
+    if (!ndaRequest?.id) return;
+    try {
+      const url = await signingService.getExecutedPdf({ ndaRequestId: ndaRequest.id });
+      window.open(url, '_blank');
+    } catch (err) {
+      setNdaError(err.message || 'Could not open executed NDA.');
+    }
+  };
 
   /* File handlers */
   const handleDownloadTeaser = async () => {
@@ -684,7 +821,7 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
               </div>
 
               {/* Action buttons */}
-              <div className="flex items-center gap-3 shrink-0">
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
                 <button
                   title={isPreview ? "Disabled in preview mode" : "Save listing (coming soon)"}
                   disabled={isPreview}
@@ -693,16 +830,115 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
                   <Bookmark size={15} />
                   Save
                 </button>
-                <button
-                  title={isPreview ? "Disabled in preview mode" : "Request NDA (coming soon)"}
-                  disabled={isPreview}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 hover:shadow-accent/30 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  <FileSignature size={15} />
-                  Request NDA
-                </button>
+
+                {isPreview ? (
+                  <button
+                    title="Disabled in preview mode"
+                    disabled
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm opacity-60 cursor-not-allowed"
+                  >
+                    <FileSignature size={15} />
+                    {listing?.nda_approval_required === false ? 'Sign NDA' : 'Request NDA'}
+                  </button>
+                ) : !ndaRequest || ndaRequest.status === 'declined' || ndaRequest.status === 'withdrawn' ? (
+                  <button
+                    type="button"
+                    onClick={handleRequestNdaClick}
+                    disabled={!hasListingNda || ndaLoading}
+                    title={!hasListingNda ? 'Seller has not configured an NDA for this listing yet' : undefined}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {ndaLoading ? <Loader2 size={15} className="animate-spin" /> : <FileSignature size={15} />}
+                    {!hasListingNda
+                      ? 'NDA Not Configured'
+                      : listing?.nda_approval_required === false
+                        ? 'Sign NDA'
+                        : 'Request NDA'}
+                  </button>
+                ) : ndaRequest.status === 'requested' ? (
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20 text-sm font-semibold">
+                      <Clock size={15} /> NDA Requested (Pending Seller)
+                    </span>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const updated = await ndaService.withdrawNdaRequest({
+                          ndaRequestId: ndaRequest.id,
+                          userId: currentUser?.id,
+                          userOrgId: buyerOrg?.id,
+                          userEmail: currentUser?.email,
+                        });
+                        setNdaRequest(updated);
+                      }}
+                      className="px-3 py-2.5 rounded-xl border border-border/60 text-xs font-semibold text-muted-foreground hover:text-red-500 cursor-pointer"
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                ) : ndaRequest.status === 'awaiting_buyer_signature' ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowNdaModal(true)}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 cursor-pointer"
+                  >
+                    <FileSignature size={15} />
+                    Review &amp; Sign NDA
+                  </button>
+                ) : ndaRequest.status === 'in_redline' ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowNdaModal(true)}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 transition-all cursor-pointer"
+                  >
+                    <FileSignature size={15} />
+                    In Redline — View / Upload
+                  </button>
+                ) : ndaRequest.status === 'awaiting_seller_countersign' ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowNdaModal(true)}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 font-semibold text-sm cursor-pointer"
+                  >
+                    <Clock size={15} />
+                    Awaiting Seller Countersign
+                  </button>
+                ) : (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleDownloadExecutedNda}
+                      className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-semibold text-sm hover:bg-emerald-500/20 transition-all cursor-pointer"
+                    >
+                      <CheckCircle2 size={15} />
+                      NDA Executed · Download
+                    </button>
+                    {ndaRequest.cim_access_granted && listing?.cim_url ? (
+                      <button
+                        type="button"
+                        onClick={handleDownloadCim}
+                        disabled={downloadingCim}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 cursor-pointer disabled:opacity-50"
+                      >
+                        {downloadingCim ? <Loader2 size={15} className="animate-spin" /> : <Unlock size={15} />}
+                        Download CIM
+                      </button>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20 text-xs font-semibold">
+                        <Lock size={13} /> CIM Pending Seller Release
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
+
+            {ndaError && (
+              <div className="mt-4 flex items-start gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+                <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                <span>{ndaError}</span>
+              </div>
+            )}
           </div>
 
           {/* ── Main Layout ── */}
@@ -1225,6 +1461,51 @@ export default function BuyerListingDetail({ previewListing = null, isPreview = 
                 </div>
               </div>
             </div>
+
+            {showRequestPrompt && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm p-4">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-md p-6 space-y-4">
+                  <h3 className="text-lg font-bold text-foreground">Request NDA</h3>
+                  <p className="text-xs text-muted-foreground">
+                    Your buyer firm profile will be shared with the seller’s deal team for approval before the NDA is released.
+                  </p>
+                  <textarea
+                    className="form-input w-full min-h-[90px]"
+                    placeholder="Optional note to the seller (e.g. investment thesis, fund mandate, timeline)..."
+                    value={requestNote}
+                    onChange={(e) => setRequestNote(e.target.value)}
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowRequestPrompt(false)}
+                      className="px-4 py-2 rounded-xl border border-border/60 text-sm font-medium text-muted-foreground hover:text-foreground cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      disabled={ndaLoading}
+                      onClick={() => handleSubmitNdaRequest(requestNote)}
+                      className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-accent text-white text-sm font-semibold hover:bg-accent/90 cursor-pointer disabled:opacity-50"
+                    >
+                      {ndaLoading && <Loader2 size={14} className="animate-spin" />}
+                      Submit Request
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <NdaSigningModal
+              isOpen={showNdaModal}
+              onClose={() => setShowNdaModal(false)}
+              ndaRequest={ndaRequest}
+              role="buyer"
+              currentUser={currentUser}
+              orgId={buyerOrg?.id}
+              onUpdated={(updated) => setNdaRequest(updated)}
+            />
           </div>
           );
 }

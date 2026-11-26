@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { organizationService } from '../services/organizationService';
+import { ndaTemplateService } from '../services/ndaTemplateService';
 import { 
   Building2, 
   Globe, 
@@ -16,7 +17,13 @@ import {
   Trash2,
   Mail,
   Briefcase,
-  User
+  User,
+  FileSignature,
+  Upload,
+  Star,
+  Eye,
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function SellerProfilePage({ userId, orgId, onComplete }) {
@@ -48,13 +55,31 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
   const [userError, setUserError] = useState(null);
   const [userSuccess, setUserSuccess] = useState(null);
 
+  // NDA templates & org defaults state
+  const [ndaTemplates, setNdaTemplates] = useState([]);
+  const [ndaDefaults, setNdaDefaults] = useState({
+    default_nda_approval_required: true,
+    default_nda_countersign_required: true,
+    default_auto_release_cim_on_nda: true,
+  });
+  const [savingNdaDefaults, setSavingNdaDefaults] = useState(false);
+  const [ndaDefaultsMsg, setNdaDefaultsMsg] = useState(null);
+  const [newTemplateName, setNewTemplateName] = useState('');
+  const [newTemplateFile, setNewTemplateFile] = useState(null);
+  const [newTemplateDefault, setNewTemplateDefault] = useState(true);
+  const [uploadingTemplate, setUploadingTemplate] = useState(false);
+  const [templateError, setTemplateError] = useState(null);
+  const [templateSuccess, setTemplateSuccess] = useState(null);
+  const [templateActionId, setTemplateActionId] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [org, users] = await Promise.all([
+        const [org, users, templates] = await Promise.all([
           organizationService.getOrganization(orgId),
-          organizationService.getOrganizationUsers(orgId)
+          organizationService.getOrganizationUsers(orgId),
+          ndaTemplateService.getOrgTemplates(orgId)
         ]);
         
         setFormData({
@@ -64,7 +89,14 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
           headquarters: org.headquarters || '',
           other_locations: Array.isArray(org.other_locations) ? org.other_locations.join(', ') : ''
         });
+        setNdaDefaults({
+          default_nda_approval_required: org.default_nda_approval_required ?? true,
+          default_nda_countersign_required: org.default_nda_countersign_required ?? true,
+          default_auto_release_cim_on_nda: org.default_auto_release_cim_on_nda ?? true,
+        });
         setOrgUsers(users || []);
+        setNdaTemplates(templates || []);
+        setNewTemplateDefault((templates || []).length === 0);
       } catch (err) {
         console.error('Failed to load profile:', err);
         setError('Failed to load organization profile.');
@@ -179,6 +211,93 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
     }
   };
 
+  const handleSaveNdaDefaults = async () => {
+    setSavingNdaDefaults(true);
+    setNdaDefaultsMsg(null);
+    setTemplateError(null);
+    try {
+      await organizationService.updateOrganization(orgId, ndaDefaults);
+      setNdaDefaultsMsg('Default NDA workflow settings saved.');
+      setTimeout(() => setNdaDefaultsMsg(null), 3500);
+    } catch (err) {
+      console.error('Failed to save NDA defaults:', err);
+      setTemplateError(err.message || 'Failed to save default NDA settings.');
+    } finally {
+      setSavingNdaDefaults(false);
+    }
+  };
+
+  const handleUploadTemplate = async (e) => {
+    e.preventDefault();
+    if (!newTemplateFile) return;
+    setUploadingTemplate(true);
+    setTemplateError(null);
+    setTemplateSuccess(null);
+
+    try {
+      const created = await ndaTemplateService.uploadOrgTemplate({
+        orgId,
+        userId,
+        name: newTemplateName,
+        file: newTemplateFile,
+        isDefault: newTemplateDefault || ndaTemplates.length === 0,
+      });
+      const updatedList = await ndaTemplateService.getOrgTemplates(orgId);
+      setNdaTemplates(updatedList);
+      setNewTemplateName('');
+      setNewTemplateFile(null);
+      setNewTemplateDefault(false);
+      setTemplateSuccess(`Uploaded "${created.name}".`);
+      setTimeout(() => setTemplateSuccess(null), 3500);
+    } catch (err) {
+      console.error('Failed to upload NDA template:', err);
+      setTemplateError(err.message || 'Failed to upload NDA template.');
+    } finally {
+      setUploadingTemplate(false);
+    }
+  };
+
+  const handleSetDefaultTemplate = async (templateId) => {
+    setTemplateActionId(templateId);
+    setTemplateError(null);
+    try {
+      await ndaTemplateService.setDefaultTemplate(orgId, templateId);
+      const updatedList = await ndaTemplateService.getOrgTemplates(orgId);
+      setNdaTemplates(updatedList);
+    } catch (err) {
+      console.error('Failed to set default template:', err);
+      setTemplateError(err.message || 'Failed to update default template.');
+    } finally {
+      setTemplateActionId(null);
+    }
+  };
+
+  const handleArchiveTemplate = async (template) => {
+    if (!window.confirm(`Archive "${template.name}"? Existing NDA requests using it will remain intact.`)) return;
+    setTemplateActionId(template.id);
+    setTemplateError(null);
+    try {
+      await ndaTemplateService.archiveTemplate(orgId, template.id);
+      const updatedList = await ndaTemplateService.getOrgTemplates(orgId);
+      setNdaTemplates(updatedList);
+    } catch (err) {
+      console.error('Failed to archive template:', err);
+      setTemplateError(err.message || 'Failed to archive template.');
+    } finally {
+      setTemplateActionId(null);
+    }
+  };
+
+  const handleViewTemplate = async (filePath) => {
+    try {
+      const url = await ndaTemplateService.getSignedUrl(filePath, 120);
+      window.open(url, '_blank');
+    } catch (err) {
+      console.error('Failed to open template:', err);
+      setTemplateError('Failed to open NDA template PDF.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -211,7 +330,8 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
         <div className="flex flex-wrap gap-2 mb-8 p-1.5 bg-slate-100 dark:bg-slate-950 rounded-2xl w-fit border border-slate-200/60 dark:border-slate-800/60">
           {[
             { id: 'profile', icon: Building2, label: 'Seller Profile' },
-            { id: 'users', icon: Users, label: 'Organization Users', count: orgUsers.length }
+            { id: 'users', icon: Users, label: 'Organization Users', count: orgUsers.length },
+            { id: 'nda_templates', icon: FileSignature, label: 'NDA Templates', count: ndaTemplates.length }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -373,7 +493,7 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
               </Link>
             </div>
           </form>
-        ) : (
+        ) : activeTab === 'users' ? (
           <div className="space-y-8 animate-fade-in">
             {/* Add User Card */}
             <div className="glass p-8 rounded-3xl shadow-2xl">
@@ -556,6 +676,243 @@ export default function SellerProfilePage({ userId, orgId, onComplete }) {
                       </div>
                     );
                   })}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-8 animate-fade-in">
+            {/* Organization Default NDA Workflow Settings */}
+            <div className="glass p-8 rounded-3xl shadow-2xl space-y-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                  <ShieldCheck size={20} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Default NDA Workflow Preferences</h2>
+                  <p className="text-xs text-slate-400">
+                    Pre-filled on new listings. You can override any of these per listing.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 cursor-pointer hover:bg-slate-500/5 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    checked={ndaDefaults.default_nda_approval_required}
+                    onChange={(e) => setNdaDefaults((prev) => ({ ...prev, default_nda_approval_required: e.target.checked }))}
+                  />
+                  <div>
+                    <div className="font-semibold text-sm">Require seller approval before sending NDA</div>
+                    <div className="text-xs text-slate-400 mt-0.5">
+                      When enabled, buyers submit an NDA request first and your deal team approves before they can view or sign the NDA.
+                    </div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 cursor-pointer hover:bg-slate-500/5 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    checked={ndaDefaults.default_nda_countersign_required}
+                    onChange={(e) => setNdaDefaults((prev) => ({ ...prev, default_nda_countersign_required: e.target.checked }))}
+                  />
+                  <div>
+                    <div className="font-semibold text-sm">Require seller countersignature (Recommended)</div>
+                    <div className="text-xs text-slate-400 mt-0.5">
+                      After the buyer signs, a member of your deal team must countersign before the NDA is marked Executed.
+                    </div>
+                  </div>
+                </label>
+
+                <label className="flex items-start gap-3 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/60 cursor-pointer hover:bg-slate-500/5 transition-colors">
+                  <input
+                    type="checkbox"
+                    className="mt-1 h-4 w-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    checked={ndaDefaults.default_auto_release_cim_on_nda}
+                    onChange={(e) => setNdaDefaults((prev) => ({ ...prev, default_auto_release_cim_on_nda: e.target.checked }))}
+                  />
+                  <div>
+                    <div className="font-semibold text-sm">Automatically release CIM once NDA is executed</div>
+                    <div className="text-xs text-slate-400 mt-0.5">
+                      Independent of countersignature. When off, you manually grant CIM access after the NDA is executed.
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              {ndaDefaultsMsg && (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+                  <CheckCircle2 size={16} />
+                  <span>{ndaDefaultsMsg}</span>
+                </div>
+              )}
+
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={handleSaveNdaDefaults}
+                  disabled={savingNdaDefaults}
+                  className="btn-primary flex items-center gap-2 px-6 py-2.5 text-sm font-bold cursor-pointer"
+                >
+                  {savingNdaDefaults ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
+                  Save Default Preferences
+                </button>
+              </div>
+            </div>
+
+            {/* Upload NDA Template */}
+            <div className="glass p-8 rounded-3xl shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                  <Upload size={20} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">Upload NDA Template</h2>
+                  <p className="text-xs text-slate-400">
+                    Upload PDF NDA templates for your organization. Every listing requires a template or custom NDA before buyers can request access.
+                  </p>
+                </div>
+              </div>
+
+              <form onSubmit={handleUploadTemplate} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="field-group">
+                    <label className="form-label mb-2 block">Template Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="e.g. Standard One-Way NDA"
+                      value={newTemplateName}
+                      onChange={(e) => setNewTemplateName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="field-group">
+                    <label className="form-label mb-2 block">NDA PDF File</label>
+                    <input
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      className="form-input py-2"
+                      onChange={(e) => {
+                        const f = e.target.files?.[0] || null;
+                        setNewTemplateFile(f);
+                        if (f && !newTemplateName) {
+                          setNewTemplateName(f.name.replace(/\.pdf$/i, ''));
+                        }
+                      }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <label className="inline-flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    checked={newTemplateDefault}
+                    onChange={(e) => setNewTemplateDefault(e.target.checked)}
+                  />
+                  Set as organization default template
+                </label>
+
+                {templateError && (
+                  <div className="flex items-start gap-2 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    <AlertCircle size={18} className="shrink-0 mt-0.5" />
+                    <span>{templateError}</span>
+                  </div>
+                )}
+
+                {templateSuccess && (
+                  <div className="flex items-start gap-2 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+                    <CheckCircle2 size={18} className="shrink-0 mt-0.5" />
+                    <span>{templateSuccess}</span>
+                  </div>
+                )}
+
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={uploadingTemplate || !newTemplateFile || !newTemplateName.trim()}
+                    className="btn-primary flex items-center gap-2 px-6 py-3 font-bold cursor-pointer disabled:opacity-50"
+                  >
+                    {uploadingTemplate ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
+                    Upload Template
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Saved NDA Templates */}
+            <div className="glass p-8 rounded-3xl shadow-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold">Saved NDA Templates</h2>
+                  <p className="text-xs text-slate-400">
+                    {ndaTemplates.length} {ndaTemplates.length === 1 ? 'template' : 'templates'} available for your listings
+                  </p>
+                </div>
+              </div>
+
+              {ndaTemplates.length === 0 ? (
+                <div className="text-center py-10 text-slate-400">
+                  <FileSignature className="mx-auto mb-3 text-slate-500" size={36} />
+                  <p className="font-medium">No NDA templates uploaded yet.</p>
+                  <p className="text-xs text-slate-500 mt-1">Upload at least one PDF template above to enable NDA requests on your listings.</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-slate-200/60 dark:divide-slate-800/60">
+                  {ndaTemplates.map((tpl) => (
+                    <div
+                      key={tpl.id}
+                      className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-slate-900 dark:text-white truncate">{tpl.name}</span>
+                          {tpl.is_default && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                              <Star size={11} className="fill-amber-400" /> Default
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-400 mt-1 truncate">
+                          {tpl.file_name} · SHA-256: {tpl.file_sha256?.slice(0, 12)}…
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleViewTemplate(tpl.file_path)}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-500/10 border border-slate-700/60 transition-colors cursor-pointer"
+                        >
+                          <Eye size={14} /> View PDF
+                        </button>
+                        {!tpl.is_default && (
+                          <button
+                            type="button"
+                            onClick={() => handleSetDefaultTemplate(tpl.id)}
+                            disabled={templateActionId === tpl.id}
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-indigo-400 hover:bg-indigo-500/10 border border-indigo-500/20 transition-colors cursor-pointer disabled:opacity-50"
+                          >
+                            <Star size={14} /> Set Default
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleArchiveTemplate(tpl)}
+                          disabled={templateActionId === tpl.id}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-colors cursor-pointer disabled:opacity-50"
+                        >
+                          {templateActionId === tpl.id ? <Loader2 className="animate-spin" size={14} /> : <Trash2 size={14} />}
+                          Archive
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
